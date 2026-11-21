@@ -533,7 +533,7 @@ táblázat&nbsp;3.1.. Mérési skálák és a rajtuk értelmezett műveletek.
 </div>
 <p>A névleges és a sorrendi skálájú változókat együtt <strong>kategorikus</strong>, az intervallum- és arányskálájúakat <strong>numerikus</strong> (folytonos vagy diszkrét) változóknak nevezzük. A különbség nem formális szőrszálhasogatás: egy irányítószám számjegyekből áll, de névleges változó, átlagolása értelmetlen; a 20 °C nem „kétszer olyan meleg”, mint a 10 °C, mert a Celsius-skála nullpontja önkényes. Az adatbányászati algoritmusok többsége numerikus bemenetet vár, ezért a kategorikus változókat kódolni kell (<a href="#sec-kodolas" class="quarto-xref"><span>3.5.3</span></a>. alfejezet) – de úgy, hogy ne vigyünk be a kódolással nem létező sorrendet vagy távolságot.</p>
 <p>A <code>pandas</code> adattípusai ezt a felosztást csak részben követik: a számok <code>int64</code> vagy <code>float64</code>, a szövegek <code>object</code> vagy <code>string</code>, a dátumok <code>datetime64</code>, és létezik egy külön <code>category</code> típus is a kategorikus változókra.</p>
-<div id="b4c2741c" class="cell" data-execution_count="2">
+<div id="686b5d0b" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>shop <span class="op">=</span> ab.load_shop()</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>tx <span class="op">=</span> shop.transactions</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>tx.dtypes</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
@@ -557,7 +557,7 @@ dtype: object</code></pre>
 <div class="eset-uzleti">
 <p>Végezzük el ezt a felmérést a PannonShop számlatételein! Az egyes problématípusokat egyszerű logikai feltételekkel jelöljük meg, majd összesítjük.</p>
 </div>
-<div id="652390df" class="cell" data-execution_count="3">
+<div id="cc6bc21b" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> shop.products.set_index(<span class="st">"StockCode"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>lista_ar <span class="op">=</span> tx.StockCode.<span class="bu">map</span>(p.ListaAr)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>problemak <span class="op">=</span> pd.Series({</span>
@@ -658,7 +658,7 @@ dtype: object</code></pre>
 </div>
 <p>A mechanizmus azért kulcsfontosságú, mert meghatározza, hogy egy egyszerű kezelés torzít-e. MCAR esetén a hiányos sorok elhagyása csak a mintanagyságot csökkenti, az eredményt nem torzítja. MAR esetén az elhagyás torzíthat, de a megfigyelt változók felhasználásával a torzítás korrigálható. MNAR esetén az adatokból magukból ez nem lehetséges; szakterületi ismeret vagy a hiányzás külön modellezése kell hozzá <span class="citation" data-cites="little2019">(<a href="../references.html#ref-little2019" role="doc-biblioref">Little &amp; Rubin, 2019</a>)</span>.</p>
 <p>A következő kísérlet ezt szemlélteti. A Pannon üzem órás hűtővíz-hőmérsékletéből mesterségesen törlünk nagyjából 30–40%-nyi adatot a három mechanizmus szerint, és megnézzük, mennyire torzul a megmaradt adatok átlaga.</p>
-<div id="f4f5d813" class="cell" data-execution_count="5">
+<div id="9556dcff" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plant <span class="op">=</span> ab.load_plant()</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> plant.hourly.dropna(subset<span class="op">=</span>[<span class="st">"T_hutoviz"</span>, <span class="st">"T_kornyezet"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>y, x <span class="op">=</span> h.T_hutoviz.to_numpy(), h.T_kornyezet.to_numpy()</span>
@@ -728,7 +728,7 @@ dtype: object</code></pre>
 <li><strong>Idősorokban</strong> a szomszédos időpontok értékéből: lineáris interpolációval vagy az utolsó ismert érték továbbvitelével – de csak rövid hiányok esetén.</li>
 </ol>
 <p>Hasonlítsuk össze ezeket a módszereket a Pannon üzem 10 perces adatain. Ehhez az eredetileg teljes adatokból véletlenszerűen törlünk értékeket, így a valódi érték ismert, és a pótlás hibája mérhető.</p>
-<div id="5aaad91b" class="cell" data-execution_count="6">
+<div id="edb3e42c" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.experimental <span class="im">import</span> enable_iterative_imputer  <span class="co"># noqa: F401</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> SimpleImputer, KNNImputer, IterativeImputer</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -843,7 +843,7 @@ Q_3 + 1{,}5\,\mathrm{IQR}]\)</span> intervallumon kívüli pontokat jelöli.</p>
 </figcaption>
 </figure>
 </div>
-<div id="e3834c9f" class="cell" data-execution_count="7">
+<div id="719d9b9b" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> plant.measurements.set_index(<span class="st">"ido"</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> m.P_reaktor[m.F_betap <span class="op">&gt;</span> <span class="dv">1</span>].dropna()</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>valodi <span class="op">=</span> (x <span class="op">&lt;</span> <span class="fl">0.5</span>) <span class="op">|</span> (x <span class="op">&gt;</span> <span class="fl">3.4</span>)          <span class="co"># a szimulátor ismert tüskéi: 0 és másfélszeres értékek</span></span>
@@ -963,7 +963,7 @@ x^{(\lambda)} =
 <section id="sec-kodolas" class="level3" data-number="3.5.3">
 <h3 data-number="3.5.3" class="anchored" data-anchor-id="sec-kodolas"><span class="header-section-number">3.5.3</span> Kategorikus változók kódolása</h3>
 <p>A névleges változókat a legtöbb modell számára <strong>egy-forró</strong> (one-hot) kódolással alakítjuk numerikussá: egy <span class="math inline">\(C\)</span> értéket felvevő változó helyett <span class="math inline">\(C\)</span> darab 0/1 értékű jelzőváltozót képzünk. Lineáris modelleknél az egyik jelzőt el kell hagyni, különben a jelzők összege konstans, és a modell paraméterei nem azonosíthatók egyértelműen (<em>dummy-csapda</em>). A sorrendi változók kódolhatók egész számokkal, ha a sorrend értelmes, a távolságok egyenlőségét azonban ezzel feltételezzük.</p>
-<div id="a4ef6c0a" class="cell" data-execution_count="9">
+<div id="e3213179" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>enc <span class="op">=</span> OneHotEncoder(sparse_output<span class="op">=</span><span class="va">False</span>, drop<span class="op">=</span><span class="st">"first"</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>regio <span class="op">=</span> shop.customers[[<span class="st">"Regio"</span>]].head(<span class="dv">5</span>)</span>
@@ -1044,7 +1044,7 @@ x^{(\lambda)} =
 <section id="diszkretizálás" class="level3" data-number="3.5.4">
 <h3 data-number="3.5.4" class="anchored" data-anchor-id="diszkretizálás"><span class="header-section-number">3.5.4</span> Diszkretizálás</h3>
 <p>A <strong>diszkretizálás</strong> egy folytonos változót intervallumokra bont. Az <em>egyenlő szélességű</em> felosztás a tartományt azonos hosszú szakaszokra osztja, az <em>egyenlő gyakoriságú</em> (kvantilis alapú) felosztás úgy, hogy minden szakaszba nagyjából azonos számú megfigyelés essen. Ferde eloszlásoknál a két módszer nagyon eltérő eredményt ad: egyenlő szélesség esetén szinte minden megfigyelés az első intervallumba kerül. A diszkretizálás információvesztéssel jár, de értelmezhetőbbé tehet egy modellt, és egyes módszerek (például a <a href="06-asszociacios-szabalyok.html" class="quarto-xref"><span>6</span></a>. fejezet asszociációs szabályai) kategorikus bemenetet igényelnek.</p>
-<div id="93b4f8b5" class="cell" data-execution_count="10">
+<div id="9c3a301d" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> KBinsDiscretizer</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> vevok[[<span class="st">"R_nap"</span>]]</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>eq_w <span class="op">=</span> KBinsDiscretizer(n_bins<span class="op">=</span><span class="dv">4</span>, encode<span class="op">=</span><span class="st">"ordinal"</span>, strategy<span class="op">=</span><span class="st">"uniform"</span>).fit(r)</span>
@@ -1083,7 +1083,7 @@ x^{(\lambda)} =
 <section id="új-jellemzők-képzése" class="level3" data-number="3.5.5">
 <h3 data-number="3.5.5" class="anchored" data-anchor-id="új-jellemzők-képzése"><span class="header-section-number">3.5.5</span> Új jellemzők képzése</h3>
 <p>Az adatelőkészítés talán legtöbb szakértelmet igénylő része az új, a feladat szempontjából informatív jellemzők képzése. A számlatételekből a vevő viselkedését leíró vevőszintű táblát állítunk elő; ennek klasszikus magja az <strong>RFM-modell</strong> <span class="citation" data-cites="hughes1994">(<a href="../references.html#ref-hughes1994" role="doc-biblioref">Hughes, 1994</a>)</span>: a legutóbbi vásárlás óta eltelt idő (<em>recency</em>), a vásárlások száma (<em>frequency</em>) és a vásárlások összértéke (<em>monetary</em>). Ezt kiegészítjük az átlagos kosárértékkel, a kosármérettel, a vásárlások közötti átlagos idővel, az akciós időszakban történt vásárlások arányával és a kategóriánkénti költési arányokkal.</p>
-<div id="92afcb03" class="cell" data-execution_count="11">
+<div id="2c00f650" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>vevok <span class="op">=</span> ab.customer_table(ref_date<span class="op">=</span><span class="st">"2026-01-01"</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>vevok.head().<span class="bu">round</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
@@ -1234,7 +1234,7 @@ r_{xy} = \frac{\sum_{k=1}^{N}(x_k-\bar{x})(y_k-\bar{y})}
 <div class="eset-mernoki">
 <p>Mely mért folyamatváltozók hordoznak információt a laborban mért termékkoncentrációról? A szűrő módszerekkel ez gyorsan felmérhető. (A célváltozó csak 4 óránként ismert, ezért csak a laborminták időpontjaiban dolgozunk.)</p>
 </div>
-<div id="3485ff83" class="cell" data-execution_count="12">
+<div id="aebff103" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_selection <span class="im">import</span> mutual_info_regression</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> ab.plant_clean().dropna(subset<span class="op">=</span>[<span class="st">"c_termek_labor"</span>])</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> d[<span class="op">~</span>d.leallas]</span>
@@ -1327,7 +1327,7 @@ r_{xy} = \frac{\sum_{k=1}^{N}(x_k-\bar{x})(y_k-\bar{y})}
 <li><strong>Időbeli keveredés</strong>: idősorokon véletlen felosztással a modell a jövőből tanul a múlt előrejelzéséhez (<a href="12-idosorok.html" class="quarto-xref"><span>12</span></a>. fejezet).</li>
 </ul>
 <p>A második típus különösen alattomos, mert jóhiszemű, „szokásos” lépésekből adódik. A következő kísérlet ezt mutatja be. Tisztán véletlen adatokat generálunk – a jellemzők semmilyen kapcsolatban nincsenek a célváltozóval, így egyetlen modell sem lehet jobb a véletlen találgatásnál (50%) –, majd a 20 „legjobb” jellemzőt <em>a teljes adatbázison</em> választjuk ki, és csak ezután értékeljük a modellt keresztvalidációval.</p>
-<div id="4253906a" class="cell" data-execution_count="13">
+<div id="4ada621d" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_selection <span class="im">import</span> SelectKBest, f_classif</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span>
@@ -1362,7 +1362,7 @@ szivárgás nélkül: 0.48</code></pre>
 </figcaption>
 </figure>
 </div>
-<div id="e1ca4ceb" class="cell" data-execution_count="14">
+<div id="4a8e7c57" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> SimpleImputer</span>
@@ -1394,7 +1394,7 @@ szivárgás nélkül: 0.48</code></pre>
 <li><code>ab.prep.customer_features(...)</code>: a vevőszintű RFM- és vásárlásiszerkezet-tábla (<code>ab.customer_table()</code>);</li>
 <li><code>ab.prep.clean_plant(m)</code>: a fizikailag lehetetlen értékek és a Hampel-szűrő által jelölt tüskék eltávolítása, rövid hiányok interpolációja, a leállások jelölése (<code>ab.plant_clean()</code>).</li>
 </ul>
-<div id="192a2631" class="cell" data-execution_count="15">
+<div id="356f6169" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>tiszta <span class="op">=</span> ab.shop_clean()</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"nyers: </span><span class="sc">{</span><span class="bu">len</span>(tx)<span class="sc">:,}</span><span class="ss"> sor  -&gt;  tisztított: </span><span class="sc">{</span><span class="bu">len</span>(tiszta)<span class="sc">:,}</span><span class="ss"> sor"</span>.replace(<span class="st">","</span>, <span class="st">" "</span>))</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"nettó árbevétel (tisztított): </span><span class="sc">{</span>tiszta<span class="sc">.</span>Ertek<span class="sc">.</span><span class="bu">sum</span>()<span class="op">/</span><span class="fl">1e6</span><span class="sc">:,.1f}</span><span class="ss"> millió Ft"</span>.replace(<span class="st">","</span>, <span class="st">" "</span>))</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
