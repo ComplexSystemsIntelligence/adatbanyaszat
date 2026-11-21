@@ -52,6 +52,28 @@ def _scan(text, prefix, refs):
                 refs[lab] = f"{prefix}.{counters[kind]}"
 
 
+
+def number_headings(text, chap):
+    """A fejezetcím elhagyása (a jegyzetfüzet fejléce tartalmazza) és az alfejezetek
+    számozása a könyvvel egyezően (a .unnumbered címek számozatlanok maradnak)."""
+    out, sub, subsub, fence, h1 = [], 0, 0, False, False
+    for line in text.splitlines(keepends=True):
+        if line.startswith("```"):
+            fence = not fence
+        if not fence:
+            if line.startswith("# ") and not h1:
+                h1 = True
+                continue
+            if line.startswith("## ") and ".unnumbered" not in line:
+                sub, subsub = sub + 1, 0
+                line = f"## {chap}.{sub} " + line[3:]
+            elif line.startswith("### ") and ".unnumbered" not in line:
+                subsub += 1
+                line = f"### {chap}.{sub}.{subsub} " + line[4:]
+        out.append(line)
+    return "".join(out)
+
+
 def clean_markdown(md, refs):
     md = re.sub(r"\{\{<.*?>\}\}", "", md)                                  # rövidkódok
     md = re.sub(r"^:::.*$", "", md, flags=re.M)                            # div-kerítések
@@ -131,7 +153,7 @@ def main():
     for i, f in enumerate(CHAPTERS, start=1):
         text = f.read_text(encoding="utf-8")
         title = re.search(r"^# (.*?)\s*\{", text, re.M).group(1)
-        cells = cells_from_qmd(text, refs)
+        cells = cells_from_qmd(number_headings(text, i), refs)
         if not any(k == "code" for k, _, _ in cells):
             continue
         nb = notebook(cells, f"{i}. {title}", f.stem, a.repo, a.branch, a.site + "chapters/" + f.stem + ".html")
