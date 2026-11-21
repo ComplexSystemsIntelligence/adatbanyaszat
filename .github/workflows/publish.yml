@@ -8,6 +8,8 @@ on:
       - "README.md"
       - "apps/README.md"
       - "notebooks/README.md"
+      - "assets/readme/**"
+      - "assets/social-preview.png"
   workflow_dispatch:
 concurrency:
   group: pages

@@ -1,6 +1,6 @@
 # Adatbányászat – a hatékonyság eszköze
 
-**Elmélet és gyakorlat Pythonban** · 2., teljesen átdolgozott kiadás
+**Elmélet és gyakorlat Pythonban** · 2., teljesen átdolgozott kiadás<br>
 Abonyi János · Pannon Egyetem, Veszprém, 2026
 
 Nyílt hozzáférésű egyetemi tankönyv az adatbányászat és a gépi tanulás módszereiről. A
@@ -43,7 +43,7 @@ reprodukálható.
 
 ## A könyv felépítése
 
-![A könyv felépítése: az alapozó részre épülő módszertani fejezetek és a két alkalmazási fejezet](figures/build/00-felepites.svg)
+<img src="assets/readme/felepites.png" width="100%" alt="A könyv felépítése: öt rész, a fejezeteken végighúzódó üzleti (PannonShop) és mérnöki (Pannon üzem) szál, valamint a függelékek">
 
 | Fejezet | Gyakorló alkalmazás | Jegyzetfüzet |
 |---|---|---|
