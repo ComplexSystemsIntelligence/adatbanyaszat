@@ -74,7 +74,7 @@
     "href": "index.html#licenc-és-hivatkozás",
     "title": "Adatbányászat",
     "section": "Licenc és hivatkozás",
-    "text": "Licenc és hivatkozás\nA könyv szövege és ábrái a Creative Commons Nevezd meg! 4.0 Nemzetközi (CC BY 4.0) licenc, a programkód az MIT licenc alatt szabadon felhasználható. Hivatkozás:\n\nAbonyi János (2026): Adatbányászat – a hatékonyság eszköze. Elmélet és gyakorlat Pythonban. 2., teljesen átdolgozott kiadás. Pannon Egyetem, Veszprém.\n\nA pontos, kiadásonkénti DOI-azonosító a könyv weboldalán és a tároló CITATION.cff fájljában található.",
+    "text": "Licenc és hivatkozás\nA könyv szövege és ábrái a Creative Commons Nevezd meg! – Ne add el! 4.0 Nemzetközi (CC BY-NC 4.0) licenc alatt nem kereskedelmi célra szabadon felhasználhatók; kereskedelmi célú felhasználásukhoz a szerző előzetes engedélye szükséges. A programkód az MIT licenc alatt áll. Hivatkozás:\n\nAbonyi János (2026): Adatbányászat – a hatékonyság eszköze. Elmélet és gyakorlat Pythonban. 2., teljesen átdolgozott kiadás. Pannon Egyetem, Veszprém.\n\nA pontos, kiadásonkénti DOI-azonosító a könyv weboldalán és a tároló CITATION.cff fájljában található.",
     "crumbs": [
       "Előszó"
     ]
