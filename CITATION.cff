@@ -1,18 +1,15 @@
 cff-version: 1.2.0
 message: "Ha felhasználja a könyvet vagy a kódot, kérjük, így hivatkozzon rá."
-type: book
 title: "Adatbányászat – a hatékonyság eszköze. Elmélet és gyakorlat Pythonban"
 version: "2.0.0"
 date-released: "2026-11-21"
+doi: 10.5281/zenodo.24413676
 authors:
   - family-names: "Abonyi"
     given-names: "János"
     email: "janos@abonyilab.com"
     orcid: "https://orcid.org/0000-0001-8593-1493"
     affiliation: "Pannon Egyetem"
-publisher:
-  name: "Pannon Egyetem"
-  city: "Veszprém"
 license: CC-BY-NC-4.0
 repository-code: "https://github.com/ComplexSystemsIntelligence/adatbanyaszat"
 url: "https://complexsystemsintelligence.github.io/adatbanyaszat/"
@@ -23,5 +20,31 @@ keywords:
   - tankönyv
   - data mining
   - machine learning
-# A Zenodo-archiválás után ide kerül a kiadás DOI-azonosítója:
-# doi: 10.5281/zenodo.XXXXXXX
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.24413676
+    description: "Az összes kiadásra mutató közös DOI (Zenodo)"
+  - type: doi
+    value: 10.5281/zenodo.24413677
+    description: "A 2.0.0 kiadás DOI-ja (Zenodo)"
+  - type: url
+    value: "https://complexsystemsintelligence.github.io/adatbanyaszat/"
+    description: "Webkönyv"
+preferred-citation:
+  type: book
+  title: "Adatbányászat – a hatékonyság eszköze. Elmélet és gyakorlat Pythonban"
+  authors:
+    - family-names: "Abonyi"
+      given-names: "János"
+      orcid: "https://orcid.org/0000-0001-8593-1493"
+      affiliation: "Pannon Egyetem"
+  edition: "2., teljesen átdolgozott kiadás"
+  year: 2026
+  publisher:
+    name: "Pannon Egyetem"
+    city: "Veszprém"
+  doi: 10.5281/zenodo.24413676
+  url: "https://complexsystemsintelligence.github.io/adatbanyaszat/"
+  languages:
+    - hun
+  license: CC-BY-NC-4.0

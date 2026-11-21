@@ -8,6 +8,8 @@
 **Elmélet és gyakorlat Pythonban** · 2., teljesen átdolgozott kiadás<br>
 Abonyi János · Pannon Egyetem, Veszprém, 2026
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24413676.svg)](https://doi.org/10.5281/zenodo.24413676)
+
 Nyílt hozzáférésű egyetemi tankönyv az adatbányászat és a gépi tanulás módszereiről. A
 könyv minden módszert a matematikai háttérrel, futtatható Python-kóddal és két, fejezetről
 fejezetre továbbvitt esettanulmányon mutat be; az elméletet böngészőben futó gyakorló
@@ -18,6 +20,7 @@ alkalmazások és Google Colab-jegyzetfüzetek egészítik ki.
 | Webkönyv (kereshető, interaktív) | <https://complexsystemsintelligence.github.io/adatbanyaszat/> |
 | PDF (nyomtatható, B5) | [adatbanyaszat.pdf](https://complexsystemsintelligence.github.io/adatbanyaszat/adatbanyaszat.pdf) |
 | EPUB (e-könyv-olvasóra) | [adatbanyaszat.epub](https://complexsystemsintelligence.github.io/adatbanyaszat/adatbanyaszat.epub) |
+| Archivált kiadások (Zenodo) | [doi:10.5281/zenodo.24413676](https://doi.org/10.5281/zenodo.24413676) |
 | Gyakorló alkalmazások (14) | [apps/](apps/README.md) – böngészőben, telepítés nélkül |
 | Colab-jegyzetfüzetek (15) | [notebooks/](notebooks/README.md) – fejezetenként egy, egy kattintással futtatható |
 
@@ -153,7 +156,8 @@ kód csak a megváltozott fejezetekben fut újra.
 - A [`notebooks.yml`](.github/workflows/notebooks.yml) hetente és minden pull requestnél
   lefuttatja a jegyzetfüzeteket.
 - A kiadásokat (GitHub Release) a Zenodo–GitHub integráció archiválja és DOI-val látja el;
-  a metaadatokat a [`.zenodo.json`](.zenodo.json) adja (a [`CITATION.cff`](CITATION.cff) a
+  a közös, minden kiadásra mutató DOI: [10.5281/zenodo.24413676](https://doi.org/10.5281/zenodo.24413676); a metaadatokat a
+  [`.zenodo.json`](.zenodo.json) adja (a [`CITATION.cff`](CITATION.cff) a
   GitHub „Cite this repository” hivatkozásához tartozik).
 
 **Új kiadás menete**
@@ -185,7 +189,7 @@ Copyright © 2026 Abonyi János.
 
 Abonyi János (2026): *Adatbányászat – a hatékonyság eszköze. Elmélet és gyakorlat
 Pythonban.* 2., teljesen átdolgozott kiadás. Pannon Egyetem, Veszprém.
-<https://complexsystemsintelligence.github.io/adatbanyaszat/>
+<https://doi.org/10.5281/zenodo.24413676>
 
 ```bibtex
 @book{abonyi2026adatbanyaszat,
@@ -195,6 +199,7 @@ Pythonban.* 2., teljesen átdolgozott kiadás. Pannon Egyetem, Veszprém.
   publisher = {Pannon Egyetem},
   address   = {Veszprém},
   year      = {2026},
+  doi       = {10.5281/zenodo.24413676},
   url       = {https://complexsystemsintelligence.github.io/adatbanyaszat/}
 }
 ```

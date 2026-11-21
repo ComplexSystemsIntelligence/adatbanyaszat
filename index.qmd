@@ -92,9 +92,11 @@ a szerző előzetes engedélye szükséges. A programkód az MIT licenc alatt á
 
 > Abonyi János (2026): *Adatbányászat – a hatékonyság eszköze. Elmélet és gyakorlat
 > Pythonban.* 2., teljesen átdolgozott kiadás. Pannon Egyetem, Veszprém.
+> DOI: [10.5281/zenodo.24413676](https://doi.org/10.5281/zenodo.24413676)
 
-A pontos, kiadásonkénti DOI-azonosító a könyv weboldalán és a tároló `CITATION.cff`
-fájljában található.
+A könyv kiadásait a Zenodo archiválja: a fenti DOI mindig a legfrissebb kiadásra mutat,
+a kiadásonkénti DOI-azonosítók a [Zenodo-rekord](https://doi.org/10.5281/zenodo.24413676) oldalán és a
+tároló `CITATION.cff` fájljában találhatók.
 
 ## Köszönetnyilvánítás {.unnumbered}
 
