@@ -2,9 +2,10 @@
 
 Használat:  python scripts/build_figures.py [--force] [név ...]
 Követelmény: XeLaTeX (TikZ, pgfplots) és pdftocairo (poppler-utils).
-Csak a megváltozott forrásokat fordítja újra (időbélyeg alapján).
+Csak a megváltozott forrásokat (a TikZ-fájlt, a stílust vagy az ábra adatfájljait) fordítja újra.
 """
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -19,6 +20,9 @@ EXT = ROOT / "_extensions" / "pannon"
 def build(tex: Path, force: bool = False) -> bool:
     pdf, svg = OUT / (tex.stem + ".pdf"), OUT / (tex.stem + ".svg")
     deps = [tex, EXT / "pe-tikz.sty"]
+    # az ábra adatfájljai (../data/...) is függőségek: ha újragenerálódnak, az ábra is újrafordul
+    for d in set(re.findall(r"\.\./data/([\w.\-{}]+)", tex.read_text(encoding="utf-8"))):
+        deps += [f for f in (ROOT / "figures" / "data").glob(re.sub(r"\{.*?\}", "*", d)) if f.is_file()]
     if not force and pdf.exists() and svg.exists() and all(pdf.stat().st_mtime >= d.stat().st_mtime for d in deps):
         return True
     env = dict(os.environ, TEXINPUTS=f"{EXT}{os.pathsep}{SRC}{os.pathsep}")

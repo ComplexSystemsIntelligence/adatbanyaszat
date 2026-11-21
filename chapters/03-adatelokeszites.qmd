@@ -308,7 +308,7 @@ folyamat szintje változik. A **Hampel-szűrő** a ([-@eq-robusztusz]) képletet
 mozgó ablakban alkalmazza: a mozgó mediántól $k$-szoros MAD-nál jobban eltérő pontokat
 jelöli ([-@fig-hampel]. ábra).
 
-![A Hampel-szűrő működése a Pannon üzem reaktorhőmérsékletén (9 pontos ablak, $k=3$). A 8. óránál egy adatátviteli hiba okozta tüske látható; a 4. óra körüli kisebb kilengést a szűrő szintén megjelöli – a küszöb megválasztása mindig kompromisszum a téves riasztás és a kimaradó hiba között.](../figures/build/03-hampel.svg){#fig-hampel width=100%}
+![A Hampel-szűrő működése a Pannon üzem reaktorhőmérsékletén (9 pontos ablak, $k=3$). A 8. óránál egy adatátviteli hiba okozta, a tengely tartományán kívül eső tüske látható (146,2 °C); emellett a szűrő négy olyan pontot is megjelöl, amely csak alig lépi át a sávot – a küszöb megválasztása mindig kompromisszum a téves riasztás és a kimaradó hiba között.](../figures/build/03-hampel.svg){#fig-hampel width=100%}
 
 ```{python}
 m = plant.measurements.set_index("ido")

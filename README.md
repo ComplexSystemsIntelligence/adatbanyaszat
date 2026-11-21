@@ -151,8 +151,15 @@ kód csak a megváltozott fejezetekben fut újra.
 
 ## Licenc
 
-A könyv szövege és ábrái: [CC BY 4.0](LICENSE). A programkód (a `src/`, `scripts/`, `apps/`
-és `notebooks/` tartalma): [MIT](LICENSE-CODE).
+Copyright © 2026 Abonyi János.
+
+- A könyv szövege, ábrái és táblázatai a [Creative Commons Nevezd meg! 4.0 Nemzetközi
+  (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.hu) licenc alatt állnak
+  ([teljes szöveg](LICENSE)): a mű bármilyen célra, kereskedelmi célra is szabadon
+  másolható, terjeszthető és átdolgozható a szerző és a licenc feltüntetésével, valamint a
+  változtatások jelzésével.
+- A programkód (a `src/`, `scripts/`, `apps/` és `notebooks/` tartalma, valamint a fejezetek
+  kódrészletei) az [MIT licenc](LICENSE-CODE) alatt áll.
 
 ## Hivatkozás
 
