@@ -1,0 +1,2326 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="hu" xml:lang="hu"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Irodalomjegyzék – Adatbányászat</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./appendices/a-python.html" rel="next">
+<link href="./chapters/15-folyamatanalitika.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-18038207a4bfd50187eff2b2f0526436.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-27594bbe69c1d9222c0eb88c018d43c1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nincs találat",
+    "search-matching-documents-text": "találat",
+    "search-copy-link-title": "Keresési link másolása",
+    "search-hide-matches-text": "További találatok elrejtése",
+    "search-more-match-text": "további találat ebben a dokumentumban",
+    "search-more-matches-text": "további találat ebben a dokumentumban",
+    "search-clear-button-title": "Törlés",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Mégse",
+    "search-submit-button-title": "Keresés",
+    "search-label": "Keresés"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="assets/pannon-fonts.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Oldalsáv ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./references.html">Irodalomjegyzék</a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Keresés" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Adatbányászat</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat" title="Forráskód" class="quarto-navigation-tool px-1" aria-label="Forráskód"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Letöltés" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Letöltés"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./adatbanyaszat.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Letöltés PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./adatbanyaszat.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Letöltés ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Keresés"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Előszó</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. Alapok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/01-bevezetes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Adatból tudás: az adatbányászat folyamata</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/02-adattarhazak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Adattárházak és analitikus adatkezelés</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/03-adatelokeszites.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Adatok előkészítése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/04-feltaro-elemzes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Feltáró adatelemzés és dimenziócsökkentés</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. Mintázatok felügyelet nélkül</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/05-csoportositas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Csoportosítás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/06-asszociacios-szabalyok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Gyakori mintázatok és asszociációs szabályok</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. Prediktív modellezés</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/07-modellertekeles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A felügyelt tanulás alapjai és a modellek értékelése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/08-regresszio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regresszió</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/09-osztalyozas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Osztályozás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/10-melytanulas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Neurális hálózatok és mélytanulás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/11-anomaliak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Anomáliák és eltérések észlelése</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. Speciális adattípusok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/12-idosorok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Idősorok elemzése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/13-szovegbanyaszat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Szövegbányászat</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. Alkalmazások</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/14-ugyfelanalitika.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Ügyfélkapcsolat-menedzsment és ügyfélanalitika</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/15-folyamatanalitika.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Ipari folyamatanalitika</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Irodalomjegyzék</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Függelékek</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendices/a-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Python-alapok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendices/b-linearis-algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Lineáris algebra az adatbányászathoz</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendices/c-valoszinuseg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Valószínűségszámítási és statisztikai alapok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendices/d-adatsorok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Az adatsorok leírása</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendices/e-jelolesek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Jelölések</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendices/f-szojegyzek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Magyar–angol szójegyzék</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Irodalomjegyzék</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-abadi2008" class="csl-entry" role="listitem">
+Abadi, D. J., Madden, S. R., &amp; Hachem, N. (2008). Column-stores vs.
+Row-stores: How different are they really? <em>Proceedings of the 2008
+ACM SIGMOD International Conference on Management of Data</em>, 967–980.
+</div>
+<div id="ref-abonyi2006" class="csl-entry" role="listitem">
+Abonyi, J. (Ed.). (2006). <em>Adatbányászat – a hatékonyság eszköze.
+Gyakorlati útmutató kezdőknek és haladóknak</em>. ComputerBooks.
+</div>
+<div id="ref-abonyi2007" class="csl-entry" role="listitem">
+Abonyi, J., &amp; Feil, B. (2007). <em>Cluster analysis for data mining
+and system identification</em>. Birkhäuser.
+</div>
+<div id="ref-abonyi2005seg" class="csl-entry" role="listitem">
+Abonyi, J., Feil, B., Németh, S., &amp; Árva, P. (2005). Modified
+<span>Gath–Geva</span> clustering for fuzzy segmentation of multivariate
+time-series. <em>Fuzzy Sets and Systems</em>, <em>149</em>(1), 39–56. <a href="https://doi.org/10.1016/j.fss.2004.07.008">https://doi.org/10.1016/j.fss.2004.07.008</a>
+</div>
+<div id="ref-aggarwal2016rec" class="csl-entry" role="listitem">
+Aggarwal, C. C. (2016). <em>Recommender systems: The textbook</em>.
+Springer. <a href="https://doi.org/10.1007/978-3-319-29659-3">https://doi.org/10.1007/978-3-319-29659-3</a>
+</div>
+<div id="ref-aggarwal2017" class="csl-entry" role="listitem">
+Aggarwal, C. C. (2017). <em>Outlier analysis</em> (2nd ed.). Springer.
+<a href="https://doi.org/10.1007/978-3-319-47578-3">https://doi.org/10.1007/978-3-319-47578-3</a>
+</div>
+<div id="ref-agrawal1993ts" class="csl-entry" role="listitem">
+Agrawal, R., Faloutsos, C., &amp; Swami, A. (1993). Efficient similarity
+search in sequence databases. <em>Foundations of Data Organization and
+Algorithms (FODO 1993), Lecture Notes in Computer Science</em>,
+<em>730</em>, 69–84.
+</div>
+<div id="ref-agrawal1993" class="csl-entry" role="listitem">
+Agrawal, R., Imieliński, T., &amp; Swami, A. (1993). Mining association
+rules between sets of items in large databases. <em>Proceedings of the
+1993 ACM SIGMOD International Conference on Management of Data</em>,
+207–216.
+</div>
+<div id="ref-agrawal1994" class="csl-entry" role="listitem">
+Agrawal, R., &amp; Srikant, R. (1994). Fast algorithms for mining
+association rules. <em>Proceedings of the 20th International Conference
+on Very Large Data Bases</em>, 487–499.
+</div>
+<div id="ref-ambroise2002" class="csl-entry" role="listitem">
+Ambroise, C., &amp; McLachlan, G. J. (2002). Selection bias in gene
+extraction on the basis of microarray gene-expression data.
+<em>Proceedings of the National Academy of Sciences</em>,
+<em>99</em>(10), 6562–6566.
+</div>
+<div id="ref-anscombe1973" class="csl-entry" role="listitem">
+Anscombe, F. J. (1973). Graphs in statistical analysis. <em>The American
+Statistician</em>, <em>27</em>(1), 17–21.
+</div>
+<div id="ref-armbrust2021" class="csl-entry" role="listitem">
+Armbrust, M., Ghodsi, A., Xin, R., &amp; Zaharia, M. (2021). Lakehouse:
+A new generation of open platforms that unify data warehousing and
+advanced analytics. <em>Proceedings of the 11th Conference on Innovative
+Data Systems Research (CIDR)</em>.
+</div>
+<div id="ref-arthur2007" class="csl-entry" role="listitem">
+Arthur, D., &amp; Vassilvitskii, S. (2007). K-means++: The advantages of
+careful seeding. <em>Proceedings of the 18th Annual ACM-SIAM Symposium
+on Discrete Algorithms</em>, 1027–1035.
+</div>
+<div id="ref-bagnall2017" class="csl-entry" role="listitem">
+Bagnall, A., Lines, J., Bostrom, A., Large, J., &amp; Keogh, E. (2017).
+The great time series classification bake off: A review and experimental
+evaluation of recent algorithmic advances. <em>Data Mining and Knowledge
+Discovery</em>, <em>31</em>(3), 606–660.
+</div>
+<div id="ref-baldi1989" class="csl-entry" role="listitem">
+Baldi, P., &amp; Hornik, K. (1989). Neural networks and principal
+component analysis: Learning from examples without local minima.
+<em>Neural Networks</em>, <em>2</em>(1), 53–58. <a href="https://doi.org/10.1016/0893-6080(89)90014-2">https://doi.org/10.1016/0893-6080(89)90014-2</a>
+</div>
+<div id="ref-barocas2023" class="csl-entry" role="listitem">
+Barocas, S., Hardt, M., &amp; Narayanan, A. (2023). <em>Fairness and
+machine learning: Limitations and opportunities</em>. MIT Press.
+</div>
+<div id="ref-bayardo1998" class="csl-entry" role="listitem">
+Bayardo, R. J. (1998). Efficiently mining long patterns from databases.
+<em>Proceedings of the 1998 ACM SIGMOD International Conference on
+Management of Data</em>, 85–93.
+</div>
+<div id="ref-baydin2018" class="csl-entry" role="listitem">
+Baydin, A. G., Pearlmutter, B. A., Radul, A. A., &amp; Siskind, J. M.
+(2018). Automatic differentiation in machine learning: A survey.
+<em>Journal of Machine Learning Research</em>, <em>18</em>(153), 1–43.
+</div>
+<div id="ref-bengio1994" class="csl-entry" role="listitem">
+Bengio, Y., Simard, P., &amp; Frasconi, P. (1994). Learning long-term
+dependencies with gradient descent is difficult. <em>IEEE Transactions
+on Neural Networks</em>, <em>5</em>(2), 157–166. <a href="https://doi.org/10.1109/72.279181">https://doi.org/10.1109/72.279181</a>
+</div>
+<div id="ref-bergmeir2012" class="csl-entry" role="listitem">
+Bergmeir, C., &amp; Benítez, J. M. (2012). On the use of
+cross-validation for time series predictor evaluation. <em>Information
+Sciences</em>, <em>191</em>, 192–213.
+</div>
+<div id="ref-bergstra2012" class="csl-entry" role="listitem">
+Bergstra, J., &amp; Bengio, Y. (2012). Random search for hyper-parameter
+optimization. <em>Journal of Machine Learning Research</em>,
+<em>13</em>, 281–305.
+</div>
+<div id="ref-berndt1994" class="csl-entry" role="listitem">
+Berndt, D. J., &amp; Clifford, J. (1994). Using dynamic time warping to
+find patterns in time series. <em>KDD Workshop (AAAI Technical Report
+WS-94-03)</em>, 359–370.
+</div>
+<div id="ref-bezdek1981" class="csl-entry" role="listitem">
+Bezdek, J. C. (1981). <em>Pattern recognition with fuzzy objective
+function algorithms</em>. Plenum Press.
+</div>
+<div id="ref-bishop2006" class="csl-entry" role="listitem">
+Bishop, C. M. (2006). <em>Pattern recognition and machine learning</em>.
+Springer.
+</div>
+<div id="ref-bishop2024" class="csl-entry" role="listitem">
+Bishop, C. M., &amp; Bishop, H. (2024). <em>Deep learning: Foundations
+and concepts</em>. Springer. <a href="https://doi.org/10.1007/978-3-031-45468-4">https://doi.org/10.1007/978-3-031-45468-4</a>
+</div>
+<div id="ref-blei2003" class="csl-entry" role="listitem">
+Blei, D. M., Ng, A. Y., &amp; Jordan, M. I. (2003). Latent dirichlet
+allocation. <em>Journal of Machine Learning Research</em>, <em>3</em>,
+993–1022.
+</div>
+<div id="ref-bolton2002" class="csl-entry" role="listitem">
+Bolton, R. J., &amp; Hand, D. J. (2002). Statistical fraud detection: A
+review. <em>Statistical Science</em>, <em>17</em>(3), 235–255. <a href="https://doi.org/10.1214/ss/1042727940">https://doi.org/10.1214/ss/1042727940</a>
+</div>
+<div id="ref-deboor2001" class="csl-entry" role="listitem">
+Boor, C. de. (2001). <em>A practical guide to splines</em> (Revised).
+Springer.
+</div>
+<div id="ref-boxcox1964" class="csl-entry" role="listitem">
+Box, G. E. P., &amp; Cox, D. R. (1964). An analysis of transformations.
+<em>Journal of the Royal Statistical Society: Series B</em>,
+<em>26</em>(2), 211–252.
+</div>
+<div id="ref-box2015" class="csl-entry" role="listitem">
+Box, G. E. P., Jenkins, G. M., Reinsel, G. C., &amp; Ljung, G. M.
+(2015). <em>Time series analysis: Forecasting and control</em> (5th
+ed.). Wiley.
+</div>
+<div id="ref-breiman1996" class="csl-entry" role="listitem">
+Breiman, L. (1996). Bagging predictors. <em>Machine Learning</em>,
+<em>24</em>(2), 123–140.
+</div>
+<div id="ref-breiman2001" class="csl-entry" role="listitem">
+Breiman, L. (2001). Random forests. <em>Machine Learning</em>,
+<em>45</em>(1), 5–32.
+</div>
+<div id="ref-breiman1984" class="csl-entry" role="listitem">
+Breiman, L., Friedman, J. H., Olshen, R. A., &amp; Stone, C. J. (1984).
+<em>Classification and regression trees</em>. Wadsworth.
+</div>
+<div id="ref-breunig2000" class="csl-entry" role="listitem">
+Breunig, M. M., Kriegel, H.-P., Ng, R. T., &amp; Sander, J. (2000).
+<span>LOF</span>: Identifying density-based local outliers.
+<em>Proceedings of the 2000 ACM SIGMOD International Conference on
+Management of Data</em>, 93–104.
+</div>
+<div id="ref-brier1950" class="csl-entry" role="listitem">
+Brier, G. W. (1950). Verification of forecasts expressed in terms of
+probability. <em>Monthly Weather Review</em>, <em>78</em>(1), 1–3.
+</div>
+<div id="ref-brin1997" class="csl-entry" role="listitem">
+Brin, S., Motwani, R., Ullman, J. D., &amp; Tsur, S. (1997). Dynamic
+itemset counting and implication rules for market basket data.
+<em>Proceedings of the 1997 ACM SIGMOD International Conference on
+Management of Data</em>, 255–264.
+</div>
+<div id="ref-broomhead1988" class="csl-entry" role="listitem">
+Broomhead, D. S., &amp; Lowe, D. (1988). Multivariable functional
+interpolation and adaptive networks. <em>Complex Systems</em>,
+<em>2</em>, 321–355.
+</div>
+<div id="ref-brundage2021" class="csl-entry" role="listitem">
+Brundage, M. P., Sexton, T., Hodkiewicz, M., Dima, A., &amp; Lukens, S.
+(2021). Technical language processing: Unlocking maintenance knowledge.
+<em>Manufacturing Letters</em>, <em>27</em>, 42–46. <a href="https://doi.org/10.1016/j.mfglet.2020.11.001">https://doi.org/10.1016/j.mfglet.2020.11.001</a>
+</div>
+<div id="ref-vanbuuren2011" class="csl-entry" role="listitem">
+Buuren, S. van, &amp; Groothuis-Oudshoorn, K. (2011). Mice: Multivariate
+imputation by chained equations in <span>R</span>. <em>Journal of
+Statistical Software</em>, <em>45</em>(3), 1–67.
+</div>
+<div id="ref-calinski1974" class="csl-entry" role="listitem">
+Caliński, T., &amp; Harabasz, J. (1974). A dendrite method for cluster
+analysis. <em>Communications in Statistics</em>, <em>3</em>(1), 1–27.
+</div>
+<div id="ref-campello2013" class="csl-entry" role="listitem">
+Campello, R. J. G. B., Moulavi, D., &amp; Sander, J. (2013).
+Density-based clustering based on hierarchical density estimates.
+<em>Advances in Knowledge Discovery and Data Mining (PAKDD 2013),
+Lecture Notes in Computer Science</em>, <em>7819</em>, 160–172.
+</div>
+<div id="ref-campos2016" class="csl-entry" role="listitem">
+Campos, G. O., Zimek, A., Sander, J., Campello, R. J. G. B., Micenková,
+B., Schubert, E., Assent, I., &amp; Houle, M. E. (2016). On the
+evaluation of unsupervised outlier detection: Measures, datasets, and an
+empirical study. <em>Data Mining and Knowledge Discovery</em>,
+<em>30</em>(4), 891–927. <a href="https://doi.org/10.1007/s10618-015-0444-8">https://doi.org/10.1007/s10618-015-0444-8</a>
+</div>
+<div id="ref-cavnar1994" class="csl-entry" role="listitem">
+Cavnar, W. B., &amp; Trenkle, J. M. (1994). N-gram-based text
+categorization. <em>Proceedings of the Third Annual Symposium on
+Document Analysis and Information Retrieval (SDAIR-94)</em>, 161–175.
+</div>
+<div id="ref-chan1999" class="csl-entry" role="listitem">
+Chan, K.-P., &amp; Fu, A. W.-C. (1999). Efficient time series matching
+by wavelets. <em>Proceedings of the 15th International Conference on
+Data Engineering</em>, 126–133.
+</div>
+<div id="ref-chandola2009" class="csl-entry" role="listitem">
+Chandola, V., Banerjee, A., &amp; Kumar, V. (2009). Anomaly detection: A
+survey. <em>ACM Computing Surveys</em>, <em>41</em>(3), 15:1–15:58.
+</div>
+<div id="ref-chapman2000" class="csl-entry" role="listitem">
+Chapman, P., Clinton, J., Kerber, R., Khabaza, T., Reinartz, T.,
+Shearer, C., &amp; Wirth, R. (2000). <em>CRISP-DM 1.0: Step-by-step data
+mining guide</em>. SPSS Inc.
+</div>
+<div id="ref-chawla2002" class="csl-entry" role="listitem">
+Chawla, N. V., Bowyer, K. W., Hall, L. O., &amp; Kegelmeyer, W. P.
+(2002). <span>SMOTE</span>: Synthetic minority over-sampling technique.
+<em>Journal of Artificial Intelligence Research</em>, <em>16</em>,
+321–357.
+</div>
+<div id="ref-chen2012" class="csl-entry" role="listitem">
+Chen, D., Sain, S. L., &amp; Guo, K. (2012). Data mining for the online
+retail industry: A case study of <span>RFM</span> model-based customer
+segmentation using data mining. <em>Journal of Database Marketing &amp;
+Customer Strategy Management</em>, <em>19</em>(3), 197–208.
+</div>
+<div id="ref-chen2016" class="csl-entry" role="listitem">
+Chen, T., &amp; Guestrin, C. (2016). <span>XGBoost</span>: A scalable
+tree boosting system. <em>Proceedings of the 22nd ACM SIGKDD
+International Conference on Knowledge Discovery and Data Mining</em>,
+785–794.
+</div>
+<div id="ref-cho2014" class="csl-entry" role="listitem">
+Cho, K., Merriënboer, B. van, Gulcehre, C., Bahdanau, D., Bougares, F.,
+Schwenk, H., &amp; Bengio, Y. (2014). Learning phrase representations
+using <span>RNN</span> encoder–decoder for statistical machine
+translation. <em>Proceedings of the 2014 Conference on Empirical Methods
+in Natural Language Processing (EMNLP)</em>, 1724–1734. <a href="https://doi.org/10.3115/v1/D14-1179">https://doi.org/10.3115/v1/D14-1179</a>
+</div>
+<div id="ref-cleveland1990" class="csl-entry" role="listitem">
+Cleveland, R. B., Cleveland, W. S., McRae, J. E., &amp; Terpenning, I.
+(1990). <span>STL</span>: A seasonal-trend decomposition procedure based
+on loess. <em>Journal of Official Statistics</em>, <em>6</em>(1), 3–73.
+</div>
+<div id="ref-cleveland1984" class="csl-entry" role="listitem">
+Cleveland, W. S., &amp; McGill, R. (1984). Graphical perception: Theory,
+experimentation, and application to the development of graphical
+methods. <em>Journal of the American Statistical Association</em>,
+<em>79</em>(387), 531–554.
+</div>
+<div id="ref-codd1970" class="csl-entry" role="listitem">
+Codd, E. F. (1970). A relational model of data for large shared data
+banks. <em>Communications of the ACM</em>, <em>13</em>(6), 377–387.
+</div>
+<div id="ref-codd1993" class="csl-entry" role="listitem">
+Codd, E. F., Codd, S. B., &amp; Salley, C. T. (1993). <em>Providing
+<span>OLAP</span> (on-line analytical processing) to user-analysts: An
+<span>IT</span> mandate</em>. Codd &amp; Date, Inc.
+</div>
+<div id="ref-cortes1995" class="csl-entry" role="listitem">
+Cortes, C., &amp; Vapnik, V. (1995). Support-vector networks.
+<em>Machine Learning</em>, <em>20</em>(3), 273–297.
+</div>
+<div id="ref-cover1967" class="csl-entry" role="listitem">
+Cover, T. M., &amp; Hart, P. E. (1967). Nearest neighbor pattern
+classification. <em>IEEE Transactions on Information Theory</em>,
+<em>13</em>(1), 21–27.
+</div>
+<div id="ref-cox1958" class="csl-entry" role="listitem">
+Cox, D. R. (1958). The regression analysis of binary sequences.
+<em>Journal of the Royal Statistical Society: Series B</em>,
+<em>20</em>(2), 215–242.
+</div>
+<div id="ref-cybenko1989" class="csl-entry" role="listitem">
+Cybenko, G. (1989). Approximation by superpositions of a sigmoidal
+function. <em>Mathematics of Control, Signals and Systems</em>,
+<em>2</em>(4), 303–314.
+</div>
+<div id="ref-dau2019" class="csl-entry" role="listitem">
+Dau, H. A., Bagnall, A., Kamgar, K., Yeh, C.-C. M., Zhu, Y., Gharghabi,
+S., Ratanamahatana, C. A., &amp; Keogh, E. (2019). The <span>UCR</span>
+time series archive. <em>IEEE/CAA Journal of Automatica Sinica</em>,
+<em>6</em>(6), 1293–1305. <a href="https://doi.org/10.1109/JAS.2019.1911747">https://doi.org/10.1109/JAS.2019.1911747</a>
+</div>
+<div id="ref-daubechies1992" class="csl-entry" role="listitem">
+Daubechies, I. (1992). <em>Ten lectures on wavelets</em>. SIAM.
+</div>
+<div id="ref-davies1979" class="csl-entry" role="listitem">
+Davies, D. L., &amp; Bouldin, D. W. (1979). A cluster separation
+measure. <em>IEEE Transactions on Pattern Analysis and Machine
+Intelligence</em>, <em>PAMI-1</em>(2), 224–227.
+</div>
+<div id="ref-deerwester1990" class="csl-entry" role="listitem">
+Deerwester, S., Dumais, S. T., Furnas, G. W., Landauer, T. K., &amp;
+Harshman, R. (1990). Indexing by latent semantic analysis. <em>Journal
+of the American Society for Information Science</em>, <em>41</em>(6),
+391–407.
+</div>
+<div id="ref-deisenroth2020" class="csl-entry" role="listitem">
+Deisenroth, M. P., Faisal, A. A., &amp; Ong, C. S. (2020).
+<em>Mathematics for machine learning</em>. Cambridge University Press.
+</div>
+<div id="ref-dempster2020" class="csl-entry" role="listitem">
+Dempster, A., Petitjean, F., &amp; Webb, G. I. (2020).
+<span>ROCKET</span>: Exceptionally fast and accurate time series
+classification using random convolutional kernels. <em>Data Mining and
+Knowledge Discovery</em>, <em>34</em>(5), 1454–1495. <a href="https://doi.org/10.1007/s10618-020-00701-z">https://doi.org/10.1007/s10618-020-00701-z</a>
+</div>
+<div id="ref-dempster1977" class="csl-entry" role="listitem">
+Dempster, A. P., Laird, N. M., &amp; Rubin, D. B. (1977). Maximum
+likelihood from incomplete data via the <span>EM</span> algorithm.
+<em>Journal of the Royal Statistical Society: Series B</em>,
+<em>39</em>(1), 1–38.
+</div>
+<div id="ref-demsar2006" class="csl-entry" role="listitem">
+Demšar, J. (2006). Statistical comparisons of classifiers over multiple
+data sets. <em>Journal of Machine Learning Research</em>, <em>7</em>,
+1–30.
+</div>
+<div id="ref-devriendt2018" class="csl-entry" role="listitem">
+Devriendt, F., Moldovan, D., &amp; Verbeke, W. (2018). A literature
+survey and experimental evaluation of the state-of-the-art in uplift
+modeling: A stepping stone toward the development of prescriptive
+analytics. <em>Big Data</em>, <em>6</em>(1), 13–41. <a href="https://doi.org/10.1089/big.2017.0104">https://doi.org/10.1089/big.2017.0104</a>
+</div>
+<div id="ref-dickey1979" class="csl-entry" role="listitem">
+Dickey, D. A., &amp; Fuller, W. A. (1979). Distribution of the
+estimators for autoregressive time series with a unit root. <em>Journal
+of the American Statistical Association</em>, <em>74</em>(366a),
+427–431.
+</div>
+<div id="ref-domingos1997" class="csl-entry" role="listitem">
+Domingos, P., &amp; Pazzani, M. (1997). On the optimality of the simple
+bayesian classifier under zero-one loss. <em>Machine Learning</em>,
+<em>29</em>(2–3), 103–130.
+</div>
+<div id="ref-dorgo2018" class="csl-entry" role="listitem">
+Dorgo, G., &amp; Abonyi, J. (2018). Sequence mining based alarm
+suppression. <em>IEEE Access</em>, <em>6</em>.
+</div>
+<div id="ref-downs1993" class="csl-entry" role="listitem">
+Downs, J. J., &amp; Vogel, E. F. (1993). A plant-wide industrial process
+control problem. <em>Computers &amp; Chemical Engineering</em>,
+<em>17</em>(3), 245–255.
+</div>
+<div id="ref-dunn1973" class="csl-entry" role="listitem">
+Dunn, J. C. (1973). A fuzzy relative of the <span>ISODATA</span> process
+and its use in detecting compact well-separated clusters. <em>Journal of
+Cybernetics</em>, <em>3</em>(3), 32–57.
+</div>
+<div id="ref-eckart1936" class="csl-entry" role="listitem">
+Eckart, C., &amp; Young, G. (1936). The approximation of one matrix by
+another of lower rank. <em>Psychometrika</em>, <em>1</em>(3), 211–218.
+</div>
+<div id="ref-eemua2013" class="csl-entry" role="listitem">
+EEMUA. (2013). <em><span>EEMUA</span> publication 191: Alarm systems – a
+guide to design, management and procurement</em> (3rd ed.). Engineering
+Equipment; Materials Users Association.
+</div>
+<div id="ref-ester1996" class="csl-entry" role="listitem">
+Ester, M., Kriegel, H.-P., Sander, J., &amp; Xu, X. (1996). A
+density-based algorithm for discovering clusters in large spatial
+databases with noise. <em>Proceedings of the Second International
+Conference on Knowledge Discovery and Data Mining (KDD-96)</em>,
+226–231.
+</div>
+<div id="ref-gdpr2016" class="csl-entry" role="listitem">
+Európai Parlament és Tanács. (2016). <em>Az európai parlament és a
+tanács (EU) 2016/679 rendelete (2016. Április 27.) a természetes
+személyeknek a személyes adatok kezelése tekintetében történő védelméről
+és az ilyen adatok szabad áramlásáról (általános adatvédelmi
+rendelet)</em>. Az Európai Unió Hivatalos Lapja, L 119, 2016.5.4., 1–88.
+o.
+</div>
+<div id="ref-aiact2024" class="csl-entry" role="listitem">
+Európai Parlament és Tanács. (2024). <em>Az európai parlament és a
+tanács (EU) 2024/1689 rendelete (2024. Június 13.) a mesterséges
+intelligenciára vonatkozó harmonizált szabályok megállapításáról (a
+mesterséges intelligenciáról szóló rendelet)</em>. Az Európai Unió
+Hivatalos Lapja, L sorozat, 2024/1689, 2024.7.12.
+</div>
+<div id="ref-fader2005" class="csl-entry" role="listitem">
+Fader, P. S., Hardie, B. G. S., &amp; Lee, K. L. (2005a).
+<span>“Counting your customers”</span> the easy way: An alternative to
+the <span>Pareto/NBD</span> model. <em>Marketing Science</em>,
+<em>24</em>(2), 275–284.
+</div>
+<div id="ref-fader2005jmr" class="csl-entry" role="listitem">
+Fader, P. S., Hardie, B. G. S., &amp; Lee, K. L. (2005b).
+<span>RFM</span> and <span>CLV</span>: Using iso-value curves for
+customer base analysis. <em>Journal of Marketing Research</em>,
+<em>42</em>(4), 415–430. <a href="https://doi.org/10.1509/jmkr.2005.42.4.415">https://doi.org/10.1509/jmkr.2005.42.4.415</a>
+</div>
+<div id="ref-faloutsos1994" class="csl-entry" role="listitem">
+Faloutsos, C., Ranganathan, M., &amp; Manolopoulos, Y. (1994). Fast
+subsequence matching in time-series databases. <em>Proceedings of the
+1994 ACM SIGMOD International Conference on Management of Data</em>,
+419–429.
+</div>
+<div id="ref-fawcett2006" class="csl-entry" role="listitem">
+Fawcett, T. (2006). An introduction to <span>ROC</span> analysis.
+<em>Pattern Recognition Letters</em>, <em>27</em>(8), 861–874.
+</div>
+<div id="ref-fayyad1996" class="csl-entry" role="listitem">
+Fayyad, U., Piatetsky-Shapiro, G., &amp; Smyth, P. (1996). From data
+mining to knowledge discovery in databases. <em>AI Magazine</em>,
+<em>17</em>(3), 37–54.
+</div>
+<div id="ref-fisher2019" class="csl-entry" role="listitem">
+Fisher, A., Rudin, C., &amp; Dominici, F. (2019). All models are wrong,
+but many are useful: Learning a variable’s importance by studying an
+entire class of prediction models simultaneously. <em>Journal of Machine
+Learning Research</em>, <em>20</em>(177), 1–81.
+</div>
+<div id="ref-fogler2016" class="csl-entry" role="listitem">
+Fogler, H. S. (2016). <em>Elements of chemical reaction engineering</em>
+(5th ed.). Prentice Hall.
+</div>
+<div id="ref-fortuna2007" class="csl-entry" role="listitem">
+Fortuna, L., Graziani, S., Rizzo, A., &amp; Xibilia, M. G. (2007).
+<em>Soft sensors for monitoring and control of industrial
+processes</em>. Springer.
+</div>
+<div id="ref-freedman1981" class="csl-entry" role="listitem">
+Freedman, D., &amp; Diaconis, P. (1981). On the histogram as a density
+estimator: <span><span class="math inline"><em>L</em><sub>2</sub></span></span> theory.
+<em>Zeitschrift Für Wahrscheinlichkeitstheorie Und Verwandte
+Gebiete</em>, <em>57</em>(4), 453–476.
+</div>
+<div id="ref-freund1997" class="csl-entry" role="listitem">
+Freund, Y., &amp; Schapire, R. E. (1997). A decision-theoretic
+generalization of on-line learning and an application to boosting.
+<em>Journal of Computer and System Sciences</em>, <em>55</em>(1),
+119–139.
+</div>
+<div id="ref-friedman2001" class="csl-entry" role="listitem">
+Friedman, J. H. (2001). Greedy function approximation: A gradient
+boosting machine. <em>The Annals of Statistics</em>, <em>29</em>(5),
+1189–1232.
+</div>
+<div id="ref-gama2014" class="csl-entry" role="listitem">
+Gama, J., Žliobaitė, I., Bifet, A., Pechenizkiy, M., &amp; Bouchachia,
+A. (2014). A survey on concept drift adaptation. <em>ACM Computing
+Surveys</em>, <em>46</em>(4), 44:1–44:37.
+</div>
+<div id="ref-ge2013" class="csl-entry" role="listitem">
+Ge, Z., Song, Z., &amp; Gao, F. (2013). Review of recent research on
+data-based process monitoring. <em>Industrial &amp; Engineering
+Chemistry Research</em>, <em>52</em>(10), 3543–3562.
+</div>
+<div id="ref-geman1992" class="csl-entry" role="listitem">
+Geman, S., Bienenstock, E., &amp; Doursat, R. (1992). Neural networks
+and the bias/variance dilemma. <em>Neural Computation</em>,
+<em>4</em>(1), 1–58.
+</div>
+<div id="ref-glorot2010" class="csl-entry" role="listitem">
+Glorot, X., &amp; Bengio, Y. (2010). Understanding the difficulty of
+training deep feedforward neural networks. <em>Proceedings of the 13th
+International Conference on Artificial Intelligence and Statistics
+(AISTATS)</em>, 249–256.
+</div>
+<div id="ref-goldstein2016" class="csl-entry" role="listitem">
+Goldstein, M., &amp; Uchida, S. (2016). A comparative evaluation of
+unsupervised anomaly detection algorithms for multivariate data.
+<em>PLoS ONE</em>, <em>11</em>(4), e0152173.
+</div>
+<div id="ref-golub2013" class="csl-entry" role="listitem">
+Golub, G. H., &amp; Van Loan, C. F. (2013). <em>Matrix computations</em>
+(4th ed.). Johns Hopkins University Press.
+</div>
+<div id="ref-goodfellow2016" class="csl-entry" role="listitem">
+Goodfellow, I., Bengio, Y., &amp; Courville, A. (2016). <em>Deep
+learning</em>. MIT Press.
+</div>
+<div id="ref-gower1971" class="csl-entry" role="listitem">
+Gower, J. C. (1971). A general coefficient of similarity and some of its
+properties. <em>Biometrics</em>, <em>27</em>(4), 857–871.
+</div>
+<div id="ref-gray1997" class="csl-entry" role="listitem">
+Gray, J., Chaudhuri, S., Bosworth, A., Layman, A., Reichart, D.,
+Venkatrao, M., Pellow, F., &amp; Pirahesh, H. (1997). Data cube: A
+relational aggregation operator generalizing group-by, cross-tab, and
+sub-totals. <em>Data Mining and Knowledge Discovery</em>, <em>1</em>(1),
+29–53.
+</div>
+<div id="ref-grinsztajn2022" class="csl-entry" role="listitem">
+Grinsztajn, L., Oyallon, E., &amp; Varoquaux, G. (2022). Why do
+tree-based models still outperform deep learning on typical tabular
+data? <em>Advances in Neural Information Processing Systems 35 (Datasets
+and Benchmarks Track)</em>.
+</div>
+<div id="ref-gupta2006" class="csl-entry" role="listitem">
+Gupta, S., Hanssens, D., Hardie, B., Kahn, W., Kumar, V., Lin, N.,
+Ravishanker, N., &amp; Sriram, S. (2006). Modeling customer lifetime
+value. <em>Journal of Service Research</em>, <em>9</em>(2), 139–155.
+</div>
+<div id="ref-gustafson1979" class="csl-entry" role="listitem">
+Gustafson, D. E., &amp; Kessel, W. C. (1979). Fuzzy clustering with a
+fuzzy covariance matrix. <em>Proceedings of the IEEE Conference on
+Decision and Control</em>, 761–766.
+</div>
+<div id="ref-gutierrez2017" class="csl-entry" role="listitem">
+Gutierrez, P., &amp; Gérardy, J.-Y. (2017). Causal inference and uplift
+modelling: A review of the literature. <em>Proceedings of the 3rd
+International Conference on Predictive Applications and APIs,
+Proceedings of Machine Learning Research</em>, <em>67</em>, 1–13.
+</div>
+<div id="ref-guyon2003" class="csl-entry" role="listitem">
+Guyon, I., &amp; Elisseeff, A. (2003). An introduction to variable and
+feature selection. <em>Journal of Machine Learning Research</em>,
+<em>3</em>, 1157–1182.
+</div>
+<div id="ref-han2022" class="csl-entry" role="listitem">
+Han, J., Pei, J., &amp; Tong, H. (2022). <em>Data mining: Concepts and
+techniques</em> (4th ed.). Morgan Kaufmann.
+</div>
+<div id="ref-han2000" class="csl-entry" role="listitem">
+Han, J., Pei, J., &amp; Yin, Y. (2000). Mining frequent patterns without
+candidate generation. <em>Proceedings of the 2000 ACM SIGMOD
+International Conference on Management of Data</em>, 1–12.
+</div>
+<div id="ref-han2022adbench" class="csl-entry" role="listitem">
+Han, S., Hu, X., Huang, H., Jiang, M., &amp; Zhao, Y. (2022).
+<span>ADBench</span>: Anomaly detection benchmark. <em>Advances in
+Neural Information Processing Systems 35 (Datasets and Benchmarks
+Track)</em>, 32142–32159.
+</div>
+<div id="ref-harinarayan1996" class="csl-entry" role="listitem">
+Harinarayan, V., Rajaraman, A., &amp; Ullman, J. D. (1996). Implementing
+data cubes efficiently. <em>Proceedings of the 1996 ACM SIGMOD
+International Conference on Management of Data</em>, 205–216.
+</div>
+<div id="ref-harris2020" class="csl-entry" role="listitem">
+<span class="nocase">Harris, C. R. et al.</span> (2020). Array
+programming with <span>NumPy</span>. <em>Nature</em>,
+<em>585</em>(7825), 357–362.
+</div>
+<div id="ref-harris1954" class="csl-entry" role="listitem">
+Harris, Z. S. (1954). Distributional structure. <em>Word</em>,
+<em>10</em>(2–3), 146–162. <a href="https://doi.org/10.1080/00437956.1954.11659520">https://doi.org/10.1080/00437956.1954.11659520</a>
+</div>
+<div id="ref-hastie2009" class="csl-entry" role="listitem">
+Hastie, T., Tibshirani, R., &amp; Friedman, J. (2009). <em>The elements
+of statistical learning: Data mining, inference, and prediction</em>
+(2nd ed.). Springer.
+</div>
+<div id="ref-hawkins1980" class="csl-entry" role="listitem">
+Hawkins, D. M. (1980). <em>Identification of outliers</em>. Chapman;
+Hall. <a href="https://doi.org/10.1007/978-94-015-3994-4">https://doi.org/10.1007/978-94-015-3994-4</a>
+</div>
+<div id="ref-he2009" class="csl-entry" role="listitem">
+He, H., &amp; Garcia, E. A. (2009). Learning from imbalanced data.
+<em>IEEE Transactions on Knowledge and Data Engineering</em>,
+<em>21</em>(9), 1263–1284.
+</div>
+<div id="ref-he2015" class="csl-entry" role="listitem">
+He, K., Zhang, X., Ren, S., &amp; Sun, J. (2015). Delving deep into
+rectifiers: Surpassing human-level performance on <span>ImageNet</span>
+classification. <em>Proceedings of the IEEE International Conference on
+Computer Vision (ICCV)</em>, 1026–1034.
+</div>
+<div id="ref-herlocker2004" class="csl-entry" role="listitem">
+Herlocker, J. L., Konstan, J. A., Terveen, L. G., &amp; Riedl, J. T.
+(2004). Evaluating collaborative filtering recommender systems. <em>ACM
+Transactions on Information Systems</em>, <em>22</em>(1), 5–53. <a href="https://doi.org/10.1145/963770.963772">https://doi.org/10.1145/963770.963772</a>
+</div>
+<div id="ref-hinton2006" class="csl-entry" role="listitem">
+Hinton, G. E., &amp; Salakhutdinov, R. R. (2006). Reducing the
+dimensionality of data with neural networks. <em>Science</em>,
+<em>313</em>(5786), 504–507.
+</div>
+<div id="ref-hochreiter1997" class="csl-entry" role="listitem">
+Hochreiter, S., &amp; Schmidhuber, J. (1997). Long short-term memory.
+<em>Neural Computation</em>, <em>9</em>(8), 1735–1780.
+</div>
+<div id="ref-hoerl1970" class="csl-entry" role="listitem">
+Hoerl, A. E., &amp; Kennard, R. W. (1970). Ridge regression: Biased
+estimation for nonorthogonal problems. <em>Technometrics</em>,
+<em>12</em>(1), 55–67.
+</div>
+<div id="ref-holt2004" class="csl-entry" role="listitem">
+Holt, C. C. (2004). Forecasting seasonals and trends by exponentially
+weighted moving averages. <em>International Journal of Forecasting</em>,
+<em>20</em>(1), 5–10.
+</div>
+<div id="ref-hornik1991" class="csl-entry" role="listitem">
+Hornik, K. (1991). Approximation capabilities of multilayer feedforward
+networks. <em>Neural Networks</em>, <em>4</em>(2), 251–257.
+</div>
+<div id="ref-horst2020" class="csl-entry" role="listitem">
+Horst, A. M., Hill, A. P., &amp; Gorman, K. B. (2020).
+<em>Palmerpenguins: Palmer archipelago (antarctica) penguin data</em>.
+</div>
+<div id="ref-hotelling1933" class="csl-entry" role="listitem">
+Hotelling, H. (1933). Analysis of a complex of statistical variables
+into principal components. <em>Journal of Educational Psychology</em>,
+<em>24</em>(6), 417–441.
+</div>
+<div id="ref-hotelling1947" class="csl-entry" role="listitem">
+Hotelling, H. (1947). Multivariate quality control, illustrated by the
+air testing of sample bombsights. In C. Eisenhart, M. W. Hastay, &amp;
+W. A. Wallis (Eds.), <em>Techniques of statistical analysis</em> (pp.
+111–184). McGraw-Hill.
+</div>
+<div id="ref-hubert1985" class="csl-entry" role="listitem">
+Hubert, L., &amp; Arabie, P. (1985). Comparing partitions. <em>Journal
+of Classification</em>, <em>2</em>(1), 193–218.
+</div>
+<div id="ref-hughes1994" class="csl-entry" role="listitem">
+Hughes, A. M. (1994). <em>Strategic database marketing</em>. Probus.
+</div>
+<div id="ref-hundman2018" class="csl-entry" role="listitem">
+Hundman, K., Constantinou, V., Laporte, C., Colwell, I., &amp;
+Soderstrom, T. (2018). Detecting spacecraft anomalies using
+<span>LSTM</span>s and nonparametric dynamic thresholding.
+<em>Proceedings of the 24th ACM SIGKDD International Conference on
+Knowledge Discovery &amp; Data Mining</em>, 387–395. <a href="https://doi.org/10.1145/3219819.3219845">https://doi.org/10.1145/3219819.3219845</a>
+</div>
+<div id="ref-hunter2007" class="csl-entry" role="listitem">
+Hunter, J. D. (2007). Matplotlib: A <span>2D</span> graphics
+environment. <em>Computing in Science &amp; Engineering</em>,
+<em>9</em>(3), 90–95.
+</div>
+<div id="ref-hyndman2021" class="csl-entry" role="listitem">
+Hyndman, R. J., &amp; Athanasopoulos, G. (2021). <em>Forecasting:
+Principles and practice</em> (3rd ed.). OTexts. <a href="https://otexts.com/fpp3/">https://otexts.com/fpp3/</a>
+</div>
+<div id="ref-hyndman2006" class="csl-entry" role="listitem">
+Hyndman, R. J., &amp; Koehler, A. B. (2006). Another look at measures of
+forecast accuracy. <em>International Journal of Forecasting</em>,
+<em>22</em>(4), 679–688. <a href="https://doi.org/10.1016/j.ijforecast.2006.03.001">https://doi.org/10.1016/j.ijforecast.2006.03.001</a>
+</div>
+<div id="ref-iec62264" class="csl-entry" role="listitem">
+IEC. (2013). <em><span>IEC</span> 62264-1:2013 enterprise-control system
+integration – part 1: Models and terminology</em>. International
+Electrotechnical Commission.
+</div>
+<div id="ref-inmon2005" class="csl-entry" role="listitem">
+Inmon, W. H. (2005). <em>Building the data warehouse</em> (4th ed.).
+Wiley.
+</div>
+<div id="ref-inselberg1985" class="csl-entry" role="listitem">
+Inselberg, A. (1985). The plane with parallel coordinates. <em>The
+Visual Computer</em>, <em>1</em>(2), 69–91.
+</div>
+<div id="ref-isa2016" class="csl-entry" role="listitem">
+International Society of Automation. (2016).
+<em><span>ANSI/ISA-18.2-2016</span>: Management of alarm systems for the
+process industries</em>. ISA.
+</div>
+<div id="ref-ioffe2015" class="csl-entry" role="listitem">
+Ioffe, S., &amp; Szegedy, C. (2015). Batch normalization: Accelerating
+deep network training by reducing internal covariate shift.
+<em>Proceedings of the 32nd International Conference on Machine
+Learning</em>, 448–456.
+</div>
+<div id="ref-ismail2019" class="csl-entry" role="listitem">
+Ismail Fawaz, H., Forestier, G., Weber, J., Idoumghar, L., &amp; Muller,
+P.-A. (2019). Deep learning for time series classification: A review.
+<em>Data Mining and Knowledge Discovery</em>, <em>33</em>(4), 917–963.
+<a href="https://doi.org/10.1007/s10618-019-00619-1">https://doi.org/10.1007/s10618-019-00619-1</a>
+</div>
+<div id="ref-jackson1979" class="csl-entry" role="listitem">
+Jackson, J. E., &amp; Mudholkar, G. S. (1979). Control procedures for
+residuals associated with principal component analysis.
+<em>Technometrics</em>, <em>21</em>(3), 341–349.
+</div>
+<div id="ref-james2023" class="csl-entry" role="listitem">
+James, G., Witten, D., Hastie, T., Tibshirani, R., &amp; Taylor, J.
+(2023). <em>An introduction to statistical learning with applications in
+python</em>. Springer. <a href="https://doi.org/10.1007/978-3-031-38747-0">https://doi.org/10.1007/978-3-031-38747-0</a>
+</div>
+<div id="ref-jardine2006" class="csl-entry" role="listitem">
+Jardine, A. K. S., Lin, D., &amp; Banjevic, D. (2006). A review on
+machinery diagnostics and prognostics implementing condition-based
+maintenance. <em>Mechanical Systems and Signal Processing</em>,
+<em>20</em>(7), 1483–1510.
+</div>
+<div id="ref-joachims1998" class="csl-entry" role="listitem">
+Joachims, T. (1998). Text categorization with support vector machines:
+Learning with many relevant features. <em>Machine Learning: ECML-98,
+Lecture Notes in Computer Science</em>, <em>1398</em>, 137–142.
+</div>
+<div id="ref-jolliffe2016" class="csl-entry" role="listitem">
+Jolliffe, I. T., &amp; Cadima, J. (2016). Principal component analysis:
+A review and recent developments. <em>Philosophical Transactions of the
+Royal Society A</em>, <em>374</em>(2065), 20150202.
+</div>
+<div id="ref-kadlec2009" class="csl-entry" role="listitem">
+Kadlec, P., Gabrys, B., &amp; Strandt, S. (2009). Data-driven soft
+sensors in the process industry. <em>Computers &amp; Chemical
+Engineering</em>, <em>33</em>(4), 795–814.
+</div>
+<div id="ref-kaufman1990" class="csl-entry" role="listitem">
+Kaufman, L., &amp; Rousseeuw, P. J. (1990). <em>Finding groups in data:
+An introduction to cluster analysis</em>. Wiley.
+</div>
+<div id="ref-kaufman2012" class="csl-entry" role="listitem">
+Kaufman, S., Rosset, S., Perlich, C., &amp; Stitelman, O. (2012).
+Leakage in data mining: Formulation, detection, and avoidance. <em>ACM
+Transactions on Knowledge Discovery from Data</em>, <em>6</em>(4),
+15:1–15:21.
+</div>
+<div id="ref-ke2017" class="csl-entry" role="listitem">
+Ke, G., Meng, Q., Finley, T., Wang, T., Chen, W., Ma, W., Ye, Q., &amp;
+Liu, T.-Y. (2017). <span>LightGBM</span>: A highly efficient gradient
+boosting decision tree. <em>Advances in Neural Information Processing
+Systems 30</em>, 3146–3154.
+</div>
+<div id="ref-keogh2001" class="csl-entry" role="listitem">
+Keogh, E., Chakrabarti, K., Pazzani, M., &amp; Mehrotra, S. (2001).
+Dimensionality reduction for fast similarity search in large time series
+databases. <em>Knowledge and Information Systems</em>, <em>3</em>(3),
+263–286.
+</div>
+<div id="ref-keogh2004seg" class="csl-entry" role="listitem">
+Keogh, E., Chu, S., Hart, D., &amp; Pazzani, M. (2004). Segmenting time
+series: A survey and novel approach. In M. Last, A. Kandel, &amp; H.
+Bunke (Eds.), <em>Data mining in time series databases</em> (pp. 1–21).
+World Scientific.
+</div>
+<div id="ref-keogh2005" class="csl-entry" role="listitem">
+Keogh, E., &amp; Ratanamahatana, C. A. (2005). Exact indexing of dynamic
+time warping. <em>Knowledge and Information Systems</em>, <em>7</em>(3),
+358–386.
+</div>
+<div id="ref-killick2012" class="csl-entry" role="listitem">
+Killick, R., Fearnhead, P., &amp; Eckley, I. A. (2012). Optimal
+detection of changepoints with a linear computational cost. <em>Journal
+of the American Statistical Association</em>, <em>107</em>(500),
+1590–1598. <a href="https://doi.org/10.1080/01621459.2012.737745">https://doi.org/10.1080/01621459.2012.737745</a>
+</div>
+<div id="ref-kimball2004" class="csl-entry" role="listitem">
+Kimball, R., &amp; Caserta, J. (2004). <em>The data warehouse
+<span>ETL</span> toolkit</em>. Wiley.
+</div>
+<div id="ref-kimball2013" class="csl-entry" role="listitem">
+Kimball, R., &amp; Ross, M. (2013). <em>The data warehouse toolkit: The
+definitive guide to dimensional modeling</em> (3rd ed.). Wiley.
+</div>
+<div id="ref-kingma2015" class="csl-entry" role="listitem">
+Kingma, D. P., &amp; Ba, J. (2015). Adam: A method for stochastic
+optimization. <em>Proceedings of the 3rd International Conference on
+Learning Representations (ICLR)</em>.
+</div>
+<div id="ref-kiranyaz2021" class="csl-entry" role="listitem">
+Kiranyaz, S., Avci, O., Abdeljaber, O., Ince, T., Gabbouj, M., &amp;
+Inman, D. J. (2021). <span>1D</span> convolutional neural networks and
+applications: A survey. <em>Mechanical Systems and Signal
+Processing</em>, <em>151</em>, 107398. <a href="https://doi.org/10.1016/j.ymssp.2020.107398">https://doi.org/10.1016/j.ymssp.2020.107398</a>
+</div>
+<div id="ref-kohavi1995" class="csl-entry" role="listitem">
+Kohavi, R. (1995). A study of cross-validation and bootstrap for
+accuracy estimation and model selection. <em>Proceedings of the 14th
+International Joint Conference on Artificial Intelligence</em>,
+1137–1145.
+</div>
+<div id="ref-kohavi1997" class="csl-entry" role="listitem">
+Kohavi, R., &amp; John, G. H. (1997). Wrappers for feature subset
+selection. <em>Artificial Intelligence</em>, <em>97</em>(1–2), 273–324.
+</div>
+<div id="ref-kohavi2020" class="csl-entry" role="listitem">
+Kohavi, R., Tang, D., &amp; Xu, Y. (2020). <em>Trustworthy online
+controlled experiments: A practical guide to <span>A/B</span>
+testing</em>. Cambridge University Press.
+</div>
+<div id="ref-kohonen1982" class="csl-entry" role="listitem">
+Kohonen, T. (1982). Self-organized formation of topologically correct
+feature maps. <em>Biological Cybernetics</em>, <em>43</em>(1), 59–69.
+</div>
+<div id="ref-kohonen2001" class="csl-entry" role="listitem">
+Kohonen, T. (2001). <em>Self-organizing maps</em> (3rd ed.). Springer.
+</div>
+<div id="ref-koren2009" class="csl-entry" role="listitem">
+Koren, Y., Bell, R., &amp; Volinsky, C. (2009). Matrix factorization
+techniques for recommender systems. <em>Computer</em>, <em>42</em>(8),
+30–37. <a href="https://doi.org/10.1109/MC.2009.263">https://doi.org/10.1109/MC.2009.263</a>
+</div>
+<div id="ref-kramer1991" class="csl-entry" role="listitem">
+Kramer, M. A. (1991). Nonlinear principal component analysis using
+autoassociative neural networks. <em>AIChE Journal</em>, <em>37</em>(2),
+233–243.
+</div>
+<div id="ref-kruskal1964" class="csl-entry" role="listitem">
+Kruskal, J. B. (1964). Multidimensional scaling by optimizing goodness
+of fit to a nonmetric hypothesis. <em>Psychometrika</em>,
+<em>29</em>(1), 1–27.
+</div>
+<div id="ref-kumar2018" class="csl-entry" role="listitem">
+Kumar, V., &amp; Reinartz, W. (2018). <em>Customer relationship
+management: Concept, strategy, and tools</em> (3rd ed.). Springer.
+</div>
+<div id="ref-kunzel2019" class="csl-entry" role="listitem">
+Künzel, S. R., Sekhon, J. S., Bickel, P. J., &amp; Yu, B. (2019).
+Metalearners for estimating heterogeneous treatment effects using
+machine learning. <em>Proceedings of the National Academy of
+Sciences</em>, <em>116</em>(10), 4156–4165. <a href="https://doi.org/10.1073/pnas.1804597116">https://doi.org/10.1073/pnas.1804597116</a>
+</div>
+<div id="ref-lance1967" class="csl-entry" role="listitem">
+Lance, G. N., &amp; Williams, W. T. (1967). A general theory of
+classificatory sorting strategies: 1. Hierarchical systems. <em>The
+Computer Journal</em>, <em>9</em>(4), 373–380.
+</div>
+<div id="ref-lecun2015" class="csl-entry" role="listitem">
+LeCun, Y., Bengio, Y., &amp; Hinton, G. (2015). Deep learning.
+<em>Nature</em>, <em>521</em>(7553), 436–444.
+</div>
+<div id="ref-lecun1998" class="csl-entry" role="listitem">
+LeCun, Y., Bottou, L., Bengio, Y., &amp; Haffner, P. (1998).
+Gradient-based learning applied to document recognition. <em>Proceedings
+of the IEEE</em>, <em>86</em>(11), 2278–2324.
+</div>
+<div id="ref-lee1999" class="csl-entry" role="listitem">
+Lee, D. D., &amp; Seung, H. S. (1999). Learning the parts of objects by
+non-negative matrix factorization. <em>Nature</em>, <em>401</em>(6755),
+788–791.
+</div>
+<div id="ref-lee2019" class="csl-entry" role="listitem">
+Lee, G. R., Gommers, R., Waselewski, F., Wohlfahrt, K., &amp; O’Leary,
+A. (2019). <span>PyWavelets</span>: A <span>Python</span> package for
+wavelet analysis. <em>Journal of Open Source Software</em>,
+<em>4</em>(36), 1237.
+</div>
+<div id="ref-lei2018" class="csl-entry" role="listitem">
+Lei, Y., Li, N., Guo, L., Li, N., Yan, T., &amp; Lin, J. (2018).
+Machinery health prognostics: A systematic review from data acquisition
+to <span>RUL</span> prediction. <em>Mechanical Systems and Signal
+Processing</em>, <em>104</em>, 799–834. <a href="https://doi.org/10.1016/j.ymssp.2017.11.016">https://doi.org/10.1016/j.ymssp.2017.11.016</a>
+</div>
+<div id="ref-levenberg1944" class="csl-entry" role="listitem">
+Levenberg, K. (1944). A method for the solution of certain non-linear
+problems in least squares. <em>Quarterly of Applied Mathematics</em>,
+<em>2</em>(2), 164–168.
+</div>
+<div id="ref-levy2014" class="csl-entry" role="listitem">
+Levy, O., &amp; Goldberg, Y. (2014). Neural word embedding as implicit
+matrix factorization. <em>Advances in Neural Information Processing
+Systems 27</em>, 2177–2185.
+</div>
+<div id="ref-leys2013" class="csl-entry" role="listitem">
+Leys, C., Ley, C., Klein, O., Bernard, P., &amp; Licata, L. (2013).
+Detecting outliers: Do not use standard deviation around the mean, use
+absolute deviation around the median. <em>Journal of Experimental Social
+Psychology</em>, <em>49</em>(4), 764–766.
+</div>
+<div id="ref-li2000" class="csl-entry" role="listitem">
+Li, W., Yue, H. H., Valle-Cervantes, S., &amp; Qin, S. J. (2000).
+Recursive <span>PCA</span> for adaptive process monitoring. <em>Journal
+of Process Control</em>, <em>10</em>(5), 471–486. <a href="https://doi.org/10.1016/S0959-1524(00)00022-6">https://doi.org/10.1016/S0959-1524(00)00022-6</a>
+</div>
+<div id="ref-lin2007" class="csl-entry" role="listitem">
+Lin, J., Keogh, E., Wei, L., &amp; Lonardi, S. (2007). Experiencing
+<span>SAX</span>: A novel symbolic representation of time series.
+<em>Data Mining and Knowledge Discovery</em>, <em>15</em>(2), 107–144.
+</div>
+<div id="ref-linden2003" class="csl-entry" role="listitem">
+Linden, G., Smith, B., &amp; York, J. (2003). Amazon.com
+recommendations: Item-to-item collaborative filtering. <em>IEEE Internet
+Computing</em>, <em>7</em>(1), 76–80. <a href="https://doi.org/10.1109/MIC.2003.1167344">https://doi.org/10.1109/MIC.2003.1167344</a>
+</div>
+<div id="ref-little2019" class="csl-entry" role="listitem">
+Little, R. J. A., &amp; Rubin, D. B. (2019). <em>Statistical analysis
+with missing data</em> (3rd ed.). Wiley.
+</div>
+<div id="ref-liu2008" class="csl-entry" role="listitem">
+Liu, F. T., Ting, K. M., &amp; Zhou, Z.-H. (2008). Isolation forest.
+<em>Proceedings of the 8th IEEE International Conference on Data
+Mining</em>, 413–422.
+</div>
+<div id="ref-ljung1978" class="csl-entry" role="listitem">
+Ljung, G. M., &amp; Box, G. E. P. (1978). On a measure of lack of fit in
+time series models. <em>Biometrika</em>, <em>65</em>(2), 297–303.
+</div>
+<div id="ref-lloyd1982" class="csl-entry" role="listitem">
+Lloyd, S. (1982). Least squares quantization in <span>PCM</span>.
+<em>IEEE Transactions on Information Theory</em>, <em>28</em>(2),
+129–137.
+</div>
+<div id="ref-loshchilov2019" class="csl-entry" role="listitem">
+Loshchilov, I., &amp; Hutter, F. (2019). Decoupled weight decay
+regularization. <em>International Conference on Learning Representations
+(ICLR)</em>.
+</div>
+<div id="ref-vandermaaten2008" class="csl-entry" role="listitem">
+Maaten, L. van der, &amp; Hinton, G. (2008). Visualizing data using
+t-<span>SNE</span>. <em>Journal of Machine Learning Research</em>,
+<em>9</em>, 2579–2605.
+</div>
+<div id="ref-macgregor1995" class="csl-entry" role="listitem">
+MacGregor, J. F., &amp; Kourti, T. (1995). Statistical process control
+of multivariate processes. <em>Control Engineering Practice</em>,
+<em>3</em>(3), 403–414.
+</div>
+<div id="ref-macqueen1967" class="csl-entry" role="listitem">
+MacQueen, J. (1967). Some methods for classification and analysis of
+multivariate observations. <em>Proceedings of the Fifth Berkeley
+Symposium on Mathematical Statistics and Probability</em>, <em>1</em>,
+281–297.
+</div>
+<div id="ref-mahalanobis1936" class="csl-entry" role="listitem">
+Mahalanobis, P. C. (1936). On the generalised distance in statistics.
+<em>Proceedings of the National Institute of Sciences of India</em>,
+<em>2</em>(1), 49–55.
+</div>
+<div id="ref-makridakis2018" class="csl-entry" role="listitem">
+Makridakis, S., Spiliotis, E., &amp; Assimakopoulos, V. (2018). The
+<span>M4</span> competition: Results, findings, conclusion and way
+forward. <em>International Journal of Forecasting</em>, <em>34</em>(4),
+802–808. <a href="https://doi.org/10.1016/j.ijforecast.2018.06.001">https://doi.org/10.1016/j.ijforecast.2018.06.001</a>
+</div>
+<div id="ref-manning2008" class="csl-entry" role="listitem">
+Manning, C. D., Raghavan, P., &amp; Schütze, H. (2008). <em>Introduction
+to information retrieval</em>. Cambridge University Press.
+</div>
+<div id="ref-mariscal2010" class="csl-entry" role="listitem">
+Mariscal, G., Marbán, Ó., &amp; Fernández, C. (2010). A survey of data
+mining and knowledge discovery process models and methodologies. <em>The
+Knowledge Engineering Review</em>, <em>25</em>(2), 137–166.
+</div>
+<div id="ref-marquardt1963" class="csl-entry" role="listitem">
+Marquardt, D. W. (1963). An algorithm for least-squares estimation of
+nonlinear parameters. <em>Journal of the Society for Industrial and
+Applied Mathematics</em>, <em>11</em>(2), 431–441.
+</div>
+<div id="ref-mccallum1998" class="csl-entry" role="listitem">
+McCallum, A., &amp; Nigam, K. (1998). A comparison of event models for
+naive <span>B</span>ayes text classification. <em>AAAI-98 Workshop on
+Learning for Text Categorization</em>, 41–48.
+</div>
+<div id="ref-mcculloch1943" class="csl-entry" role="listitem">
+McCulloch, W. S., &amp; Pitts, W. (1943). A logical calculus of the
+ideas immanent in nervous activity. <em>The Bulletin of Mathematical
+Biophysics</em>, <em>5</em>(4), 115–133.
+</div>
+<div id="ref-mcinnes2018" class="csl-entry" role="listitem">
+McInnes, L., Healy, J., &amp; Melville, J. (2018).
+<em><span>UMAP</span>: Uniform manifold approximation and projection for
+dimension reduction</em>. arXiv:1802.03426.
+</div>
+<div id="ref-mckinney2010" class="csl-entry" role="listitem">
+McKinney, W. (2010). Data structures for statistical computing in
+<span>Python</span>. <em>Proceedings of the 9th Python in Science
+Conference</em>, 56–61.
+</div>
+<div id="ref-mckinney2022" class="csl-entry" role="listitem">
+McKinney, W. (2022). <em>Python for data analysis</em> (3rd ed.).
+O’Reilly.
+</div>
+<div id="ref-mihalcea2004" class="csl-entry" role="listitem">
+Mihalcea, R., &amp; Tarau, P. (2004). <span>TextRank</span>: Bringing
+order into texts. <em>Proceedings of the 2004 Conference on Empirical
+Methods in Natural Language Processing</em>, 404–411.
+</div>
+<div id="ref-mikolov2013" class="csl-entry" role="listitem">
+Mikolov, T., Chen, K., Corrado, G., &amp; Dean, J. (2013). <em>Efficient
+estimation of word representations in vector space</em>.
+arXiv:1301.3781.
+</div>
+<div id="ref-minsky1969" class="csl-entry" role="listitem">
+Minsky, M., &amp; Papert, S. (1969). <em>Perceptrons: An introduction to
+computational geometry</em>. MIT Press.
+</div>
+<div id="ref-molnar2022" class="csl-entry" role="listitem">
+Molnar, C. (2022). <em>Interpretable machine learning: A guide for
+making black box models explainable</em> (2nd ed.). Independently
+published. <a href="https://christophm.github.io/interpretable-ml-book/">https://christophm.github.io/interpretable-ml-book/</a>
+</div>
+<div id="ref-montgomery2019" class="csl-entry" role="listitem">
+Montgomery, D. C. (2019). <em>Introduction to statistical quality
+control</em> (8th ed.). Wiley.
+</div>
+<div id="ref-montgomery2021" class="csl-entry" role="listitem">
+Montgomery, D. C., Peck, E. A., &amp; Vining, G. G. (2021).
+<em>Introduction to linear regression analysis</em> (6th ed.). Wiley.
+</div>
+<div id="ref-nair2010" class="csl-entry" role="listitem">
+Nair, V., &amp; Hinton, G. E. (2010). Rectified linear units improve
+restricted <span>B</span>oltzmann machines. <em>Proceedings of the 27th
+International Conference on Machine Learning (ICML)</em>, 807–814.
+</div>
+<div id="ref-ngai2009" class="csl-entry" role="listitem">
+Ngai, E. W. T., Xiu, L., &amp; Chau, D. C. K. (2009). Application of
+data mining techniques in customer relationship management: A literature
+review and classification. <em>Expert Systems with Applications</em>,
+<em>36</em>(2), 2592–2602.
+</div>
+<div id="ref-niculescu2005" class="csl-entry" role="listitem">
+Niculescu-Mizil, A., &amp; Caruana, R. (2005). Predicting good
+probabilities with supervised learning. <em>Proceedings of the 22nd
+International Conference on Machine Learning</em>, 625–632.
+</div>
+<div id="ref-orosz2023" class="csl-entry" role="listitem">
+Orosz, G., Szabó, G., Berkecz, P., Szántó, Z., &amp; Farkas, R. (2023).
+<em>Advancing <span>Hungarian</span> text processing with
+<span>HuSpaCy</span>: Efficient and accurate <span>NLP</span>
+pipelines</em>. arXiv:2308.12635.
+</div>
+<div id="ref-orosz2022" class="csl-entry" role="listitem">
+Orosz, G., Szántó, Z., Berkecz, P., Szabó, G., &amp; Farkas, R. (2022).
+<em><span>HuSpaCy</span>: An industrial-strength <span>Hungarian</span>
+natural language processing toolkit</em>. arXiv:2201.01956.
+</div>
+<div id="ref-page1954" class="csl-entry" role="listitem">
+Page, E. S. (1954). Continuous inspection schemes. <em>Biometrika</em>,
+<em>41</em>(1/2), 100–115. <a href="https://doi.org/10.2307/2333009">https://doi.org/10.2307/2333009</a>
+</div>
+<div id="ref-pang2021" class="csl-entry" role="listitem">
+Pang, G., Shen, C., Cao, L., &amp; Hengel, A. van den. (2021). Deep
+learning for anomaly detection: A review. <em>ACM Computing
+Surveys</em>, <em>54</em>(2), 38:1–38:38. <a href="https://doi.org/10.1145/3439950">https://doi.org/10.1145/3439950</a>
+</div>
+<div id="ref-park1995" class="csl-entry" role="listitem">
+Park, J. S., Chen, M.-S., &amp; Yu, P. S. (1995). An effective
+hash-based algorithm for mining association rules. <em>Proceedings of
+the 1995 ACM SIGMOD International Conference on Management of Data</em>,
+175–186.
+</div>
+<div id="ref-pasquier1999" class="csl-entry" role="listitem">
+Pasquier, N., Bastide, Y., Taouil, R., &amp; Lakhal, L. (1999).
+Discovering frequent closed itemsets for association rules. <em>Database
+Theory – ICDT’99, Lecture Notes in Computer Science</em>, <em>1540</em>,
+398–416.
+</div>
+<div id="ref-paszke2019" class="csl-entry" role="listitem">
+<span class="nocase">Paszke, A. et al.</span> (2019).
+<span>PyTorch</span>: An imperative style, high-performance deep
+learning library. <em>Advances in Neural Information Processing Systems
+32</em>, 8024–8035.
+</div>
+<div id="ref-payne2005" class="csl-entry" role="listitem">
+Payne, A., &amp; Frow, P. (2005). A strategic framework for customer
+relationship management. <em>Journal of Marketing</em>, <em>69</em>(4),
+167–176.
+</div>
+<div id="ref-pearl1988" class="csl-entry" role="listitem">
+Pearl, J. (1988). <em>Probabilistic reasoning in intelligent systems:
+Networks of plausible inference</em>. Morgan Kaufmann.
+</div>
+<div id="ref-pearson1901" class="csl-entry" role="listitem">
+Pearson, K. (1901). On lines and planes of closest fit to systems of
+points in space. <em>Philosophical Magazine</em>, <em>2</em>(11),
+559–572.
+</div>
+<div id="ref-pedregosa2011" class="csl-entry" role="listitem">
+Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B.,
+Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V.,
+Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M.,
+&amp; Duchesnay, É. (2011). Scikit-learn: Machine learning in
+<span>Python</span>. <em>Journal of Machine Learning Research</em>,
+<em>12</em>, 2825–2830.
+</div>
+<div id="ref-pei2001" class="csl-entry" role="listitem">
+Pei, J., Han, J., Mortazavi-Asl, B., Pinto, H., Chen, Q., Dayal, U.,
+&amp; Hsu, M.-C. (2001). <span>PrefixSpan</span>: Mining sequential
+patterns efficiently by prefix-projected pattern growth. <em>Proceedings
+of the 17th International Conference on Data Engineering</em>, 215–224.
+</div>
+<div id="ref-piatetsky1991" class="csl-entry" role="listitem">
+Piatetsky-Shapiro, G. (1991). Discovery, analysis, and presentation of
+strong rules. In G. Piatetsky-Shapiro &amp; W. J. Frawley (Eds.),
+<em>Knowledge discovery in databases</em> (pp. 229–248). AAAI/MIT Press.
+</div>
+<div id="ref-polyak1964" class="csl-entry" role="listitem">
+Polyak, B. T. (1964). Some methods of speeding up the convergence of
+iteration methods. <em>USSR Computational Mathematics and Mathematical
+Physics</em>, <em>4</em>(5), 1–17. <a href="https://doi.org/10.1016/0041-5553(64)90137-5">https://doi.org/10.1016/0041-5553(64)90137-5</a>
+</div>
+<div id="ref-porter1980" class="csl-entry" role="listitem">
+Porter, M. F. (1980). An algorithm for suffix stripping.
+<em>Program</em>, <em>14</em>(3), 130–137.
+</div>
+<div id="ref-prechelt1998" class="csl-entry" role="listitem">
+Prechelt, L. (1998). Early stopping – but when? In <em>Neural networks:
+Tricks of the trade</em> (Vol. 1524, pp. 55–69). Springer.
+</div>
+<div id="ref-prince2023" class="csl-entry" role="listitem">
+Prince, S. J. D. (2023). <em>Understanding deep learning</em>. MIT
+Press.
+</div>
+<div id="ref-qin2012" class="csl-entry" role="listitem">
+Qin, S. J. (2012). Survey on data-driven industrial process monitoring
+and diagnosis. <em>Annual Reviews in Control</em>, <em>36</em>(2),
+220–234.
+</div>
+<div id="ref-qin2014" class="csl-entry" role="listitem">
+Qin, S. J. (2014). Process data analytics in the era of big data.
+<em>AIChE Journal</em>, <em>60</em>(9), 3092–3100. <a href="https://doi.org/10.1002/aic.14523">https://doi.org/10.1002/aic.14523</a>
+</div>
+<div id="ref-quinlan1986" class="csl-entry" role="listitem">
+Quinlan, J. R. (1986). Induction of decision trees. <em>Machine
+Learning</em>, <em>1</em>(1), 81–106.
+</div>
+<div id="ref-quinlan1993" class="csl-entry" role="listitem">
+Quinlan, J. R. (1993). <em>C4.5: Programs for machine learning</em>.
+Morgan Kaufmann.
+</div>
+<div id="ref-rakthanmanon2012" class="csl-entry" role="listitem">
+Rakthanmanon, T., Campana, B., Mueen, A., Batista, G., Westover, B.,
+Zhu, Q., Zakaria, J., &amp; Keogh, E. (2012). Searching and mining
+trillions of time series subsequences under dynamic time warping.
+<em>Proceedings of the 18th ACM SIGKDD International Conference on
+Knowledge Discovery and Data Mining</em>, 262–270.
+</div>
+<div id="ref-raschka2018" class="csl-entry" role="listitem">
+Raschka, S. (2018). <span>MLxtend</span>: Providing machine learning and
+data science utilities and extensions to python’s scientific computing
+stack. <em>Journal of Open Source Software</em>, <em>3</em>(24), 638.
+</div>
+<div id="ref-robbins1951" class="csl-entry" role="listitem">
+Robbins, H., &amp; Monro, S. (1951). A stochastic approximation method.
+<em>The Annals of Mathematical Statistics</em>, <em>22</em>(3), 400–407.
+<a href="https://doi.org/10.1214/aoms/1177729586">https://doi.org/10.1214/aoms/1177729586</a>
+</div>
+<div id="ref-roberts1959" class="csl-entry" role="listitem">
+Roberts, S. W. (1959). Control chart tests based on geometric moving
+averages. <em>Technometrics</em>, <em>1</em>(3), 239–250. <a href="https://doi.org/10.1080/00401706.1959.10489860">https://doi.org/10.1080/00401706.1959.10489860</a>
+</div>
+<div id="ref-rosenblatt1958" class="csl-entry" role="listitem">
+Rosenblatt, F. (1958). The perceptron: A probabilistic model for
+information storage and organization in the brain. <em>Psychological
+Review</em>, <em>65</em>(6), 386–408.
+</div>
+<div id="ref-rousseeuw1987" class="csl-entry" role="listitem">
+Rousseeuw, P. J. (1987). Silhouettes: A graphical aid to the
+interpretation and validation of cluster analysis. <em>Journal of
+Computational and Applied Mathematics</em>, <em>20</em>, 53–65.
+</div>
+<div id="ref-rousseeuw1999" class="csl-entry" role="listitem">
+Rousseeuw, P. J., &amp; Van Driessen, K. (1999). A fast algorithm for
+the minimum covariance determinant estimator. <em>Technometrics</em>,
+<em>41</em>(3), 212–223.
+</div>
+<div id="ref-rubin1976" class="csl-entry" role="listitem">
+Rubin, D. B. (1976). Inference and missing data. <em>Biometrika</em>,
+<em>63</em>(3), 581–592.
+</div>
+<div id="ref-ruff2021" class="csl-entry" role="listitem">
+Ruff, L., Kauffmann, J. R., Vandermeulen, R. A., Montavon, G., Samek,
+W., Kloft, M., Dietterich, T. G., &amp; Müller, K.-R. (2021). A unifying
+review of deep and shallow anomaly detection. <em>Proceedings of the
+IEEE</em>, <em>109</em>(5), 756–795. <a href="https://doi.org/10.1109/JPROC.2021.3052449">https://doi.org/10.1109/JPROC.2021.3052449</a>
+</div>
+<div id="ref-rumelhart1986" class="csl-entry" role="listitem">
+Rumelhart, D. E., Hinton, G. E., &amp; Williams, R. J. (1986). Learning
+representations by back-propagating errors. <em>Nature</em>,
+<em>323</em>(6088), 533–536.
+</div>
+<div id="ref-saito1994" class="csl-entry" role="listitem">
+Saito, N. (1994). <em>Local feature extraction and its applications
+using a library of bases</em> [PhD thesis]. Yale University.
+</div>
+<div id="ref-saito2015" class="csl-entry" role="listitem">
+Saito, T., &amp; Rehmsmeier, M. (2015). The precision-recall plot is
+more informative than the <span>ROC</span> plot when evaluating binary
+classifiers on imbalanced datasets. <em>PLoS ONE</em>, <em>10</em>(3),
+e0118432.
+</div>
+<div id="ref-sakoe1978" class="csl-entry" role="listitem">
+Sakoe, H., &amp; Chiba, S. (1978). Dynamic programming algorithm
+optimization for spoken word recognition. <em>IEEE Transactions on
+Acoustics, Speech, and Signal Processing</em>, <em>26</em>(1), 43–49.
+</div>
+<div id="ref-salton1988" class="csl-entry" role="listitem">
+Salton, G., &amp; Buckley, C. (1988). Term-weighting approaches in
+automatic text retrieval. <em>Information Processing &amp;
+Management</em>, <em>24</em>(5), 513–523.
+</div>
+<div id="ref-sammon1969" class="csl-entry" role="listitem">
+Sammon, J. W. (1969). A nonlinear mapping for data structure analysis.
+<em>IEEE Transactions on Computers</em>, <em>C-18</em>(5), 401–409.
+</div>
+<div id="ref-sarwar2001" class="csl-entry" role="listitem">
+Sarwar, B., Karypis, G., Konstan, J., &amp; Riedl, J. (2001). Item-based
+collaborative filtering recommendation algorithms. <em>Proceedings of
+the 10th International Conference on World Wide Web</em>, 285–295. <a href="https://doi.org/10.1145/371920.372071">https://doi.org/10.1145/371920.372071</a>
+</div>
+<div id="ref-schmittlein1987" class="csl-entry" role="listitem">
+Schmittlein, D. C., Morrison, D. G., &amp; Colombo, R. (1987). Counting
+your customers: Who are they and what will they do next? <em>Management
+Science</em>, <em>33</em>(1), 1–24. <a href="https://doi.org/10.1287/mnsc.33.1.1">https://doi.org/10.1287/mnsc.33.1.1</a>
+</div>
+<div id="ref-scholkopf2001" class="csl-entry" role="listitem">
+Schölkopf, B., Platt, J. C., Shawe-Taylor, J., Smola, A. J., &amp;
+Williamson, R. C. (2001). Estimating the support of a high-dimensional
+distribution. <em>Neural Computation</em>, <em>13</em>(7), 1443–1471.
+</div>
+<div id="ref-sculley2015" class="csl-entry" role="listitem">
+Sculley, D., Holt, G., Golovin, D., Davydov, E., Phillips, T., Ebner,
+D., Chaudhary, V., Young, M., Crespo, J.-F., &amp; Dennison, D. (2015).
+Hidden technical debt in machine learning systems. <em>Advances in
+Neural Information Processing Systems 28</em>, 2503–2511.
+</div>
+<div id="ref-seabold2010" class="csl-entry" role="listitem">
+Seabold, S., &amp; Perktold, J. (2010). Statsmodels: Econometric and
+statistical modeling with <span>Python</span>. <em>Proceedings of the
+9th Python in Science Conference</em>, 92–96.
+</div>
+<div id="ref-shannon1948" class="csl-entry" role="listitem">
+Shannon, C. E. (1948). A mathematical theory of communication. <em>Bell
+System Technical Journal</em>, <em>27</em>(3), 379–423.
+</div>
+<div id="ref-shewhart1931" class="csl-entry" role="listitem">
+Shewhart, W. A. (1931). <em>Economic control of quality of manufactured
+product</em>. D. Van Nostrand.
+</div>
+<div id="ref-silverman1986" class="csl-entry" role="listitem">
+Silverman, B. W. (1986). <em>Density estimation for statistics and data
+analysis</em>. Chapman &amp; Hall.
+</div>
+<div id="ref-sparckjones1972" class="csl-entry" role="listitem">
+Spärck Jones, K. (1972). A statistical interpretation of term
+specificity and its application in retrieval. <em>Journal of
+Documentation</em>, <em>28</em>(1), 11–21. <a href="https://doi.org/10.1108/eb026526">https://doi.org/10.1108/eb026526</a>
+</div>
+<div id="ref-spearman1904" class="csl-entry" role="listitem">
+Spearman, C. (1904). The proof and measurement of association between
+two things. <em>The American Journal of Psychology</em>, <em>15</em>(1),
+72–101.
+</div>
+<div id="ref-srikant1995" class="csl-entry" role="listitem">
+Srikant, R., &amp; Agrawal, R. (1995). Mining generalized association
+rules. <em>Proceedings of the 21st International Conference on Very
+Large Data Bases</em>, 407–419.
+</div>
+<div id="ref-srikant1996q" class="csl-entry" role="listitem">
+Srikant, R., &amp; Agrawal, R. (1996a). Mining quantitative association
+rules in large relational tables. <em>Proceedings of the 1996 ACM SIGMOD
+International Conference on Management of Data</em>, 1–12.
+</div>
+<div id="ref-srikant1996s" class="csl-entry" role="listitem">
+Srikant, R., &amp; Agrawal, R. (1996b). Mining sequential patterns:
+Generalizations and performance improvements. <em>Advances in Database
+Technology – EDBT’96, Lecture Notes in Computer Science</em>,
+<em>1057</em>, 3–17.
+</div>
+<div id="ref-srivastava2014" class="csl-entry" role="listitem">
+Srivastava, N., Hinton, G., Krizhevsky, A., Sutskever, I., &amp;
+Salakhutdinov, R. (2014). Dropout: A simple way to prevent neural
+networks from overfitting. <em>Journal of Machine Learning
+Research</em>, <em>15</em>, 1929–1958.
+</div>
+<div id="ref-stevens1946" class="csl-entry" role="listitem">
+Stevens, S. S. (1946). On the theory of scales of measurement.
+<em>Science</em>, <em>103</em>(2684), 677–680.
+</div>
+<div id="ref-stone1974" class="csl-entry" role="listitem">
+Stone, M. (1974). Cross-validatory choice and assessment of statistical
+predictions. <em>Journal of the Royal Statistical Society: Series
+B</em>, <em>36</em>(2), 111–147.
+</div>
+<div id="ref-stonebraker2005" class="csl-entry" role="listitem">
+Stonebraker, M., Abadi, D. J., Batkin, A., Chen, X., Cherniack, M.,
+Ferreira, M., Lau, E., Lin, A., Madden, S., O’Neil, E., O’Neil, P.,
+Rasin, A., Tran, N., &amp; Zdonik, S. (2005). C-store: A column-oriented
+<span>DBMS</span>. <em>Proceedings of the 31st International Conference
+on Very Large Data Bases</em>, 553–564.
+</div>
+<div id="ref-strang2016" class="csl-entry" role="listitem">
+Strang, G. (2016). <em>Introduction to linear algebra</em> (5th ed.).
+Wellesley-Cambridge Press.
+</div>
+<div id="ref-strang2019" class="csl-entry" role="listitem">
+Strang, G. (2019). <em>Linear algebra and learning from data</em>.
+Wellesley-Cambridge Press.
+</div>
+<div id="ref-studer2021" class="csl-entry" role="listitem">
+Studer, S., Bui, T. B., Drescher, C., Hanuschkin, A., Winkler, L.,
+Peters, S., &amp; Müller, K.-R. (2021). Towards
+<span>CRISP-ML(Q)</span>: A machine learning process model with quality
+assurance methodology. <em>Machine Learning and Knowledge
+Extraction</em>, <em>3</em>(2), 392–413. <a href="https://doi.org/10.3390/make3020020">https://doi.org/10.3390/make3020020</a>
+</div>
+<div id="ref-sutskever2013" class="csl-entry" role="listitem">
+Sutskever, I., Martens, J., Dahl, G., &amp; Hinton, G. (2013). On the
+importance of initialization and momentum in deep learning.
+<em>Proceedings of the 30th International Conference on Machine Learning
+(ICML), Proceedings of Machine Learning Research</em>, <em>28</em>,
+1139–1147.
+</div>
+<div id="ref-sweeney2002" class="csl-entry" role="listitem">
+Sweeney, L. (2002). K-anonymity: A model for protecting privacy.
+<em>International Journal of Uncertainty, Fuzziness and Knowledge-Based
+Systems</em>, <em>10</em>(5), 557–570.
+</div>
+<div id="ref-tan2004" class="csl-entry" role="listitem">
+Tan, P.-N., Kumar, V., &amp; Srivastava, J. (2004). Selecting the right
+objective measure for association analysis. <em>Information
+Systems</em>, <em>29</em>(4), 293–313.
+</div>
+<div id="ref-tan2019" class="csl-entry" role="listitem">
+Tan, P.-N., Steinbach, M., Karpatne, A., &amp; Kumar, V. (2019).
+<em>Introduction to data mining</em> (2nd ed.). Pearson.
+</div>
+<div id="ref-tao2019" class="csl-entry" role="listitem">
+Tao, F., Zhang, H., Liu, A., &amp; Nee, A. Y. C. (2019). Digital twin in
+industry: State-of-the-art. <em>IEEE Transactions on Industrial
+Informatics</em>, <em>15</em>(4), 2405–2415. <a href="https://doi.org/10.1109/TII.2018.2873186">https://doi.org/10.1109/TII.2018.2873186</a>
+</div>
+<div id="ref-tibshirani1996" class="csl-entry" role="listitem">
+Tibshirani, R. (1996). Regression shrinkage and selection via the lasso.
+<em>Journal of the Royal Statistical Society: Series B</em>,
+<em>58</em>(1), 267–288.
+</div>
+<div id="ref-torgerson1952" class="csl-entry" role="listitem">
+Torgerson, W. S. (1952). Multidimensional scaling: I. Theory and method.
+<em>Psychometrika</em>, <em>17</em>(4), 401–419.
+</div>
+<div id="ref-troyanskaya2001" class="csl-entry" role="listitem">
+Troyanskaya, O., Cantor, M., Sherlock, G., Brown, P., Hastie, T.,
+Tibshirani, R., Botstein, D., &amp; Altman, R. B. (2001). Missing value
+estimation methods for <span>DNA</span> microarrays.
+<em>Bioinformatics</em>, <em>17</em>(6), 520–525.
+</div>
+<div id="ref-tufte2001" class="csl-entry" role="listitem">
+Tufte, E. R. (2001). <em>The visual display of quantitative
+information</em> (2nd ed.). Graphics Press.
+</div>
+<div id="ref-tukey1977" class="csl-entry" role="listitem">
+Tukey, J. W. (1977). <em>Exploratory data analysis</em>. Addison-Wesley.
+</div>
+<div id="ref-vanderplas2016" class="csl-entry" role="listitem">
+VanderPlas, J. (2016). <em>Python data science handbook</em>. O’Reilly.
+</div>
+<div id="ref-vaswani2017" class="csl-entry" role="listitem">
+Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez,
+A. N., Kaiser, Ł., &amp; Polosukhin, I. (2017). Attention is all you
+need. <em>Advances in Neural Information Processing Systems</em>,
+<em>30</em>, 5998–6008.
+</div>
+<div id="ref-venkatasubramanian2003" class="csl-entry" role="listitem">
+Venkatasubramanian, V., Rengaswamy, R., Kavuri, S. N., &amp; Yin, K.
+(2003). A review of process fault detection and diagnosis: Part
+<span>III</span>: Process history based methods. <em>Computers &amp;
+Chemical Engineering</em>, <em>27</em>(3), 327–346.
+</div>
+<div id="ref-virtanen2020" class="csl-entry" role="listitem">
+<span class="nocase">Virtanen, P. et al.</span> (2020).
+<span>SciPy</span> 1.0: Fundamental algorithms for scientific computing
+in <span>Python</span>. <em>Nature Methods</em>, <em>17</em>(3),
+261–272.
+</div>
+<div id="ref-wang2016" class="csl-entry" role="listitem">
+Wang, J., Yang, F., Chen, T., &amp; Shah, S. L. (2016). An overview of
+industrial alarm systems: Main causes for alarm overloading, research
+status, and open problems. <em>IEEE Transactions on Automation Science
+and Engineering</em>, <em>13</em>(2), 1045–1061.
+</div>
+<div id="ref-wang1996" class="csl-entry" role="listitem">
+Wang, R. Y., &amp; Strong, D. M. (1996). Beyond accuracy: What data
+quality means to data consumers. <em>Journal of Management Information
+Systems</em>, <em>12</em>(4), 5–33.
+</div>
+<div id="ref-wang2017" class="csl-entry" role="listitem">
+Wang, Z., Yan, W., &amp; Oates, T. (2017). Time series classification
+from scratch with deep neural networks: A strong baseline. <em>2017
+International Joint Conference on Neural Networks (IJCNN)</em>,
+1578–1585. <a href="https://doi.org/10.1109/IJCNN.2017.7966039">https://doi.org/10.1109/IJCNN.2017.7966039</a>
+</div>
+<div id="ref-ward1963" class="csl-entry" role="listitem">
+Ward, J. H. (1963). Hierarchical grouping to optimize an objective
+function. <em>Journal of the American Statistical Association</em>,
+<em>58</em>(301), 236–244.
+</div>
+<div id="ref-waskom2021" class="csl-entry" role="listitem">
+Waskom, M. L. (2021). Seaborn: Statistical data visualization.
+<em>Journal of Open Source Software</em>, <em>6</em>(60), 3021.
+</div>
+<div id="ref-wasserman2004" class="csl-entry" role="listitem">
+Wasserman, L. (2004). <em>All of statistics: A concise course in
+statistical inference</em>. Springer.
+</div>
+<div id="ref-wattenberg2016" class="csl-entry" role="listitem">
+Wattenberg, M., Viégas, F., &amp; Johnson, I. (2016). How to use
+t-<span>SNE</span> effectively. <em>Distill</em>. <a href="https://distill.pub/2016/misread-tsne/">https://distill.pub/2016/misread-tsne/</a>
+</div>
+<div id="ref-wickham2014" class="csl-entry" role="listitem">
+Wickham, H. (2014). Tidy data. <em>Journal of Statistical Software</em>,
+<em>59</em>(10), 1–23.
+</div>
+<div id="ref-wilkinson2005" class="csl-entry" role="listitem">
+Wilkinson, L. (2005). <em>The grammar of graphics</em> (2nd ed.).
+Springer.
+</div>
+<div id="ref-winkler2011" class="csl-entry" role="listitem">
+Winkler, R., Klawonn, F., &amp; Kruse, R. (2011). Fuzzy c-means in high
+dimensional spaces. <em>International Journal of Fuzzy System
+Applications</em>, <em>1</em>(1), 1–16.
+</div>
+<div id="ref-winters1960" class="csl-entry" role="listitem">
+Winters, P. R. (1960). Forecasting sales by exponentially weighted
+moving averages. <em>Management Science</em>, <em>6</em>(3), 324–342.
+</div>
+<div id="ref-wirth2000" class="csl-entry" role="listitem">
+Wirth, R., &amp; Hipp, J. (2000). CRISP-DM: Towards a standard process
+model for data mining. <em>Proceedings of the 4th International
+Conference on the Practical Applications of Knowledge Discovery and Data
+Mining</em>, 29–39.
+</div>
+<div id="ref-wold2001" class="csl-entry" role="listitem">
+Wold, S., Sjöström, M., &amp; Eriksson, L. (2001).
+<span>PLS</span>-regression: A basic tool of chemometrics.
+<em>Chemometrics and Intelligent Laboratory Systems</em>,
+<em>58</em>(2), 109–130. <a href="https://doi.org/10.1016/S0169-7439(01)00155-1">https://doi.org/10.1016/S0169-7439(01)00155-1</a>
+</div>
+<div id="ref-xie1991" class="csl-entry" role="listitem">
+Xie, X. L., &amp; Beni, G. (1991). A validity measure for fuzzy
+clustering. <em>IEEE Transactions on Pattern Analysis and Machine
+Intelligence</em>, <em>13</em>(8), 841–847.
+</div>
+<div id="ref-yeo2000" class="csl-entry" role="listitem">
+Yeo, I.-K., &amp; Johnson, R. A. (2000). A new family of power
+transformations to improve normality or symmetry. <em>Biometrika</em>,
+<em>87</em>(4), 954–959.
+</div>
+<div id="ref-zaki2000" class="csl-entry" role="listitem">
+Zaki, M. J. (2000). Scalable algorithms for association mining. <em>IEEE
+Transactions on Knowledge and Data Engineering</em>, <em>12</em>(3),
+372–390.
+</div>
+<div id="ref-zhang2023" class="csl-entry" role="listitem">
+Zhang, A., Lipton, Z. C., Li, M., &amp; Smola, A. J. (2023). <em>Dive
+into deep learning</em>. Cambridge University Press.
+</div>
+<div id="ref-zipf1949" class="csl-entry" role="listitem">
+Zipf, G. K. (1949). <em>Human behavior and the principle of least
+effort</em>. Addison-Wesley.
+</div>
+<div id="ref-zou2005" class="csl-entry" role="listitem">
+Zou, H., &amp; Hastie, T. (2005). Regularization and variable selection
+via the elastic net. <em>Journal of the Royal Statistical Society:
+Series B</em>, <em>67</em>(2), 301–320.
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script>
+/* Magyar ábra- és táblázatfelirat-sorrend a HTML-kiadásban: "ábra 1.1." -> "1.1. ábra." */
+document.addEventListener("DOMContentLoaded", function () {
+  const re = /^(ábra|táblázat|algoritmus)\s+([0-9A-Z]+(?:\.[0-9]+)*)\.?\s*/i;
+  document.querySelectorAll("figcaption, .figure-caption, caption, .quarto-float-caption").forEach(function (el) {
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const t = w.nextNode();
+    if (!t) return;
+    const m = t.nodeValue.match(re);
+    if (m) { t.nodeValue = t.nodeValue.replace(re, m[2] + ". " + m[1].toLowerCase() + ". "); }
+  });
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kimásolva!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kimásolva!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/complexsystemsintelligence\.github\.io\/adatbanyaszat\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="./chapters/15-folyamatanalitika.html" class="pagination-link" aria-label="Ipari folyamatanalitika">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Ipari folyamatanalitika</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./appendices/a-python.html" class="pagination-link" aria-label="Python-alapok">
+        <span class="nav-page-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Python-alapok</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/references.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/references.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></div></div></footer></body></html>

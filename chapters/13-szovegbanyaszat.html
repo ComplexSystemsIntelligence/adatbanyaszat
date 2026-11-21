@@ -1,0 +1,1968 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="hu" xml:lang="hu"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>13&nbsp; Szövegbányászat – Adatbányászat</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/14-ugyfelanalitika.html" rel="next">
+<link href="../chapters/12-idosorok.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-18038207a4bfd50187eff2b2f0526436.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-27594bbe69c1d9222c0eb88c018d43c1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nincs találat",
+    "search-matching-documents-text": "találat",
+    "search-copy-link-title": "Keresési link másolása",
+    "search-hide-matches-text": "További találatok elrejtése",
+    "search-more-match-text": "további találat ebben a dokumentumban",
+    "search-more-matches-text": "további találat ebben a dokumentumban",
+    "search-clear-button-title": "Törlés",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Mégse",
+    "search-submit-button-title": "Keresés",
+    "search-label": "Keresés"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../assets/pannon-fonts.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Oldalsáv ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/12-idosorok.html">IV. Speciális adattípusok</a></li><li class="breadcrumb-item"><a href="../chapters/13-szovegbanyaszat.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Szövegbányászat</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Keresés" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Adatbányászat</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat" title="Forráskód" class="quarto-navigation-tool px-1" aria-label="Forráskód"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Letöltés" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Letöltés"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../adatbanyaszat.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Letöltés PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../adatbanyaszat.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Letöltés ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Keresés"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Előszó</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. Alapok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01-bevezetes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Adatból tudás: az adatbányászat folyamata</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02-adattarhazak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Adattárházak és analitikus adatkezelés</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-adatelokeszites.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Adatok előkészítése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-feltaro-elemzes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Feltáró adatelemzés és dimenziócsökkentés</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. Mintázatok felügyelet nélkül</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05-csoportositas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Csoportosítás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-asszociacios-szabalyok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Gyakori mintázatok és asszociációs szabályok</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. Prediktív modellezés</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07-modellertekeles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A felügyelt tanulás alapjai és a modellek értékelése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08-regresszio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regresszió</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09-osztalyozas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Osztályozás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/10-melytanulas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Neurális hálózatok és mélytanulás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/11-anomaliak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Anomáliák és eltérések észlelése</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. Speciális adattípusok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/12-idosorok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Idősorok elemzése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/13-szovegbanyaszat.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Szövegbányászat</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. Alkalmazások</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/14-ugyfelanalitika.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Ügyfélkapcsolat-menedzsment és ügyfélanalitika</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/15-folyamatanalitika.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Ipari folyamatanalitika</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Irodalomjegyzék</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Függelékek</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/a-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Python-alapok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/b-linearis-algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Lineáris algebra az adatbányászathoz</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/c-valoszinuseg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Valószínűségszámítási és statisztikai alapok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/d-adatsorok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Az adatsorok leírása</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/e-jelolesek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Jelölések</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/f-szojegyzek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Magyar–angol szójegyzék</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Tartalom</h2>
+   
+  <ul>
+  <li><a href="#sec-szoveg-adat" id="toc-sec-szoveg-adat" class="nav-link active" data-scroll-target="#sec-szoveg-adat"><span class="header-section-number">13.1</span> A szöveg mint adat</a></li>
+  <li><a href="#sec-vektorter" id="toc-sec-vektorter" class="nav-link" data-scroll-target="#sec-vektorter"><span class="header-section-number">13.2</span> A vektortér-modell</a>
+  <ul class="collapse">
+  <li><a href="#szózsák-és-tf-idf" id="toc-szózsák-és-tf-idf" class="nav-link" data-scroll-target="#szózsák-és-tf-idf"><span class="header-section-number">13.2.1</span> Szózsák és TF-IDF</a></li>
+  <li><a href="#koszinusz-hasonlóság" id="toc-koszinusz-hasonlóság" class="nav-link" data-scroll-target="#koszinusz-hasonlóság"><span class="header-section-number">13.2.2</span> Koszinusz-hasonlóság</a></li>
+  <li><a href="#kézi-példa" id="toc-kézi-példa" class="nav-link" data-scroll-target="#kézi-példa"><span class="header-section-number">13.2.3</span> Kézi példa</a></li>
+  </ul></li>
+  <li><a href="#sec-szovegosztalyozas" id="toc-sec-szovegosztalyozas" class="nav-link" data-scroll-target="#sec-szovegosztalyozas"><span class="header-section-number">13.3</span> Szövegosztályozás</a></li>
+  <li><a href="#sec-temamodellek" id="toc-sec-temamodellek" class="nav-link" data-scroll-target="#sec-temamodellek"><span class="header-section-number">13.4</span> Szövegklaszterezés és témamodellek</a></li>
+  <li><a href="#sec-beagyazas" id="toc-sec-beagyazas" class="nav-link" data-scroll-target="#sec-beagyazas"><span class="header-section-number">13.5</span> Szóbeágyazások</a></li>
+  <li><a href="#sec-kinyeres" id="toc-sec-kinyeres" class="nav-link" data-scroll-target="#sec-kinyeres"><span class="header-section-number">13.6</span> Kulcsszavak és összefoglalás</a></li>
+  <li><a href="#sec-szoveg-gyakorlat" id="toc-sec-szoveg-gyakorlat" class="nav-link" data-scroll-target="#sec-szoveg-gyakorlat"><span class="header-section-number">13.7</span> Gyakorlat: vásárlói vélemények és műszaknapló</a>
+  <ul class="collapse">
+  <li><a href="#a-vélemények-előfeldolgozása-és-szókincse" id="toc-a-vélemények-előfeldolgozása-és-szókincse" class="nav-link" data-scroll-target="#a-vélemények-előfeldolgozása-és-szókincse"><span class="header-section-number">13.7.1</span> A vélemények előfeldolgozása és szókincse</a></li>
+  <li><a href="#hangulatosztályozás" id="toc-hangulatosztályozás" class="nav-link" data-scroll-target="#hangulatosztályozás"><span class="header-section-number">13.7.2</span> Hangulatosztályozás</a></li>
+  <li><a href="#miről-szólnak-a-vélemények-témák-mondatszinten" id="toc-miről-szólnak-a-vélemények-témák-mondatszinten" class="nav-link" data-scroll-target="#miről-szólnak-a-vélemények-témák-mondatszinten"><span class="header-section-number">13.7.3</span> Miről szólnak a vélemények? Témák mondatszinten</a></li>
+  <li><a href="#szóbeágyazás-ppmi-mátrixból" id="toc-szóbeágyazás-ppmi-mátrixból" class="nav-link" data-scroll-target="#szóbeágyazás-ppmi-mátrixból"><span class="header-section-number">13.7.4</span> Szóbeágyazás PPMI-mátrixból</a></li>
+  <li><a href="#a-panaszok-kivonatoló-összefoglalása" id="toc-a-panaszok-kivonatoló-összefoglalása" class="nav-link" data-scroll-target="#a-panaszok-kivonatoló-összefoglalása"><span class="header-section-number">13.7.5</span> A panaszok kivonatoló összefoglalása</a></li>
+  <li><a href="#szakmai-szöveg-a-műszaknapló" id="toc-szakmai-szöveg-a-műszaknapló" class="nav-link" data-scroll-target="#szakmai-szöveg-a-műszaknapló"><span class="header-section-number">13.7.6</span> Szakmai szöveg: a műszaknapló</a></li>
+  </ul></li>
+  <li><a href="#sec-szoveg-osszefoglalas" id="toc-sec-szoveg-osszefoglalas" class="nav-link" data-scroll-target="#sec-szoveg-osszefoglalas"><span class="header-section-number">13.8</span> Összefoglalás</a></li>
+  <li><a href="#ellenőrző-kérdések" id="toc-ellenőrző-kérdések" class="nav-link" data-scroll-target="#ellenőrző-kérdések">Ellenőrző kérdések</a></li>
+  <li><a href="#feladatok" id="toc-feladatok" class="nav-link" data-scroll-target="#feladatok">Feladatok</a></li>
+  <li><a href="#további-olvasmányok" id="toc-további-olvasmányok" class="nav-link" data-scroll-target="#további-olvasmányok">További olvasmányok</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/chapters/13-szovegbanyaszat.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/chapters/13-szovegbanyaszat.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/12-idosorok.html">IV. Speciális adattípusok</a></li><li class="breadcrumb-item"><a href="../chapters/13-szovegbanyaszat.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Szövegbányászat</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-szoveg" class="quarto-section-identifier"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Szövegbányászat</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="roadmap">
+<p>A szervezetek adatainak jelentős része szöveg: vásárlói vélemények, panaszlevelek, műszaknaplók, karbantartási jegyek, jelentések. A szövegbányászat ezekből nyer ki strukturált, elemezhető információt. A fejezet a szöveg előfeldolgozásával kezdődik – különös tekintettel a magyar nyelv sajátosságaira –, majd a vektortér-modellt és a TF-IDF súlyozást, a szövegosztályozást, a szövegklaszterezést és a témamodelleket (LSA, NMF, LDA), a disztribúciós szóbeágyazásokat, végül a kulcsszó- és mondatkinyerést tárgyalja. A nagy nyelvi modellek a könyv keretein kívül esnek; az itt bemutatott módszerek azonban ma is a gyors, átlátható és olcsó szövegelemzés alapjai, és a nyelvi modellek értékelésének viszonyítási pontjai.</p>
+<p><strong>A fejezet végére az olvasó</strong> képes lesz egy magyar nyelvű szövegkorpuszt előfeldolgozni; a dokumentum–szó mátrixot és a TF-IDF súlyokat kézzel és programmal kiszámítani; szövegosztályozót építeni és értékelni; témamodellt illeszteni és értelmezni; és megítélni, mikor érdemes szó-, illetve karakterszintű reprezentációt használni.</p>
+</div>
+<section id="sec-szoveg-adat" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="sec-szoveg-adat"><span class="header-section-number">13.1</span> A szöveg mint adat</h2>
+<p>A szövegbányászatban a vizsgált egység a <strong>dokumentum</strong> (egy vélemény, egy naplóbejegyzés, egy e-mail), a dokumentumok összessége a <strong>korpusz</strong>. A dokumentumokat elemi egységekre, <strong>tokenekre</strong> bontjuk – rendszerint szavakra, néha szórészletekre vagy karakterekre –, és a modellek ezek előfordulásaiból dolgoznak (<a href="#fig-szoveg-folyamat" class="quarto-xref"><span>13.1</span></a>. ábra) <span class="citation" data-cites="manning2008">(<a href="../references.html#ref-manning2008" role="doc-biblioref">Manning és mtsai., 2008</a>)</span>.</p>
+<div id="fig-szoveg-folyamat" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-szoveg-folyamat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/13-folyamat.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="ábra&nbsp;13.1.. A szövegbányászat folyamata. Az előfeldolgozás lépései (tokenizálás, normalizálás, szűrés) a nyelvtől és a feladattól függenek; a reprezentáció megválasztása legalább annyira meghatározza az eredményt, mint a modell."><img src="../figures/build/13-folyamat.svg" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-szoveg-folyamat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;13.1.. A szövegbányászat folyamata. Az előfeldolgozás lépései (tokenizálás, normalizálás, szűrés) a nyelvtől és a feladattól függenek; a reprezentáció megválasztása legalább annyira meghatározza az eredményt, mint a modell.
+</figcaption>
+</figure>
+</div>
+<p>Az előfeldolgozás tipikus lépései:</p>
+<ul>
+<li><strong>Tokenizálás</strong>: a szöveg mondatokra és szavakra bontása; az írásjelek, számok, rövidítések kezelése.</li>
+<li><strong>Normalizálás</strong>: kisbetűsítés, a szóalakok közös alakra hozása. A <strong>szótövezés</strong> (stemming) szabályokkal levágja a toldalékokat (az angol nyelvre a Porter-algoritmus <span class="citation" data-cites="porter1980">(<a href="../references.html#ref-porter1980" role="doc-biblioref">Porter, 1980</a>)</span> a klasszikus); a <strong>lemmatizálás</strong> morfológiai elemzéssel a szótári alakot állítja elő.</li>
+<li><strong>Szűrés</strong>: a tartalmilag üres, nagyon gyakori <strong>stopszavak</strong> (névelők, kötőszavak) és a nagyon ritka szavak elhagyása. A feladattól függ, mi számít stopszónak: hangulatelemzésben a „nem” tagadószó például kulcsfontosságú.</li>
+</ul>
+<p>A <strong>magyar nyelv</strong> agglutináló: a szavakhoz sok toldalék kapcsolódhat (<em>kávéfőzőnkkel</em>, <em>szállításról</em>, <em>megérkezett</em>), és a szóösszetétel is gyakori. Ugyanannak a szónak ezért sok alakja fordul elő, ami a szóalapú reprezentációkat ritkábbá és zajosabbá teszi, mint angol nyelvű szövegeknél. A magyar nyelvre a HuSpaCy <span class="citation" data-cites="orosz2022 orosz2023">(<a href="../references.html#ref-orosz2022" role="doc-biblioref">Orosz és mtsai., 2022</a>; <a href="../references.html#ref-orosz2023" role="doc-biblioref">Orosz és mtsai., 2023</a>)</span> ad korszerű, nyílt forrású tokenizáló, lemmatizáló és szófaji címkéző eszközláncot. Egyszerű, nyelvfüggetlen alternatíva a <strong>karakter-<span class="math inline">\(n\)</span>-gramok</strong> használata: a szavakat átfedő, például 3–5 karakteres részletekre bontjuk (<em>szállítás</em> → <em>szá, zál, áll, llí, lít, ítá, tás, …</em>), így a közös tövű szóalakok sok közös jellemzőn osztoznak, és az elírások, ékezethiányok, rövidítések sem okoznak teljes egyezéshiányt <span class="citation" data-cites="cavnar1994">(<a href="../references.html#ref-cavnar1994" role="doc-biblioref">Cavnar &amp; Trenkle, 1994</a>)</span>.</p>
+<p>A szavak gyakoriságeloszlása rendkívül ferde: a <strong>Zipf-törvény</strong> <span class="citation" data-cites="zipf1949">(<a href="../references.html#ref-zipf1949" role="doc-biblioref">Zipf, 1949</a>)</span> szerint a <span class="math inline">\(r\)</span>-edik leggyakoribb szó gyakorisága közelítőleg <span class="math inline">\(1/r\)</span>-rel arányos. Néhány szó nagyon gyakori, a szókincs túlnyomó része viszont csak egyszer-kétszer fordul elő – ez a szöveges adatok ritka (sparse) szerkezetének oka.</p>
+</section>
+<section id="sec-vektorter" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="sec-vektorter"><span class="header-section-number">13.2</span> A vektortér-modell</h2>
+<section id="szózsák-és-tf-idf" class="level3" data-number="13.2.1">
+<h3 data-number="13.2.1" class="anchored" data-anchor-id="szózsák-és-tf-idf"><span class="header-section-number">13.2.1</span> Szózsák és TF-IDF</h3>
+<p>A legtöbb klasszikus módszer a <strong>szózsák</strong> (bag of words) modellre épül: a dokumentumot a szavai előfordulási számának vektorával írjuk le, a szavak sorrendjét figyelmen kívül hagyva. <span class="math inline">\(N\)</span> dokumentum és <span class="math inline">\(n\)</span> szavas szókincs esetén ez az <span class="math inline">\(N\times n\)</span>-es <strong>dokumentum–szó mátrix</strong>, amelynek elemei a <span class="math inline">\(\mathrm{tf}_{t,d}\)</span> gyakoriságok. A mátrix rendkívül ritka: egy rövid vélemény a több ezer szavas szókincsből csak néhány szót tartalmaz, ezért ritka mátrixként tároljuk.</p>
+<p>A nyers gyakoriság a mindenütt előforduló szavakat túlsúlyozza. A <strong>TF-IDF</strong> súlyozás <span class="citation" data-cites="sparckjones1972 salton1988">(<a href="../references.html#ref-salton1988" role="doc-biblioref">Salton &amp; Buckley, 1988</a>; <a href="../references.html#ref-sparckjones1972" role="doc-biblioref">Spärck Jones, 1972</a>)</span> a szó dokumentumon belüli gyakoriságát azzal szorozza, mennyire ritka a szó a korpuszban:</p>
+<p><span id="eq-tfidf"><span class="math display">\[
+w_{t,d} = \mathrm{tf}_{t,d}\cdot\mathrm{idf}_t,\qquad
+\mathrm{idf}_t = \ln\frac{N}{\mathrm{df}_t} ,
+\tag{13.1}\]</span></span></p>
+<p>ahol <span class="math inline">\(\mathrm{df}_t\)</span> azon dokumentumok száma, amelyekben a <span class="math inline">\(t\)</span> szó előfordul. A minden dokumentumban szereplő szó súlya nulla, a csak egy-két dokumentumban előfordulóé nagy. A gyakorlatban számos változat létezik: logaritmikus tf (<span class="math inline">\(1 + \ln\mathrm{tf}\)</span>), simított idf (a <code>scikit-learn</code> alapértelmezése <span class="math inline">\(\ln\frac{1+N}{1+\mathrm{df}_t} + 1\)</span>), és a dokumentumvektorok egységnyi hosszra normálása.</p>
+</section>
+<section id="koszinusz-hasonlóság" class="level3" data-number="13.2.2">
+<h3 data-number="13.2.2" class="anchored" data-anchor-id="koszinusz-hasonlóság"><span class="header-section-number">13.2.2</span> Koszinusz-hasonlóság</h3>
+<p>Két dokumentum hasonlóságát a vektoraik által bezárt szög koszinuszával mérjük:</p>
+<p><span id="eq-koszinusz"><span class="math display">\[
+\cos(\mathbf{d}_i, \mathbf{d}_j) = \frac{\mathbf{d}_i^\top\mathbf{d}_j}{\lVert\mathbf{d}_i\rVert\,\lVert\mathbf{d}_j\rVert} .
+\tag{13.2}\]</span></span></p>
+<p>A koszinusz-hasonlóság független a dokumentumok hosszától (egy kétszer olyan hosszú, ugyanolyan arányú szavakat tartalmazó dokumentum vektora azonos irányú), és nemnegatív súlyoknál 0 és 1 közé esik. Egységnyi hosszra normált vektoroknál a koszinusz-hasonlóság a skaláris szorzat, az euklideszi távolság négyzete pedig <span class="math inline">\(2(1 - \cos)\)</span>, így a <span class="math inline">\(k\)</span>-közép és más euklideszi módszerek is alkalmazhatók.</p>
+</section>
+<section id="kézi-példa" class="level3" data-number="13.2.3">
+<h3 data-number="13.2.3" class="anchored" data-anchor-id="kézi-példa"><span class="header-section-number">13.2.3</span> Kézi példa</h3>
+<p>A segédcsomag öt rövid dokumentumának dokumentum–szó mátrixa a stopszavak (<em>a, és, volt</em>) elhagyása után a <a href="#fig-dtm" class="quarto-xref"><span>13.2</span></a>. ábrán látható. A <em>kávé</em> szó három dokumentumban fordul elő, így <span class="math inline">\(\mathrm{idf} = \ln(5/3) \approx 0{,}51\)</span>; az első dokumentumban kétszer szerepel, súlya <span class="math inline">\(2\cdot 0{,}51 = 1{,}02\)</span>. A csak egyszer előforduló <em>lassú</em> és <em>gyors</em> idf-je <span class="math inline">\(\ln 5 \approx 1{,}61\)</span> – ezek a szavak jellemzik leginkább a saját dokumentumukat.</p>
+<div id="fig-dtm" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dtm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/13-dtm.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="ábra&nbsp;13.2.. A kézi példa TF-IDF súlyozású dokumentum–szó mátrixa. A cellák színe a súllyal arányos; az alsó sor az idf-értékeket mutatja."><img src="../figures/build/13-dtm.svg" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dtm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;13.2.. A kézi példa TF-IDF súlyozású dokumentum–szó mátrixa. A cellák színe a súllyal arányos; az alsó sor az idf-értékeket mutatja.
+</figcaption>
+</figure>
+</div>
+<div id="294ccfb3" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>docs <span class="op">=</span> ab.mini.szoveg_mini()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>stop <span class="op">=</span> {<span class="st">"a"</span>, <span class="st">"és"</span>, <span class="st">"volt"</span>}</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>tokenek <span class="op">=</span> [[w <span class="cf">for</span> w <span class="kw">in</span> d.split() <span class="cf">if</span> w <span class="kw">not</span> <span class="kw">in</span> stop] <span class="cf">for</span> d <span class="kw">in</span> docs]</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>szokincs <span class="op">=</span> [<span class="st">"kávé"</span>, <span class="st">"friss"</span>, <span class="st">"illatos"</span>, <span class="st">"tea"</span>, <span class="st">"szállítás"</span>, <span class="st">"lassú"</span>, <span class="st">"gyors"</span>]</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>tf <span class="op">=</span> np.array([[t.count(w) <span class="cf">for</span> w <span class="kw">in</span> szokincs] <span class="cf">for</span> t <span class="kw">in</span> tokenek], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>idf <span class="op">=</span> np.log(<span class="bu">len</span>(docs) <span class="op">/</span> (tf <span class="op">&gt;</span> <span class="dv">0</span>).<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>W <span class="op">=</span> tf <span class="op">*</span> idf</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>normalt <span class="op">=</span> W <span class="op">/</span> np.linalg.norm(W, axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>cos <span class="op">=</span> normalt <span class="op">@</span> normalt.T</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(cos, index<span class="op">=</span>[<span class="ss">f"d</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>)], columns<span class="op">=</span>[<span class="ss">f"d</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>)]).<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">d1</th>
+<th data-quarto-table-cell-role="th">d2</th>
+<th data-quarto-table-cell-role="th">d3</th>
+<th data-quarto-table-cell-role="th">d4</th>
+<th data-quarto-table-cell-role="th">d5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">d1</th>
+<td>1.000</td>
+<td>0.170</td>
+<td>0.000</td>
+<td>0.186</td>
+<td>0.747</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">d2</th>
+<td>0.170</td>
+<td>1.000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>0.707</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">d3</th>
+<td>0.000</td>
+<td>0.000</td>
+<td>1.000</td>
+<td>0.236</td>
+<td>0.000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">d4</th>
+<td>0.186</td>
+<td>0.000</td>
+<td>0.236</td>
+<td>1.000</td>
+<td>0.092</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">d5</th>
+<td>0.747</td>
+<td>0.707</td>
+<td>0.000</td>
+<td>0.092</td>
+<td>1.000</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>A legnagyobb hasonlóság az első és az ötödik dokumentum között van (mindkettő friss, illatos kávéról szól), a harmadik és a negyedik dokumentumot a <em>szállítás</em> szó köti össze, a második és a harmadik dokumentumnak pedig nincs közös szava.</p>
+</section>
+</section>
+<section id="sec-szovegosztalyozas" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="sec-szovegosztalyozas"><span class="header-section-number">13.3</span> Szövegosztályozás</h2>
+<p>A szövegosztályozás – hangulatelemzés, levélszemét-szűrés, panaszok irányítása, naplóbejegyzések hibatípus szerinti besorolása – a szöveges adatok egyik leggyakoribb felhasználása. A TF-IDF vektorok nagy dimenziósak és ritkák, a dokumentumok száma ehhez képest kicsi; ilyen helyzetben a lineáris modellek jól teljesítenek, és gyorsan taníthatók <span class="citation" data-cites="joachims1998 manning2008">(<a href="../references.html#ref-joachims1998" role="doc-biblioref">Joachims, 1998</a>; <a href="../references.html#ref-manning2008" role="doc-biblioref">Manning és mtsai., 2008</a>)</span>.</p>
+<p>A <strong>multinomiális naiv Bayes</strong> <span class="citation" data-cites="mccallum1998">(<a href="../references.html#ref-mccallum1998" role="doc-biblioref">McCallum &amp; Nigam, 1998</a>)</span> a dokumentumot a szavak független húzásainak sorozataként modellezi. A <a href="09-osztalyozas.html#sec-bayes" class="quarto-xref"><span>9.4</span></a>. alfejezet osztályozójának ez a szövegekre szabott változata:</p>
+<p><span id="eq-multinomialis-nb"><span class="math display">\[
+\hat c = \arg\max_c\;\Bigl[\ln P(c) + \sum_{t}\mathrm{tf}_{t,d}\ln P(t\mid c)\Bigr],\qquad
+P(t\mid c) = \frac{N_{t,c} + 1}{\sum_{t'}N_{t',c} + n} ,
+\tag{13.3}\]</span></span></p>
+<p>ahol <span class="math inline">\(N_{t,c}\)</span> a <span class="math inline">\(t\)</span> szó előfordulásainak száma a <span class="math inline">\(c\)</span> osztály tanítódokumentumaiban, és a nevezőben a Laplace-simítás jelenik meg. A logisztikus regresszió (<a href="09-osztalyozas.html#sec-logreg" class="quarto-xref"><span>9.2</span></a>. alfejezet) és a lineáris SVM (<a href="09-osztalyozas.html#sec-svm" class="quarto-xref"><span>9.6</span></a>. alfejezet) a TF-IDF jellemzőkön rendszerint pontosabb, és az együtthatóik közvetlenül megmutatják, mely szavak szólnak egy-egy osztály mellett vagy ellen.</p>
+</section>
+<section id="sec-temamodellek" class="level2" data-number="13.4">
+<h2 data-number="13.4" class="anchored" data-anchor-id="sec-temamodellek"><span class="header-section-number">13.4</span> Szövegklaszterezés és témamodellek</h2>
+<p>A címkék nélküli korpuszok szerkezetének feltárására két megközelítés terjedt el. A <strong>szövegklaszterezés</strong> minden dokumentumot egyetlen csoportba sorol, például a normált TF-IDF vektorok <span class="math inline">\(k\)</span>-közép klaszterezésével. A <strong>témamodellek</strong> ezzel szemben minden dokumentumot több téma keverékeként írnak le, ahol a téma a szavak egy eloszlása – ez a vegyes tartalmú szövegeknél (egy vélemény a termékről <em>és</em> a szállításról is szólhat) természetesebb.</p>
+<p>A <strong>látens szemantikus elemzés</strong> (LSA) <span class="citation" data-cites="deerwester1990">(<a href="../references.html#ref-deerwester1990" role="doc-biblioref">Deerwester és mtsai., 1990</a>)</span> a TF-IDF mátrix csonkolt szinguláris érték szerinti felbontása (B. függelék): <span class="math inline">\(\mathbf{X}\approx\mathbf{U}_k
+\boldsymbol\Sigma_k\mathbf{V}_k^\top\)</span>. A <span class="math inline">\(k\)</span> dimenziós látens térben az együtt előforduló szavak – és az ilyen szavakat tartalmazó dokumentumok – közel kerülnek egymáshoz, ami a szinonímia hatását is enyhíti. A látens dimenziók azonban negatív súlyokat is tartalmaznak, ezért nehezen értelmezhetők.</p>
+<p>A <strong>nemnegatív mátrixfaktorizáció</strong> (NMF) <span class="citation" data-cites="lee1999">(<a href="../references.html#ref-lee1999" role="doc-biblioref">Lee &amp; Seung, 1999</a>)</span> a nemnegatív <span class="math inline">\(\mathbf{X}\)</span> mátrixot két nemnegatív mátrix szorzatára bontja (<a href="#fig-nmf" class="quarto-xref"><span>13.3</span></a>. ábra):</p>
+<p><span id="eq-nmf"><span class="math display">\[
+\min_{\mathbf{W}\ge 0,\;\mathbf{H}\ge 0}\;\lVert\mathbf{X} - \mathbf{W}\mathbf{H}\rVert_F^2 .
+\tag{13.4}\]</span></span></p>
+<p>A nemnegativitás miatt a dokumentumok a témák <em>additív</em> keverékei, és a <span class="math inline">\(\mathbf{H}\)</span> sorai – a témák szósúlyai – közvetlenül értelmezhetők: egy téma a legnagyobb súlyú szavaival jellemezhető.</p>
+<div id="fig-nmf" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nmf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/13-nmf.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="ábra&nbsp;13.3.. A nemnegatív mátrixfaktorizáció: a dokumentum–szó mátrix a dokumentumok témasúlyainak (\mathbf{W}) és a témák szósúlyainak (\mathbf{H}) szorzataként közelíthető."><img src="../figures/build/13-nmf.svg" class="img-fluid figure-img" style="width:85.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nmf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;13.3.. A nemnegatív mátrixfaktorizáció: a dokumentum–szó mátrix a dokumentumok témasúlyainak (<span class="math inline">\(\mathbf{W}\)</span>) és a témák szósúlyainak (<span class="math inline">\(\mathbf{H}\)</span>) szorzataként közelíthető.
+</figcaption>
+</figure>
+</div>
+<p>A <strong>látens Dirichlet-allokáció</strong> (LDA) <span class="citation" data-cites="blei2003">(<a href="../references.html#ref-blei2003" role="doc-biblioref">Blei és mtsai., 2003</a>)</span> generatív valószínűségi modell (<a href="#fig-lda" class="quarto-xref"><span>13.4</span></a>. ábra). Feltételezi, hogy minden téma egy <span class="math inline">\(\boldsymbol\beta_k\)</span> szóeloszlás, minden dokumentum egy <span class="math inline">\(\boldsymbol\theta_d\)</span> témaeloszlás, és a dokumentum minden szavát úgy „írjuk le”, hogy előbb a <span class="math inline">\(\boldsymbol\theta_d\)</span> szerint témát, majd a téma szóeloszlása szerint szót húzunk. A megfigyelt szavakból a rejtett téma- és szóeloszlásokat variációs Bayes-módszerrel vagy Gibbs-mintavétellel becsüljük. A témák számát (<span class="math inline">\(k\)</span>) mindhárom módszernél nekünk kell megadnunk; a választást a témák értelmezhetősége, a visszatartott dokumentumokon mért illeszkedés és a felhasználási cél együtt határozza meg.</p>
+<div id="fig-lda" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-lda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/13-lda.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="ábra&nbsp;13.4.. A látens Dirichlet-allokáció grafikus modellje (lemezjelöléssel). A satírozott csúcs a megfigyelt szó; a lemezek a dokumentumokon (D), a dokumentumok szavain (N_d) és a témákon (K) való ismétlést jelölik."><img src="../figures/build/13-lda.svg" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;13.4.. A látens Dirichlet-allokáció grafikus modellje (lemezjelöléssel). A satírozott csúcs a megfigyelt szó; a lemezek a dokumentumokon (<span class="math inline">\(D\)</span>), a dokumentumok szavain (<span class="math inline">\(N_d\)</span>) és a témákon (<span class="math inline">\(K\)</span>) való ismétlést jelölik.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-beagyazas" class="level2" data-number="13.5">
+<h2 data-number="13.5" class="anchored" data-anchor-id="sec-beagyazas"><span class="header-section-number">13.5</span> Szóbeágyazások</h2>
+<p>A szózsákmodellben minden szó külön dimenzió: a <em>drága</em> és a <em>túlárazott</em> ugyanolyan távol van egymástól, mint a <em>drága</em> és a <em>futár</em>. A <strong>disztribúciós hipotézis</strong> <span class="citation" data-cites="harris1954">(<a href="../references.html#ref-harris1954" role="doc-biblioref">Harris, 1954</a>)</span> szerint a hasonló jelentésű szavak hasonló környezetben fordulnak elő; erre épülnek a <strong>szóbeágyazások</strong>, amelyek minden szót egy sűrű, néhány száz dimenziós vektorral írnak le úgy, hogy a hasonló környezetű szavak vektorai közel legyenek.</p>
+<p>Klasszikus változatuk a szó–környezet együttelőfordulási mátrixból indul. A <strong>pozitív pontonkénti kölcsönös információ</strong> (PPMI) azt méri, mennyivel gyakrabban fordul elő együtt két szó, mint függetlenség esetén:</p>
+<p><span id="eq-ppmi"><span class="math display">\[
+\mathrm{PPMI}(w, c) = \max\Bigl(0,\; \ln\frac{P(w, c)}{P(w)\,P(c)}\Bigr) ,
+\tag{13.5}\]</span></span></p>
+<p>és a PPMI-mátrix csonkolt SVD-je adja a beágyazást. A <strong>word2vec</strong> <span class="citation" data-cites="mikolov2013">(<a href="../references.html#ref-mikolov2013" role="doc-biblioref">Mikolov és mtsai., 2013</a>)</span> egy sekély neurális hálózattal, a szavak környezetének előrejelzésével tanulja a vektorokat; <span class="citation" data-cites="levy2014">Levy &amp; Goldberg (<a href="../references.html#ref-levy2014" role="doc-biblioref">2014</a>)</span> megmutatta, hogy negatív mintavétellel ez lényegében egy eltolt PMI-mátrix implicit faktorizációja – a két megközelítés tehát közeli rokon. A szóbeágyazások nagy korpuszt igényelnek; előre tanított magyar vektorok nyilvánosan elérhetők, és a HuSpaCy modelljei is tartalmaznak ilyeneket. A szövegkörnyezettől függő (kontextuális) reprezentációk – a transzformer alapú nyelvi modellek – már túlmutatnak a könyv keretein.</p>
+</section>
+<section id="sec-kinyeres" class="level2" data-number="13.6">
+<h2 data-number="13.6" class="anchored" data-anchor-id="sec-kinyeres"><span class="header-section-number">13.6</span> Kulcsszavak és összefoglalás</h2>
+<p>A <strong>kulcsszó-kinyerés</strong> legegyszerűbb módja a dokumentum (vagy dokumentumcsoport) legnagyobb TF-IDF súlyú szavainak kiválasztása. A <strong>TextRank</strong> <span class="citation" data-cites="mihalcea2004">(<a href="../references.html#ref-mihalcea2004" role="doc-biblioref">Mihalcea &amp; Tarau, 2004</a>)</span> gráfalapú módszer: a szavakat (kulcsszó-kinyeréshez) vagy a mondatokat (kivonatoló összefoglaláshoz) egy gráf csúcsaiként, a hasonlóságukat élsúlyként kezeli, és a csúcsok fontosságát a PageRank-algoritmushoz hasonlóan, iteratívan számolja:</p>
+<p><span id="eq-textrank"><span class="math display">\[
+S(v_i) = (1 - d) + d\sum_{v_j\in\mathrm{Be}(v_i)}\frac{w_{ji}}{\sum_{v_k\in\mathrm{Ki}(v_j)}w_{jk}}\,S(v_j),
+\qquad d = 0{,}85 .
+\tag{13.6}\]</span></span></p>
+<p>Egy mondat annál fontosabb, minél több más fontos mondathoz hasonlít; a legmagasabb pontszámú mondatok együtt a szöveg(csoport) „legjellemzőbb” kivonatát adják. A kivonatoló összefoglalás mindig a forrás mondatait adja vissza, ezért nem „talál ki” új állításokat – ez a megbízhatóság szempontjából előny.</p>
+</section>
+<section id="sec-szoveg-gyakorlat" class="level2" data-number="13.7">
+<h2 data-number="13.7" class="anchored" data-anchor-id="sec-szoveg-gyakorlat"><span class="header-section-number">13.7</span> Gyakorlat: vásárlói vélemények és műszaknapló</h2>
+<section id="a-vélemények-előfeldolgozása-és-szókincse" class="level3" data-number="13.7.1">
+<h3 data-number="13.7.1" class="anchored" data-anchor-id="a-vélemények-előfeldolgozása-és-szókincse"><span class="header-section-number">13.7.1</span> A vélemények előfeldolgozása és szókincse</h3>
+<div class="eset-uzleti">
+<p>A PannonShop 3000 vásárlói véleményt gyűjtött; mindegyikhez csillagos értékelés is tartozik, amelyből hangulatcímkét képzünk (4–5 csillag: pozitív, 3: semleges, 1–2: negatív). A cél kettős: egyrészt egy osztályozó, amely a csillag nélküli szöveges visszajelzéseket (e-maileket, közösségi bejegyzéseket) is hangulat szerint tudja besorolni, másrészt annak feltárása, miről szólnak a vélemények.</p>
+</div>
+<div id="93f44c3a" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> ab.load_shop().reviews</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(r.Hangulat.value_counts().to_dict())</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>r[[<span class="st">"Csillag"</span>, <span class="st">"Szoveg"</span>]].sample(<span class="dv">5</span>, random_state<span class="op">=</span><span class="dv">3</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'pozitív': 1781, 'semleges': 633, 'negatív': 586}</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Csillag</th>
+<th data-quarto-table-cell-role="th">Szoveg</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">1283</th>
+<td>2</td>
+<td>Rossz minőségű az adventi koszorú. Csalódott vagyok.</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">250</th>
+<td>2</td>
+<td>A fazékkészlet egyáltalán nem olyan, mint a leírásban. Túl drága ahhoz képest, amit ny...</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2153</th>
+<td>4</td>
+<td>Átlagos kávébab 1 kg, megfelel a célnak. Másnapra megérkezett a csomag. Öt csillag.</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2786</th>
+<td>4</td>
+<td>A zöld tea 50 filter pontosan olyan, mint a képen. Az ára elfogadható. Biztosan rendel...</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">632</th>
+<td>3</td>
+<td>A fekete tea 50 filter két hét után elromlott. Az ügyfélszolgálat gyorsan és kedvesen ...</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="c0fbae93" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>STOP <span class="op">=</span> <span class="bu">set</span>(<span class="st">"a az és is de hogy volt vagyok mint egy meg már csak még ez azt ami amit"</span>.split())</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tokenizal(szoveg):</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Kisbetűsítés, szavakra bontás és stopszószűrés (a "nem" tagadószót megtartjuk)."""</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [w <span class="cf">for</span> w <span class="kw">in</span> re.findall(<span class="vs">r"</span><span class="pp">[a-záéíóöőúüű]</span><span class="op">+</span><span class="vs">"</span>, szoveg.lower()) <span class="cf">if</span> w <span class="kw">not</span> <span class="kw">in</span> STOP <span class="kw">and</span> <span class="bu">len</span>(w) <span class="op">&gt;</span> <span class="dv">1</span>]</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>gyak <span class="op">=</span> Counter(w <span class="cf">for</span> t <span class="kw">in</span> r.Szoveg <span class="cf">for</span> w <span class="kw">in</span> tokenizal(t))</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">sum</span>(gyak.values())<span class="sc">}</span><span class="ss"> szóelőfordulás, </span><span class="sc">{</span><span class="bu">len</span>(gyak)<span class="sc">}</span><span class="ss"> különböző szó (a szimulált korpusz sablonos, ezért szűk a szókincse); "</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"a 10 leggyakoribb: </span><span class="sc">{</span><span class="st">', '</span><span class="sc">.</span>join(w <span class="cf">for</span> w, _ <span class="kw">in</span> gyak.most_common(<span class="dv">10</span>))<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>29544 szóelőfordulás, 188 különböző szó (a szimulált korpusz sablonos, ezért szűk a szókincse); a 10 leggyakoribb: nem, szállítás, minőségű, rendben, biztosan, rendelek, öt, csillag, ajánlani, tudom</code></pre>
+</div>
+</div>
+<div id="cell-fig-zipf" class="cell" data-fig-height="3" data-fig-width="5" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> np.array(<span class="bu">sorted</span>(gyak.values(), reverse<span class="op">=</span><span class="va">True</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>rang <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(f) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>ax.loglog(rang, f, color<span class="op">=</span>ab.PALETTE[<span class="dv">0</span>], lw<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="st">"megfigyelt"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>ax.loglog(rang, f[<span class="dv">0</span>] <span class="op">/</span> rang, color<span class="op">=</span>ab.PALETTE[<span class="dv">1</span>], ls<span class="op">=</span><span class="st">"--"</span>, lw<span class="op">=</span><span class="fl">1.2</span>, label<span class="op">=</span><span class="st">"$</span><span class="ch">\\</span><span class="st">propto 1/r$"</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"rangszám $r$"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"gyakoriság"</span>)<span class="op">;</span> ax.legend()</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-zipf" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-zipf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="13-szovegbanyaszat_files/figure-html/fig-zipf-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="ábra&nbsp;13.5.. A vélemények szógyakoriságai a rangszám függvényében, log–log skálán. A szaggatott vonal az 1/r-rel arányos Zipf-törvény. A sablonos, kis szókincsű korpuszban az eloszlás vége gyorsabban esik, mint a természetes szövegekben."><img src="13-szovegbanyaszat_files/figure-html/fig-zipf-output-1.png" width="693" height="406" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-zipf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;13.5.. A vélemények szógyakoriságai a rangszám függvényében, log–log skálán. A szaggatott vonal az <span class="math inline">\(1/r\)</span>-rel arányos Zipf-törvény. A sablonos, kis szókincsű korpuszban az eloszlás vége gyorsabban esik, mint a természetes szövegekben.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="hangulatosztályozás" class="level3" data-number="13.7.2">
+<h3 data-number="13.7.2" class="anchored" data-anchor-id="hangulatosztályozás"><span class="header-section-number">13.7.2</span> Hangulatosztályozás</h3>
+<p>Három reprezentációt (szó-unigramok, szó-uni- és bigramok, karakter-3–5-gramok) és három osztályozót (multinomiális naiv Bayes, logisztikus regresszió, lineáris SVM) hasonlítunk össze rétegzett ötszörös keresztvalidációval. Mivel a három osztály aránya eltérő, a makró-F1 értéket (az osztályonkénti F1 értékek átlagát) használjuk.</p>
+<div id="0bfd4027" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer, CountVectorizer</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.naive_bayes <span class="im">import</span> MultinomialNB</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> LinearSVC</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> StratifiedKFold, cross_val_score</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> r.Szoveg, r.Hangulat</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>reprezentaciok <span class="op">=</span> {</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"szó (1)"</span>: <span class="kw">lambda</span>: TfidfVectorizer(tokenizer<span class="op">=</span>tokenizal, token_pattern<span class="op">=</span><span class="va">None</span>, min_df<span class="op">=</span><span class="dv">2</span>),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"szó (1–2)"</span>: <span class="kw">lambda</span>: TfidfVectorizer(tokenizer<span class="op">=</span>tokenizal, token_pattern<span class="op">=</span><span class="va">None</span>, ngram_range<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">2</span>), min_df<span class="op">=</span><span class="dv">2</span>),</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"karakter (3–5)"</span>: <span class="kw">lambda</span>: TfidfVectorizer(analyzer<span class="op">=</span><span class="st">"char_wb"</span>, ngram_range<span class="op">=</span>(<span class="dv">3</span>, <span class="dv">5</span>), min_df<span class="op">=</span><span class="dv">2</span>),</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>osztalyozok <span class="op">=</span> {<span class="st">"naiv Bayes"</span>: <span class="kw">lambda</span>: MultinomialNB(),</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>               <span class="st">"logisztikus regresszió"</span>: <span class="kw">lambda</span>: LogisticRegression(max_iter<span class="op">=</span><span class="dv">3000</span>, C<span class="op">=</span><span class="dv">5</span>),</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>               <span class="st">"lineáris SVM"</span>: <span class="kw">lambda</span>: LinearSVC(C<span class="op">=</span><span class="fl">0.5</span>)}</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({onev: {rnev: cross_val_score(make_pipeline(rep(), osz()), X, y, cv<span class="op">=</span>cv, scoring<span class="op">=</span><span class="st">"f1_macro"</span>).mean()</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>                     <span class="cf">for</span> rnev, rep <span class="kw">in</span> reprezentaciok.items()} <span class="cf">for</span> onev, osz <span class="kw">in</span> osztalyozok.items()}).<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">naiv Bayes</th>
+<th data-quarto-table-cell-role="th">logisztikus regresszió</th>
+<th data-quarto-table-cell-role="th">lineáris SVM</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">szó (1)</th>
+<td>0.854</td>
+<td>0.903</td>
+<td>0.896</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">szó (1–2)</th>
+<td>0.858</td>
+<td>0.893</td>
+<td>0.888</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">karakter (3–5)</th>
+<td>0.862</td>
+<td>0.902</td>
+<td>0.898</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>A lineáris modellek a naiv Bayesnél pontosabbak, a három reprezentáció között viszont nincs érdemi különbség: ebben a gondosan megfogalmazott, helyesen írt korpuszban a szóalapú reprezentáció is jól működik. Melyik osztályt tévesztik leginkább, és mely szavak alapján dönt a modell?</p>
+<div id="166c2506" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>Xtr, Xte, ytr, yte <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.3</span>, stratify<span class="op">=</span>y, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>vec <span class="op">=</span> TfidfVectorizer(tokenizer<span class="op">=</span>tokenizal, token_pattern<span class="op">=</span><span class="va">None</span>, min_df<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>lr <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">3000</span>, C<span class="op">=</span><span class="dv">5</span>).fit(vec.fit_transform(Xtr), ytr)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(yte, lr.predict(vec.transform(Xte)), digits<span class="op">=</span><span class="dv">3</span>))</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>szavak <span class="op">=</span> np.array(vec.get_feature_names_out())</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({c: szavak[np.argsort(<span class="op">-</span>lr.coef_[i])[:<span class="dv">8</span>]] <span class="cf">for</span> i, c <span class="kw">in</span> <span class="bu">enumerate</span>(lr.classes_)})</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              precision    recall  f1-score   support
+
+     negatív      0.930     0.903     0.916       176
+     pozitív      0.951     0.976     0.963       534
+    semleges      0.834     0.795     0.814       190
+
+    accuracy                          0.923       900
+   macro avg      0.905     0.891     0.898       900
+weighted avg      0.922     0.923     0.922       900
+</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">negatív</th>
+<th data-quarto-table-cell-role="th">pozitív</th>
+<th data-quarto-table-cell-role="th">semleges</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>csalódott</td>
+<td>csillag</td>
+<td>mennyire</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>ajánlom</td>
+<td>öt</td>
+<td>majd</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>csalódás</td>
+<td>tudom</td>
+<td>meglátjuk</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>soha</td>
+<td>ajánlani</td>
+<td>tartós</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>többet</td>
+<td>biztosan</td>
+<td>közepes</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>nem</td>
+<td>rendelek</td>
+<td>turmixgép</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>rossz</td>
+<td>kiváló</td>
+<td>vágódeszka</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">7</th>
+<td>rendesen</td>
+<td>hibátlanul</td>
+<td>kenyérpirító</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="eset-uzleti">
+<p>A semleges osztály a legnehezebb: a háromcsillagos vélemények vegyes tartalmúak – dicsérik az árat, de panaszkodnak a szállításra –, és a csillagszám maga is zajos címke. A legfontosabb szavak jól értelmezhetők: a pozitív osztály mellett a lelkes zárómondatok és a minőséget dicsérő szavak, a negatív mellett a csalódást, a meghibásodást és a „nem ajánlom” típusú kifejezéseket jelző szavak szólnak. Az együtthatók vizsgálata egyben ellenőrzés is – és itt rögtön talál is valamit: a semleges osztály mellett terméknevek (<em>turmixgép</em>, <em>vágódeszka</em>, <em>kenyérpirító</em>) is nagy súlyt kapnak. Ezeknek a termékeknek a minősége közepes, ezért a véleményeik gyakrabban semlegesek; a modell tehát részben a termékre, nem a szöveg hangulatára tanult rá. Egy új termékcsaládra ez a tudás nem általánosítható, ezért a terméknevek kiszűrése vagy helyettesítése (például egy közös <em>TERMÉK</em> jelölővel) indokolt lehet.</p>
+</div>
+</section>
+<section id="miről-szólnak-a-vélemények-témák-mondatszinten" class="level3" data-number="13.7.3">
+<h3 data-number="13.7.3" class="anchored" data-anchor-id="miről-szólnak-a-vélemények-témák-mondatszinten"><span class="header-section-number">13.7.3</span> Miről szólnak a vélemények? Témák mondatszinten</h3>
+<p>Egy vélemény jellemzően több szempontot érint (a termék minőségét, a szállítást, az árat, az ügyfélszolgálatot), ezért a témákat mondatszinten keressük, NMF-fel.</p>
+<div id="79ab053d" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> NMF</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>mondatok <span class="op">=</span> [m.strip() <span class="cf">for</span> t <span class="kw">in</span> r.Szoveg <span class="cf">for</span> m <span class="kw">in</span> re.split(<span class="vs">r"</span><span class="kw">(</span><span class="fu">?&lt;</span><span class="vs">=</span><span class="pp">[.!?]</span><span class="kw">)</span><span class="dv">\s</span><span class="op">+</span><span class="vs">"</span>, t) <span class="cf">if</span> m.strip()]</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>STOP_T <span class="op">=</span> STOP <span class="op">-</span> {<span class="st">"nem"</span>}</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>tok_t <span class="op">=</span> <span class="kw">lambda</span> s: [w <span class="cf">for</span> w <span class="kw">in</span> re.findall(<span class="vs">r"</span><span class="pp">[a-záéíóöőúüű]</span><span class="op">+</span><span class="vs">"</span>, s.lower()) <span class="cf">if</span> w <span class="kw">not</span> <span class="kw">in</span> STOP_T <span class="kw">and</span> <span class="bu">len</span>(w) <span class="op">&gt;</span> <span class="dv">1</span>]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>vec_t <span class="op">=</span> TfidfVectorizer(tokenizer<span class="op">=</span>tok_t, token_pattern<span class="op">=</span><span class="va">None</span>, min_df<span class="op">=</span><span class="dv">5</span>, max_df<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> vec_t.fit_transform(mondatok)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>nmf <span class="op">=</span> NMF(n_components<span class="op">=</span><span class="dv">8</span>, init<span class="op">=</span><span class="st">"nndsvda"</span>, random_state<span class="op">=</span><span class="dv">0</span>, max_iter<span class="op">=</span><span class="dv">800</span>).fit(M)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>voc <span class="op">=</span> np.array(vec_t.get_feature_names_out())</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(mondatok)<span class="sc">}</span><span class="ss"> mondat, </span><span class="sc">{</span>M<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> szó"</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({<span class="ss">f"</span><span class="sc">{</span>k <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">. téma"</span>: voc[np.argsort(<span class="op">-</span>c)[:<span class="dv">7</span>]] <span class="cf">for</span> k, c <span class="kw">in</span> <span class="bu">enumerate</span>(nmf.components_)}).T <span class="op">\</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  .<span class="bu">apply</span>(<span class="kw">lambda</span> s: <span class="st">", "</span>.join(s), axis<span class="op">=</span><span class="dv">1</span>).rename(<span class="st">"legnagyobb súlyú szavak"</span>).to_frame()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>8422 mondat, 188 szó</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">legnagyobb súlyú szavak</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">1. téma</th>
+<td>biztosan, rendelek, minőségű, nagyon, kiváló, közepes, kedvező</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2. téma</th>
+<td>csillag, öt, ára, elfogadható, érkezett, gondos, csomagolásban</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">3. téma</th>
+<td>ajánlani, tudom, ára, elfogadható, érkezett, gondos, csomagolásban</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">4. téma</th>
+<td>szállítás, gyors, időn, belül, megígért, megtörtént, hetet</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">5. téma</th>
+<td>nem, olcsó, drága, ajánlom, különleges, van, időben</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">6. téma</th>
+<td>mennyire, majd, meglátjuk, tartós, érkezett, csomagolásban, gondos</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">7. téma</th>
+<td>kihozta, futár, rendben, különleges, van, ki, jött</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">8. téma</th>
+<td>csomag, megérkezett, másnapra, érkezett, gondos, csomagolásban, sérült</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="eset-uzleti">
+<p>A témák többsége egyértelműen azonosítható szemponthoz köthető: a szállítás gyorsasága és késése, a futár, a csomagolás és a sérült doboz, az ár („drága”, „olcsó”, „megéri”), a tartósság, illetve az ajánló vagy elutasító zárómondatok. Néhány téma keveredik – az NMF a gyakran együtt előforduló mondatrészleteket is egy témába vonhatja –, ezért a témák elnevezése és szükség esetén összevonása szakértői feladat. A témasúlyok (<span class="math inline">\(\mathbf{W}\)</span> mátrix) alapján ezután például az is követhető, hogyan változik a szállítási panaszok aránya hónapról hónapra.</p>
+</div>
+</section>
+<section id="szóbeágyazás-ppmi-mátrixból" class="level3" data-number="13.7.4">
+<h3 data-number="13.7.4" class="anchored" data-anchor-id="szóbeágyazás-ppmi-mátrixból"><span class="header-section-number">13.7.4</span> Szóbeágyazás PPMI-mátrixból</h3>
+<div id="d4f6593d" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> normalize</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>cv1 <span class="op">=</span> CountVectorizer(tokenizer<span class="op">=</span>tok_t, token_pattern<span class="op">=</span><span class="va">None</span>, min_df<span class="op">=</span><span class="dv">5</span>, binary<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> cv1.fit_transform(mondatok)                    <span class="co"># mondat–szó előfordulás (a környezet: a mondat)</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> np.array(cv1.get_feature_names_out())</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>C <span class="op">=</span> (B.T <span class="op">@</span> B).toarray().astype(<span class="bu">float</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>np.fill_diagonal(C, <span class="dv">0</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>osszes <span class="op">=</span> C.<span class="bu">sum</span>()</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>p_w <span class="op">=</span> C.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>) <span class="op">/</span> osszes</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> np.errstate(divide<span class="op">=</span><span class="st">"ignore"</span>):</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    pmi <span class="op">=</span> np.log((C <span class="op">/</span> osszes) <span class="op">/</span> np.outer(p_w, p_w))</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>ppmi <span class="op">=</span> np.where(np.isfinite(pmi) <span class="op">&amp;</span> (pmi <span class="op">&gt;</span> <span class="dv">0</span>), pmi, <span class="fl">0.0</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>U, S, _ <span class="op">=</span> np.linalg.svd(ppmi)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>E <span class="op">=</span> normalize(U[:, :<span class="dv">30</span>] <span class="op">*</span> np.sqrt(S[:<span class="dv">30</span>]))         <span class="co"># 30 dimenziós beágyazás</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> szomszedok(szo, k<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    i <span class="op">=</span> <span class="bu">int</span>(np.flatnonzero(v <span class="op">==</span> szo)[<span class="dv">0</span>])</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> E <span class="op">@</span> E[i]</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    legkozelebbi <span class="op">=</span> [j <span class="cf">for</span> j <span class="kw">in</span> np.argsort(<span class="op">-</span>h) <span class="cf">if</span> j <span class="op">!=</span> i][:k]</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">", "</span>.join(<span class="ss">f"</span><span class="sc">{</span>v[j]<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>h[j]<span class="sc">:.2f}</span><span class="ss">)"</span> <span class="cf">for</span> j <span class="kw">in</span> legkozelebbi)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>pd.Series({w: szomszedok(w) <span class="cf">for</span> w <span class="kw">in</span> [<span class="st">"szállítás"</span>, <span class="st">"drága"</span>, <span class="st">"kávéfőző"</span>, <span class="st">"futár"</span>]},</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>          name<span class="op">=</span><span class="st">"legközelebbi szavak (koszinusz)"</span>).to_frame()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">legközelebbi szavak (koszinusz)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">szállítás</th>
+<td>belül (1.00), hetet (1.00), időn (1.00), gyors (1.00), megígért (1.00)</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">drága</th>
+<td>nyújt (0.98), képest (0.98), túl (0.98), ahhoz (0.98), olcsó (0.82)</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">kávéfőző</th>
+<td>gép (0.96), kotyogós (0.96), fotóalbum (0.61), tollkészlet (0.55), jegyzettömb (0.42)</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">futár</th>
+<td>időben (0.97), jött (0.97), ki (0.97), kihozta (0.90), rendben (0.50)</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>A beágyazás jól mutatja a disztribúciós reprezentációk két arcát. A <em>drága</em> legközelebbi szomszédai között az <em>olcsó</em> is ott van – az ellentétes jelentésű szavak hasonló környezetben fordulnak elő, ezért a disztribúciós hasonlóság nem azonos a szinonímiával –, a <em>kávéfőző</em> szomszédai pedig más terméknevek, vagyis a beágyazás a szavak „szerepét” is megtanulta. Másrészt ebben a kis, sablonos korpuszban az ugyanabban a mondatfordulatban szereplő szavak szinte azonos vektort kapnak: valódi jelentésbeli hasonlóságok tanulásához sokkal nagyobb és változatosabb korpusz kell.</p>
+</section>
+<section id="a-panaszok-kivonatoló-összefoglalása" class="level3" data-number="13.7.5">
+<h3 data-number="13.7.5" class="anchored" data-anchor-id="a-panaszok-kivonatoló-összefoglalása"><span class="header-section-number">13.7.5</span> A panaszok kivonatoló összefoglalása</h3>
+<div id="af4a3412" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> networkx <span class="im">as</span> nx</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>negativ <span class="op">=</span> [m <span class="cf">for</span> t <span class="kw">in</span> r.loc[r.Hangulat <span class="op">==</span> <span class="st">"negatív"</span>, <span class="st">"Szoveg"</span>] <span class="cf">for</span> m <span class="kw">in</span> re.split(<span class="vs">r"</span><span class="kw">(</span><span class="fu">?&lt;</span><span class="vs">=</span><span class="pp">[.!?]</span><span class="kw">)</span><span class="dv">\s</span><span class="op">+</span><span class="vs">"</span>, t) <span class="cf">if</span> m.strip()]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>egyedi <span class="op">=</span> pd.Series(negativ).value_counts()</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>mondat_lista <span class="op">=</span> egyedi.index.tolist()</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>V <span class="op">=</span> TfidfVectorizer(analyzer<span class="op">=</span><span class="st">"char_wb"</span>, ngram_range<span class="op">=</span>(<span class="dv">3</span>, <span class="dv">5</span>)).fit_transform(mondat_lista)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>S_hasonl <span class="op">=</span> (V <span class="op">@</span> V.T).toarray()</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>np.fill_diagonal(S_hasonl, <span class="dv">0</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>G <span class="op">=</span> nx.from_numpy_array(S_hasonl <span class="op">*</span> egyedi.to_numpy()[<span class="va">None</span>, :])   <span class="co"># a gyakori mondatok súlyosabbak</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>pr <span class="op">=</span> nx.pagerank(G, alpha<span class="op">=</span><span class="fl">0.85</span>, weight<span class="op">=</span><span class="st">"weight"</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>legjobb <span class="op">=</span> <span class="bu">sorted</span>(pr, key<span class="op">=</span>pr.get, reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">5</span>]</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({<span class="st">"mondat"</span>: [mondat_lista[i] <span class="cf">for</span> i <span class="kw">in</span> legjobb], <span class="st">"előfordulás"</span>: [egyedi.iloc[i] <span class="cf">for</span> i <span class="kw">in</span> legjobb],</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>              <span class="st">"TextRank-pontszám"</span>: [<span class="bu">round</span>(pr[i], <span class="dv">4</span>) <span class="cf">for</span> i <span class="kw">in</span> legjobb]})</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">mondat</th>
+<th data-quarto-table-cell-role="th">előfordulás</th>
+<th data-quarto-table-cell-role="th">TextRank-pontszám</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Csalódott vagyok.</td>
+<td>162</td>
+<td>0.0309</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Nem ajánlom.</td>
+<td>138</td>
+<td>0.0205</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>A futár rendben kihozta.</td>
+<td>60</td>
+<td>0.0144</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Nem olcsó, de nem is drága.</td>
+<td>55</td>
+<td>0.0130</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Az asztali futó egyáltalán nem olyan, mint a leírásban.</td>
+<td>11</td>
+<td>0.0100</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="eset-uzleti">
+<p>A legmagasabb pontszámot az elutasító zárómondatok kapják – ezek a negatív vélemények közös, leggyakoribb elemei –, utánuk semleges szállítási és árral kapcsolatos mondatok, majd egy minőségi kifogás következik. A TextRank a legközpontibb, a többihez leginkább hasonló mondatokat emeli ki, amelyek nem feltétlenül a leginformatívabbak. A gyakorlatban ezért a kivonatot szűrik (például a zárómondatokat vagy a semleges hangulatú mondatokat kizárva), vagy témánként – a fenti NMF-témák szerint csoportosítva – készítik el. Mivel a módszer a forrás mondatait idézi, a kivonat minden állítása visszakereshető.</p>
+</div>
+</section>
+<section id="szakmai-szöveg-a-műszaknapló" class="level3" data-number="13.7.6">
+<h3 data-number="13.7.6" class="anchored" data-anchor-id="szakmai-szöveg-a-műszaknapló"><span class="header-section-number">13.7.6</span> Szakmai szöveg: a műszaknapló</h3>
+<div class="eset-mernoki">
+<p>A Pannon üzem kezelői minden műszakban rövid, szabad szöveges bejegyzéseket írnak a műszaknaplóba. A bejegyzések stílusa tipikus: rövidítések (HV = hűtővíz, betáp, konc.), elírások, hiányzó ékezetek. A szakmai szövegek (karbantartási jegyek, műszaknaplók) elemzése külön kihívás, mert a nyelvi eszközláncokat általános szövegekre fejlesztették; erre a problémára a szakirodalom a <em>technikai nyelvfeldolgozás</em> (technical language processing) elnevezést használja <span class="citation" data-cites="brundage2021">(<a href="../references.html#ref-brundage2021" role="doc-biblioref">Brundage és mtsai., 2021</a>)</span>.</p>
+</div>
+<div id="06f07cbe" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>naplo <span class="op">=</span> ab.load_shift_log()</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(naplo)<span class="sc">}</span><span class="ss"> bejegyzés; esemény szerinti megoszlás (csak az értékeléshez): </span><span class="sc">{</span>naplo<span class="sc">.</span>esemeny<span class="sc">.</span>value_counts()<span class="sc">.</span>to_dict()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>naplo[[<span class="st">"ido"</span>, <span class="st">"muszak"</span>, <span class="st">"szoveg"</span>]].sample(<span class="dv">6</span>, random_state<span class="op">=</span><span class="dv">5</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>426 bejegyzés; esemény szerinti megoszlás (csak az értékeléshez): {'rutin': 373, 'szenzor_drift': 18, 'szelep_akadas': 12, 'betap_zavar': 8, 'hutoviz_kieses': 8, 'tisztitas': 7}</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">ido</th>
+<th data-quarto-table-cell-role="th">muszak</th>
+<th data-quarto-table-cell-role="th">szoveg</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">139</th>
+<td>2025-05-03 13:34:00</td>
+<td>délelőtt</td>
+<td>napi bejárás megvolt, rendben</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">351</th>
+<td>2025-10-29 15:56:00</td>
+<td>délután</td>
+<td>T mérés gyanús, nyomással nem stimmel</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">366</th>
+<td>2025-11-08 13:18:00</td>
+<td>délelőtt</td>
+<td>szűrőcsere megtörtént</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">195</th>
+<td>2025-06-12 13:19:00</td>
+<td>délelőtt</td>
+<td>kenés elvégezve a keverőn</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">53</th>
+<td>2025-02-16 05:11:00</td>
+<td>éjszaka</td>
+<td>kevero rendben, zaj nincs</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">348</th>
+<td>2025-10-28 16:57:00</td>
+<td>délután</td>
+<td>hőmérő elmászott? kézi méréssel eltér</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Első feladatként keressük meg a szelep akadozására utaló bejegyzéseket egy rövid keresőkifejezés alapján! Az egyik változat szavakra, a másik karakter-<span class="math inline">\(n\)</span>-gramokra épül.</p>
+<div id="7179af6e" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>kerdes <span class="op">=</span> <span class="st">"szelep akad"</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>eredm <span class="op">=</span> {}</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nev, vec <span class="kw">in</span> [(<span class="st">"szó"</span>, TfidfVectorizer()), (<span class="st">"karakter (2–4)"</span>, TfidfVectorizer(analyzer<span class="op">=</span><span class="st">"char_wb"</span>, ngram_range<span class="op">=</span>(<span class="dv">2</span>, <span class="dv">4</span>)))]:</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    Xn <span class="op">=</span> vec.fit_transform(naplo.szoveg)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> (Xn <span class="op">@</span> vec.transform([kerdes]).T).toarray().ravel()</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    talalat <span class="op">=</span> np.argsort(<span class="op">-</span>h)[:<span class="dv">10</span>]</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    eredm[nev] <span class="op">=</span> {<span class="st">"találatok (első 10)"</span>: <span class="st">", "</span>.join(naplo.esemeny.iloc[talalat].<span class="bu">str</span>.replace(<span class="st">"szelep_akadas"</span>, <span class="st">"SZELEP"</span>)),</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"pontosság@10"</span>: (naplo.esemeny.iloc[talalat] <span class="op">==</span> <span class="st">"szelep_akadas"</span>).mean()}</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(eredm).T</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">találatok (első 10)</th>
+<th data-quarto-table-cell-role="th">pontosság@10</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">szó</th>
+<td>SZELEP, SZELEP, SZELEP, SZELEP, SZELEP, SZELEP, SZELEP, rutin, rutin, rutin</td>
+<td>0.7</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">karakter (2–4)</th>
+<td>SZELEP, SZELEP, SZELEP, SZELEP, SZELEP, SZELEP, SZELEP, SZELEP, SZELEP, SZELEP</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Második feladatként az első félév bejegyzéseit – amelyeket utólag, a hibajegyek alapján eseménytípus szerint felcímkéztek – tanítóhalmaznak használjuk, és a második félév bejegyzéseit soroljuk be automatikusan.</p>
+<div id="547614f7" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> f1_score</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>tanit <span class="op">=</span> (naplo.ido <span class="op">&lt;</span> <span class="st">"2025-07-01"</span>).to_numpy()</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>sor <span class="op">=</span> {}</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nev, vec <span class="kw">in</span> [(<span class="st">"szó"</span>, TfidfVectorizer()), (<span class="st">"karakter (2–4)"</span>, TfidfVectorizer(analyzer<span class="op">=</span><span class="st">"char_wb"</span>, ngram_range<span class="op">=</span>(<span class="dv">2</span>, <span class="dv">4</span>)))]:</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    Xn <span class="op">=</span> vec.fit_transform(naplo.szoveg)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    pred <span class="op">=</span> LinearSVC(C<span class="op">=</span><span class="fl">1.0</span>, class_weight<span class="op">=</span><span class="st">"balanced"</span>).fit(Xn[tanit], naplo.esemeny[tanit]).predict(Xn[<span class="op">~</span>tanit])</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    valos <span class="op">=</span> naplo.esemeny[<span class="op">~</span>tanit].to_numpy()</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    sor[nev] <span class="op">=</span> {<span class="st">"makró-F1"</span>: f1_score(valos, pred, average<span class="op">=</span><span class="st">"macro"</span>)}</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    sor[nev].update({c: np.mean(pred[valos <span class="op">==</span> c] <span class="op">==</span> c) <span class="cf">for</span> c <span class="kw">in</span> [<span class="st">"hutoviz_kieses"</span>, <span class="st">"szelep_akadas"</span>, <span class="st">"betap_zavar"</span>, <span class="st">"szenzor_drift"</span>, <span class="st">"tisztitas"</span>]})</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(sor).T.<span class="bu">round</span>(<span class="dv">2</span>).rename_axis(<span class="st">"2. félév (felidézés)"</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">makró-F1</th>
+<th data-quarto-table-cell-role="th">hutoviz_kieses</th>
+<th data-quarto-table-cell-role="th">szelep_akadas</th>
+<th data-quarto-table-cell-role="th">betap_zavar</th>
+<th data-quarto-table-cell-role="th">szenzor_drift</th>
+<th data-quarto-table-cell-role="th">tisztitas</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2. félév (felidézés)</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">szó</th>
+<td>0.64</td>
+<td>0.2</td>
+<td>0.5</td>
+<td>0.25</td>
+<td>0.50</td>
+<td>0.75</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">karakter (2–4)</th>
+<td>0.81</td>
+<td>0.2</td>
+<td>1.0</td>
+<td>0.75</td>
+<td>0.75</td>
+<td>1.00</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Végül vizsgáljuk meg, felismerhetők-e címkék nélkül az eseménytípusok: a rutinbejegyzések kiszűrése után klaszterezzük a rendkívüli bejegyzéseket!</p>
+<div id="7d5be2d6" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> adjusted_rand_score</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>rendkivuli <span class="op">=</span> naplo[naplo.esemeny <span class="op">!=</span> <span class="st">"rutin"</span>].reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>sor <span class="op">=</span> {}</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nev, vec <span class="kw">in</span> [(<span class="st">"szó"</span>, TfidfVectorizer()), (<span class="st">"karakter (3–5)"</span>, TfidfVectorizer(analyzer<span class="op">=</span><span class="st">"char_wb"</span>, ngram_range<span class="op">=</span>(<span class="dv">3</span>, <span class="dv">5</span>)))]:</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    Xr <span class="op">=</span> vec.fit_transform(rendkivuli.szoveg)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    cimke <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">5</span>, n_init<span class="op">=</span><span class="dv">50</span>, random_state<span class="op">=</span><span class="dv">0</span>).fit_predict(Xr)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    sor[nev] <span class="op">=</span> adjusted_rand_score(rendkivuli.esemeny, cimke)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>pd.Series(sor, name<span class="op">=</span><span class="st">"korrigált Rand-index"</span>).<span class="bu">round</span>(<span class="dv">3</span>).to_frame()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">korrigált Rand-index</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">szó</th>
+<td>0.079</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">karakter (3–5)</th>
+<td>0.437</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="eset-mernoki">
+<p>A szakmai, „zajos” szövegeken a karakter-<span class="math inline">\(n\)</span>-gramok előnye egyértelmű: a keresés és az osztályozás is jobb velük, mert az ékezet nélküli és a rövidített alakok (<em>hutoviz</em> – <em>hűtővíz</em>, <em>betap</em> – <em>betáplálás</em>) is sok közös jellemzőn osztoznak. A címke nélküli klaszterezés ezzel szemben a karakter-<span class="math inline">\(n\)</span>-gramokkal is csak részben adja vissza az eseménytípusokat: a rövid bejegyzések kevés szót tartalmaznak, és ugyanazt a jelenséget a kezelők sokféleképpen írják le. A gyakorlatban ezért a két megközelítést kombinálják: a klaszterezés a szakértői címkézést segíti, a felcímkézett adatokon tanított osztályozó pedig a további bejegyzéseket sorolja be. A naplóbejegyzések és a <a href="11-anomaliak.html" class="quarto-xref"><span>11</span></a>. fejezet riasztásai együtt adnak teljes képet egy üzemzavarról – ezt a <a href="15-folyamatanalitika.html" class="quarto-xref"><span>15</span></a>. fejezetben hasznosítjuk.</p>
+</div>
+<div class="pe-app"><div class="pe-app-bar"><span>TF-IDF és koszinusz-hasonlóság: saját dokumentumokkal</span><a href="../apps/tfidf.html" target="_blank" rel="noopener">Megnyitás új lapon ↗</a></div><iframe src="../apps/tfidf.html" style="height:560px" loading="lazy" title="TF-IDF és koszinusz-hasonlóság: saját dokumentumokkal"></iframe></div>
+<div class="pe-badges"><a href="https://colab.research.google.com/github/ComplexSystemsIntelligence/adatbanyaszat/blob/main/notebooks/13-szovegbanyaszat.ipynb" target="_blank" rel="noopener">▶ Colab: 13. fejezet – szövegbányászat</a><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/notebooks/13-szovegbanyaszat.ipynb" target="_blank" rel="noopener">GitHub forrás</a></div>
+</section>
+</section>
+<section id="sec-szoveg-osszefoglalas" class="level2" data-number="13.8">
+<h2 data-number="13.8" class="anchored" data-anchor-id="sec-szoveg-osszefoglalas"><span class="header-section-number">13.8</span> Összefoglalás</h2>
+<ul>
+<li>A szövegbányászat a szöveget tokenekre bontja, normalizálja és szűri; a magyar nyelv gazdag toldalékolása miatt a lemmatizálás vagy a karakter-<span class="math inline">\(n\)</span>-gramok használata különösen fontos.</li>
+<li>A vektortér-modellben a dokumentumokat TF-IDF súlyozású, ritka vektorok írják le; hasonlóságukat a koszinusz méri.</li>
+<li>A szövegosztályozásban a lineáris modellek (logisztikus regresszió, lineáris SVM) erős, értelmezhető alapmódszerek; a multinomiális naiv Bayes gyors viszonyítási alap.</li>
+<li>A témamodellek (LSA, NMF, LDA) a dokumentumokat témák keverékeként írják le; a témák értelmezése és elnevezése szakértői feladat.</li>
+<li>A szóbeágyazások a disztribúciós hipotézisre épülnek; a PPMI-mátrix SVD-je és a word2vec közeli rokonok.</li>
+<li>A TextRank gráfalapú kivonatoló összefoglalást ad, amely a forrás mondatait idézi.</li>
+<li>A szakmai, zajos szövegeken (naplók, karbantartási jegyek) a karakterszintű reprezentációk robusztusabbak.</li>
+</ul>
+</section>
+<section id="ellenőrző-kérdések" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="ellenőrző-kérdések">Ellenőrző kérdések</h2>
+<ol type="1">
+<li>Miért nulla a minden dokumentumban előforduló szavak TF-IDF súlya?</li>
+<li>Miért független a koszinusz-hasonlóság a dokumentumok hosszától?</li>
+<li>Mi a különbség a szótövezés és a lemmatizálás között, és miért fontos ez a magyar nyelvben?</li>
+<li>Miért lehet hasznos megtartani a „nem” szót a stopszavak szűrésekor?</li>
+<li>Miben különbözik a szövegklaszterezés és a témamodellezés kimenete?</li>
+<li>Miért kerülhetnek közel egymáshoz az ellentétes jelentésű szavak egy disztribúciós beágyazásban?</li>
+<li>Milyen előnye van a kivonatoló összefoglalásnak a megfogalmazó (absztraktív) összefoglalással szemben?</li>
+</ol>
+</section>
+<section id="feladatok" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="feladatok">Feladatok</h2>
+<ol type="1">
+<li><strong>Kézi TF-IDF.</strong> Számítsa ki kézzel a kézi példa második és ötödik dokumentumának koszinusz-hasonlóságát! Hogyan változik az eredmény, ha a <code>scikit-learn</code> simított idf-jét használjuk?</li>
+<li><strong>Tagadás.</strong> Készítsen olyan reprezentációt, amely a „nem” szót a következő szóval összevonja (<em>nem_ajánlom</em>)! Javul-e a negatív osztály felismerése?</li>
+<li><strong>Témaszám.</strong> Illesszen NMF-et és LDA-t <span class="math inline">\(k = 4, 6, 8, 10, 12\)</span> témával a mondatokra, és értékelje a témák értelmezhetőségét! Melyik <span class="math inline">\(k\)</span> mellett különül el legjobban a szállítás, az ár és az ügyfélszolgálat?</li>
+<li><strong>Termékszintű elemzés.</strong> Számítsa ki termékenként a negatív vélemények arányát és a minőségi panaszok témasúlyát! Összhangban van-e a két mérőszám?</li>
+<li><strong>Napló és riasztások.</strong> Kapcsolja össze a műszaknapló bejegyzéseit a <a href="11-anomaliak.html" class="quarto-xref"><span>11</span></a>. fejezet riasztásaival (a bejegyzés előtti 2 órában fellépő riasztások)! Mely riasztástípusok járnak együtt az egyes bejegyzéstípusokkal?</li>
+</ol>
+</section>
+<section id="további-olvasmányok" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="további-olvasmányok">További olvasmányok</h2>
+<p>A szöveges információkeresés és -osztályozás klasszikus tankönyve <span class="citation" data-cites="manning2008">Manning és mtsai. (<a href="../references.html#ref-manning2008" role="doc-biblioref">2008</a>)</span>. A témamodellek alapcikkei <span class="citation" data-cites="deerwester1990">Deerwester és mtsai. (<a href="../references.html#ref-deerwester1990" role="doc-biblioref">1990</a>)</span>, <span class="citation" data-cites="lee1999">Lee &amp; Seung (<a href="../references.html#ref-lee1999" role="doc-biblioref">1999</a>)</span> és <span class="citation" data-cites="blei2003">Blei és mtsai. (<a href="../references.html#ref-blei2003" role="doc-biblioref">2003</a>)</span>; a szóbeágyazásokról <span class="citation" data-cites="mikolov2013">Mikolov és mtsai. (<a href="../references.html#ref-mikolov2013" role="doc-biblioref">2013</a>)</span> és <span class="citation" data-cites="levy2014">Levy &amp; Goldberg (<a href="../references.html#ref-levy2014" role="doc-biblioref">2014</a>)</span> ajánlott. A magyar nyelvű szövegfeldolgozás eszközeit <span class="citation" data-cites="orosz2023">Orosz és mtsai. (<a href="../references.html#ref-orosz2023" role="doc-biblioref">2023</a>)</span> mutatja be; a szakmai szövegek elemzésének sajátosságairól <span class="citation" data-cites="brundage2021">Brundage és mtsai. (<a href="../references.html#ref-brundage2021" role="doc-biblioref">2021</a>)</span> ad áttekintést.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-blei2003" class="csl-entry" role="listitem">
+Blei, D. M., Ng, A. Y., &amp; Jordan, M. I. (2003). Latent Dirichlet Allocation. <em>Journal of Machine Learning Research</em>, <em>3</em>, 993–1022.
+</div>
+<div id="ref-brundage2021" class="csl-entry" role="listitem">
+Brundage, M. P., Sexton, T., Hodkiewicz, M., Dima, A., &amp; Lukens, S. (2021). Technical Language Processing: Unlocking Maintenance Knowledge. <em>Manufacturing Letters</em>, <em>27</em>, 42–46. <a href="https://doi.org/10.1016/j.mfglet.2020.11.001">https://doi.org/10.1016/j.mfglet.2020.11.001</a>
+</div>
+<div id="ref-cavnar1994" class="csl-entry" role="listitem">
+Cavnar, W. B., &amp; Trenkle, J. M. (1994). N-Gram-Based Text Categorization. <em>Proceedings of the Third Annual Symposium on Document Analysis and Information Retrieval (SDAIR-94)</em>, 161–175.
+</div>
+<div id="ref-deerwester1990" class="csl-entry" role="listitem">
+Deerwester, S., Dumais, S. T., Furnas, G. W., Landauer, T. K., &amp; Harshman, R. (1990). Indexing by latent semantic analysis. <em>Journal of the American Society for Information Science</em>, <em>41</em>(6), 391–407.
+</div>
+<div id="ref-harris1954" class="csl-entry" role="listitem">
+Harris, Z. S. (1954). Distributional Structure. <em>Word</em>, <em>10</em>(2–3), 146–162. <a href="https://doi.org/10.1080/00437956.1954.11659520">https://doi.org/10.1080/00437956.1954.11659520</a>
+</div>
+<div id="ref-joachims1998" class="csl-entry" role="listitem">
+Joachims, T. (1998). Text categorization with Support Vector Machines: Learning with many relevant features. <em>Machine Learning: ECML-98, Lecture Notes in Computer Science</em>, <em>1398</em>, 137–142.
+</div>
+<div id="ref-lee1999" class="csl-entry" role="listitem">
+Lee, D. D., &amp; Seung, H. S. (1999). Learning the parts of objects by non-negative matrix factorization. <em>Nature</em>, <em>401</em>(6755), 788–791.
+</div>
+<div id="ref-levy2014" class="csl-entry" role="listitem">
+Levy, O., &amp; Goldberg, Y. (2014). Neural Word Embedding as Implicit Matrix Factorization. <em>Advances in Neural Information Processing Systems 27</em>, 2177–2185.
+</div>
+<div id="ref-manning2008" class="csl-entry" role="listitem">
+Manning, C. D., Raghavan, P., &amp; Schütze, H. (2008). <em>Introduction to Information Retrieval</em>. Cambridge University Press.
+</div>
+<div id="ref-mccallum1998" class="csl-entry" role="listitem">
+McCallum, A., &amp; Nigam, K. (1998). A Comparison of Event Models for Naive <span>B</span>ayes Text Classification. <em>AAAI-98 Workshop on Learning for Text Categorization</em>, 41–48.
+</div>
+<div id="ref-mihalcea2004" class="csl-entry" role="listitem">
+Mihalcea, R., &amp; Tarau, P. (2004). <span>TextRank</span>: Bringing Order into Texts. <em>Proceedings of the 2004 Conference on Empirical Methods in Natural Language Processing</em>, 404–411.
+</div>
+<div id="ref-mikolov2013" class="csl-entry" role="listitem">
+Mikolov, T., Chen, K., Corrado, G., &amp; Dean, J. (2013). <em>Efficient Estimation of Word Representations in Vector Space</em>. arXiv:1301.3781.
+</div>
+<div id="ref-orosz2023" class="csl-entry" role="listitem">
+Orosz, G., Szabó, G., Berkecz, P., Szántó, Z., &amp; Farkas, R. (2023). <em>Advancing <span>Hungarian</span> Text Processing with <span>HuSpaCy</span>: Efficient and Accurate <span>NLP</span> Pipelines</em>. arXiv:2308.12635.
+</div>
+<div id="ref-orosz2022" class="csl-entry" role="listitem">
+Orosz, G., Szántó, Z., Berkecz, P., Szabó, G., &amp; Farkas, R. (2022). <em><span>HuSpaCy</span>: an industrial-strength <span>Hungarian</span> natural language processing toolkit</em>. arXiv:2201.01956.
+</div>
+<div id="ref-porter1980" class="csl-entry" role="listitem">
+Porter, M. F. (1980). An algorithm for suffix stripping. <em>Program</em>, <em>14</em>(3), 130–137.
+</div>
+<div id="ref-salton1988" class="csl-entry" role="listitem">
+Salton, G., &amp; Buckley, C. (1988). Term-weighting approaches in automatic text retrieval. <em>Information Processing &amp; Management</em>, <em>24</em>(5), 513–523.
+</div>
+<div id="ref-sparckjones1972" class="csl-entry" role="listitem">
+Spärck Jones, K. (1972). A Statistical Interpretation of Term Specificity and Its Application in Retrieval. <em>Journal of Documentation</em>, <em>28</em>(1), 11–21. <a href="https://doi.org/10.1108/eb026526">https://doi.org/10.1108/eb026526</a>
+</div>
+<div id="ref-zipf1949" class="csl-entry" role="listitem">
+Zipf, G. K. (1949). <em>Human Behavior and the Principle of Least Effort</em>. Addison-Wesley.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script>
+/* Magyar ábra- és táblázatfelirat-sorrend a HTML-kiadásban: "ábra 1.1." -> "1.1. ábra." */
+document.addEventListener("DOMContentLoaded", function () {
+  const re = /^(ábra|táblázat|algoritmus)\s+([0-9A-Z]+(?:\.[0-9]+)*)\.?\s*/i;
+  document.querySelectorAll("figcaption, .figure-caption, caption, .quarto-float-caption").forEach(function (el) {
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const t = w.nextNode();
+    if (!t) return;
+    const m = t.nodeValue.match(re);
+    if (m) { t.nodeValue = t.nodeValue.replace(re, m[2] + ". " + m[1].toLowerCase() + ". "); }
+  });
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kimásolva!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kimásolva!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/complexsystemsintelligence\.github\.io\/adatbanyaszat\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/12-idosorok.html" class="pagination-link" aria-label="Idősorok elemzése">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Idősorok elemzése</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/14-ugyfelanalitika.html" class="pagination-link" aria-label="Ügyfélkapcsolat-menedzsment és ügyfélanalitika">
+        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Ügyfélkapcsolat-menedzsment és ügyfélanalitika</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/chapters/13-szovegbanyaszat.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/chapters/13-szovegbanyaszat.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>

@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="hu" xml:lang="hu"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>8&nbsp; Regresszió – Adatbányászat</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/09-osztalyozas.html" rel="next">
+<link href="../chapters/07-modellertekeles.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-18038207a4bfd50187eff2b2f0526436.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-27594bbe69c1d9222c0eb88c018d43c1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nincs találat",
+    "search-matching-documents-text": "találat",
+    "search-copy-link-title": "Keresési link másolása",
+    "search-hide-matches-text": "További találatok elrejtése",
+    "search-more-match-text": "további találat ebben a dokumentumban",
+    "search-more-matches-text": "további találat ebben a dokumentumban",
+    "search-clear-button-title": "Törlés",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Mégse",
+    "search-submit-button-title": "Keresés",
+    "search-label": "Keresés"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../assets/pannon-fonts.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Oldalsáv ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/07-modellertekeles.html">III. Prediktív modellezés</a></li><li class="breadcrumb-item"><a href="../chapters/08-regresszio.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regresszió</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Keresés" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Adatbányászat</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat" title="Forráskód" class="quarto-navigation-tool px-1" aria-label="Forráskód"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Letöltés" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Letöltés"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../adatbanyaszat.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Letöltés PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../adatbanyaszat.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Letöltés ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Keresés"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Előszó</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. Alapok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01-bevezetes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Adatból tudás: az adatbányászat folyamata</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02-adattarhazak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Adattárházak és analitikus adatkezelés</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-adatelokeszites.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Adatok előkészítése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-feltaro-elemzes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Feltáró adatelemzés és dimenziócsökkentés</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. Mintázatok felügyelet nélkül</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05-csoportositas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Csoportosítás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-asszociacios-szabalyok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Gyakori mintázatok és asszociációs szabályok</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. Prediktív modellezés</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07-modellertekeles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A felügyelt tanulás alapjai és a modellek értékelése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08-regresszio.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regresszió</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09-osztalyozas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Osztályozás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/10-melytanulas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Neurális hálózatok és mélytanulás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/11-anomaliak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Anomáliák és eltérések észlelése</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. Speciális adattípusok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/12-idosorok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Idősorok elemzése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/13-szovegbanyaszat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Szövegbányászat</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. Alkalmazások</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/14-ugyfelanalitika.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Ügyfélkapcsolat-menedzsment és ügyfélanalitika</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/15-folyamatanalitika.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Ipari folyamatanalitika</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Irodalomjegyzék</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Függelékek</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/a-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Python-alapok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/b-linearis-algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Lineáris algebra az adatbányászathoz</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/c-valoszinuseg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Valószínűségszámítási és statisztikai alapok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/d-adatsorok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Az adatsorok leírása</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/e-jelolesek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Jelölések</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/f-szojegyzek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Magyar–angol szójegyzék</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Tartalom</h2>
+   
+  <ul>
+  <li><a href="#sec-linearis" id="toc-sec-linearis" class="nav-link active" data-scroll-target="#sec-linearis"><span class="header-section-number">8.1</span> Lineáris regresszió</a>
+  <ul class="collapse">
+  <li><a href="#a-modell-és-a-legkisebb-négyzetek-elve" id="toc-a-modell-és-a-legkisebb-négyzetek-elve" class="nav-link" data-scroll-target="#a-modell-és-a-legkisebb-négyzetek-elve"><span class="header-section-number">8.1.1</span> A modell és a legkisebb négyzetek elve</a></li>
+  <li><a href="#geometriai-értelmezés" id="toc-geometriai-értelmezés" class="nav-link" data-scroll-target="#geometriai-értelmezés"><span class="header-section-number">8.1.2</span> Geometriai értelmezés</a></li>
+  <li><a href="#kézi-példa" id="toc-kézi-példa" class="nav-link" data-scroll-target="#kézi-példa"><span class="header-section-number">8.1.3</span> Kézi példa</a></li>
+  </ul></li>
+  <li><a href="#sec-diagnosztika" id="toc-sec-diagnosztika" class="nav-link" data-scroll-target="#sec-diagnosztika"><span class="header-section-number">8.2</span> A becslés tulajdonságai és a modelldiagnosztika</a>
+  <ul class="collapse">
+  <li><a href="#statisztikai-tulajdonságok" id="toc-statisztikai-tulajdonságok" class="nav-link" data-scroll-target="#statisztikai-tulajdonságok"><span class="header-section-number">8.2.1</span> Statisztikai tulajdonságok</a></li>
+  <li><a href="#diagnosztika" id="toc-diagnosztika" class="nav-link" data-scroll-target="#diagnosztika"><span class="header-section-number">8.2.2</span> Diagnosztika</a></li>
+  </ul></li>
+  <li><a href="#sec-regularizacio" id="toc-sec-regularizacio" class="nav-link" data-scroll-target="#sec-regularizacio"><span class="header-section-number">8.3</span> Regularizált regresszió</a>
+  <ul class="collapse">
+  <li><a href="#ridge-regresszió" id="toc-ridge-regresszió" class="nav-link" data-scroll-target="#ridge-regresszió"><span class="header-section-number">8.3.1</span> Ridge-regresszió</a></li>
+  <li><a href="#lasszó-és-elasztikus-háló" id="toc-lasszó-és-elasztikus-háló" class="nav-link" data-scroll-target="#lasszó-és-elasztikus-háló"><span class="header-section-number">8.3.2</span> Lasszó és elasztikus háló</a></li>
+  </ul></li>
+  <li><a href="#sec-nemlinearis-regresszio" id="toc-sec-nemlinearis-regresszio" class="nav-link" data-scroll-target="#sec-nemlinearis-regresszio"><span class="header-section-number">8.4</span> Nemlineáris regresszió</a>
+  <ul class="collapse">
+  <li><a href="#paramétereiben-lineáris-modellek-bázisfüggvények" id="toc-paramétereiben-lineáris-modellek-bázisfüggvények" class="nav-link" data-scroll-target="#paramétereiben-lineáris-modellek-bázisfüggvények"><span class="header-section-number">8.4.1</span> Paramétereiben lineáris modellek: bázisfüggvények</a></li>
+  <li><a href="#paramétereiben-nemlineáris-modellek" id="toc-paramétereiben-nemlineáris-modellek" class="nav-link" data-scroll-target="#paramétereiben-nemlineáris-modellek"><span class="header-section-number">8.4.2</span> Paramétereiben nemlineáris modellek</a></li>
+  </ul></li>
+  <li><a href="#sec-regresszio-gyakorlat" id="toc-sec-regresszio-gyakorlat" class="nav-link" data-scroll-target="#sec-regresszio-gyakorlat"><span class="header-section-number">8.5</span> Gyakorlat: lágy szenzor és vevőérték-előrejelzés</a>
+  <ul class="collapse">
+  <li><a href="#lágy-szenzor-a-termékkoncentrációra" id="toc-lágy-szenzor-a-termékkoncentrációra" class="nav-link" data-scroll-target="#lágy-szenzor-a-termékkoncentrációra"><span class="header-section-number">8.5.1</span> Lágy szenzor a termékkoncentrációra</a></li>
+  <li><a href="#a-vevők-jövőbeli-költése" id="toc-a-vevők-jövőbeli-költése" class="nav-link" data-scroll-target="#a-vevők-jövőbeli-költése"><span class="header-section-number">8.5.2</span> A vevők jövőbeli költése</a></li>
+  </ul></li>
+  <li><a href="#sec-regresszio-osszefoglalas" id="toc-sec-regresszio-osszefoglalas" class="nav-link" data-scroll-target="#sec-regresszio-osszefoglalas"><span class="header-section-number">8.6</span> Összefoglalás</a></li>
+  <li><a href="#ellenőrző-kérdések" id="toc-ellenőrző-kérdések" class="nav-link" data-scroll-target="#ellenőrző-kérdések">Ellenőrző kérdések</a></li>
+  <li><a href="#feladatok" id="toc-feladatok" class="nav-link" data-scroll-target="#feladatok">Feladatok</a></li>
+  <li><a href="#további-olvasmányok" id="toc-további-olvasmányok" class="nav-link" data-scroll-target="#további-olvasmányok">További olvasmányok</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/chapters/08-regresszio.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/chapters/08-regresszio.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/07-modellertekeles.html">III. Prediktív modellezés</a></li><li class="breadcrumb-item"><a href="../chapters/08-regresszio.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regresszió</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-regresszio" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regresszió</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="roadmap">
+<p>A regresszió egy folytonos célváltozó előrejelzése a magyarázó változókból. A fejezet a legkisebb négyzetes lineáris regresszió levezetésével és geometriai értelmezésével kezdődik, majd a becslés statisztikai tulajdonságait és a modelldiagnosztikát tárgyalja. Ezután a sok, egymással korrelált változó problémájára a regularizált regressziót (ridge, lasszó, elasztikus háló) mutatjuk be, végül a nemlineáris összefüggések leírására a bázisfüggvényes (polinomiális, spline-) regressziót és a paramétereiben nemlineáris, fizikai ismereteket is beépítő („szürkedoboz”) modelleket. A gyakorlati részben a Pannon üzem termékkoncentrációjára lágy szenzort építünk, és a PannonShop vevőinek jövőbeli költését jelezzük előre.</p>
+<p><strong>A fejezet végére az olvasó</strong> képes lesz a normálegyenleteket levezetni és megoldani; a regressziós együtthatókat és a diagnosztikai ábrákat értelmezni; a regularizációs paramétert keresztvalidációval megválasztani; és nemlineáris, akár fizikai alapú regressziós modellt illeszteni.</p>
+</div>
+<section id="sec-linearis" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="sec-linearis"><span class="header-section-number">8.1</span> Lineáris regresszió</h2>
+<section id="a-modell-és-a-legkisebb-négyzetek-elve" class="level3" data-number="8.1.1">
+<h3 data-number="8.1.1" class="anchored" data-anchor-id="a-modell-és-a-legkisebb-négyzetek-elve"><span class="header-section-number">8.1.1</span> A modell és a legkisebb négyzetek elve</h3>
+<p>A <strong>lineáris regressziós modell</strong> a célváltozót a magyarázó változók lineáris kombinációjaként írja le:</p>
+<p><span id="eq-linreg"><span class="math display">\[
+y_k = \theta_0 + \theta_1 x_{k1} + \dots + \theta_n x_{kn} + \varepsilon_k,
+\qquad k = 1,\dots,N,
+\tag{8.1}\]</span></span></p>
+<p>ahol <span class="math inline">\(\varepsilon_k\)</span> a modell által nem magyarázott hiba. Mátrixos alakban – az adatmátrixot egy csupa egyes oszloppal kiegészítve, hogy a tengelymetszet is a paramétervektor része legyen – <span class="math inline">\(\mathbf{y} = \mathbf{X}\boldsymbol{\theta} +
+\boldsymbol{\varepsilon}\)</span>, ahol <span class="math inline">\(\mathbf{X}\in\mathbb{R}^{N\times(n+1)}\)</span>. A paramétereket a <strong>legkisebb négyzetek</strong> módszerével becsüljük: azt a <span class="math inline">\(\boldsymbol\theta\)</span>-t keressük, amely a hibák négyzetösszegét minimalizálja,</p>
+<p><span id="eq-ols-j"><span class="math display">\[
+J(\boldsymbol\theta) = \sum_{k=1}^{N}\bigl(y_k - \mathbf{x}_k^\top\boldsymbol\theta\bigr)^2
+= (\mathbf{y} - \mathbf{X}\boldsymbol\theta)^\top(\mathbf{y} - \mathbf{X}\boldsymbol\theta).
+\tag{8.2}\]</span></span></p>
+<p>Ez a (<a href="01-bevezetes.html#eq-erm" class="quarto-xref"><span>1.3</span></a>) empirikuskockázat-minimalizálás négyzetes veszteséggel. A <span class="math inline">\(J\)</span> a <span class="math inline">\(\boldsymbol\theta\)</span> konvex másodfokú függvénye; gradiensét nullává téve (a mátrixderiválás szabályait a <a href="../appendices/b-linearis-algebra.html" class="quarto-xref"><span>B</span></a>. függelék foglalja össze)</p>
+<p><span id="eq-normalegyenlet"><span class="math display">\[
+\nabla_{\boldsymbol\theta} J = -2\mathbf{X}^\top(\mathbf{y} - \mathbf{X}\boldsymbol\theta) = \mathbf{0}
+\quad\Longrightarrow\quad
+\mathbf{X}^\top\mathbf{X}\,\hat{\boldsymbol\theta} = \mathbf{X}^\top\mathbf{y}.
+\tag{8.3}\]</span></span></p>
+<p>Ezek a <strong>normálegyenletek</strong>. Ha <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span> invertálható (az oszlopok lineárisan függetlenek), a megoldás egyértelmű:</p>
+<p><span id="eq-ols"><span class="math display">\[
+\hat{\boldsymbol\theta} = (\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\mathbf{y}.
+\tag{8.4}\]</span></span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Megjegyzés</span>Numerikus megjegyzés
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A (<a href="#eq-ols" class="quarto-xref"><span>8.4</span></a>) képlet a levezetés eredménye, nem számítási recept. Az <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span> mátrix kondíciószáma az <span class="math inline">\(\mathbf{X}\)</span> kondíciószámának négyzete, ezért közel kollineáris változóknál az invertálás numerikusan instabil. A szoftverek a feladatot az <span class="math inline">\(\mathbf{X}\)</span> QR- vagy szinguláris felbontásával oldják meg <span class="citation" data-cites="golub2013">(<a href="../references.html#ref-golub2013" role="doc-biblioref">Golub &amp; Van Loan, 2013</a>)</span>; NumPy-ban a <code>np.linalg.lstsq</code> függvény ezt teszi.</p>
+</div>
+</div>
+</section>
+<section id="geometriai-értelmezés" class="level3" data-number="8.1.2">
+<h3 data-number="8.1.2" class="anchored" data-anchor-id="geometriai-értelmezés"><span class="header-section-number">8.1.2</span> Geometriai értelmezés</h3>
+<p>A (<a href="#eq-normalegyenlet" class="quarto-xref"><span>8.3</span></a>) egyenlet átrendezve <span class="math inline">\(\mathbf{X}^\top(\mathbf{y} -
+\mathbf{X}\hat{\boldsymbol\theta}) = \mathbf{0}\)</span>: a <strong>maradékvektor</strong> <span class="math inline">\(\mathbf{e} = \mathbf{y} - \hat{\mathbf{y}}\)</span> merőleges <span class="math inline">\(\mathbf{X}\)</span> minden oszlopára. Az illesztett értékek vektora, <span class="math inline">\(\hat{\mathbf{y}} = \mathbf{X}\hat{\boldsymbol\theta}\)</span>, tehát az <span class="math inline">\(\mathbf{y}\)</span> merőleges vetülete az <span class="math inline">\(\mathbf{X}\)</span> oszlopai által kifeszített altérre (<a href="#fig-vetites" class="quarto-xref"><span>8.1</span></a>. ábra). A vetítést a</p>
+<p><span id="eq-kalapmatrix"><span class="math display">\[
+\mathbf{H} = \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top
+\tag{8.5}\]</span></span></p>
+<p><strong>kalapmátrix</strong> végzi (<span class="math inline">\(\hat{\mathbf{y}} = \mathbf{H}\mathbf{y}\)</span>). A legkisebb négyzetes illesztés tehát az altér azon pontját választja, amely <span class="math inline">\(\mathbf{y}\)</span>-hoz a legközelebb van.</p>
+<div id="fig-vetites" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-vetites-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/08-vetites.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="ábra&nbsp;8.1.. A legkisebb négyzetes becslés geometriája: az illesztett értékek vektora a megfigyelések vektorának merőleges vetülete a magyarázó változók által kifeszített altérre; a maradék merőleges az altérre."><img src="../figures/build/08-vetites.svg" class="img-fluid figure-img" style="width:80.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vetites-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;8.1.. A legkisebb négyzetes becslés geometriája: az illesztett értékek vektora a megfigyelések vektorának merőleges vetülete a magyarázó változók által kifeszített altérre; a maradék merőleges az altérre.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="kézi-példa" class="level3" data-number="8.1.3">
+<h3 data-number="8.1.3" class="anchored" data-anchor-id="kézi-példa"><span class="header-section-number">8.1.3</span> Kézi példa</h3>
+<p>Egyetlen magyarázó változó esetén a normálegyenletek zárt alakban megoldhatók: a meredekség <span class="math inline">\(\hat\theta_1 = S_{xy}/S_{xx}\)</span>, ahol <span class="math inline">\(S_{xy} = \sum_k (x_k-\bar x)(y_k-\bar y)\)</span> és <span class="math inline">\(S_{xx} = \sum_k (x_k-\bar x)^2\)</span>, a tengelymetszet <span class="math inline">\(\hat\theta_0 = \bar y -
+\hat\theta_1\bar x\)</span>. A segédcsomag hat mérése a Pannon üzem hűtővízáramát és villamosenergia-fogyasztását tartalmazza:</p>
+<div id="22a85db7" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> ab.regresszio_mini()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>x, y <span class="op">=</span> d.F_hutoviz.to_numpy(), d.E_fogyasztas.to_numpy()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Sxx <span class="op">=</span> np.<span class="bu">sum</span>((x <span class="op">-</span> x.mean()) <span class="op">**</span> <span class="dv">2</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>Sxy <span class="op">=</span> np.<span class="bu">sum</span>((x <span class="op">-</span> x.mean()) <span class="op">*</span> (y <span class="op">-</span> y.mean()))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>t1 <span class="op">=</span> Sxy <span class="op">/</span> Sxx</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> y.mean() <span class="op">-</span> t1 <span class="op">*</span> x.mean()</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"x átlaga = </span><span class="sc">{</span>x<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">,  y átlaga = </span><span class="sc">{</span>y<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"S_xx = </span><span class="sc">{</span>Sxx<span class="sc">:.2f}</span><span class="ss">,  S_xy = </span><span class="sc">{</span>Sxy<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"meredekség = </span><span class="sc">{</span>t1<span class="sc">:.4f}</span><span class="ss"> kW/(m³/h),  tengelymetszet = </span><span class="sc">{</span>t0<span class="sc">:.3f}</span><span class="ss"> kW"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">=</span> np.column_stack([np.ones_like(x), x])</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"lstsq:"</span>, np.<span class="bu">round</span>(np.linalg.lstsq(X1, y, rcond<span class="op">=</span><span class="va">None</span>)[<span class="dv">0</span>], <span class="dv">4</span>))</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>x átlaga = 4.50,  y átlaga = 69.600
+S_xx = 17.50,  S_xy = 38.300
+meredekség = 2.1886 kW/(m³/h),  tengelymetszet = 59.751 kW
+lstsq: [59.7514  2.1886]</code></pre>
+</div>
+</div>
+<p>A modell szerint egységnyi (1 m³/h) hűtővízáram-növekedés mintegy 2,2 kW többlet villamos teljesítményt jelent – ez a hűtővízszivattyú fajlagos energiaigénye.</p>
+</section>
+</section>
+<section id="sec-diagnosztika" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="sec-diagnosztika"><span class="header-section-number">8.2</span> A becslés tulajdonságai és a modelldiagnosztika</h2>
+<section id="statisztikai-tulajdonságok" class="level3" data-number="8.2.1">
+<h3 data-number="8.2.1" class="anchored" data-anchor-id="statisztikai-tulajdonságok"><span class="header-section-number">8.2.1</span> Statisztikai tulajdonságok</h3>
+<p>Ha a hibák nulla várható értékűek, egymással korrelálatlanok és azonos <span class="math inline">\(\sigma^2\)</span> szórásnégyzetűek, a legkisebb négyzetes becslés torzítatlan, és a lineáris torzítatlan becslések között a legkisebb varianciájú (Gauss–Markov-tétel). A paraméterbecslés kovarianciamátrixa és a hibaszórásnégyzet torzítatlan becslése:</p>
+<p><span id="eq-ols-cov"><span class="math display">\[
+\operatorname{Cov}(\hat{\boldsymbol\theta}) = \sigma^2(\mathbf{X}^\top\mathbf{X})^{-1},
+\qquad
+\hat\sigma^2 = \frac{1}{N-n-1}\sum_{k=1}^{N}e_k^2 .
+\tag{8.6}\]</span></span></p>
+<p>Ha a hibák ráadásul normális eloszlásúak, a <span class="math inline">\(\hat\theta_j/\mathrm{SE}(\hat\theta_j)\)</span> hányados <span class="math inline">\(t\)</span>-eloszlású, ami lehetővé teszi az együtthatókra vonatkozó konfidenciaintervallumok és hipotézisvizsgálatok (például <span class="math inline">\(H_0: \theta_j = 0\)</span>) végrehajtását <span class="citation" data-cites="montgomery2021">(<a href="../references.html#ref-montgomery2021" role="doc-biblioref">Montgomery és mtsai., 2021</a>)</span>. A <strong>korrigált determinációs együttható</strong>, <span class="math inline">\(\bar R^2 = 1 - (1-R^2)\frac{N-1}{N-n-1}\)</span>, a változók számával bünteti az <span class="math inline">\(R^2\)</span>-et, így változószámban eltérő modellek összehasonlítására alkalmasabb.</p>
+</section>
+<section id="diagnosztika" class="level3" data-number="8.2.2">
+<h3 data-number="8.2.2" class="anchored" data-anchor-id="diagnosztika"><span class="header-section-number">8.2.2</span> Diagnosztika</h3>
+<p>A becslés tulajdonságai a feltevéseken múlnak, ezért ezeket ellenőrizni kell. A legfontosabb eszközök a <strong>maradékok ábrái</strong>: a maradékok az illesztett értékek függvényében (görbült mintázat a nemlinearitás, tölcsér alak a nem állandó szórás jele), a maradékok normális Q–Q ábrája, idősorokban pedig a maradékok időbeli lefutása (autokorreláció). A <strong>multikollinearitás</strong> – a magyarázó változók közötti erős lineáris kapcsolat – az együtthatók becslését instabillá teszi (nagy standard hibák, előjelváltó együtthatók), az előrejelzést viszont nem feltétlenül rontja. Mérőszáma a <strong>varianciainflációs tényező</strong>, <span class="math inline">\(\mathrm{VIF}_j = 1/(1-R_j^2)\)</span>, ahol <span class="math inline">\(R_j^2\)</span> a <span class="math inline">\(j\)</span>-edik változónak a többire illesztett regressziójából adódik; a 10 feletti érték erős kollinearitást jelez. A <strong>nagy befolyású pontok</strong> azonosítására a kalapmátrix átlójában lévő <span class="math inline">\(h_{kk}\)</span> értékek (a pont „emelőereje”) és a Cook-féle távolság szolgál.</p>
+<div class="eset-mernoki">
+<p>Építsünk lineáris lágy szenzort a Pannon üzem termékkoncentrációjára! A célváltozó a 4 óránként mért laboreredmény, a magyarázó változók a mintavétel előtti óra átlagolt folyamatváltozói (<a href="07-modellertekeles.html" class="quarto-xref"><span>7</span></a>. fejezet). A <code>statsmodels</code> csomag a becslés teljes statisztikai összefoglalóját megadja.</p>
+</div>
+<div id="e9aae643" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.outliers_influence <span class="im">import</span> variance_inflation_factor</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ab.quality_table()</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>valt <span class="op">=</span> [<span class="st">"T_reaktor"</span>, <span class="st">"F_betap"</span>, <span class="st">"c_betap"</span>, <span class="st">"F_hutoviz"</span>, <span class="st">"T_hutoviz"</span>, <span class="st">"P_kevero"</span>, <span class="st">"E_fogyasztas"</span>]</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>Xs <span class="op">=</span> sm.add_constant(q[valt])</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>ols <span class="op">=</span> sm.OLS(q.c_termek, Xs).fit()</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>tabla <span class="op">=</span> pd.DataFrame({<span class="st">"együttható"</span>: ols.params, <span class="st">"std. hiba"</span>: ols.bse, <span class="st">"t"</span>: ols.tvalues,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"p"</span>: ols.pvalues, <span class="st">"VIF"</span>: [np.nan] <span class="op">+</span> [variance_inflation_factor(Xs.values, i)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                                                          <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, Xs.shape[<span class="dv">1</span>])]})</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"R² = </span><span class="sc">{</span>ols<span class="sc">.</span>rsquared<span class="sc">:.3f}</span><span class="ss">,  korrigált R² = </span><span class="sc">{</span>ols<span class="sc">.</span>rsquared_adj<span class="sc">:.3f}</span><span class="ss">,  σ̂ = </span><span class="sc">{</span>np<span class="sc">.</span>sqrt(ols.scale)<span class="sc">:.4f}</span><span class="ss"> mol/L"</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>tabla.<span class="bu">round</span>(<span class="dv">4</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R² = 0.983,  korrigált R² = 0.982,  σ̂ = 0.0190 mol/L</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">együttható</th>
+<th data-quarto-table-cell-role="th">std. hiba</th>
+<th data-quarto-table-cell-role="th">t</th>
+<th data-quarto-table-cell-role="th">p</th>
+<th data-quarto-table-cell-role="th">VIF</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">const</th>
+<td>-1.8165</td>
+<td>0.0299</td>
+<td>-60.8038</td>
+<td>0.0000</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">T_reaktor</th>
+<td>0.0216</td>
+<td>0.0001</td>
+<td>148.3197</td>
+<td>0.0000</td>
+<td>1.3772</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">F_betap</th>
+<td>-0.0363</td>
+<td>0.0014</td>
+<td>-25.8941</td>
+<td>0.0000</td>
+<td>8.6738</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">c_betap</th>
+<td>0.7208</td>
+<td>0.0075</td>
+<td>95.6081</td>
+<td>0.0000</td>
+<td>9.8324</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">F_hutoviz</th>
+<td>-0.0147</td>
+<td>0.0011</td>
+<td>-13.5842</td>
+<td>0.0000</td>
+<td>21.2274</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">T_hutoviz</th>
+<td>0.0021</td>
+<td>0.0002</td>
+<td>9.7459</td>
+<td>0.0000</td>
+<td>4.3837</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">P_kevero</th>
+<td>-0.0007</td>
+<td>0.0008</td>
+<td>-0.8532</td>
+<td>0.3936</td>
+<td>17.3277</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">E_fogyasztas</th>
+<td>0.0061</td>
+<td>0.0005</td>
+<td>13.3635</td>
+<td>0.0000</td>
+<td>19.0516</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="cell-fig-maradek" class="cell" data-fig-height="2.8" data-fig-width="7" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].scatter(ols.fittedvalues, ols.resid, s<span class="op">=</span><span class="dv">4</span>, alpha<span class="op">=</span><span class="fl">0.4</span>, color<span class="op">=</span>ab.PALETTE[<span class="dv">0</span>])</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"0.5"</span>, lw<span class="op">=</span><span class="fl">0.8</span>)<span class="op">;</span> ax[<span class="dv">0</span>].set_xlabel(<span class="st">"illesztett érték [mol/L]"</span>)<span class="op">;</span> ax[<span class="dv">0</span>].set_ylabel(<span class="st">"maradék"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>(osm, osr), (b, a0, _) <span class="op">=</span> stats.probplot(ols.resid, dist<span class="op">=</span><span class="st">"norm"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].scatter(osm, osr, s<span class="op">=</span><span class="dv">4</span>, alpha<span class="op">=</span><span class="fl">0.4</span>, color<span class="op">=</span>ab.PALETTE[<span class="dv">0</span>])<span class="op">;</span> ax[<span class="dv">1</span>].plot(osm, a0 <span class="op">+</span> b <span class="op">*</span> osm, color<span class="op">=</span>ab.PALETTE[<span class="dv">1</span>])</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xlabel(<span class="st">"elméleti kvantilis"</span>)<span class="op">;</span> ax[<span class="dv">1</span>].set_ylabel(<span class="st">"maradék kvantilise"</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-maradek" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-maradek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="08-regresszio_files/figure-html/fig-maradek-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="ábra&nbsp;8.2.. A lineáris lágy szenzor maradékai az illesztett értékek függvényében (balra) és normális Q–Q ábrán (jobbra). A maradékok szerkezete (sávok, görbület) és a nehéz farkak arra utalnak, hogy a lineáris modell nem írja le teljesen az összefüggést."><img src="08-regresszio_files/figure-html/fig-maradek-output-1.png" width="693" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-maradek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;8.2.. A lineáris lágy szenzor maradékai az illesztett értékek függvényében (balra) és normális Q–Q ábrán (jobbra). A maradékok szerkezete (sávok, görbület) és a nehéz farkak arra utalnak, hogy a lineáris modell nem írja le teljesen az összefüggést.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Az <span class="math inline">\(R^2\)</span> magas, de a diagnosztika több problémát is mutat. A VIF-értékek szerint a hűtővízáram és az energiafogyasztás (a szivattyú energiaigénye miatt), valamint a termékfüggő változók (betáplálás, betáplált koncentráció, keverőteljesítmény) erősen kollineárisak, ezért az egyes együtthatók értelmezése bizonytalan – a keverőteljesítmény együtthatója például nem különbözik szignifikánsan nullától, holott a változó erősen korrelál a célváltozóval. A maradékok sávos szerkezete és nehéz farkai pedig arra utalnak, hogy az összefüggés nem lineáris, és a hibák egy része (a szenzor-drift időszakai) más mechanizmusból származik. A következő alfejezetek ezeket a problémákat kezelik.</p>
+</section>
+</section>
+<section id="sec-regularizacio" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="sec-regularizacio"><span class="header-section-number">8.3</span> Regularizált regresszió</h2>
+<p>Sok, egymással korrelált magyarázó változó esetén a legkisebb négyzetes becslés varianciája nagy (<a href="#eq-ols-cov" class="quarto-xref"><span>8.6</span></a>): az <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span> közel szinguláris, kis sajátértékeinek inverze naggyá teszi az együtthatók szórását. A <strong>regularizáció</strong> a célfüggvényhez egy, a paraméterek nagyságát büntető tagot ad, és ezzel kis torzítás árán jelentősen csökkenti a varianciát (<a href="07-modellertekeles.html#sec-altalanositas" class="quarto-xref"><span>7.1</span></a>. alfejezet).</p>
+<section id="ridge-regresszió" class="level3" data-number="8.3.1">
+<h3 data-number="8.3.1" class="anchored" data-anchor-id="ridge-regresszió"><span class="header-section-number">8.3.1</span> Ridge-regresszió</h3>
+<p>A <strong>ridge-regresszió</strong> <span class="citation" data-cites="hoerl1970">(<a href="../references.html#ref-hoerl1970" role="doc-biblioref">Hoerl &amp; Kennard, 1970</a>)</span> a paraméterek négyzetösszegét bünteti:</p>
+<p><span id="eq-ridge"><span class="math display">\[
+\hat{\boldsymbol\theta}_{\mathrm{ridge}} = \arg\min_{\boldsymbol\theta}\;
+\lVert\mathbf{y}-\mathbf{X}\boldsymbol\theta\rVert_2^2 + \lambda\lVert\boldsymbol\theta\rVert_2^2
+= (\mathbf{X}^\top\mathbf{X} + \lambda\mathbf{I})^{-1}\mathbf{X}^\top\mathbf{y},
+\tag{8.7}\]</span></span></p>
+<p>ahol <span class="math inline">\(\lambda\ge 0\)</span> a regularizációs paraméter (a tengelymetszetet nem büntetjük, és a változókat előtte standardizáljuk). A <span class="math inline">\(\lambda\mathbf{I}\)</span> hozzáadása <span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span> minden sajátértékét <span class="math inline">\(\lambda\)</span>-val növeli, így a mátrix mindig invertálható. A szinguláris felbontás nyelvén (<span class="math inline">\(\mathbf{X} = \mathbf{U}\boldsymbol\Sigma\mathbf{V}^\top\)</span>) a ridge-becslés a <span class="math inline">\(j\)</span>-edik főirány menti komponenst a <span class="math inline">\(\sigma_j^2/(\sigma_j^2+\lambda)\)</span> tényezővel zsugorítja: a kis szóródású, zajérzékeny irányokat erősen, a nagy szóródásúakat alig.</p>
+</section>
+<section id="lasszó-és-elasztikus-háló" class="level3" data-number="8.3.2">
+<h3 data-number="8.3.2" class="anchored" data-anchor-id="lasszó-és-elasztikus-háló"><span class="header-section-number">8.3.2</span> Lasszó és elasztikus háló</h3>
+<p>A <strong>lasszó</strong> (least absolute shrinkage and selection operator) <span class="citation" data-cites="tibshirani1996">(<a href="../references.html#ref-tibshirani1996" role="doc-biblioref">Tibshirani, 1996</a>)</span> az abszolút értékek összegét bünteti:</p>
+<p><span id="eq-lasso"><span class="math display">\[
+\hat{\boldsymbol\theta}_{\mathrm{lasszó}} = \arg\min_{\boldsymbol\theta}\;
+\frac{1}{2N}\lVert\mathbf{y}-\mathbf{X}\boldsymbol\theta\rVert_2^2 + \lambda\lVert\boldsymbol\theta\rVert_1 .
+\tag{8.8}\]</span></span></p>
+<p>Az <span class="math inline">\(L_1\)</span>-büntetés nevezetes tulajdonsága, hogy elég nagy <span class="math inline">\(\lambda\)</span> esetén egyes együtthatókat <em>pontosan nullává</em> tesz, vagyis változókiválasztást is végez. Ennek geometriai oka a <a href="#fig-regularizacio" class="quarto-xref"><span>8.3</span></a>. ábrán látható: a büntetett feladat egyenértékű a négyzetes hiba minimalizálásával egy korlátozó tartományon belül, és a hibafüggvény szintvonalai a gyémánt alakú <span class="math inline">\(L_1\)</span>-tartományt nagy valószínűséggel egy csúcsában – ahol valamelyik koordináta nulla – érintik, míg a kör alakú <span class="math inline">\(L_2\)</span>-tartományt általános helyzetű pontban. A lasszónak nincs zárt alakú megoldása; koordinátánkénti optimalizálással számolják. Erősen korrelált változók közül a lasszó önkényesen egyet választ; az <strong>elasztikus háló</strong> <span class="citation" data-cites="zou2005">(<a href="../references.html#ref-zou2005" role="doc-biblioref">Zou &amp; Hastie, 2005</a>)</span> a két büntetés kombinációjával (<span class="math inline">\(\lambda[\alpha\lVert\boldsymbol\theta\rVert_1 + (1-\alpha)\lVert\boldsymbol\theta\rVert_2^2/2]\)</span>) a korrelált változókat csoportosan tartja meg vagy hagyja el.</p>
+<div id="fig-regularizacio" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-regularizacio-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/08-regularizacio.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="ábra&nbsp;8.3.. A ridge- és a lasszó-regresszió geometriája. A hibafüggvény szintvonalai (ellipszisek) a korlátozó tartományt (kör, illetve gyémánt) érintik; a lasszónál az érintési pont tipikusan egy csúcs, ahol valamelyik együttható pontosan nulla."><img src="../figures/build/08-regularizacio.svg" class="img-fluid figure-img" style="width:95.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-regularizacio-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;8.3.. A ridge- és a lasszó-regresszió geometriája. A hibafüggvény szintvonalai (ellipszisek) a korlátozó tartományt (kör, illetve gyémánt) érintik; a lasszónál az érintési pont tipikusan egy csúcs, ahol valamelyik együttható pontosan nulla.
+</figcaption>
+</figure>
+</div>
+<p>A <span class="math inline">\(\lambda\)</span> értékét keresztvalidációval választjuk (<a href="07-modellertekeles.html#sec-validacio-semak" class="quarto-xref"><span>7.2</span></a>. alfejezet). Ehhez érdemes a <strong>regularizációs utat</strong> is megnézni: az együtthatókat <span class="math inline">\(\lambda\)</span> függvényében ábrázolva látszik, melyik változó marad meg legtovább a modellben.</p>
+<div id="cell-fig-lasszo-ut" class="cell" data-fig-height="3.2" data-fig-width="6.5" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LassoCV, lasso_path, RidgeCV, LinearRegression</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> TimeSeriesSplit</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>valt_b <span class="op">=</span> [<span class="st">"T_kornyezet"</span>, <span class="st">"F_betap"</span>, <span class="st">"c_betap"</span>, <span class="st">"T_betap"</span>, <span class="st">"T_reaktor"</span>, <span class="st">"F_hutoviz"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>          <span class="st">"T_hutoviz"</span>, <span class="st">"P_reaktor"</span>, <span class="st">"P_kevero"</span>, <span class="st">"E_fogyasztas"</span>, <span class="st">"dT"</span>]</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>Zq <span class="op">=</span> StandardScaler().fit_transform(q[valt_b])</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>yq <span class="op">=</span> q.c_termek.to_numpy()</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>racs <span class="op">=</span> np.logspace(<span class="op">-</span><span class="dv">5</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="dv">80</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>alphas, coefs, _ <span class="op">=</span> lasso_path(Zq, yq <span class="op">-</span> yq.mean(), alphas<span class="op">=</span>racs)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>lcv <span class="op">=</span> LassoCV(cv<span class="op">=</span>TimeSeriesSplit(<span class="dv">5</span>), alphas<span class="op">=</span>racs, max_iter<span class="op">=</span><span class="dv">20000</span>).fit(Zq, yq)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>szinek <span class="op">=</span> ab.PALETTE <span class="op">+</span> [<span class="st">"#9AA5B1"</span>, <span class="st">"#3D4852"</span>, <span class="st">"#E0A458"</span>, <span class="st">"#5DA9E9"</span>, <span class="st">"#8E6C8A"</span>]</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> j, nev <span class="kw">in</span> <span class="bu">enumerate</span>(valt_b):</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    ax.plot(alphas, coefs[j], lw<span class="op">=</span><span class="fl">1.3</span>, label<span class="op">=</span>nev, color<span class="op">=</span>szinek[j])</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>ax.set_xscale(<span class="st">"log"</span>)<span class="op">;</span> ax.axvline(lcv.alpha_, color<span class="op">=</span><span class="st">"0.4"</span>, ls<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"λ (log)"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"együttható"</span>)<span class="op">;</span> ax.legend(fontsize<span class="op">=</span><span class="dv">7</span>, ncol<span class="op">=</span><span class="dv">2</span>, loc<span class="op">=</span><span class="st">"upper right"</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-lasszo-ut" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-lasszo-ut-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="08-regresszio_files/figure-html/fig-lasszo-ut-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="ábra&nbsp;8.4.. A lasszó regularizációs útja a lágy szenzor standardizált változóin: az együtthatók a büntetés erősségének függvényében. A függőleges vonal a keresztvalidációval (idősoros felosztással) választott λ."><img src="08-regresszio_files/figure-html/fig-lasszo-ut-output-1.png" width="693" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lasszo-ut-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;8.4.. A lasszó regularizációs útja a lágy szenzor standardizált változóin: az együtthatók a büntetés erősségének függvényében. A függőleges vonal a keresztvalidációval (idősoros felosztással) választott λ.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-nemlinearis-regresszio" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="sec-nemlinearis-regresszio"><span class="header-section-number">8.4</span> Nemlineáris regresszió</h2>
+<section id="paramétereiben-lineáris-modellek-bázisfüggvények" class="level3" data-number="8.4.1">
+<h3 data-number="8.4.1" class="anchored" data-anchor-id="paramétereiben-lineáris-modellek-bázisfüggvények"><span class="header-section-number">8.4.1</span> Paramétereiben lineáris modellek: bázisfüggvények</h3>
+<p>Sok nemlineáris összefüggés leírható olyan modellel, amely a <em>paramétereiben</em> lineáris:</p>
+<p><span id="eq-bazis"><span class="math display">\[
+\hat y = \sum_{j=1}^{M}\theta_j\,\phi_j(\mathbf{x}),
+\tag{8.9}\]</span></span></p>
+<p>ahol a <span class="math inline">\(\phi_j\)</span> rögzített <strong>bázisfüggvények</strong>. A paraméterek ugyanúgy a legkisebb négyzetek módszerével becsülhetők, mint a lineáris esetben, csak az <span class="math inline">\(\mathbf{X}\)</span> helyére a <span class="math inline">\(\Phi_{kj} = \phi_j(\mathbf{x}_k)\)</span> mátrix kerül. Jellemző bázisok:</p>
+<ul>
+<li><strong>polinomok</strong> (<span class="math inline">\(1, x, x^2, \dots\)</span>): egyszerűek, de magas fokszámnál a tartomány szélein erősen oszcillálnak (<a href="07-modellertekeles.html#fig-komplexitas" class="quarto-xref"><span>7.1</span></a>. ábra);</li>
+<li><strong>spline-ok</strong>: szakaszonként polinomiális függvények, amelyek a szakaszhatárokon (a <strong>csomópontokban</strong>) folytonosan és simán (köbös spline-nál kétszer folytonosan deriválhatóan) csatlakoznak <span class="citation" data-cites="deboor2001">(<a href="../references.html#ref-deboor2001" role="doc-biblioref">Boor, 2001</a>)</span>. A <strong>B-spline-bázis</strong> elemei kis tartójúak (csak néhány szomszédos szakaszon nem nullák), ezért az illesztés numerikusan stabil, és egy paraméter csak helyileg hat (<a href="#fig-bspline" class="quarto-xref"><span>8.5</span></a>. ábra);</li>
+<li><strong>radiális bázisfüggvények</strong>: <span class="math inline">\(\phi_j(\mathbf{x}) = \exp(-\lVert\mathbf{x}-\mathbf{c}_j\rVert^2/(2s^2))\)</span> alakú „dombok” a <span class="math inline">\(\mathbf{c}_j\)</span> középpontok körül <span class="citation" data-cites="broomhead1988">(<a href="../references.html#ref-broomhead1988" role="doc-biblioref">Broomhead &amp; Lowe, 1988</a>)</span>; a középpontokat gyakran csoportosítással (<span class="math inline">\(k\)</span>-átlag) választják.</li>
+</ul>
+<div id="fig-bspline" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bspline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/08-bspline.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="ábra&nbsp;8.5.. Köbös B-spline bázisfüggvények egyenletes csomópontokkal (a vízszintes tengely jelölései) és belőlük súlyozott összegként előálló sima függvény."><img src="../figures/build/08-bspline.svg" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bspline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;8.5.. Köbös B-spline bázisfüggvények egyenletes csomópontokkal (a vízszintes tengely jelölései) és belőlük súlyozott összegként előálló sima függvény.
+</figcaption>
+</figure>
+</div>
+<p>Több változó esetén a bázisok száma a változószámmal gyorsan nő. Egy gyakori kompromisszum az <strong>additív modell</strong>, amely minden változóra külön spline-t illeszt, és ezeket összegzi; így a változók hatása egyenként, nemlineárisan is leírható és ábrázolható. Az ilyen sok paraméteres modelleket regularizációval kell kordában tartani.</p>
+</section>
+<section id="paramétereiben-nemlineáris-modellek" class="level3" data-number="8.4.2">
+<h3 data-number="8.4.2" class="anchored" data-anchor-id="paramétereiben-nemlineáris-modellek"><span class="header-section-number">8.4.2</span> Paramétereiben nemlineáris modellek</h3>
+<p>Ha a modellstruktúra fizikai, kémiai vagy közgazdasági ismeretekből adódik, a modell gyakran a paramétereiben is nemlineáris. A Pannon üzem esetében a reakciókinetika szerint egy elsőrendű reakció stacionárius konverziója kevert tankreaktorban</p>
+<p><span id="eq-cstr"><span class="math display">\[
+X = \frac{k(T)\,\tau}{1 + k(T)\,\tau},\qquad
+k(T) = k_{\mathrm{ref}}\exp\!\left[-\frac{E_a}{R}\left(\frac{1}{T}-\frac{1}{T_{\mathrm{ref}}}\right)\right],\qquad
+\tau = \frac{V}{F},
+\tag{8.10}\]</span></span></p>
+<p>és a termékkoncentráció <span class="math inline">\(c = c_{\mathrm{be}}\,X\)</span>. Itt <span class="math inline">\(T\)</span> az abszolút hőmérséklet, <span class="math inline">\(F\)</span> a betáplálási áram, <span class="math inline">\(V\)</span> a reaktortérfogat, <span class="math inline">\(R\)</span> az egyetemes gázállandó, a becsülendő paraméterek pedig a <span class="math inline">\(k_{\mathrm{ref}}\)</span> referencia-sebességi állandó és az <span class="math inline">\(E_a\)</span> aktiválási energia. (Az Arrhenius-egyenletet egy <span class="math inline">\(T_{\mathrm{ref}}\)</span> referencia-hőmérsékletre vonatkoztatva írtuk fel; ez a két paraméter közötti erős korrelációt csökkenti, és numerikusan stabilabbá teszi a becslést.) Az ilyen <strong>szürkedoboz-modellek</strong> előnye, hogy kevés, fizikai jelentésű paraméterük van, és a mért tartományon kívül is megbízhatóbban extrapolálnak.</p>
+<p>A paramétereket a nemlineáris legkisebb négyzetek módszerével becsüljük, iteratívan. A <strong>Gauss–Newton-módszer</strong> minden lépésben linearizálja a modellt az aktuális paraméterbecslés körül, és a linearizált feladat legkisebb négyzetes megoldásával lép: <span class="math inline">\(\Delta\boldsymbol\theta = (\mathbf{J}^\top\mathbf{J})^{-1}\mathbf{J}^\top\mathbf{e}\)</span>, ahol <span class="math inline">\(\mathbf{J}\)</span> a modell paraméterek szerinti Jacobi-mátrixa, <span class="math inline">\(\mathbf{e}\)</span> a maradékvektor. A <strong>Levenberg–Marquardt-módszer</strong> <span class="citation" data-cites="levenberg1944 marquardt1963">(<a href="../references.html#ref-levenberg1944" role="doc-biblioref">Levenberg, 1944</a>; <a href="../references.html#ref-marquardt1963" role="doc-biblioref">Marquardt, 1963</a>)</span> a <span class="math inline">\((\mathbf{J}^\top\mathbf{J} + \mu\mathbf{I})\)</span> mátrixot használja – a ridge-regresszióhoz hasonlóan –, és a <span class="math inline">\(\mu\)</span> csillapítást adaptívan változtatja: kis <span class="math inline">\(\mu\)</span> esetén Gauss–Newton-, nagynál gradienslépést tesz. Ez a <code>scipy.optimize.curve_fit</code> alapértelmezett eljárása.</p>
+</section>
+</section>
+<section id="sec-regresszio-gyakorlat" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="sec-regresszio-gyakorlat"><span class="header-section-number">8.5</span> Gyakorlat: lágy szenzor és vevőérték-előrejelzés</h2>
+<section id="lágy-szenzor-a-termékkoncentrációra" class="level3" data-number="8.5.1">
+<h3 data-number="8.5.1" class="anchored" data-anchor-id="lágy-szenzor-a-termékkoncentrációra"><span class="header-section-number">8.5.1</span> Lágy szenzor a termékkoncentrációra</h3>
+<div class="eset-mernoki">
+<p>A laboreredmény 4 óránként, órás késéssel érkezik; egy <strong>lágy szenzor</strong> (soft sensor) a folyamatosan mért változókból valós időben becsüli a termékkoncentrációt <span class="citation" data-cites="kadlec2009 fortuna2007">(<a href="../references.html#ref-fortuna2007" role="doc-biblioref">Fortuna és mtsai., 2007</a>; <a href="../references.html#ref-kadlec2009" role="doc-biblioref">Kadlec és mtsai., 2009</a>)</span>. Az alábbiakban öt modellt hasonlítunk össze: a lineáris, a ridge- és a lasszó-regressziót, egy additív spline-modellt, valamint a (<a href="#eq-cstr" class="quarto-xref"><span>8.10</span></a>) szürkedoboz-modellt. A modelleket az első kilenc hónap adatain tanítjuk, és az utolsó negyedéven értékeljük, ahogy egy valódi bevezetésnél történne.</p>
+</div>
+<div id="f24b0450" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.optimize <span class="im">import</span> curve_fit</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> SplineTransformer</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> Ridge, Lasso</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_absolute_error, mean_squared_error, r2_score</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>vagas <span class="op">=</span> q.ido <span class="op">&gt;=</span> <span class="st">"2025-10-01"</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>tr, te <span class="op">=</span> q[<span class="op">~</span>vagas], q[vagas]</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>Xtr, Xte <span class="op">=</span> tr[valt_b], te[valt_b]</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>modellek <span class="op">=</span> {</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"lineáris (OLS)"</span>: make_pipeline(StandardScaler(), LinearRegression()),</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ridge (λ: CV)"</span>: make_pipeline(StandardScaler(), RidgeCV(alphas<span class="op">=</span>np.logspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">30</span>))),</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"lasszó (λ: CV)"</span>: make_pipeline(StandardScaler(), LassoCV(cv<span class="op">=</span>TimeSeriesSplit(<span class="dv">5</span>), alphas<span class="op">=</span>racs, max_iter<span class="op">=</span><span class="dv">20000</span>)),</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"additív spline + ridge"</span>: make_pipeline(StandardScaler(), SplineTransformer(n_knots<span class="op">=</span><span class="dv">6</span>, degree<span class="op">=</span><span class="dv">3</span>),</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>                                           RidgeCV(alphas<span class="op">=</span>np.logspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">30</span>))),</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>eredmeny <span class="op">=</span> {}</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nev, mod <span class="kw">in</span> modellek.items():</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    mod.fit(Xtr, tr.c_termek)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> mod.predict(Xte)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    eredmeny[nev] <span class="op">=</span> p</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co"># szürkedoboz-modell: c = c_be * k tau / (1 + k tau), k = k_ref exp(-Ea/R (1/T - 1/Tref))</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>R_GAS, V, T_REF <span class="op">=</span> <span class="fl">8.314</span>, <span class="fl">10.0</span>, <span class="fl">358.15</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cstr(Xv, k_ref, Ea):</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    T, F, c_be <span class="op">=</span> Xv</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    k <span class="op">=</span> k_ref <span class="op">*</span> np.exp(<span class="op">-</span>Ea <span class="op">/</span> R_GAS <span class="op">*</span> (<span class="dv">1</span> <span class="op">/</span> (T <span class="op">+</span> <span class="fl">273.15</span>) <span class="op">-</span> <span class="dv">1</span> <span class="op">/</span> T_REF))</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    tau <span class="op">=</span> V <span class="op">/</span> F</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> c_be <span class="op">*</span> k <span class="op">*</span> tau <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> k <span class="op">*</span> tau)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>par, cov <span class="op">=</span> curve_fit(cstr, (tr.T_reaktor, tr.F_betap, tr.c_betap), tr.c_termek, p0<span class="op">=</span>[<span class="fl">2.0</span>, <span class="dv">40_000</span>])</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>eredmeny[<span class="st">"szürkedoboz (CSTR)"</span>] <span class="op">=</span> cstr((te.T_reaktor, te.F_betap, te.c_betap), <span class="op">*</span>par)</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({nev: {<span class="st">"MAE"</span>: mean_absolute_error(te.c_termek, p),</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"RMSE"</span>: np.sqrt(mean_squared_error(te.c_termek, p)),</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"R²"</span>: r2_score(te.c_termek, p)} <span class="cf">for</span> nev, p <span class="kw">in</span> eredmeny.items()}).T.<span class="bu">round</span>(<span class="dv">4</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">MAE</th>
+<th data-quarto-table-cell-role="th">RMSE</th>
+<th data-quarto-table-cell-role="th">R²</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">lineáris (OLS)</th>
+<td>0.0149</td>
+<td>0.0189</td>
+<td>0.9830</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">ridge (λ: CV)</th>
+<td>0.0149</td>
+<td>0.0189</td>
+<td>0.9829</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">lasszó (λ: CV)</th>
+<td>0.0151</td>
+<td>0.0194</td>
+<td>0.9822</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">additív spline + ridge</th>
+<td>0.0146</td>
+<td>0.0186</td>
+<td>0.9835</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">szürkedoboz (CSTR)</th>
+<td>0.0156</td>
+<td>0.0212</td>
+<td>0.9786</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="a42aa38b" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>se <span class="op">=</span> np.sqrt(np.diag(cov))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>k0_becsult <span class="op">=</span> par[<span class="dv">0</span>] <span class="op">*</span> np.exp(par[<span class="dv">1</span>] <span class="op">/</span> (R_GAS <span class="op">*</span> T_REF))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"k_ref = </span><span class="sc">{</span>par[<span class="dv">0</span>]<span class="sc">:.3f}</span><span class="ss"> ± </span><span class="sc">{</span>se[<span class="dv">0</span>]<span class="sc">:.3f}</span><span class="ss"> 1/h,   Ea = </span><span class="sc">{</span>par[<span class="dv">1</span>]<span class="op">/</span><span class="dv">1000</span><span class="sc">:.1f}</span><span class="ss"> ± </span><span class="sc">{</span>se[<span class="dv">1</span>]<span class="op">/</span><span class="dv">1000</span><span class="sc">:.1f}</span><span class="ss"> kJ/mol"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"a megfelelő preexponenciális tényező: k0 = </span><span class="sc">{</span>k0_becsult<span class="sc">:.2e}</span><span class="ss"> 1/h"</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>k_ref = 3.003 ± 0.004 1/h,   Ea = 60.1 ± 0.4 kJ/mol
+a megfelelő preexponenciális tényező: k0 = 1.77e+09 1/h</code></pre>
+</div>
+</div>
+<p>Az eredmény első ránézésre meglepő: a mért működési tartományon belül mind az öt modell hasonlóan pontos, mert ebben a szűk tartományban az összefüggés közel lineáris. A szürkedoboz-modell mindössze két paraméterrel szinte ugyanezt a pontosságot éri el, és – ez a fontosabb – a becsült aktiválási energia és preexponenciális tényező közel esik a szimulátorban használt értékekhez (60 kJ/mol, illetve <span class="math inline">\(1{,}7\cdot 10^{9}\)</span> 1/h). Kis lemaradását a szenzor-drift időszakai okozzák, amikor a mért hőmérséklet a valódinál nagyobb, és a fizikai modell „rossz” bemenetet kap.</p>
+<p>A modellek közötti valódi különbség akkor jön elő, amikor a tanítóadatokban nem szereplő tartományban kell előre jelezni. Tanítsuk a modelleket csak az A és B termék adatain, és értékeljük a C terméken, amelyet magasabb hőmérsékleten és nagyobb betáplálással gyártanak:</p>
+<div id="0117b415" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tr2, te2 <span class="op">=</span> q[q.termek <span class="op">!=</span> <span class="st">"C"</span>], q[q.termek <span class="op">==</span> <span class="st">"C"</span>]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>extra <span class="op">=</span> {}</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nev <span class="kw">in</span> [<span class="st">"lineáris (OLS)"</span>, <span class="st">"additív spline + ridge"</span>]:</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    mod <span class="op">=</span> modellek[nev].fit(tr2[valt_b], tr2.c_termek)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    extra[nev] <span class="op">=</span> mod.predict(te2[valt_b])</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>par2, _ <span class="op">=</span> curve_fit(cstr, (tr2.T_reaktor, tr2.F_betap, tr2.c_betap), tr2.c_termek, p0<span class="op">=</span>[<span class="fl">2.0</span>, <span class="dv">40_000</span>])</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>extra[<span class="st">"szürkedoboz (CSTR)"</span>] <span class="op">=</span> cstr((te2.T_reaktor, te2.F_betap, te2.c_betap), <span class="op">*</span>par2)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({nev: {<span class="st">"RMSE"</span>: np.sqrt(mean_squared_error(te2.c_termek, p)), <span class="st">"R²"</span>: r2_score(te2.c_termek, p)}</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>              <span class="cf">for</span> nev, p <span class="kw">in</span> extra.items()}).T.<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">RMSE</th>
+<th data-quarto-table-cell-role="th">R²</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">lineáris (OLS)</th>
+<td>0.019</td>
+<td>0.749</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">additív spline + ridge</th>
+<td>0.052</td>
+<td>-0.783</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">szürkedoboz (CSTR)</th>
+<td>0.018</td>
+<td>0.790</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Az ismeretlen termékre a fizikai modell extrapolál a legjobban, a rugalmas spline-modell viszont teljesen használhatatlanná válik: a tanítási tartományon kívül a spline-ok viselkedését semmi sem köti meg. Ez a szürkedoboz-modellezés fő érve: a fizikai struktúra olyan tudást visz a modellbe, amely az adatokban nincs benne.</p>
+<div id="cell-fig-lagy-szenzor" class="cell" data-fig-height="3" data-fig-width="7" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>het <span class="op">=</span> (te.ido <span class="op">&gt;=</span> <span class="st">"2025-11-03"</span>) <span class="op">&amp;</span> (te.ido <span class="op">&lt;</span> <span class="st">"2025-11-10"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>ax.plot(te.ido[het], te.c_termek[het], <span class="st">"o"</span>, color<span class="op">=</span><span class="st">"#1F2933"</span>, ms<span class="op">=</span><span class="dv">4</span>, label<span class="op">=</span><span class="st">"labor"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (nev, p), c <span class="kw">in</span> <span class="bu">zip</span>([(k, eredmeny[k]) <span class="cf">for</span> k <span class="kw">in</span> [<span class="st">"lineáris (OLS)"</span>, <span class="st">"additív spline + ridge"</span>, <span class="st">"szürkedoboz (CSTR)"</span>]], ab.PALETTE):</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    ax.plot(te.ido[het], p[het.to_numpy()], color<span class="op">=</span>c, lw<span class="op">=</span><span class="fl">1.4</span>, label<span class="op">=</span>nev)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"c_termék [mol/L]"</span>)<span class="op">;</span> ax.legend(fontsize<span class="op">=</span><span class="dv">8</span>, ncol<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>fig.autofmt_xdate()<span class="op">;</span> fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-lagy-szenzor" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-lagy-szenzor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="08-regresszio_files/figure-html/fig-lagy-szenzor-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="ábra&nbsp;8.6.. A lágy szenzorok becslése a teszt-negyedév egy hetén a laboreredményekhez (pontok) képest."><img src="08-regresszio_files/figure-html/fig-lagy-szenzor-output-1.png" width="690" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lagy-szenzor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;8.6.. A lágy szenzorok becslése a teszt-negyedév egy hetén a laboreredményekhez (pontok) képest.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="a-vevők-jövőbeli-költése" class="level3" data-number="8.5.2">
+<h3 data-number="8.5.2" class="anchored" data-anchor-id="a-vevők-jövőbeli-költése"><span class="header-section-number">8.5.2</span> A vevők jövőbeli költése</h3>
+<div class="eset-uzleti">
+<p>A PannonShop számára fontos kérdés, hogy egy vevő a következő fél évben várhatóan mennyit költ – ez a vevőérték (customer lifetime value) egyszerűsített, rövid távú változata (<a href="14-ugyfelanalitika.html" class="quarto-xref"><span>14</span></a>. fejezet). A jellemzőket a 2025. július 1-je előtti vásárlásokból számoljuk, a célváltozó a következő 183 nap nettó vásárlási értéke.</p>
+</div>
+<div id="19c13bc7" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> KFold, cross_val_predict</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> SimpleImputer</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> FunctionTransformer</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>churn <span class="op">=</span> ab.churn_table(cutoff<span class="op">=</span><span class="st">"2025-07-01"</span>, horizon_days<span class="op">=</span><span class="dv">183</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>tiszta <span class="op">=</span> ab.shop_clean()</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>jovo <span class="op">=</span> tiszta[(tiszta.InvoiceDate <span class="op">&gt;=</span> <span class="st">"2025-07-01"</span>) <span class="op">&amp;</span> (tiszta.InvoiceDate <span class="op">&lt;</span> <span class="st">"2026-01-01"</span>)]</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>koltes <span class="op">=</span> jovo.groupby(<span class="st">"CustomerID"</span>).Ertek.<span class="bu">sum</span>().reindex(churn.index).fillna(<span class="dv">0</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>jell <span class="op">=</span> [<span class="st">"R_nap"</span>, <span class="st">"F_szamla"</span>, <span class="st">"M_ertek"</span>, <span class="st">"atl_kosarertek"</span>, <span class="st">"atl_kosarmeret"</span>, <span class="st">"atl_mennyiseg"</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"elso_vasarlas_nap"</span>, <span class="st">"akcios_arany"</span>, <span class="st">"arany_kave"</span>, <span class="st">"arany_gep"</span>]</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>Xc, yc <span class="op">=</span> churn[jell], np.log1p(koltes)                      <span class="co"># logaritmikus célváltozó</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>elo <span class="op">=</span> make_pipeline(SimpleImputer(strategy<span class="op">=</span><span class="st">"median"</span>), FunctionTransformer(np.log1p), StandardScaler())</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> KFold(<span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nev, mod <span class="kw">in</span> {<span class="st">"átlag (viszonyítás)"</span>: make_pipeline(elo, Ridge(alpha<span class="op">=</span><span class="fl">1e9</span>)),</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"lineáris"</span>: make_pipeline(elo, LinearRegression()),</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"ridge"</span>: make_pipeline(elo, RidgeCV(alphas<span class="op">=</span>np.logspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">30</span>)))}.items():</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> cross_val_predict(mod, Xc, yc, cv<span class="op">=</span>cv)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>nev<span class="sc">:22s}</span><span class="ss"> R² = </span><span class="sc">{</span>r2_score(yc, p)<span class="sc">:6.3f}</span><span class="ss">   RMSE(log) = </span><span class="sc">{</span>np<span class="sc">.</span>sqrt(mean_squared_error(yc, p))<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>átlag (viszonyítás)    R² = -0.001   RMSE(log) = 6.003
+lineáris               R² =  0.280   RMSE(log) = 5.092
+ridge                  R² =  0.279   RMSE(log) = 5.095</code></pre>
+</div>
+</div>
+<p>A vásárlási értéket logaritmikus skálán modellezzük, mert erősen jobbra ferde, és sok vevőnél nulla (nem vásárol). A lineáris modell a variancia egy részét magyarázza meg, de a nullák nagy aránya miatt egy kétlépéses modell – először osztályozás (vásárol-e egyáltalán), majd regresszió a vásárlók körében – jobban illik a feladathoz; ezt a <a href="14-ugyfelanalitika.html" class="quarto-xref"><span>14</span></a>. fejezetben valósítjuk meg.</p>
+<div class="pe-app"><div class="pe-app-bar"><span>Polinomiális regresszió és regularizáció: torzítás és variancia</span><a href="../apps/regresszio.html" target="_blank" rel="noopener">Megnyitás új lapon ↗</a></div><iframe src="../apps/regresszio.html" style="height:600px" loading="lazy" title="Polinomiális regresszió és regularizáció: torzítás és variancia"></iframe></div>
+<div class="pe-badges"><a href="https://colab.research.google.com/github/ComplexSystemsIntelligence/adatbanyaszat/blob/main/notebooks/08-regresszio.ipynb" target="_blank" rel="noopener">▶ Colab: 8. fejezet – regresszió</a><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/notebooks/08-regresszio.ipynb" target="_blank" rel="noopener">GitHub forrás</a></div>
+</section>
+</section>
+<section id="sec-regresszio-osszefoglalas" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="sec-regresszio-osszefoglalas"><span class="header-section-number">8.6</span> Összefoglalás</h2>
+<ul>
+<li>A legkisebb négyzetes becslés a normálegyenletek megoldása; geometriailag a célváltozó merőleges vetülete a magyarázó változók alterére.</li>
+<li>A becslés tulajdonságai a hibákra tett feltevéseken múlnak; ezeket maradékábrákkal, a multikollinearitást VIF-fel, a befolyásos pontokat a kalapmátrix átlójával ellenőrizzük.</li>
+<li>A ridge-regresszió a négyzetes, a lasszó az abszolút értékes büntetéssel csökkenti a varianciát; a lasszó változókat is kiválaszt. A büntetés erősségét keresztvalidációval választjuk.</li>
+<li>A bázisfüggvényes (polinomiális, spline-, RBF-) modellek paramétereikben lineárisak, így a legkisebb négyzetes eszköztár változatlanul alkalmazható rájuk.</li>
+<li>A fizikai ismeretekre épülő, paramétereiben nemlineáris szürkedoboz-modellek kevés, értelmezhető paraméterrel írják le a folyamatot; a Gauss–Newton- és a Levenberg–Marquardt-módszerrel illeszthetők.</li>
+</ul>
+</section>
+<section id="ellenőrző-kérdések" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="ellenőrző-kérdések">Ellenőrző kérdések</h2>
+<ol type="1">
+<li>Vezesse le a normálegyenleteket! Mikor nem egyértelmű a megoldás?</li>
+<li>Miért merőleges a maradékvektor a magyarázó változók alterére?</li>
+<li>Mit mér a VIF, és miért okoz gondot az együtthatók értelmezésében a multikollinearitás?</li>
+<li>Miért ad a lasszó pontosan nulla együtthatókat, a ridge pedig nem?</li>
+<li>Mit jelent, hogy egy modell „paramétereiben lineáris”? Paramétereiben lineáris-e az <span class="math inline">\(y = \theta_1 e^{-x} + \theta_2\sin x\)</span> modell? És az <span class="math inline">\(y = \theta_1 e^{-\theta_2 x}\)</span>?</li>
+<li>Miért előnyös az Arrhenius-egyenletet referencia-hőmérsékletre vonatkoztatva felírni?</li>
+</ol>
+</section>
+<section id="feladatok" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="feladatok">Feladatok</h2>
+<ol type="1">
+<li><strong>Kézi számolás.</strong> Számítsa ki a kézi példa <span class="math inline">\(R^2\)</span>-ét és a meredekség standard hibáját (<a href="#eq-ols-cov" class="quarto-xref"><span>8.6</span></a>)! Adja meg a meredekség 95%-os konfidenciaintervallumát!</li>
+<li><strong>Ridge zárt alakban.</strong> Valósítsa meg a (<a href="#eq-ridge" class="quarto-xref"><span>8.7</span></a>) képletet NumPy-ban, és ellenőrizze a <code>scikit-learn</code> <code>Ridge</code> osztályával (vigyázzon a tengelymetszet kezelésére)!</li>
+<li><strong>Termékenkénti modellek.</strong> Illesszen külön lineáris lágy szenzort mindhárom termékre! Jobb-e az eredmény a közös modellnél? Mi a magyarázat?</li>
+<li><strong>Robusztus illesztés.</strong> Ismételje meg a szürkedoboz-modell illesztését a szenzor-drift időszakok nélkül (<code>plant.truth["fault"]</code>)! Mennyire változnak a becsült paraméterek? Próbálja ki a <code>scipy.optimize.least_squares</code> robusztus veszteségfüggvényét (<code>loss="soft_l1"</code>) is, amely a hibák ismerete nélkül csökkenti a kiugró pontok hatását!</li>
+<li><strong>Kétlépéses vevőérték-modell.</strong> Építsen logisztikus regressziót arra, hogy a vevő vásárol-e a következő fél évben, és lineáris regressziót a vásárlók költésére! A kettő szorzata a várható költés. Jobb-e így az előrejelzés?</li>
+</ol>
+</section>
+<section id="további-olvasmányok" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="további-olvasmányok">További olvasmányok</h2>
+<p>A lineáris regresszió statisztikai elméletét és diagnosztikáját <span class="citation" data-cites="montgomery2021">Montgomery és mtsai. (<a href="../references.html#ref-montgomery2021" role="doc-biblioref">2021</a>)</span> tárgyalja részletesen. A regularizált és a bázisfüggvényes regresszió egységes tárgyalása <span class="citation" data-cites="hastie2009">Hastie és mtsai. (<a href="../references.html#ref-hastie2009" role="doc-biblioref">2009</a>)</span> és <span class="citation" data-cites="james2023">James és mtsai. (<a href="../references.html#ref-james2023" role="doc-biblioref">2023</a>)</span> könyvében található. A spline-okról <span class="citation" data-cites="deboor2001">Boor (<a href="../references.html#ref-deboor2001" role="doc-biblioref">2001</a>)</span> a klasszikus referencia. Az adatvezérelt lágy szenzorok ipari alkalmazásairól <span class="citation" data-cites="kadlec2009">Kadlec és mtsai. (<a href="../references.html#ref-kadlec2009" role="doc-biblioref">2009</a>)</span> és <span class="citation" data-cites="fortuna2007">Fortuna és mtsai. (<a href="../references.html#ref-fortuna2007" role="doc-biblioref">2007</a>)</span> ad áttekintést.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-deboor2001" class="csl-entry" role="listitem">
+Boor, C. de. (2001). <em>A Practical Guide to Splines</em> (Revised). Springer.
+</div>
+<div id="ref-broomhead1988" class="csl-entry" role="listitem">
+Broomhead, D. S., &amp; Lowe, D. (1988). Multivariable Functional Interpolation and Adaptive Networks. <em>Complex Systems</em>, <em>2</em>, 321–355.
+</div>
+<div id="ref-fortuna2007" class="csl-entry" role="listitem">
+Fortuna, L., Graziani, S., Rizzo, A., &amp; Xibilia, M. G. (2007). <em>Soft Sensors for Monitoring and Control of Industrial Processes</em>. Springer.
+</div>
+<div id="ref-golub2013" class="csl-entry" role="listitem">
+Golub, G. H., &amp; Van Loan, C. F. (2013). <em>Matrix Computations</em> (4. kiad.). Johns Hopkins University Press.
+</div>
+<div id="ref-hastie2009" class="csl-entry" role="listitem">
+Hastie, T., Tibshirani, R., &amp; Friedman, J. (2009). <em>The Elements of Statistical Learning: Data Mining, Inference, and Prediction</em> (2. kiad.). Springer.
+</div>
+<div id="ref-hoerl1970" class="csl-entry" role="listitem">
+Hoerl, A. E., &amp; Kennard, R. W. (1970). Ridge Regression: Biased Estimation for Nonorthogonal Problems. <em>Technometrics</em>, <em>12</em>(1), 55–67.
+</div>
+<div id="ref-james2023" class="csl-entry" role="listitem">
+James, G., Witten, D., Hastie, T., Tibshirani, R., &amp; Taylor, J. (2023). <em>An Introduction to Statistical Learning with Applications in Python</em>. Springer. <a href="https://doi.org/10.1007/978-3-031-38747-0">https://doi.org/10.1007/978-3-031-38747-0</a>
+</div>
+<div id="ref-kadlec2009" class="csl-entry" role="listitem">
+Kadlec, P., Gabrys, B., &amp; Strandt, S. (2009). Data-driven Soft Sensors in the process industry. <em>Computers &amp; Chemical Engineering</em>, <em>33</em>(4), 795–814.
+</div>
+<div id="ref-levenberg1944" class="csl-entry" role="listitem">
+Levenberg, K. (1944). A method for the solution of certain non-linear problems in least squares. <em>Quarterly of Applied Mathematics</em>, <em>2</em>(2), 164–168.
+</div>
+<div id="ref-marquardt1963" class="csl-entry" role="listitem">
+Marquardt, D. W. (1963). An Algorithm for Least-Squares Estimation of Nonlinear Parameters. <em>Journal of the Society for Industrial and Applied Mathematics</em>, <em>11</em>(2), 431–441.
+</div>
+<div id="ref-montgomery2021" class="csl-entry" role="listitem">
+Montgomery, D. C., Peck, E. A., &amp; Vining, G. G. (2021). <em>Introduction to Linear Regression Analysis</em> (6. kiad.). Wiley.
+</div>
+<div id="ref-tibshirani1996" class="csl-entry" role="listitem">
+Tibshirani, R. (1996). Regression Shrinkage and Selection via the Lasso. <em>Journal of the Royal Statistical Society: Series B</em>, <em>58</em>(1), 267–288.
+</div>
+<div id="ref-zou2005" class="csl-entry" role="listitem">
+Zou, H., &amp; Hastie, T. (2005). Regularization and variable selection via the elastic net. <em>Journal of the Royal Statistical Society: Series B</em>, <em>67</em>(2), 301–320.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script>
+/* Magyar ábra- és táblázatfelirat-sorrend a HTML-kiadásban: "ábra 1.1." -> "1.1. ábra." */
+document.addEventListener("DOMContentLoaded", function () {
+  const re = /^(ábra|táblázat|algoritmus)\s+([0-9A-Z]+(?:\.[0-9]+)*)\.?\s*/i;
+  document.querySelectorAll("figcaption, .figure-caption, caption, .quarto-float-caption").forEach(function (el) {
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const t = w.nextNode();
+    if (!t) return;
+    const m = t.nodeValue.match(re);
+    if (m) { t.nodeValue = t.nodeValue.replace(re, m[2] + ". " + m[1].toLowerCase() + ". "); }
+  });
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kimásolva!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kimásolva!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/complexsystemsintelligence\.github\.io\/adatbanyaszat\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/07-modellertekeles.html" class="pagination-link" aria-label="A felügyelt tanulás alapjai és a modellek értékelése">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A felügyelt tanulás alapjai és a modellek értékelése</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/09-osztalyozas.html" class="pagination-link" aria-label="Osztályozás">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Osztályozás</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/chapters/08-regresszio.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/chapters/08-regresszio.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>

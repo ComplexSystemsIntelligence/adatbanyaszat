@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="hu" xml:lang="hu"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>4&nbsp; Feltáró adatelemzés és dimenziócsökkentés – Adatbányászat</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/05-csoportositas.html" rel="next">
+<link href="../chapters/03-adatelokeszites.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-18038207a4bfd50187eff2b2f0526436.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-27594bbe69c1d9222c0eb88c018d43c1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nincs találat",
+    "search-matching-documents-text": "találat",
+    "search-copy-link-title": "Keresési link másolása",
+    "search-hide-matches-text": "További találatok elrejtése",
+    "search-more-match-text": "további találat ebben a dokumentumban",
+    "search-more-matches-text": "további találat ebben a dokumentumban",
+    "search-clear-button-title": "Törlés",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Mégse",
+    "search-submit-button-title": "Keresés",
+    "search-label": "Keresés"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../assets/pannon-fonts.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Oldalsáv ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01-bevezetes.html">I. Alapok</a></li><li class="breadcrumb-item"><a href="../chapters/04-feltaro-elemzes.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Feltáró adatelemzés és dimenziócsökkentés</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Keresés" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Adatbányászat</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat" title="Forráskód" class="quarto-navigation-tool px-1" aria-label="Forráskód"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Letöltés" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Letöltés"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../adatbanyaszat.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Letöltés PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../adatbanyaszat.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Letöltés ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Keresés"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Előszó</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. Alapok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01-bevezetes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Adatból tudás: az adatbányászat folyamata</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02-adattarhazak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Adattárházak és analitikus adatkezelés</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-adatelokeszites.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Adatok előkészítése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-feltaro-elemzes.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Feltáró adatelemzés és dimenziócsökkentés</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. Mintázatok felügyelet nélkül</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05-csoportositas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Csoportosítás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-asszociacios-szabalyok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Gyakori mintázatok és asszociációs szabályok</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. Prediktív modellezés</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07-modellertekeles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A felügyelt tanulás alapjai és a modellek értékelése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08-regresszio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regresszió</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09-osztalyozas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Osztályozás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/10-melytanulas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Neurális hálózatok és mélytanulás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/11-anomaliak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Anomáliák és eltérések észlelése</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. Speciális adattípusok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/12-idosorok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Idősorok elemzése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/13-szovegbanyaszat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Szövegbányászat</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. Alkalmazások</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/14-ugyfelanalitika.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Ügyfélkapcsolat-menedzsment és ügyfélanalitika</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/15-folyamatanalitika.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Ipari folyamatanalitika</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Irodalomjegyzék</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Függelékek</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/a-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Python-alapok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/b-linearis-algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Lineáris algebra az adatbányászathoz</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/c-valoszinuseg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Valószínűségszámítási és statisztikai alapok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/d-adatsorok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Az adatsorok leírása</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/e-jelolesek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Jelölések</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/f-szojegyzek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Magyar–angol szójegyzék</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Tartalom</h2>
+   
+  <ul>
+  <li><a href="#sec-eda-szemlelet" id="toc-sec-eda-szemlelet" class="nav-link active" data-scroll-target="#sec-eda-szemlelet"><span class="header-section-number">4.1</span> A feltáró adatelemzés szemlélete</a></li>
+  <li><a href="#sec-egyvaltozos" id="toc-sec-egyvaltozos" class="nav-link" data-scroll-target="#sec-egyvaltozos"><span class="header-section-number">4.2</span> Egy változó eloszlásának jellemzése</a>
+  <ul class="collapse">
+  <li><a href="#leíró-statisztikák" id="toc-leíró-statisztikák" class="nav-link" data-scroll-target="#leíró-statisztikák"><span class="header-section-number">4.2.1</span> Leíró statisztikák</a></li>
+  <li><a href="#hisztogram-és-magfüggvényes-sűrűségbecslés" id="toc-hisztogram-és-magfüggvényes-sűrűségbecslés" class="nav-link" data-scroll-target="#hisztogram-és-magfüggvényes-sűrűségbecslés"><span class="header-section-number">4.2.2</span> Hisztogram és magfüggvényes sűrűségbecslés</a></li>
+  <li><a href="#dobozdiagram-kvantilis-ábrák" id="toc-dobozdiagram-kvantilis-ábrák" class="nav-link" data-scroll-target="#dobozdiagram-kvantilis-ábrák"><span class="header-section-number">4.2.3</span> Dobozdiagram, kvantilis ábrák</a></li>
+  </ul></li>
+  <li><a href="#sec-tobbvaltozos" id="toc-sec-tobbvaltozos" class="nav-link" data-scroll-target="#sec-tobbvaltozos"><span class="header-section-number">4.3</span> Több változó együttes vizsgálata</a>
+  <ul class="collapse">
+  <li><a href="#korreláció" id="toc-korreláció" class="nav-link" data-scroll-target="#korreláció"><span class="header-section-number">4.3.1</span> Korreláció</a></li>
+  <li><a href="#pontdiagram-mátrix-és-párhuzamos-koordináták" id="toc-pontdiagram-mátrix-és-párhuzamos-koordináták" class="nav-link" data-scroll-target="#pontdiagram-mátrix-és-párhuzamos-koordináták"><span class="header-section-number">4.3.2</span> Pontdiagram-mátrix és párhuzamos koordináták</a></li>
+  </ul></li>
+  <li><a href="#sec-pca" id="toc-sec-pca" class="nav-link" data-scroll-target="#sec-pca"><span class="header-section-number">4.4</span> Dimenziócsökkentés: főkomponens-elemzés</a>
+  <ul class="collapse">
+  <li><a href="#levezetés-a-legnagyobb-variancia-iránya" id="toc-levezetés-a-legnagyobb-variancia-iránya" class="nav-link" data-scroll-target="#levezetés-a-legnagyobb-variancia-iránya"><span class="header-section-number">4.4.1</span> Levezetés: a legnagyobb variancia iránya</a></li>
+  <li><a href="#főkomponens-értékek-súlyok-és-a-megmaradt-variancia" id="toc-főkomponens-értékek-súlyok-és-a-megmaradt-variancia" class="nav-link" data-scroll-target="#főkomponens-értékek-súlyok-és-a-megmaradt-variancia"><span class="header-section-number">4.4.2</span> Főkomponens-értékek, súlyok és a megmaradt variancia</a></li>
+  <li><a href="#kézi-megvalósítás-és-ellenőrzés" id="toc-kézi-megvalósítás-és-ellenőrzés" class="nav-link" data-scroll-target="#kézi-megvalósítás-és-ellenőrzés"><span class="header-section-number">4.4.3</span> Kézi megvalósítás és ellenőrzés</a></li>
+  <li><a href="#értelmezés-a-pannon-üzem-főkomponensei" id="toc-értelmezés-a-pannon-üzem-főkomponensei" class="nav-link" data-scroll-target="#értelmezés-a-pannon-üzem-főkomponensei"><span class="header-section-number">4.4.4</span> Értelmezés: a Pannon üzem főkomponensei</a></li>
+  </ul></li>
+  <li><a href="#sec-nemlinearis" id="toc-sec-nemlinearis" class="nav-link" data-scroll-target="#sec-nemlinearis"><span class="header-section-number">4.5</span> Nemlineáris vetítések</a></li>
+  <li><a href="#sec-feltaro-osszefoglalas" id="toc-sec-feltaro-osszefoglalas" class="nav-link" data-scroll-target="#sec-feltaro-osszefoglalas"><span class="header-section-number">4.6</span> Összefoglalás</a></li>
+  <li><a href="#ellenőrző-kérdések" id="toc-ellenőrző-kérdések" class="nav-link" data-scroll-target="#ellenőrző-kérdések">Ellenőrző kérdések</a></li>
+  <li><a href="#feladatok" id="toc-feladatok" class="nav-link" data-scroll-target="#feladatok">Feladatok</a></li>
+  <li><a href="#további-olvasmányok" id="toc-további-olvasmányok" class="nav-link" data-scroll-target="#további-olvasmányok">További olvasmányok</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/chapters/04-feltaro-elemzes.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/chapters/04-feltaro-elemzes.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01-bevezetes.html">I. Alapok</a></li><li class="breadcrumb-item"><a href="../chapters/04-feltaro-elemzes.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Feltáró adatelemzés és dimenziócsökkentés</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-feltaro" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Feltáró adatelemzés és dimenziócsökkentés</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="roadmap">
+<p>Mielőtt modellt építenénk, meg kell ismernünk az adatainkat: hogyan oszlanak el az egyes változók, hogyan függnek össze egymással, vannak-e csoportok, trendek, szokatlan pontok. Ez a fejezet a feltáró adatelemzés (exploratory data analysis) eszköztárát mutatja be: a leíró statisztikákat, az egyváltozós eloszlások ábrázolását (hisztogram, magfüggvényes sűrűségbecslés, dobozdiagram, kvantilis ábrák), a többváltozós kapcsolatok vizsgálatát (korreláció, pontdiagram-mátrix, párhuzamos koordináták), végül a sokdimenziós adatok áttekintését lehetővé tevő dimenziócsökkentési módszereket – a főkomponens-elemzést, a többdimenziós skálázást és a t-SNE-t.</p>
+<p><strong>A fejezet végére az olvasó</strong> képes lesz egy adathalmazt leíró statisztikákkal és ábrákkal jellemezni; a megfelelő ábratípust kiválasztani; a főkomponens-elemzést levezetni, végrehajtani és értelmezni (megmagyarázott variancia, főkomponens-értékek, súlyok); és megítélni a nemlineáris vetítések erősségeit és csapdáit.</p>
+</div>
+<section id="sec-eda-szemlelet" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="sec-eda-szemlelet"><span class="header-section-number">4.1</span> A feltáró adatelemzés szemlélete</h2>
+<p>A feltáró adatelemzés fogalmát <span class="citation" data-cites="tukey1977">Tukey (<a href="../references.html#ref-tukey1977" role="doc-biblioref">1977</a>)</span> vezette be, szembeállítva a hipotézisvizsgáló (megerősítő) statisztikával. A megerősítő elemzés egy előre megfogalmazott kérdésre keres választ; a feltáró elemzés célja éppen a kérdések <em>megtalálása</em>: mit mutatnak az adatok, mi meglepő bennük, milyen feltevéseket érdemes később ellenőrizni. Ennek fő eszköze a vizualizáció – nem azért, mert a számok rosszak, hanem mert egyetlen szám sok, nagyon különböző adatsort írhat le.</p>
+<p>Ezt a legvilágosabban <span class="citation" data-cites="anscombe1973">Anscombe (<a href="../references.html#ref-anscombe1973" role="doc-biblioref">1973</a>)</span> négy adatsora mutatja (<a href="#tbl-anscombe" class="quarto-xref"><span>4.1</span></a>. táblázat és <a href="#fig-anscombe" class="quarto-xref"><span>4.1</span></a>. ábra). A négy adatsorban az <span class="math inline">\(x\)</span> és <span class="math inline">\(y\)</span> változók átlaga, szórása, korrelációja és a rájuk illesztett regressziós egyenes két tizedesjegy pontossággal megegyezik – az ábrák viszont négy teljesen különböző helyzetet mutatnak: egy közel lineáris kapcsolatot, egy görbe vonalút, egy egyetlen kiugró érték által eltorzított lineárisat, és egy olyat, ahol a korrelációt egyetlen pont hozza létre.</p>
+<div class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>anscombe <span class="op">=</span> {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"I"</span>:   ([<span class="dv">10</span>, <span class="dv">8</span>, <span class="dv">13</span>, <span class="dv">9</span>, <span class="dv">11</span>, <span class="dv">14</span>, <span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">12</span>, <span class="dv">7</span>, <span class="dv">5</span>],</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>            [<span class="fl">8.04</span>, <span class="fl">6.95</span>, <span class="fl">7.58</span>, <span class="fl">8.81</span>, <span class="fl">8.33</span>, <span class="fl">9.96</span>, <span class="fl">7.24</span>, <span class="fl">4.26</span>, <span class="fl">10.84</span>, <span class="fl">4.82</span>, <span class="fl">5.68</span>]),</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"II"</span>:  ([<span class="dv">10</span>, <span class="dv">8</span>, <span class="dv">13</span>, <span class="dv">9</span>, <span class="dv">11</span>, <span class="dv">14</span>, <span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">12</span>, <span class="dv">7</span>, <span class="dv">5</span>],</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>            [<span class="fl">9.14</span>, <span class="fl">8.14</span>, <span class="fl">8.74</span>, <span class="fl">8.77</span>, <span class="fl">9.26</span>, <span class="fl">8.10</span>, <span class="fl">6.13</span>, <span class="fl">3.10</span>, <span class="fl">9.13</span>, <span class="fl">7.26</span>, <span class="fl">4.74</span>]),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"III"</span>: ([<span class="dv">10</span>, <span class="dv">8</span>, <span class="dv">13</span>, <span class="dv">9</span>, <span class="dv">11</span>, <span class="dv">14</span>, <span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">12</span>, <span class="dv">7</span>, <span class="dv">5</span>],</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>            [<span class="fl">7.46</span>, <span class="fl">6.77</span>, <span class="fl">12.74</span>, <span class="fl">7.11</span>, <span class="fl">7.81</span>, <span class="fl">8.84</span>, <span class="fl">6.08</span>, <span class="fl">5.39</span>, <span class="fl">8.15</span>, <span class="fl">6.42</span>, <span class="fl">5.73</span>]),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"IV"</span>:  ([<span class="dv">8</span>, <span class="dv">8</span>, <span class="dv">8</span>, <span class="dv">8</span>, <span class="dv">8</span>, <span class="dv">8</span>, <span class="dv">8</span>, <span class="dv">19</span>, <span class="dv">8</span>, <span class="dv">8</span>, <span class="dv">8</span>],</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            [<span class="fl">6.58</span>, <span class="fl">5.76</span>, <span class="fl">7.71</span>, <span class="fl">8.84</span>, <span class="fl">8.47</span>, <span class="fl">7.04</span>, <span class="fl">5.25</span>, <span class="fl">12.50</span>, <span class="fl">5.56</span>, <span class="fl">7.91</span>, <span class="fl">6.89</span>]),</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> jellemzok(x, y):</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    x, y <span class="op">=</span> np.array(x, <span class="bu">float</span>), np.array(y, <span class="bu">float</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    b1, b0 <span class="op">=</span> np.polyfit(x, y, <span class="dv">1</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"átlag x"</span>: x.mean(), <span class="st">"átlag y"</span>: y.mean(), <span class="st">"szórás x"</span>: x.std(ddof<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>            <span class="st">"szórás y"</span>: y.std(ddof<span class="op">=</span><span class="dv">1</span>), <span class="st">"korreláció"</span>: np.corrcoef(x, y)[<span class="dv">0</span>, <span class="dv">1</span>],</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>            <span class="st">"meredekség"</span>: b1, <span class="st">"tengelymetszet"</span>: b0}</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({k: jellemzok(<span class="op">*</span>v) <span class="cf">for</span> k, v <span class="kw">in</span> anscombe.items()}).<span class="bu">round</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="tbl-anscombe" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="2">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-anscombe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+táblázat&nbsp;4.1.. Anscombe négy adatsorának leíró statisztikái.
+</figcaption>
+<div aria-describedby="tbl-anscombe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
+
+
+<table class="dataframe cell caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">I</th>
+<th data-quarto-table-cell-role="th">II</th>
+<th data-quarto-table-cell-role="th">III</th>
+<th data-quarto-table-cell-role="th">IV</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">átlag x</th>
+<td>9.00</td>
+<td>9.00</td>
+<td>9.00</td>
+<td>9.00</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">átlag y</th>
+<td>7.50</td>
+<td>7.50</td>
+<td>7.50</td>
+<td>7.50</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">szórás x</th>
+<td>3.32</td>
+<td>3.32</td>
+<td>3.32</td>
+<td>3.32</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">szórás y</th>
+<td>2.03</td>
+<td>2.03</td>
+<td>2.03</td>
+<td>2.03</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">korreláció</th>
+<td>0.82</td>
+<td>0.82</td>
+<td>0.82</td>
+<td>0.82</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">meredekség</th>
+<td>0.50</td>
+<td>0.50</td>
+<td>0.50</td>
+<td>0.50</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">tengelymetszet</th>
+<td>3.00</td>
+<td>3.00</td>
+<td>3.00</td>
+<td>3.00</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<div id="cell-fig-anscombe" class="cell" data-fig-height="2.4" data-fig-width="7" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">4</span>, sharex<span class="op">=</span><span class="va">True</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>xx <span class="op">=</span> np.array([<span class="dv">3</span>, <span class="dv">20</span>])</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a, (k, (x, y)) <span class="kw">in</span> <span class="bu">zip</span>(ax, anscombe.items()):</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    b1, b0 <span class="op">=</span> np.polyfit(x, y, <span class="dv">1</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    a.scatter(x, y, s<span class="op">=</span><span class="dv">18</span>, color<span class="op">=</span>ab.PALETTE[<span class="dv">0</span>], zorder<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    a.plot(xx, b0 <span class="op">+</span> b1 <span class="op">*</span> xx, color<span class="op">=</span>ab.PALETTE[<span class="dv">1</span>], lw<span class="op">=</span><span class="fl">1.2</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    a.set_title(k)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-anscombe" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-anscombe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="04-feltaro-elemzes_files/figure-html/fig-anscombe-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="ábra&nbsp;4.1.. Anscombe négy adatsora: azonos leíró statisztikák, teljesen eltérő szerkezet [@anscombe1973]."><img src="04-feltaro-elemzes_files/figure-html/fig-anscombe-output-1.png" width="691" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-anscombe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;4.1.. Anscombe négy adatsora: azonos leíró statisztikák, teljesen eltérő szerkezet <span class="citation" data-cites="anscombe1973">(<a href="../references.html#ref-anscombe1973" role="doc-biblioref">Anscombe, 1973</a>)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A tanulság egyszerű, de alapvető: <strong>mielőtt egy összefüggést számszerűsítenénk, nézzük meg.</strong> A vizualizáció tervezésének elveiről a további olvasmányok között ajánlott irodalom szól; itt csak egy, kísérletekkel alátámasztott szempontot emelünk ki: az emberi szem a közös skálán elhelyezkedő pozíciókat sokkal pontosabban hasonlítja össze, mint a szögeket, területeket vagy színárnyalatokat <span class="citation" data-cites="cleveland1984">(<a href="../references.html#ref-cleveland1984" role="doc-biblioref">Cleveland &amp; McGill, 1984</a>)</span>. Ezért mennyiségek összehasonlítására az oszlop- és pontdiagram jobb választás, mint a kördiagram.</p>
+</section>
+<section id="sec-egyvaltozos" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="sec-egyvaltozos"><span class="header-section-number">4.2</span> Egy változó eloszlásának jellemzése</h2>
+<section id="leíró-statisztikák" class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="leíró-statisztikák"><span class="header-section-number">4.2.1</span> Leíró statisztikák</h3>
+<p>Egy numerikus változó <span class="math inline">\(x_1, \dots, x_N\)</span> mintáját három szempontból jellemezzük: hol helyezkedik el (közép), mennyire szóródik, és milyen az alakja.</p>
+<p><strong>Középértékek.</strong> A számtani átlag <span class="math inline">\(\bar{x} = \frac1N\sum_k x_k\)</span> minden megfigyelést figyelembe vesz, de érzékeny a kiugró értékekre. A medián (a rendezett minta középső eleme) robusztus. A módusz a leggyakoribb érték; kategorikus változóknál ez az egyetlen értelmes középérték.</p>
+<p><strong>Szóródás.</strong> A tapasztalati szórásnégyzet és a szórás</p>
+<p><span id="eq-szorasnegyzet"><span class="math display">\[
+s^2 = \frac{1}{N-1}\sum_{k=1}^{N}(x_k-\bar{x})^2, \qquad s = \sqrt{s^2}.
+\tag{4.1}\]</span></span></p>
+<p>Az <span class="math inline">\(N-1\)</span>-es nevező (Bessel-korrekció) teszi a becslést torzítatlanná; a részleteket a <a href="../appendices/c-valoszinuseg.html" class="quarto-xref"><span>C</span></a>. függelék tárgyalja. Robusztus szóródási mérőszám az interkvartilis terjedelem (<span class="math inline">\(\mathrm{IQR} = Q_3 - Q_1\)</span>) és a MAD (<a href="03-adatelokeszites.html#sec-kiugro" class="quarto-xref"><span>3.4</span></a>. alfejezet).</p>
+<p><strong>Alak.</strong> A ferdeség és a csúcsosság a harmadik, illetve negyedik centrált momentumon alapul:</p>
+<p><span id="eq-ferdeseg"><span class="math display">\[
+g_1 = \frac{\frac1N\sum_k (x_k-\bar{x})^3}{\left(\frac1N\sum_k (x_k-\bar{x})^2\right)^{3/2}},
+\qquad
+g_2 = \frac{\frac1N\sum_k (x_k-\bar{x})^4}{\left(\frac1N\sum_k (x_k-\bar{x})^2\right)^{2}} - 3.
+\tag{4.2}\]</span></span></p>
+<p>A normális eloszlás ferdesége és (a <span class="math inline">\(-3\)</span>-mal korrigált) csúcsossága nulla. Pozitív ferdeség jobbra elnyúló, hosszú jobb oldali „farkú” eloszlást jelez – ilyen a vásárlási érték és a legtöbb mennyiségi változó.</p>
+<div id="ed129e98" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>vevok <span class="op">=</span> ab.customer_table()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>oszl <span class="op">=</span> [<span class="st">"R_nap"</span>, <span class="st">"F_szamla"</span>, <span class="st">"M_ertek"</span>, <span class="st">"atl_kosarertek"</span>, <span class="st">"atl_koztes_nap"</span>]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>leiro <span class="op">=</span> vevok[oszl].describe().T</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>leiro[<span class="st">"ferdeség"</span>] <span class="op">=</span> vevok[oszl].skew()</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>leiro[<span class="st">"csúcsosság"</span>] <span class="op">=</span> vevok[oszl].kurt()</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>leiro.<span class="bu">round</span>(<span class="dv">1</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">count</th>
+<th data-quarto-table-cell-role="th">mean</th>
+<th data-quarto-table-cell-role="th">std</th>
+<th data-quarto-table-cell-role="th">min</th>
+<th data-quarto-table-cell-role="th">25%</th>
+<th data-quarto-table-cell-role="th">50%</th>
+<th data-quarto-table-cell-role="th">75%</th>
+<th data-quarto-table-cell-role="th">max</th>
+<th data-quarto-table-cell-role="th">ferdeség</th>
+<th data-quarto-table-cell-role="th">csúcsosság</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">R_nap</th>
+<td>2394.0</td>
+<td>219.1</td>
+<td>220.3</td>
+<td>0.0</td>
+<td>23.0</td>
+<td>137.5</td>
+<td>373.0</td>
+<td>730.0</td>
+<td>0.7</td>
+<td>-0.7</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">F_szamla</th>
+<td>2394.0</td>
+<td>5.9</td>
+<td>5.4</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>4.0</td>
+<td>9.0</td>
+<td>29.0</td>
+<td>1.3</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">M_ertek</th>
+<td>2394.0</td>
+<td>781383.1</td>
+<td>2076022.5</td>
+<td>490.0</td>
+<td>49230.0</td>
+<td>208955.0</td>
+<td>624605.0</td>
+<td>18663770.0</td>
+<td>4.9</td>
+<td>25.9</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">atl_kosarertek</th>
+<td>2394.0</td>
+<td>124430.8</td>
+<td>316794.4</td>
+<td>490.0</td>
+<td>23424.6</td>
+<td>41174.4</td>
+<td>78813.3</td>
+<td>3876120.0</td>
+<td>6.2</td>
+<td>50.7</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">atl_koztes_nap</th>
+<td>1880.0</td>
+<td>80.7</td>
+<td>73.5</td>
+<td>0.0</td>
+<td>38.5</td>
+<td>55.9</td>
+<td>97.1</td>
+<td>700.0</td>
+<td>2.7</td>
+<td>10.1</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="eset-uzleti">
+<p>A vevőszintű táblában az átlag és a medián (50%) között nagy a különbség a vásárlási érték és az átlagos kosárérték esetén: az átlag többszöröse a mediánnak. Ez erős jobbra ferdeséget jelez – kevés, nagyon sokat vásárló vevő (a viszonteladók) húzza fel az átlagot. Az ilyen változókra a medián jobb „tipikus érték”, és a modellezés előtt logaritmikus vagy más eloszlás-transzformáció indokolt (<a href="03-adatelokeszites.html#sec-transzformaciok" class="quarto-xref"><span>3.5</span></a>. alfejezet).</p>
+</div>
+</section>
+<section id="hisztogram-és-magfüggvényes-sűrűségbecslés" class="level3" data-number="4.2.2">
+<h3 data-number="4.2.2" class="anchored" data-anchor-id="hisztogram-és-magfüggvényes-sűrűségbecslés"><span class="header-section-number">4.2.2</span> Hisztogram és magfüggvényes sűrűségbecslés</h3>
+<p>A <strong>hisztogram</strong> a változó tartományát egyenlő szélességű intervallumokra bontja, és mindegyik fölé az oda eső megfigyelések számával (vagy relatív gyakoriságával) arányos magasságú oszlopot rajzol. A kép erősen függ az intervallumszélességtől: túl keskeny intervallumoknál zajos, túl szélesnél elmossa a szerkezetet. A Freedman–Diaconis-szabály az intervallumszélességet a <span class="math inline">\(h = 2\,\mathrm{IQR}\,N^{-1/3}\)</span> képlettel választja <span class="citation" data-cites="freedman1981">(<a href="../references.html#ref-freedman1981" role="doc-biblioref">Freedman &amp; Diaconis, 1981</a>)</span>; ez a kiugró értékekre kevéssé érzékeny.</p>
+<p>A <strong>magfüggvényes sűrűségbecslés</strong> (kernel density estimation, KDE) a hisztogram sima változata (<a href="#fig-kde" class="quarto-xref"><span>4.2</span></a>. ábra). Minden megfigyelés köré egy kis, egységnyi területű „dombot” (magfüggvényt, <span class="math inline">\(K\)</span>) helyezünk, és ezeket összegezzük:</p>
+<p><span id="eq-kde"><span class="math display">\[
+\hat f_h(x) = \frac{1}{N h}\sum_{k=1}^{N} K\!\left(\frac{x - x_k}{h}\right),
+\qquad K(u) = \frac{1}{\sqrt{2\pi}}e^{-u^2/2}.
+\tag{4.3}\]</span></span></p>
+<p>A <span class="math inline">\(h\)</span> sávszélesség a hisztogram intervallumszélességének szerepét tölti be. Egy gyakran használt választás Silverman ökölszabálya, <span class="math inline">\(h = 0{,}9\,\min\!\left(s,
+\mathrm{IQR}/1{,}34\right) N^{-1/5}\)</span> <span class="citation" data-cites="silverman1986">(<a href="../references.html#ref-silverman1986" role="doc-biblioref">Silverman, 1986</a>)</span>, amely közel normális eloszlásra optimális, többcsúcsú eloszlásokra viszont túlsimíthat.</p>
+<div id="fig-kde" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kde-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/04-kde.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="ábra&nbsp;4.2.. A magfüggvényes sűrűségbecslés elve: minden megfigyelés (függőleges vonalkák) köré egy Gauss-magfüggvényt helyezünk, a becslés ezek összege."><img src="../figures/build/04-kde.svg" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kde-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;4.2.. A magfüggvényes sűrűségbecslés elve: minden megfigyelés (függőleges vonalkák) köré egy Gauss-magfüggvényt helyezünk, a becslés ezek összege.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="dobozdiagram-kvantilis-ábrák" class="level3" data-number="4.2.3">
+<h3 data-number="4.2.3" class="anchored" data-anchor-id="dobozdiagram-kvantilis-ábrák"><span class="header-section-number">4.2.3</span> Dobozdiagram, kvantilis ábrák</h3>
+<p>A <strong>dobozdiagram</strong> <span class="citation" data-cites="tukey1977">(<a href="../references.html#ref-tukey1977" role="doc-biblioref">Tukey, 1977</a>)</span> öt számmal foglalja össze az eloszlást (<a href="#fig-doboz-anatomia" class="quarto-xref"><span>4.3</span></a>. ábra): a doboz a két kvartilis között húzódik, benne a medián, a „bajuszok” a kerítéseken belüli legszélső értékekig nyúlnak, a kerítéseken kívüli pontokat egyenként jelöljük. Előnye, hogy sok csoport eloszlása tömören egymás mellé rajzolható.</p>
+<div id="fig-doboz-anatomia" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-doboz-anatomia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/04-boxplot.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="ábra&nbsp;4.3.. A dobozdiagram felépítése. A kerítések a kvartilisektől 1,5 interkvartilis terjedelemnyire vannak; a rajtuk kívül eső pontok a lehetséges kiugró értékek."><img src="../figures/build/04-boxplot.svg" class="img-fluid figure-img" style="width:95.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-doboz-anatomia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;4.3.. A dobozdiagram felépítése. A kerítések a kvartilisektől 1,5 interkvartilis terjedelemnyire vannak; a rajtuk kívül eső pontok a lehetséges kiugró értékek.
+</figcaption>
+</figure>
+</div>
+<div id="cell-fig-doboz-honap" class="cell" data-fig-height="3" data-fig-width="7" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plant <span class="op">=</span> ab.load_plant()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> plant.hourly.dropna(subset<span class="op">=</span>[<span class="st">"T_hutoviz"</span>])</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>csoport <span class="op">=</span> [g.T_hutoviz.values <span class="cf">for</span> _, g <span class="kw">in</span> h.groupby(h.ido.dt.month)]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>ax.boxplot(csoport, widths<span class="op">=</span><span class="fl">0.6</span>, flierprops<span class="op">=</span><span class="bu">dict</span>(marker<span class="op">=</span><span class="st">"o"</span>, markersize<span class="op">=</span><span class="dv">2</span>, alpha<span class="op">=</span><span class="fl">0.4</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>           medianprops<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span>ab.PALETTE[<span class="dv">1</span>], lw<span class="op">=</span><span class="fl">1.6</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>           boxprops<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span>ab.PE_BLUE), whiskerprops<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span>ab.PE_BLUE))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">13</span>), [<span class="st">"jan"</span>, <span class="st">"feb"</span>, <span class="st">"márc"</span>, <span class="st">"ápr"</span>, <span class="st">"máj"</span>, <span class="st">"jún"</span>, <span class="st">"júl"</span>, <span class="st">"aug"</span>, <span class="st">"szept"</span>, <span class="st">"okt"</span>, <span class="st">"nov"</span>, <span class="st">"dec"</span>])</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"hűtővíz-hőmérséklet [°C]"</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-doboz-honap" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-doboz-honap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="04-feltaro-elemzes_files/figure-html/fig-doboz-honap-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="ábra&nbsp;4.4.. A hűtővíz-hőmérséklet havi eloszlása dobozdiagramokon. Jól látszik az évszakos változás és az, hogy nyáron a szóródás is nagyobb; a kiugró pontok egy része a hűtővíz-kiesésekhez tartozik."><img src="04-feltaro-elemzes_files/figure-html/fig-doboz-honap-output-1.png" width="693" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-doboz-honap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;4.4.. A hűtővíz-hőmérséklet havi eloszlása dobozdiagramokon. Jól látszik az évszakos változás és az, hogy nyáron a szóródás is nagyobb; a kiugró pontok egy része a hűtővíz-kiesésekhez tartozik.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A <strong>kvantilis–kvantilis (Q–Q) ábra</strong> két eloszlás alakját hasonlítja össze: a minta rendezett értékeit egy elméleti eloszlás (leggyakrabban a normális) megfelelő kvantiliseinek függvényében ábrázolja. Ha a minta az elméleti eloszlásból származik, a pontok egy egyenesre esnek; a görbülés ferdeséget, az „S” alak a normálisnál nehezebb vagy könnyebb farkakat jelez.</p>
+<div id="cell-fig-qq" class="cell" data-fig-height="2.8" data-fig-width="7" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a, adat, cim <span class="kw">in</span> [(ax[<span class="dv">0</span>], vevok.M_ertek, <span class="st">"vásárlási érték"</span>), (ax[<span class="dv">1</span>], np.log10(vevok.M_ertek), <span class="st">"log$_</span><span class="sc">{10}</span><span class="st">$(vásárlási érték)"</span>)]:</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    (osm, osr), (b, a0, r) <span class="op">=</span> stats.probplot(adat, dist<span class="op">=</span><span class="st">"norm"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    a.scatter(osm, osr, s<span class="op">=</span><span class="dv">5</span>, color<span class="op">=</span>ab.PALETTE[<span class="dv">0</span>], alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    a.plot(osm, a0 <span class="op">+</span> b <span class="op">*</span> osm, color<span class="op">=</span>ab.PALETTE[<span class="dv">1</span>], lw<span class="op">=</span><span class="fl">1.2</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    a.set_title(cim)<span class="op">;</span> a.set_xlabel(<span class="st">"elméleti normális kvantilis"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylabel(<span class="st">"mintakvantilis"</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-qq" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-qq-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="04-feltaro-elemzes_files/figure-html/fig-qq-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="ábra&nbsp;4.5.. Normális Q–Q ábra a vevők teljes vásárlási értékére (balra) és annak logaritmusára (jobbra). Az eredeti változó erősen jobbra ferde; a logaritmus jóval közelebb van a normálishoz, bár a két szélen még eltér tőle."><img src="04-feltaro-elemzes_files/figure-html/fig-qq-output-1.png" width="693" height="406" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-qq-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;4.5.. Normális Q–Q ábra a vevők teljes vásárlási értékére (balra) és annak logaritmusára (jobbra). Az eredeti változó erősen jobbra ferde; a logaritmus jóval közelebb van a normálishoz, bár a két szélen még eltér tőle.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-tobbvaltozos" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="sec-tobbvaltozos"><span class="header-section-number">4.3</span> Több változó együttes vizsgálata</h2>
+<section id="korreláció" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="korreláció"><span class="header-section-number">4.3.1</span> Korreláció</h3>
+<p>Két numerikus változó lineáris kapcsolatát a Pearson-féle korrelációs együttható méri (<a href="03-adatelokeszites.html#eq-pearson" class="quarto-xref"><span>3.6</span></a>). A <strong>Spearman-féle rangkorreláció</strong> <span class="citation" data-cites="spearman1904">(<a href="../references.html#ref-spearman1904" role="doc-biblioref">Spearman, 1904</a>)</span> ugyanezt a képletet a megfigyelések rangszámaira alkalmazza; így bármilyen monoton (nem csak lineáris) kapcsolatot kimutat, és kevéssé érzékeny a kiugró értékekre. Sok változó esetén a páronkénti korrelációkat <strong>korrelációs mátrixba</strong> rendezzük, és hőtérképen ábrázoljuk.</p>
+<div id="cell-fig-korr" class="cell" data-fig-height="5.2" data-fig-width="6.5" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>valt <span class="op">=</span> [<span class="st">"T_kornyezet"</span>, <span class="st">"F_betap"</span>, <span class="st">"c_betap"</span>, <span class="st">"T_betap"</span>, <span class="st">"T_reaktor"</span>, <span class="st">"F_hutoviz"</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>        <span class="st">"T_hutoviz"</span>, <span class="st">"P_reaktor"</span>, <span class="st">"P_kevero"</span>, <span class="st">"E_fogyasztas"</span>]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>hh <span class="op">=</span> plant.hourly[plant.hourly.F_betap <span class="op">&gt;</span> <span class="dv">1</span>][valt].dropna()</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>P, S <span class="op">=</span> hh.corr(method<span class="op">=</span><span class="st">"pearson"</span>).to_numpy(), hh.corr(method<span class="op">=</span><span class="st">"spearman"</span>).to_numpy()</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> np.where(np.triu(np.ones_like(P, <span class="bu">bool</span>), <span class="dv">1</span>), P, S)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>np.fill_diagonal(M, <span class="dv">1</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> ax.imshow(M, cmap<span class="op">=</span><span class="st">"RdBu_r"</span>, vmin<span class="op">=-</span><span class="dv">1</span>, vmax<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(<span class="bu">range</span>(<span class="bu">len</span>(valt)), valt, rotation<span class="op">=</span><span class="dv">60</span>, ha<span class="op">=</span><span class="st">"right"</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>ax.set_yticks(<span class="bu">range</span>(<span class="bu">len</span>(valt)), valt, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(valt)):</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(valt)):</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        ax.text(j, i, <span class="ss">f"</span><span class="sc">{</span>M[i, j]<span class="sc">:.1f}</span><span class="ss">"</span>, ha<span class="op">=</span><span class="st">"center"</span>, va<span class="op">=</span><span class="st">"center"</span>, fontsize<span class="op">=</span><span class="fl">6.5</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                color<span class="op">=</span><span class="st">"white"</span> <span class="cf">if</span> <span class="bu">abs</span>(M[i, j]) <span class="op">&gt;</span> <span class="fl">0.6</span> <span class="cf">else</span> <span class="st">"#1F2933"</span>)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">False</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>fig.colorbar(im, ax<span class="op">=</span>ax, shrink<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-korr" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-korr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="04-feltaro-elemzes_files/figure-html/fig-korr-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="ábra&nbsp;4.6.. A Pannon üzem órás folyamatváltozóinak Pearson-féle (bal felső háromszög) és Spearman-féle (jobb alsó háromszög) korrelációs mátrixa."><img src="04-feltaro-elemzes_files/figure-html/fig-korr-output-1.png" width="503" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-korr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;4.6.. A Pannon üzem órás folyamatváltozóinak Pearson-féle (bal felső háromszög) és Spearman-féle (jobb alsó háromszög) korrelációs mátrixa.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Figyelem</span>A korreláció nem okozati kapcsolat
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A <a href="#fig-korr" class="quarto-xref"><span>4.6</span></a>. ábrán a betáplálási áram és a keverőteljesítmény erősen korrelál, holott egyik sem okozza a másikat: mindkettő a gyártott termékminőségtől függ. Az ilyen közös okot <strong>zavaró változónak</strong> (confounder) nevezzük. A korreláció mindig csak együttmozgást jelez; okozati következtetéshez kísérlet vagy a zavaró változók kontrollálása szükséges.</p>
+</div>
+</div>
+</section>
+<section id="pontdiagram-mátrix-és-párhuzamos-koordináták" class="level3" data-number="4.3.2">
+<h3 data-number="4.3.2" class="anchored" data-anchor-id="pontdiagram-mátrix-és-párhuzamos-koordináták"><span class="header-section-number">4.3.2</span> Pontdiagram-mátrix és párhuzamos koordináták</h3>
+<p>A <strong>pontdiagram-mátrix</strong> minden változópárra egy pontdiagramot rajzol, az átlóban az egyes változók eloszlásával. Sok változónál áttekinthetetlenné válik, de 4–6 változóra kiváló első áttekintést ad, különösen ha a pontokat egy kategorikus változó szerint színezzük.</p>
+<div id="cell-fig-pairplot" class="cell" data-fig-height="6" data-fig-width="6.5" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>minta <span class="op">=</span> (plant.hourly[plant.hourly.F_betap <span class="op">&gt;</span> <span class="dv">1</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>         .dropna(subset<span class="op">=</span>[<span class="st">"T_reaktor"</span>]).sample(<span class="dv">1000</span>, random_state<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sns.pairplot(minta[[<span class="st">"T_reaktor"</span>, <span class="st">"F_hutoviz"</span>, <span class="st">"P_kevero"</span>, <span class="st">"E_fogyasztas"</span>, <span class="st">"termek"</span>]],</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                 hue<span class="op">=</span><span class="st">"termek"</span>, hue_order<span class="op">=</span>[<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>], palette<span class="op">=</span>ab.PALETTE[:<span class="dv">3</span>],</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                 plot_kws<span class="op">=</span><span class="bu">dict</span>(s<span class="op">=</span><span class="dv">8</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, linewidth<span class="op">=</span><span class="dv">0</span>), diag_kind<span class="op">=</span><span class="st">"kde"</span>, height<span class="op">=</span><span class="fl">1.5</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-pairplot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pairplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="04-feltaro-elemzes_files/figure-html/fig-pairplot-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="ábra&nbsp;4.7.. Pontdiagram-mátrix a Pannon üzem négy változójára, termékenként színezve (1000 véletlen órás minta). A termékek jól elkülönülő felhőket alkotnak a reaktorhőmérséklet és a keverőteljesítmény síkjában."><img src="04-feltaro-elemzes_files/figure-html/fig-pairplot-output-1.png" width="720" height="653" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pairplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;4.7.. Pontdiagram-mátrix a Pannon üzem négy változójára, termékenként színezve (1000 véletlen órás minta). A termékek jól elkülönülő felhőket alkotnak a reaktorhőmérséklet és a keverőteljesítmény síkjában.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A <strong>párhuzamos koordináták</strong> <span class="citation" data-cites="inselberg1985">(<a href="../references.html#ref-inselberg1985" role="doc-biblioref">Inselberg, 1985</a>)</span> a változókat egymással párhuzamos függőleges tengelyekre helyezik, és minden megfigyelést a tengelyeken felvett értékeit összekötő töröttvonalként ábrázolnak. Így tetszőleges számú változó egy ábrán jeleníthető meg; a csoportok egymástól elkülönülő vonalkötegekként, a negatív korreláció a tengelyek között kereszteződő vonalakként ismerhető fel. Az értelmezhetőséghez a változókat azonos skálára (például <span class="math inline">\([0,1]\)</span>) kell hozni.</p>
+<div id="cell-fig-parhuzamos" class="cell" data-fig-height="3" data-fig-width="7" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pandas.plotting <span class="im">import</span> parallel_coordinates</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>pk <span class="op">=</span> plant.hourly[plant.hourly.F_betap <span class="op">&gt;</span> <span class="dv">1</span>].dropna(subset<span class="op">=</span>valt)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>pk <span class="op">=</span> pk.groupby(<span class="st">"termek"</span>, group_keys<span class="op">=</span><span class="va">False</span>).sample(<span class="dv">60</span>, random_state<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>norm <span class="op">=</span> (pk[valt] <span class="op">-</span> pk[valt].<span class="bu">min</span>()) <span class="op">/</span> (pk[valt].<span class="bu">max</span>() <span class="op">-</span> pk[valt].<span class="bu">min</span>())</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>norm[<span class="st">"termek"</span>] <span class="op">=</span> pk.termek.values</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>parallel_coordinates(norm, <span class="st">"termek"</span>, color<span class="op">=</span>ab.PALETTE[:<span class="dv">3</span>], alpha<span class="op">=</span><span class="fl">0.35</span>, lw<span class="op">=</span><span class="fl">0.8</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>ax.tick_params(axis<span class="op">=</span><span class="st">"x"</span>, rotation<span class="op">=</span><span class="dv">40</span>, labelsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>ax.legend(title<span class="op">=</span><span class="st">"termék"</span>, loc<span class="op">=</span><span class="st">"upper right"</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-parhuzamos" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-parhuzamos-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="04-feltaro-elemzes_files/figure-html/fig-parhuzamos-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="ábra&nbsp;4.8.. Párhuzamos koordináták a Pannon üzem órás adataira (min–max skálázás után, termékenként 60 véletlen óra)."><img src="04-feltaro-elemzes_files/figure-html/fig-parhuzamos-output-1.png" width="693" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-parhuzamos-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;4.8.. Párhuzamos koordináták a Pannon üzem órás adataira (min–max skálázás után, termékenként 60 véletlen óra).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-pca" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="sec-pca"><span class="header-section-number">4.4</span> Dimenziócsökkentés: főkomponens-elemzés</h2>
+<p>Ha egy objektumot sok változó ír le, a változók közötti összefüggések miatt az adatok gyakran egy alacsonyabb dimenziós altér közelében helyezkednek el. A Pannon üzem tíz folyamatváltozója például nem tíz független információt hordoz: a hőmérsékletek, áramok és teljesítmények együtt mozognak, mert ugyanazok a fizikai törvények kötik össze őket. A <strong>dimenziócsökkentés</strong> célja, hogy az adatokat kevesebb új változóval írjuk le úgy, hogy a lényeges információ megmaradjon. Ez megkönnyíti a megjelenítést (2–3 dimenzió ábrázolható), csökkenti a zajt és a számítási igényt, és a korrelált változók problémáját is kezeli.</p>
+<section id="levezetés-a-legnagyobb-variancia-iránya" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="levezetés-a-legnagyobb-variancia-iránya"><span class="header-section-number">4.4.1</span> Levezetés: a legnagyobb variancia iránya</h3>
+<p>A <strong>főkomponens-elemzés</strong> (principal component analysis, PCA) <span class="citation" data-cites="pearson1901">Pearson (<a href="../references.html#ref-pearson1901" role="doc-biblioref">1901</a>)</span> és <span class="citation" data-cites="hotelling1933">Hotelling (<a href="../references.html#ref-hotelling1933" role="doc-biblioref">1933</a>)</span> munkáira megy vissza; korszerű áttekintését <span class="citation" data-cites="jolliffe2016">Jolliffe &amp; Cadima (<a href="../references.html#ref-jolliffe2016" role="doc-biblioref">2016</a>)</span> adja. Az ötlet: keressük azt az irányt, amely mentén az adatok szórása a legnagyobb, majd erre merőlegesen a következő legnagyobb szórású irányt, és így tovább (<a href="#fig-pca-geom" class="quarto-xref"><span>4.9</span></a>. ábra). A szükséges lineáris algebrai fogalmakat (skaláris szorzat, vetítés, sajátérték, sajátvektor, szinguláris felbontás) a <a href="../appendices/b-linearis-algebra.html" class="quarto-xref"><span>B</span></a>. függelék részletesen tárgyalja.</p>
+<p>Legyen <span class="math inline">\(\mathbf{X}_c\)</span> az oszloponként centrált adatmátrix (minden oszlopból kivontuk az oszlop átlagát), és</p>
+<p><span id="eq-kovariancia"><span class="math display">\[
+\mathbf{C} = \frac{1}{N-1}\,\mathbf{X}_c^\top \mathbf{X}_c \in \mathbb{R}^{n\times n}
+\tag{4.4}\]</span></span></p>
+<p>a tapasztalati kovarianciamátrix. Egy <span class="math inline">\(\mathbf{v}\)</span> egységvektor irányába vetítve az adatokat, a <span class="math inline">\(k\)</span>-adik objektum vetülete <span class="math inline">\(t_k = \mathbf{x}_{c,k}^\top\mathbf{v}\)</span>, a vetületek szórásnégyzete pedig</p>
+<p><span class="math display">\[
+\frac{1}{N-1}\sum_{k=1}^{N} t_k^2 = \frac{1}{N-1}\,\mathbf{v}^\top\mathbf{X}_c^\top\mathbf{X}_c\mathbf{v}
+= \mathbf{v}^\top\mathbf{C}\,\mathbf{v}.
+\]</span></p>
+<p>A legnagyobb szórású irány tehát a</p>
+<p><span id="eq-pca-opt"><span class="math display">\[
+\max_{\mathbf{v}}\; \mathbf{v}^\top\mathbf{C}\,\mathbf{v}
+\quad\text{feltéve, hogy}\quad \mathbf{v}^\top\mathbf{v} = 1
+\tag{4.5}\]</span></span></p>
+<p>feltételes szélsőérték-feladat megoldása. A Lagrange-függvény <span class="math inline">\(\mathcal{L}(\mathbf{v},\lambda) = \mathbf{v}^\top\mathbf{C}\mathbf{v} -
+\lambda(\mathbf{v}^\top\mathbf{v} - 1)\)</span>; a <span class="math inline">\(\mathbf{v}\)</span> szerinti gradienst nullává téve</p>
+<p><span id="eq-pca-sajat"><span class="math display">\[
+\nabla_{\mathbf{v}}\mathcal{L} = 2\mathbf{C}\mathbf{v} - 2\lambda\mathbf{v} = \mathbf{0}
+\quad\Longrightarrow\quad
+\mathbf{C}\mathbf{v} = \lambda\mathbf{v}.
+\tag{4.6}\]</span></span></p>
+<p>Az optimális irány tehát <span class="math inline">\(\mathbf{C}\)</span> egy sajátvektora, és mivel ilyenkor <span class="math inline">\(\mathbf{v}^\top\mathbf{C}\mathbf{v} = \lambda\mathbf{v}^\top\mathbf{v} = \lambda\)</span>, a vetületek szórásnégyzete éppen a megfelelő sajátérték. A legnagyobb szórást a <strong>legnagyobb sajátértékhez</strong> tartozó sajátvektor adja: ez az <strong>első főkomponens</strong> iránya. Mivel <span class="math inline">\(\mathbf{C}\)</span> szimmetrikus és pozitív szemidefinit, sajátértékei nemnegatív valós számok, <span class="math inline">\(\lambda_1 \ge \lambda_2 \ge \dots \ge \lambda_n \ge 0\)</span>, a sajátvektorok pedig ortonormált bázist alkotnak. A második főkomponens az elsőre merőleges irányok közül a legnagyobb szórású – ez a második sajátvektor –, és így tovább.</p>
+<div id="fig-pca-geom" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pca-geom-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/04-pca.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="ábra&nbsp;4.9.. A főkomponens-elemzés geometriája. Az első főkomponens (\mathbf{v}_1) a legnagyobb szórás iránya, a második (\mathbf{v}_2) erre merőleges. Egy pont t_{k1} főkomponens-értéke a \mathbf{v}_1 irányú vetületének előjeles hossza; a vetítéskor elhagyott rész a maradék."><img src="../figures/build/04-pca.svg" class="img-fluid figure-img" style="width:70.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pca-geom-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;4.9.. A főkomponens-elemzés geometriája. Az első főkomponens (<span class="math inline">\(\mathbf{v}_1\)</span>) a legnagyobb szórás iránya, a második (<span class="math inline">\(\mathbf{v}_2\)</span>) erre merőleges. Egy pont <span class="math inline">\(t_{k1}\)</span> főkomponens-értéke a <span class="math inline">\(\mathbf{v}_1\)</span> irányú vetületének előjeles hossza; a vetítéskor elhagyott rész a maradék.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="főkomponens-értékek-súlyok-és-a-megmaradt-variancia" class="level3" data-number="4.4.2">
+<h3 data-number="4.4.2" class="anchored" data-anchor-id="főkomponens-értékek-súlyok-és-a-megmaradt-variancia"><span class="header-section-number">4.4.2</span> Főkomponens-értékek, súlyok és a megmaradt variancia</h3>
+<p>Gyűjtsük az első <span class="math inline">\(q\)</span> sajátvektort a <span class="math inline">\(\mathbf{V}_q = [\mathbf{v}_1, \dots,
+\mathbf{v}_q] \in \mathbb{R}^{n\times q}\)</span> mátrixba. Az objektumok új, <span class="math inline">\(q\)</span> dimenziós koordinátái – a <strong>főkomponens-értékek</strong> (scores) – és az eredeti adatok ezekből visszaállított közelítése:</p>
+<p><span id="eq-pca-score"><span class="math display">\[
+\mathbf{T} = \mathbf{X}_c\mathbf{V}_q \in \mathbb{R}^{N\times q},
+\qquad
+\hat{\mathbf{X}}_c = \mathbf{T}\mathbf{V}_q^\top .
+\tag{4.7}\]</span></span></p>
+<p>A <span class="math inline">\(\mathbf{V}_q\)</span> oszlopainak elemei a <strong>súlyok</strong> (loadings): megmutatják, hogy az egyes eredeti változók milyen mértékben járulnak hozzá egy főkomponenshez, és ezen keresztül a főkomponensek értelmezését teszik lehetővé.</p>
+<p>Az összes változó együttes szórásnégyzete (a kovarianciamátrix nyoma) a sajátértékek összege: <span class="math inline">\(\operatorname{tr}\mathbf{C} = \sum_{j=1}^{n}\lambda_j\)</span>. Az első <span class="math inline">\(q\)</span> főkomponens által <strong>megmagyarázott varianciahányad</strong> és a visszaállítás átlagos négyzetes hibája:</p>
+<p><span id="eq-pca-hiba"><span class="math display">\[
+\eta_q = \frac{\sum_{j=1}^{q}\lambda_j}{\sum_{j=1}^{n}\lambda_j},
+\qquad
+\frac{1}{N-1}\bigl\|\mathbf{X}_c - \hat{\mathbf{X}}_c\bigr\|_F^2 = \sum_{j=q+1}^{n}\lambda_j .
+\tag{4.8}\]</span></span></p>
+<p>A közelítés hibája tehát az <strong>elhagyott</strong> sajátértékek összege. (Az első kiadás e képletet tévesen a megtartott sajátértékek összegeként közölte; a megtartott sajátértékek összege a megmagyarázott variancia.) Ez az összefüggés egyben azt is mutatja, hogy a PCA a <span class="math inline">\(q\)</span> dimenziós lineáris alterek közül a legkisebb négyzetes visszaállítási hibát adja – ez az Eckart–Young-tétel következménye <span class="citation" data-cites="eckart1936">(<a href="../references.html#ref-eckart1936" role="doc-biblioref">Eckart &amp; Young, 1936</a>)</span>.</p>
+<p>A gyakorlatban a sajátérték-felbontás helyett numerikusan stabilabb a centrált adatmátrix <strong>szinguláris felbontása</strong> (SVD):</p>
+<p><span id="eq-pca-svd"><span class="math display">\[
+\mathbf{X}_c = \mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^\top,
+\qquad
+\lambda_j = \frac{\sigma_j^2}{N-1},
+\qquad
+\mathbf{T} = \mathbf{U}_q\boldsymbol{\Sigma}_q .
+\tag{4.9}\]</span></span></p>
+<p>A <span class="math inline">\(\mathbf{V}\)</span> jobb oldali szinguláris vektorai a főkomponens-irányok, a <span class="math inline">\(\sigma_j\)</span> szinguláris értékek négyzetei a sajátértékekkel arányosak. A <code>scikit-learn</code> <code>PCA</code> osztálya ezt az utat követi.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Fontos</span>Az algoritmus összefoglalása: főkomponens-elemzés
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Centráljuk az adatmátrixot (oszloponként kivonjuk az átlagot); eltérő mértékegységű változók esetén standardizáljuk is (ez a korrelációs mátrixon végzett PCA).</li>
+<li>Számítsuk ki a centrált mátrix szinguláris felbontását, vagy a kovarianciamátrix sajátérték-felbontását (<a href="#eq-kovariancia" class="quarto-xref"><span>4.4</span></a>–<a href="#eq-pca-sajat" class="quarto-xref"><span>4.6</span></a>).</li>
+<li>Rendezzük a sajátértékeket csökkenő sorrendbe; válasszuk meg a megtartott főkomponensek <span class="math inline">\(q\)</span> számát (például <span class="math inline">\(\eta_q \ge 0{,}9\)</span>, vagy a sajátérték-diagram „könyöke” alapján).</li>
+<li>Számítsuk ki a főkomponens-értékeket (<span class="math inline">\(\mathbf{T} = \mathbf{X}_c\mathbf{V}_q\)</span>), és értelmezzük a főkomponenseket a súlyok alapján.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Figyelem</span>Skálázás nélkül a nagy számok nyernek
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A PCA a varianciát maximalizálja, ezért a nagy mértékegységű (nagy szórású) változók uralják. Ha a változók eltérő mértékegységűek – °C, m³/h, kW –, a PCA előtt standardizálni kell őket. Ilyenkor a kovarianciamátrix helyett lényegében a korrelációs mátrix sajátértékeit és sajátvektorait számoljuk.</p>
+</div>
+</div>
+</section>
+<section id="kézi-megvalósítás-és-ellenőrzés" class="level3" data-number="4.4.3">
+<h3 data-number="4.4.3" class="anchored" data-anchor-id="kézi-megvalósítás-és-ellenőrzés"><span class="header-section-number">4.4.3</span> Kézi megvalósítás és ellenőrzés</h3>
+<p>Valósítsuk meg a PCA-t NumPy-jal a Pannon üzem tíz folyamatváltozóján, és ellenőrizzük a (<a href="#eq-pca-hiba" class="quarto-xref"><span>4.8</span></a>) összefüggést!</p>
+<div id="f8e65fe7" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>Xh <span class="op">=</span> plant.hourly[plant.hourly.F_betap <span class="op">&gt;</span> <span class="dv">1</span>].dropna(subset<span class="op">=</span>valt)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> Xh[valt].to_numpy()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> (X <span class="op">-</span> X.mean(<span class="dv">0</span>)) <span class="op">/</span> X.std(<span class="dv">0</span>, ddof<span class="op">=</span><span class="dv">1</span>)          <span class="co"># standardizálás</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> Z.shape[<span class="dv">0</span>]</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>C <span class="op">=</span> Z.T <span class="op">@</span> Z <span class="op">/</span> (N <span class="op">-</span> <span class="dv">1</span>)                            <span class="co"># = korrelációs mátrix</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>lam, V <span class="op">=</span> np.linalg.eigh(C)                       <span class="co"># szimmetrikus mátrix sajátfelbontása</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>order <span class="op">=</span> np.argsort(lam)[::<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>lam, V <span class="op">=</span> lam[order], V[:, order]</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> Z <span class="op">@</span> V[:, :q]                                 <span class="co"># főkomponens-értékek</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>Z_hat <span class="op">=</span> T <span class="op">@</span> V[:, :q].T                           <span class="co"># visszaállítás</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>hiba <span class="op">=</span> np.<span class="bu">sum</span>((Z <span class="op">-</span> Z_hat) <span class="op">**</span> <span class="dv">2</span>) <span class="op">/</span> (N <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"sajátértékek:"</span>, np.<span class="bu">round</span>(lam, <span class="dv">3</span>))</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"megmagyarázott varianciahányad (q=</span><span class="sc">{</span>q<span class="sc">}</span><span class="ss">): </span><span class="sc">{</span>lam[:q]<span class="sc">.</span><span class="bu">sum</span>() <span class="op">/</span> lam<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"visszaállítási hiba: </span><span class="sc">{</span>hiba<span class="sc">:.4f}</span><span class="ss">   elhagyott sajátértékek összege: </span><span class="sc">{</span>lam[q:]<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sajátértékek: [4.51  2.994 1.617 0.52  0.131 0.086 0.059 0.047 0.023 0.014]
+megmagyarázott varianciahányad (q=3): 0.912
+visszaállítási hiba: 0.8793   elhagyott sajátértékek összege: 0.8793</code></pre>
+</div>
+</div>
+<p>A két utolsó szám egyezik, ahogy a (<a href="#eq-pca-hiba" class="quarto-xref"><span>4.8</span></a>) képlet állítja. A <code>scikit-learn</code> SVD-alapú megvalósítása ugyanezt adja (a sajátvektorok előjele tetszőleges, ezért csak abszolút értékben hasonlítunk):</p>
+<div id="96ec95f9" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA().fit(Z)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.allclose(pca.explained_variance_, lam),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>      np.allclose(np.<span class="bu">abs</span>(pca.components_[:q]), np.<span class="bu">abs</span>(V[:, :q].T)))</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>True True</code></pre>
+</div>
+</div>
+</section>
+<section id="értelmezés-a-pannon-üzem-főkomponensei" class="level3" data-number="4.4.4">
+<h3 data-number="4.4.4" class="anchored" data-anchor-id="értelmezés-a-pannon-üzem-főkomponensei"><span class="header-section-number">4.4.4</span> Értelmezés: a Pannon üzem főkomponensei</h3>
+<div id="cell-fig-scree" class="cell" data-fig-height="2.8" data-fig-width="6" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>ax.bar(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(lam) <span class="op">+</span> <span class="dv">1</span>), lam, color<span class="op">=</span>ab.PALETTE[<span class="dv">0</span>], width<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> ax.twinx()</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>ax2.plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(lam) <span class="op">+</span> <span class="dv">1</span>), np.cumsum(lam) <span class="op">/</span> lam.<span class="bu">sum</span>(), color<span class="op">=</span>ab.PALETTE[<span class="dv">1</span>], marker<span class="op">=</span><span class="st">"o"</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>ax2.set_ylim(<span class="dv">0</span>, <span class="fl">1.05</span>)<span class="op">;</span> ax2.grid(<span class="va">False</span>)<span class="op">;</span> ax2.set_ylabel(<span class="st">"kumulált hányad"</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"főkomponens"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"sajátérték"</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(lam) <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-scree" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="04-feltaro-elemzes_files/figure-html/fig-scree-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="ábra&nbsp;4.10.. A Pannon üzem folyamatváltozóinak sajátérték-diagramja (oszlopok) és a kumulált megmagyarázott varianciahányad (vonal)."><img src="04-feltaro-elemzes_files/figure-html/fig-scree-output-1.png" width="693" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;4.10.. A Pannon üzem folyamatváltozóinak sajátérték-diagramja (oszlopok) és a kumulált megmagyarázott varianciahányad (vonal).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="9b9408e9" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>suly <span class="op">=</span> pd.DataFrame(V[:, :<span class="dv">3</span>], index<span class="op">=</span>valt, columns<span class="op">=</span>[<span class="st">"PC1"</span>, <span class="st">"PC2"</span>, <span class="st">"PC3"</span>])</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>suly.<span class="bu">round</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">PC1</th>
+<th data-quarto-table-cell-role="th">PC2</th>
+<th data-quarto-table-cell-role="th">PC3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">T_kornyezet</th>
+<td>-0.02</td>
+<td>-0.52</td>
+<td>0.28</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">F_betap</th>
+<td>0.42</td>
+<td>-0.06</td>
+<td>0.20</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">c_betap</th>
+<td>-0.41</td>
+<td>0.01</td>
+<td>-0.31</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">T_betap</th>
+<td>0.32</td>
+<td>-0.28</td>
+<td>-0.38</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">T_reaktor</th>
+<td>0.33</td>
+<td>-0.10</td>
+<td>-0.51</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">F_hutoviz</th>
+<td>-0.17</td>
+<td>-0.50</td>
+<td>-0.07</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">T_hutoviz</th>
+<td>-0.02</td>
+<td>-0.52</td>
+<td>0.28</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">P_reaktor</th>
+<td>0.40</td>
+<td>-0.10</td>
+<td>-0.33</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">P_kevero</th>
+<td>-0.41</td>
+<td>0.04</td>
+<td>-0.32</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">E_fogyasztas</th>
+<td>-0.29</td>
+<td>-0.34</td>
+<td>-0.29</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="cell-fig-pca-uzem" class="cell" data-fig-height="3.2" data-fig-width="7" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, sharex<span class="op">=</span><span class="va">True</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> g, c <span class="kw">in</span> <span class="bu">zip</span>([<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>], ab.PALETTE):</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    sel <span class="op">=</span> (Xh.termek <span class="op">==</span> g).to_numpy()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    ax[<span class="dv">0</span>].scatter(T[sel, <span class="dv">0</span>], T[sel, <span class="dv">1</span>], s<span class="op">=</span><span class="dv">3</span>, alpha<span class="op">=</span><span class="fl">0.4</span>, color<span class="op">=</span>c, label<span class="op">=</span>g)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].legend(title<span class="op">=</span><span class="st">"termék"</span>, markerscale<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> ax[<span class="dv">1</span>].scatter(T[:, <span class="dv">0</span>], T[:, <span class="dv">1</span>], s<span class="op">=</span><span class="dv">3</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, c<span class="op">=</span>Xh.ido.dt.month, cmap<span class="op">=</span><span class="st">"twilight"</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>fig.colorbar(sc, ax<span class="op">=</span>ax[<span class="dv">1</span>], label<span class="op">=</span><span class="st">"hónap"</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a <span class="kw">in</span> ax: a.set_xlabel(<span class="st">"PC1"</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylabel(<span class="st">"PC2"</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-pca-uzem" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pca-uzem-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="04-feltaro-elemzes_files/figure-html/fig-pca-uzem-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="ábra&nbsp;4.11.. A Pannon üzem órás adatainak első két főkomponense. Balra termékenként színezve: a három termék elkülönülő felhőket alkot. Jobbra a hónap szerint színezve: a termékeken belül az évszakos változás is kirajzolódik."><img src="04-feltaro-elemzes_files/figure-html/fig-pca-uzem-output-1.png" width="687" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pca-uzem-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;4.11.. A Pannon üzem órás adatainak első két főkomponense. Balra termékenként színezve: a három termék elkülönülő felhőket alkot. Jobbra a hónap szerint színezve: a termékeken belül az évszakos változás is kirajzolódik.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="eset-mernoki">
+<p>A súlyok alapján a főkomponensek fizikailag értelmezhetők. Az egyik fő irányt a termékfüggő változók (betáplálás, betáplált koncentráció, keverőteljesítmény, reaktorhőmérséklet és -nyomás) határozzák meg – ez a <em>termékminőség-tengely</em>; egy másikat a környezeti és a hűtővíz-hőmérséklet, valamint a hűtővízáram – ez az <em>évszak- és hűtéstengely</em>. Tíz mért változó helyett így két-három, jól értelmezhető „rejtett” változóval írható le az üzem állapota. A <a href="11-anomaliak.html" class="quarto-xref"><span>11</span></a>. fejezetben erre építve fogjuk a hibákat felismerni: egy hibás állapot vagy szokatlan helyre kerül a főkomponensek terében, vagy a főkomponensekkel nem magyarázható maradékot hoz létre.</p>
+</div>
+</section>
+</section>
+<section id="sec-nemlinearis" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="sec-nemlinearis"><span class="header-section-number">4.5</span> Nemlineáris vetítések</h2>
+<p>A PCA lineáris: az adatokat egy síkra (altérre) vetíti. Ha az adatok egy görbült felület mentén helyezkednek el, vagy a csoportok nem választhatók el lineárisan, nemlineáris módszerek adhatnak hűbb képet.</p>
+<p>A <strong>többdimenziós skálázás</strong> (multidimensional scaling, MDS) az objektumok közötti távolságokból indul ki, és olyan alacsony dimenziós elhelyezést keres, amelyben a távolságok a lehető legjobban egyeznek az eredetiekkel. A klasszikus (metrikus) MDS <span class="citation" data-cites="torgerson1952">(<a href="../references.html#ref-torgerson1952" role="doc-biblioref">Torgerson, 1952</a>)</span> euklideszi távolságok esetén a PCA-val egyenértékű eredményt ad; a nemmetrikus változat csak a távolságok sorrendjét igyekszik megőrizni <span class="citation" data-cites="kruskal1964">(<a href="../references.html#ref-kruskal1964" role="doc-biblioref">Kruskal, 1964</a>)</span>. A <strong>Sammon-leképezés</strong> <span class="citation" data-cites="sammon1969">(<a href="../references.html#ref-sammon1969" role="doc-biblioref">Sammon, 1969</a>)</span> a kis távolságok megőrzésére helyez nagyobb hangsúlyt; az eredeti (<span class="math inline">\(d_{ij}^{*}\)</span>) és a leképezett (<span class="math inline">\(d_{ij}\)</span>) távolságok eltérését az</p>
+<p><span id="eq-sammon"><span class="math display">\[
+E = \frac{1}{\sum_{i&lt;j} d_{ij}^{*}}\sum_{i&lt;j}\frac{\bigl(d_{ij}^{*} - d_{ij}\bigr)^2}{d_{ij}^{*}}
+\tag{4.10}\]</span></span></p>
+<p>hibafüggvénnyel méri, amelyben a <span class="math inline">\(1/d_{ij}^{*}\)</span> súly a közeli pontpárokat hangsúlyozza.</p>
+<p>A <strong>t-SNE</strong> (t-distributed stochastic neighbor embedding) <span class="citation" data-cites="vandermaaten2008">(<a href="../references.html#ref-vandermaaten2008" role="doc-biblioref">Maaten &amp; Hinton, 2008</a>)</span> a ma legelterjedtebb vizualizációs célú nemlineáris vetítés. Az eredeti térben minden pontpárhoz egy valószínűséget rendel, amely annál nagyobb, minél közelebbi szomszédok; az alacsony dimenziós térben hasonló, de nehéz farkú (Student-<span class="math inline">\(t\)</span>) eloszlással számol, és a kettő közötti Kullback–Leibler-eltérést minimalizálja. A helyi szomszédsági szerkezetet kiválóan megőrzi, ezért a csoportok jól elkülönülnek. Használatakor azonban óvatosnak kell lenni <span class="citation" data-cites="wattenberg2016">(<a href="../references.html#ref-wattenberg2016" role="doc-biblioref">Wattenberg és mtsai., 2016</a>)</span>:</p>
+<ul>
+<li>az eredmény erősen függ a <em>perplexitás</em> paramétertől (az effektív szomszédszámtól);</li>
+<li>a csoportok mérete és a csoportok közötti távolságok a t-SNE-ábrán <strong>nem értelmezhetők</strong>;</li>
+<li>az algoritmus véletlen kezdőpontból indul, így különböző futtatások eltérő képet adhatnak;</li>
+<li>tisztán véletlen adatokban is „csoportokat” mutathat.</li>
+</ul>
+<p>A t-SNE tehát feltáró vizualizációra való, nem a távolságokon alapuló további elemzésre. Hasonló célú, újabb módszer az UMAP <span class="citation" data-cites="mcinnes2018">(<a href="../references.html#ref-mcinnes2018" role="doc-biblioref">McInnes és mtsai., 2018</a>)</span>.</p>
+<div class="eset-uzleti">
+<p>Vetítsük két dimenzióba a PannonShop vevőinek standardizált vásárlási jellemzőit PCA-val, metrikus MDS-sel és t-SNE-vel! Az ábrán a pontokat a szimulátor rejtett szegmensei szerint színezzük – ezt a valós elemzésben nem ismernénk, itt viszont megmutatja, melyik vetítés őrzi meg legjobban a csoportszerkezetet.</p>
+</div>
+<div id="cell-fig-vetitesek" class="cell" data-fig-height="2.8" data-fig-width="7.2" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.manifold <span class="im">import</span> MDS, TSNE</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>shop <span class="op">=</span> ab.load_shop()</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>jell <span class="op">=</span> [<span class="st">"R_nap"</span>, <span class="st">"F_szamla"</span>, <span class="st">"M_ertek"</span>, <span class="st">"atl_kosarertek"</span>, <span class="st">"atl_kosarmeret"</span>, <span class="st">"atl_mennyiseg"</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"akcios_arany"</span>, <span class="st">"arany_kave"</span>, <span class="st">"arany_gep"</span>, <span class="st">"arany_konyha"</span>, <span class="st">"arany_dekor"</span>, <span class="st">"arany_ajandek"</span>, <span class="st">"arany_iroszer"</span>]</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>vt <span class="op">=</span> vevok[jell].copy()</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> [<span class="st">"F_szamla"</span>, <span class="st">"M_ertek"</span>, <span class="st">"atl_kosarertek"</span>, <span class="st">"atl_mennyiseg"</span>]:</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    vt[c] <span class="op">=</span> np.log1p(vt[c])</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>vt <span class="op">=</span> vt.sample(<span class="dv">600</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>Zv <span class="op">=</span> StandardScaler().fit_transform(vt)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>szegmens <span class="op">=</span> shop.truth[<span class="st">"segment"</span>].reindex(vt.index).to_numpy()</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>vetuletek <span class="op">=</span> {</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"PCA"</span>: PCA(n_components<span class="op">=</span><span class="dv">2</span>).fit_transform(Zv),</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"metrikus MDS"</span>: MDS(n_components<span class="op">=</span><span class="dv">2</span>, random_state<span class="op">=</span><span class="dv">0</span>, n_init<span class="op">=</span><span class="dv">1</span>, max_iter<span class="op">=</span><span class="dv">300</span>).fit_transform(Zv),</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"t-SNE (perplexitás 30)"</span>: TSNE(n_components<span class="op">=</span><span class="dv">2</span>, perplexity<span class="op">=</span><span class="dv">30</span>, random_state<span class="op">=</span><span class="dv">0</span>).fit_transform(Zv),</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>szegm_nevek <span class="op">=</span> [<span class="st">"törzsvásárló"</span>, <span class="st">"alkalmi"</span>, <span class="st">"akcióvadász"</span>, <span class="st">"viszonteladó"</span>, <span class="st">"lemorzsolódó"</span>]</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a, (nev, Y) <span class="kw">in</span> <span class="bu">zip</span>(ax, vetuletek.items()):</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s, c <span class="kw">in</span> <span class="bu">zip</span>(szegm_nevek, ab.PALETTE):</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>        sel <span class="op">=</span> szegmens <span class="op">==</span> s</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>        a.scatter(Y[sel, <span class="dv">0</span>], Y[sel, <span class="dv">1</span>], s<span class="op">=</span><span class="dv">5</span>, color<span class="op">=</span>c, alpha<span class="op">=</span><span class="fl">0.7</span>, label<span class="op">=</span>s)</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    a.set_title(nev, fontsize<span class="op">=</span><span class="dv">10</span>)<span class="op">;</span> a.set_xticks([])<span class="op">;</span> a.set_yticks([])</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">7</span>, markerscale<span class="op">=</span><span class="fl">2.5</span>, loc<span class="op">=</span><span class="st">"lower left"</span>)</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-vetitesek" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-vetitesek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="04-feltaro-elemzes_files/figure-html/fig-vetitesek-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12" title="ábra&nbsp;4.12.. A PannonShop vevőinek kétdimenziós vetületei (600 véletlenszerűen kiválasztott vevő), a szimulátor rejtett szegmensei szerint színezve."><img src="04-feltaro-elemzes_files/figure-html/fig-vetitesek-output-1.png" width="693" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vetitesek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;4.12.. A PannonShop vevőinek kétdimenziós vetületei (600 véletlenszerűen kiválasztott vevő), a szimulátor rejtett szegmensei szerint színezve.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A vetületek megmutatják, hogy a szegmensek egy része (például a viszonteladók és az alkalmi vásárlók) jól elkülönül, mások – a törzsvásárlók és a később lemorzsolódók – erősen átfednek. Ez nem a módszerek hibája: a lemorzsolódó vevők az elpártolásukig hasonlóan viselkednek, mint a törzsvásárlók, a különbség a <em>jövőbeli</em> viselkedésükben van. Ezt a kérdést a felügyelt tanulás eszközeivel, a <a href="09-osztalyozas.html" class="quarto-xref"><span>9</span></a>. fejezetben vizsgáljuk.</p>
+<div class="pe-app"><div class="pe-app-bar"><span>Főkomponens-elemzés: irány, vetület és megmagyarázott variancia</span><a href="../apps/pca-forgatas.html" target="_blank" rel="noopener">Megnyitás új lapon ↗</a></div><iframe src="../apps/pca-forgatas.html" style="height:560px" loading="lazy" title="Főkomponens-elemzés: irány, vetület és megmagyarázott variancia"></iframe></div>
+<div class="pe-badges"><a href="https://colab.research.google.com/github/ComplexSystemsIntelligence/adatbanyaszat/blob/main/notebooks/04-feltaro-elemzes.ipynb" target="_blank" rel="noopener">▶ Colab: 4. fejezet – feltáró elemzés és PCA</a><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/notebooks/04-feltaro-elemzes.ipynb" target="_blank" rel="noopener">GitHub forrás</a></div>
+</section>
+<section id="sec-feltaro-osszefoglalas" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="sec-feltaro-osszefoglalas"><span class="header-section-number">4.6</span> Összefoglalás</h2>
+<ul>
+<li>A feltáró elemzés célja a kérdések megtalálása; fő eszköze a vizualizáció, mert a leíró statisztikák nagyon eltérő adatsorokat is azonosnak mutathatnak.</li>
+<li>Egy változó eloszlását középérték, szóródás és alak jellemzi; ferde eloszlásokra a medián és az IQR jobb mérőszám, mint az átlag és a szórás.</li>
+<li>A hisztogram, a magfüggvényes sűrűségbecslés, a dobozdiagram és a Q–Q ábra az eloszlás különböző tulajdonságait emeli ki.</li>
+<li>A korreláció lineáris (Pearson) vagy monoton (Spearman) együttmozgást mér, okozati kapcsolatot nem.</li>
+<li>A PCA a kovarianciamátrix sajátvektoraira vetít; a <span class="math inline">\(k\)</span>-adik sajátérték a <span class="math inline">\(k\)</span>-adik főkomponens varianciája, a visszaállítás hibája az elhagyott sajátértékek összege.</li>
+<li>A nemlineáris vetítések (MDS, Sammon, t-SNE) a helyi szerkezetet jobban megőrizhetik, de a t-SNE ábráin a távolságok és csoportméretek nem értelmezhetők.</li>
+</ul>
+</section>
+<section id="ellenőrző-kérdések" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="ellenőrző-kérdések">Ellenőrző kérdések</h2>
+<ol type="1">
+<li>Miért tanulságos Anscombe négy adatsora? Mit mutatna meg közülük egy hisztogram?</li>
+<li>Mikor jobb középérték a medián, mint az átlag?</li>
+<li>Mit jelent, ha egy Q–Q ábra pontjai jobbra felfelé elhajlanak az egyenestől?</li>
+<li>Miért kell a PCA előtt standardizálni a Pannon üzem változóit?</li>
+<li>Mekkora a visszaállítás hibája, ha <span class="math inline">\(n=5\)</span> változó sajátértékei 2,8; 1,2; 0,6; 0,3; 0,1, és két főkomponenst tartunk meg? Mekkora a megmagyarázott varianciahányad?</li>
+<li>Miért nem szabad egy t-SNE-ábrán a csoportok közötti távolságot értelmezni?</li>
+</ol>
+</section>
+<section id="feladatok" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="feladatok">Feladatok</h2>
+<ol type="1">
+<li><strong>Hisztogram és sávszélesség.</strong> Ábrázolja a vevők átlagos kosárértékének logaritmusát hisztogramon 10, 30 és 100 intervallummal, valamint magfüggvényes becsléssel három különböző sávszélességgel! Melyik kép mutat meg két csúcsot, és mi lehet ennek az oka?</li>
+<li><strong>Spearman vagy Pearson?</strong> Számítsa ki a vevők vásárlásszáma (F) és vásárlási értéke (M) közötti Pearson- és Spearman-korrelációt! Miért tér el a kettő?</li>
+<li><strong>PCA lépésről lépésre.</strong> Végezze el a PCA-t a Pannon üzem adatain standardizálás nélkül! Melyik változó uralja az első főkomponenst, és miért?</li>
+<li><strong>Hibák a főkomponensek terében.</strong> Színezze a <a href="#fig-pca-uzem" class="quarto-xref"><span>4.11</span></a>. ábra pontjait a szimulátor hibacímkéi szerint (<code>plant.truth["fault"]</code>, órás szintre összesítve)! Mely hibatípusok látszanak az első két főkomponens síkjában, és melyek nem?</li>
+<li><strong>t-SNE érzékenysége.</strong> Futtassa a t-SNE-t a vevőadatokon 5, 30 és 100 perplexitással, valamint három különböző véletlen kezdőértékkel! Mi marad állandó, és mi változik?</li>
+</ol>
+</section>
+<section id="további-olvasmányok" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="további-olvasmányok">További olvasmányok</h2>
+<p>A feltáró adatelemzés klasszikusa <span class="citation" data-cites="tukey1977">Tukey (<a href="../references.html#ref-tukey1977" role="doc-biblioref">1977</a>)</span>. A grafikus megjelenítés elveiről <span class="citation" data-cites="tufte2001">Tufte (<a href="../references.html#ref-tufte2001" role="doc-biblioref">2001</a>)</span> és <span class="citation" data-cites="wilkinson2005">Wilkinson (<a href="../references.html#ref-wilkinson2005" role="doc-biblioref">2005</a>)</span>, az észlelési pontosságról <span class="citation" data-cites="cleveland1984">Cleveland &amp; McGill (<a href="../references.html#ref-cleveland1984" role="doc-biblioref">1984</a>)</span> ír. A PCA átfogó, modern áttekintése <span class="citation" data-cites="jolliffe2016">Jolliffe &amp; Cadima (<a href="../references.html#ref-jolliffe2016" role="doc-biblioref">2016</a>)</span>; a mögötte álló lineáris algebrát <span class="citation" data-cites="strang2016">Strang (<a href="../references.html#ref-strang2016" role="doc-biblioref">2016</a>)</span> és <span class="citation" data-cites="deisenroth2020">Deisenroth és mtsai. (<a href="../references.html#ref-deisenroth2020" role="doc-biblioref">2020</a>)</span> tárgyalja. A t-SNE helyes használatához <span class="citation" data-cites="wattenberg2016">Wattenberg és mtsai. (<a href="../references.html#ref-wattenberg2016" role="doc-biblioref">2016</a>)</span> interaktív cikke ajánlott.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-anscombe1973" class="csl-entry" role="listitem">
+Anscombe, F. J. (1973). Graphs in Statistical Analysis. <em>The American Statistician</em>, <em>27</em>(1), 17–21.
+</div>
+<div id="ref-cleveland1984" class="csl-entry" role="listitem">
+Cleveland, W. S., &amp; McGill, R. (1984). Graphical Perception: Theory, Experimentation, and Application to the Development of Graphical Methods. <em>Journal of the American Statistical Association</em>, <em>79</em>(387), 531–554.
+</div>
+<div id="ref-deisenroth2020" class="csl-entry" role="listitem">
+Deisenroth, M. P., Faisal, A. A., &amp; Ong, C. S. (2020). <em>Mathematics for Machine Learning</em>. Cambridge University Press.
+</div>
+<div id="ref-eckart1936" class="csl-entry" role="listitem">
+Eckart, C., &amp; Young, G. (1936). The approximation of one matrix by another of lower rank. <em>Psychometrika</em>, <em>1</em>(3), 211–218.
+</div>
+<div id="ref-freedman1981" class="csl-entry" role="listitem">
+Freedman, D., &amp; Diaconis, P. (1981). On the histogram as a density estimator: <span><span class="math inline">\(L_2\)</span></span> theory. <em>Zeitschrift für Wahrscheinlichkeitstheorie und verwandte Gebiete</em>, <em>57</em>(4), 453–476.
+</div>
+<div id="ref-hotelling1933" class="csl-entry" role="listitem">
+Hotelling, H. (1933). Analysis of a complex of statistical variables into principal components. <em>Journal of Educational Psychology</em>, <em>24</em>(6), 417–441.
+</div>
+<div id="ref-inselberg1985" class="csl-entry" role="listitem">
+Inselberg, A. (1985). The plane with parallel coordinates. <em>The Visual Computer</em>, <em>1</em>(2), 69–91.
+</div>
+<div id="ref-jolliffe2016" class="csl-entry" role="listitem">
+Jolliffe, I. T., &amp; Cadima, J. (2016). Principal component analysis: a review and recent developments. <em>Philosophical Transactions of the Royal Society A</em>, <em>374</em>(2065), 20150202.
+</div>
+<div id="ref-kruskal1964" class="csl-entry" role="listitem">
+Kruskal, J. B. (1964). Multidimensional scaling by optimizing goodness of fit to a nonmetric hypothesis. <em>Psychometrika</em>, <em>29</em>(1), 1–27.
+</div>
+<div id="ref-vandermaaten2008" class="csl-entry" role="listitem">
+Maaten, L. van der, &amp; Hinton, G. (2008). Visualizing Data using t-<span>SNE</span>. <em>Journal of Machine Learning Research</em>, <em>9</em>, 2579–2605.
+</div>
+<div id="ref-mcinnes2018" class="csl-entry" role="listitem">
+McInnes, L., Healy, J., &amp; Melville, J. (2018). <em><span>UMAP</span>: Uniform Manifold Approximation and Projection for Dimension Reduction</em>. arXiv:1802.03426.
+</div>
+<div id="ref-pearson1901" class="csl-entry" role="listitem">
+Pearson, K. (1901). On Lines and Planes of Closest Fit to Systems of Points in Space. <em>Philosophical Magazine</em>, <em>2</em>(11), 559–572.
+</div>
+<div id="ref-sammon1969" class="csl-entry" role="listitem">
+Sammon, J. W. (1969). A Nonlinear Mapping for Data Structure Analysis. <em>IEEE Transactions on Computers</em>, <em>C-18</em>(5), 401–409.
+</div>
+<div id="ref-silverman1986" class="csl-entry" role="listitem">
+Silverman, B. W. (1986). <em>Density Estimation for Statistics and Data Analysis</em>. Chapman &amp; Hall.
+</div>
+<div id="ref-spearman1904" class="csl-entry" role="listitem">
+Spearman, C. (1904). The Proof and Measurement of Association between Two Things. <em>The American Journal of Psychology</em>, <em>15</em>(1), 72–101.
+</div>
+<div id="ref-strang2016" class="csl-entry" role="listitem">
+Strang, G. (2016). <em>Introduction to Linear Algebra</em> (5. kiad.). Wellesley-Cambridge Press.
+</div>
+<div id="ref-torgerson1952" class="csl-entry" role="listitem">
+Torgerson, W. S. (1952). Multidimensional scaling: I. Theory and method. <em>Psychometrika</em>, <em>17</em>(4), 401–419.
+</div>
+<div id="ref-tufte2001" class="csl-entry" role="listitem">
+Tufte, E. R. (2001). <em>The Visual Display of Quantitative Information</em> (2. kiad.). Graphics Press.
+</div>
+<div id="ref-tukey1977" class="csl-entry" role="listitem">
+Tukey, J. W. (1977). <em>Exploratory Data Analysis</em>. Addison-Wesley.
+</div>
+<div id="ref-wattenberg2016" class="csl-entry" role="listitem">
+Wattenberg, M., Viégas, F., &amp; Johnson, I. (2016). How to Use t-<span>SNE</span> Effectively. <em>Distill</em>. <a href="https://distill.pub/2016/misread-tsne/">https://distill.pub/2016/misread-tsne/</a>
+</div>
+<div id="ref-wilkinson2005" class="csl-entry" role="listitem">
+Wilkinson, L. (2005). <em>The Grammar of Graphics</em> (2. kiad.). Springer.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script>
+/* Magyar ábra- és táblázatfelirat-sorrend a HTML-kiadásban: "ábra 1.1." -> "1.1. ábra." */
+document.addEventListener("DOMContentLoaded", function () {
+  const re = /^(ábra|táblázat|algoritmus)\s+([0-9A-Z]+(?:\.[0-9]+)*)\.?\s*/i;
+  document.querySelectorAll("figcaption, .figure-caption, caption, .quarto-float-caption").forEach(function (el) {
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const t = w.nextNode();
+    if (!t) return;
+    const m = t.nodeValue.match(re);
+    if (m) { t.nodeValue = t.nodeValue.replace(re, m[2] + ". " + m[1].toLowerCase() + ". "); }
+  });
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kimásolva!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kimásolva!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/complexsystemsintelligence\.github\.io\/adatbanyaszat\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/03-adatelokeszites.html" class="pagination-link" aria-label="Adatok előkészítése">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Adatok előkészítése</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/05-csoportositas.html" class="pagination-link" aria-label="Csoportosítás">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Csoportosítás</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/chapters/04-feltaro-elemzes.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/chapters/04-feltaro-elemzes.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>

@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="hu" xml:lang="hu"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6&nbsp; Gyakori mintázatok és asszociációs szabályok – Adatbányászat</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/07-modellertekeles.html" rel="next">
+<link href="../chapters/05-csoportositas.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-18038207a4bfd50187eff2b2f0526436.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-27594bbe69c1d9222c0eb88c018d43c1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nincs találat",
+    "search-matching-documents-text": "találat",
+    "search-copy-link-title": "Keresési link másolása",
+    "search-hide-matches-text": "További találatok elrejtése",
+    "search-more-match-text": "további találat ebben a dokumentumban",
+    "search-more-matches-text": "további találat ebben a dokumentumban",
+    "search-clear-button-title": "Törlés",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Mégse",
+    "search-submit-button-title": "Keresés",
+    "search-label": "Keresés"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../assets/pannon-fonts.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Oldalsáv ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/05-csoportositas.html">II. Mintázatok felügyelet nélkül</a></li><li class="breadcrumb-item"><a href="../chapters/06-asszociacios-szabalyok.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Gyakori mintázatok és asszociációs szabályok</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Keresés" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Adatbányászat</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat" title="Forráskód" class="quarto-navigation-tool px-1" aria-label="Forráskód"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Letöltés" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Letöltés"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../adatbanyaszat.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Letöltés PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../adatbanyaszat.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Letöltés ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Keresés"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Előszó</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. Alapok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01-bevezetes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Adatból tudás: az adatbányászat folyamata</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02-adattarhazak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Adattárházak és analitikus adatkezelés</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-adatelokeszites.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Adatok előkészítése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-feltaro-elemzes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Feltáró adatelemzés és dimenziócsökkentés</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. Mintázatok felügyelet nélkül</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05-csoportositas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Csoportosítás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-asszociacios-szabalyok.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Gyakori mintázatok és asszociációs szabályok</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. Prediktív modellezés</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07-modellertekeles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A felügyelt tanulás alapjai és a modellek értékelése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08-regresszio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regresszió</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09-osztalyozas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Osztályozás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/10-melytanulas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Neurális hálózatok és mélytanulás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/11-anomaliak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Anomáliák és eltérések észlelése</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. Speciális adattípusok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/12-idosorok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Idősorok elemzése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/13-szovegbanyaszat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Szövegbányászat</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. Alkalmazások</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/14-ugyfelanalitika.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Ügyfélkapcsolat-menedzsment és ügyfélanalitika</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/15-folyamatanalitika.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Ipari folyamatanalitika</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Irodalomjegyzék</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Függelékek</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/a-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Python-alapok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/b-linearis-algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Lineáris algebra az adatbányászathoz</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/c-valoszinuseg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Valószínűségszámítási és statisztikai alapok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/d-adatsorok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Az adatsorok leírása</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/e-jelolesek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Jelölések</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/f-szojegyzek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Magyar–angol szójegyzék</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Tartalom</h2>
+   
+  <ul>
+  <li><a href="#sec-asszoc-alapfogalmak" id="toc-sec-asszoc-alapfogalmak" class="nav-link active" data-scroll-target="#sec-asszoc-alapfogalmak"><span class="header-section-number">6.1</span> Alapfogalmak</a></li>
+  <li><a href="#sec-apriori" id="toc-sec-apriori" class="nav-link" data-scroll-target="#sec-apriori"><span class="header-section-number">6.2</span> Az Apriori-elv és az Apriori-algoritmus</a>
+  <ul class="collapse">
+  <li><a href="#az-apriori-elv" id="toc-az-apriori-elv" class="nav-link" data-scroll-target="#az-apriori-elv"><span class="header-section-number">6.2.1</span> Az Apriori-elv</a></li>
+  <li><a href="#az-algoritmus" id="toc-az-algoritmus" class="nav-link" data-scroll-target="#az-algoritmus"><span class="header-section-number">6.2.2</span> Az algoritmus</a></li>
+  <li><a href="#kézi-példa" id="toc-kézi-példa" class="nav-link" data-scroll-target="#kézi-példa"><span class="header-section-number">6.2.3</span> Kézi példa</a></li>
+  <li><a href="#az-apriori-továbbfejlesztései" id="toc-az-apriori-továbbfejlesztései" class="nav-link" data-scroll-target="#az-apriori-továbbfejlesztései"><span class="header-section-number">6.2.4</span> Az Apriori továbbfejlesztései</a></li>
+  </ul></li>
+  <li><a href="#sec-fpgrowth" id="toc-sec-fpgrowth" class="nav-link" data-scroll-target="#sec-fpgrowth"><span class="header-section-number">6.3</span> Mélységi és mintanövelő algoritmusok</a>
+  <ul class="collapse">
+  <li><a href="#vertikális-adatábrázolás-eclat" id="toc-vertikális-adatábrázolás-eclat" class="nav-link" data-scroll-target="#vertikális-adatábrázolás-eclat"><span class="header-section-number">6.3.1</span> Vertikális adatábrázolás: Eclat</a></li>
+  <li><a href="#fp-growth" id="toc-fp-growth" class="nav-link" data-scroll-target="#fp-growth"><span class="header-section-number">6.3.2</span> FP-growth</a></li>
+  </ul></li>
+  <li><a href="#sec-zart-maximalis" id="toc-sec-zart-maximalis" class="nav-link" data-scroll-target="#sec-zart-maximalis"><span class="header-section-number">6.4</span> Tömör reprezentációk: zárt és maximális elemhalmazok</a></li>
+  <li><a href="#sec-szabalyok" id="toc-sec-szabalyok" class="nav-link" data-scroll-target="#sec-szabalyok"><span class="header-section-number">6.5</span> Szabályok előállítása és értékelése</a>
+  <ul class="collapse">
+  <li><a href="#szabályok-a-gyakori-elemhalmazokból" id="toc-szabályok-a-gyakori-elemhalmazokból" class="nav-link" data-scroll-target="#szabályok-a-gyakori-elemhalmazokból"><span class="header-section-number">6.5.1</span> Szabályok a gyakori elemhalmazokból</a></li>
+  <li><a href="#az-érdekesség-mérése" id="toc-az-érdekesség-mérése" class="nav-link" data-scroll-target="#az-érdekesség-mérése"><span class="header-section-number">6.5.2</span> Az érdekesség mérése</a></li>
+  </ul></li>
+  <li><a href="#sec-asszoc-kiterjesztesek" id="toc-sec-asszoc-kiterjesztesek" class="nav-link" data-scroll-target="#sec-asszoc-kiterjesztesek"><span class="header-section-number">6.6</span> Kiterjesztések</a></li>
+  <li><a href="#sec-asszoc-gyakorlat" id="toc-sec-asszoc-gyakorlat" class="nav-link" data-scroll-target="#sec-asszoc-gyakorlat"><span class="header-section-number">6.7</span> Gyakorlat: kosárelemzés és riasztássorozatok</a>
+  <ul class="collapse">
+  <li><a href="#a-pannonshop-kosarai" id="toc-a-pannonshop-kosarai" class="nav-link" data-scroll-target="#a-pannonshop-kosarai"><span class="header-section-number">6.7.1</span> A PannonShop kosarai</a></li>
+  <li><a href="#kategóriaszintű-szabályok" id="toc-kategóriaszintű-szabályok" class="nav-link" data-scroll-target="#kategóriaszintű-szabályok"><span class="header-section-number">6.7.2</span> Kategóriaszintű szabályok</a></li>
+  <li><a href="#zárt-és-maximális-elemhalmazok" id="toc-zárt-és-maximális-elemhalmazok" class="nav-link" data-scroll-target="#zárt-és-maximális-elemhalmazok"><span class="header-section-number">6.7.3</span> Zárt és maximális elemhalmazok</a></li>
+  <li><a href="#riasztássorozatok-a-pannon-üzemben" id="toc-riasztássorozatok-a-pannon-üzemben" class="nav-link" data-scroll-target="#riasztássorozatok-a-pannon-üzemben"><span class="header-section-number">6.7.4</span> Riasztássorozatok a Pannon üzemben</a></li>
+  </ul></li>
+  <li><a href="#sec-asszoc-osszefoglalas" id="toc-sec-asszoc-osszefoglalas" class="nav-link" data-scroll-target="#sec-asszoc-osszefoglalas"><span class="header-section-number">6.8</span> Összefoglalás</a></li>
+  <li><a href="#ellenőrző-kérdések" id="toc-ellenőrző-kérdések" class="nav-link" data-scroll-target="#ellenőrző-kérdések">Ellenőrző kérdések</a></li>
+  <li><a href="#feladatok" id="toc-feladatok" class="nav-link" data-scroll-target="#feladatok">Feladatok</a></li>
+  <li><a href="#további-olvasmányok" id="toc-további-olvasmányok" class="nav-link" data-scroll-target="#további-olvasmányok">További olvasmányok</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/chapters/06-asszociacios-szabalyok.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/chapters/06-asszociacios-szabalyok.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/05-csoportositas.html">II. Mintázatok felügyelet nélkül</a></li><li class="breadcrumb-item"><a href="../chapters/06-asszociacios-szabalyok.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Gyakori mintázatok és asszociációs szabályok</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-asszociacio" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Gyakori mintázatok és asszociációs szabályok</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="roadmap">
+<p>Mely termékeket vásárolják együtt? Mely riasztások követik rendszeresen egymást egy üzemben? Az ilyen kérdésekre a gyakori elemhalmazok és az asszociációs szabályok feltárása ad választ. A fejezet bevezeti az alapfogalmakat (támogatottság, megbízhatóság), bemutatja a keresés hatékonyságát biztosító Apriori-elvet és a rá épülő algoritmusokat (Apriori, Eclat, FP-growth), a gyakori elemhalmazok tömör reprezentációit, a szabályok érdekességének mérőszámait, végül a többszintű, a mennyiségi és a sorozatmintákra vonatkozó kiterjesztéseket.</p>
+<p><strong>A fejezet végére az olvasó</strong> képes lesz egy kis tranzakciós adatbázison kézzel végigvinni az Apriori-algoritmust; nagy adatbázison FP-growth-szal gyakori elemhalmazokat és szabályokat keresni; a szabályokat a lift, a leverage és a conviction alapján kritikusan értékelni; és eseménynaplókban gyakori sorozatokat feltárni.</p>
+</div>
+<section id="sec-asszoc-alapfogalmak" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="sec-asszoc-alapfogalmak"><span class="header-section-number">6.1</span> Alapfogalmak</h2>
+<p>A feladatot <span class="citation" data-cites="agrawal1993">Agrawal és mtsai. (<a href="../references.html#ref-agrawal1993" role="doc-biblioref">1993</a>)</span> fogalmazta meg a vásárlói kosarak elemzésére. Legyen <span class="math inline">\(\mathcal{I} = \{i_1, \dots, i_d\}\)</span> az <strong>elemek</strong> (termékek) halmaza, és legyen az adatbázis <span class="math inline">\(N\)</span> <strong>tranzakció</strong> (kosár) <span class="math inline">\(\mathcal{T} = \{T_1, \dots, T_N\}\)</span> gyűjteménye, ahol minden <span class="math inline">\(T_k \subseteq \mathcal{I}\)</span>. Elemek egy <span class="math inline">\(X\subseteq\mathcal{I}\)</span> halmazát <strong>elemhalmaznak</strong>, <span class="math inline">\(k\)</span> elemű elemhalmazt <span class="math inline">\(k\)</span>-elemhalmaznak nevezünk.</p>
+<p>Egy elemhalmaz <strong>támogatottsága</strong> (support) azoknak a tranzakcióknak az aránya, amelyek tartalmazzák:</p>
+<p><span id="eq-support"><span class="math display">\[
+s(X) = \frac{\sigma(X)}{N},
+\qquad
+\sigma(X) = \bigl|\{T_k\in\mathcal{T} : X\subseteq T_k\}\bigr| .
+\tag{6.1}\]</span></span></p>
+<p>Az <span class="math inline">\(X\)</span> elemhalmaz <strong>gyakori</strong>, ha támogatottsága eléri a felhasználó által megadott <span class="math inline">\(s_{\min}\)</span> küszöböt.</p>
+<p>Egy <strong>asszociációs szabály</strong> <span class="math inline">\(X\Rightarrow Y\)</span> alakú, ahol <span class="math inline">\(X\)</span> és <span class="math inline">\(Y\)</span> diszjunkt elemhalmazok (<span class="math inline">\(X\)</span> az előzmény, <span class="math inline">\(Y\)</span> a következmény). A szabály támogatottsága <span class="math inline">\(s(X\Rightarrow Y) = s(X\cup Y)\)</span>, <strong>megbízhatósága</strong> (confidence) pedig annak becsült feltételes valószínűsége, hogy egy <span class="math inline">\(X\)</span>-et tartalmazó kosár <span class="math inline">\(Y\)</span>-t is tartalmaz:</p>
+<p><span id="eq-confidence"><span class="math display">\[
+c(X\Rightarrow Y) = \frac{s(X\cup Y)}{s(X)} \approx P(Y\mid X).
+\tag{6.2}\]</span></span></p>
+<p>Az asszociációs szabályok feltárásának feladata az összes olyan szabály megtalálása, amelynek támogatottsága legalább <span class="math inline">\(s_{\min}\)</span>, megbízhatósága legalább <span class="math inline">\(c_{\min}\)</span>. A feladatot két lépésre bontjuk: (1) megkeressük a gyakori elemhalmazokat, (2) mindegyikből előállítjuk a megbízható szabályokat. A számításigényes rész az első lépés.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Megjegyzés</span>A keresési tér mérete
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(d\)</span> elemből <span class="math inline">\(2^d - 1\)</span> nem üres elemhalmaz és <span class="math inline">\(3^d - 2^{d+1} + 1\)</span> lehetséges szabály képezhető (minden elem az előzménybe, a következménybe vagy egyikbe sem kerülhet, és egyik oldal sem lehet üres). A PannonShop mindössze 60 termékére ez <span class="math inline">\(2^{60}\approx
+10^{18}\)</span> elemhalmaz – a kimerítő keresés reménytelen.</p>
+</div>
+</div>
+</section>
+<section id="sec-apriori" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="sec-apriori"><span class="header-section-number">6.2</span> Az Apriori-elv és az Apriori-algoritmus</h2>
+<section id="az-apriori-elv" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="az-apriori-elv"><span class="header-section-number">6.2.1</span> Az Apriori-elv</h3>
+<p>A keresési tér hatékony bejárásának kulcsa egy egyszerű megfigyelés: ha egy elemhalmaz gyakori, akkor minden részhalmaza is gyakori, hiszen minden olyan kosár, amely tartalmazza az elemhalmazt, a részhalmazait is tartalmazza. Formálisan a támogatottság <strong>anti-monoton</strong>:</p>
+<p><span id="eq-antimonoton"><span class="math display">\[
+X\subseteq Y \quad\Longrightarrow\quad s(X)\ge s(Y).
+\tag{6.3}\]</span></span></p>
+<p>Ennek megfordítása a gyakorlatban hasznos alak: <strong>ha egy elemhalmaz ritka, minden bővítése is ritka</strong>, így a bővítéseit meg sem kell számolni (<a href="#fig-halo" class="quarto-xref"><span>6.1</span></a>. ábra).</p>
+<div id="fig-halo" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-halo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/06-halo.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="ábra&nbsp;6.1.. Az elemhalmazok hálója a mini-kosárpélda négy termékére (a számok a támogatottságot jelzik, \sigma_{\min} = 3). A {tej, cukor} és a {cukor, keksz} ritka, ezért egyetlen bővítésük sem lehet gyakori; a {kávé, tej, keksz} jelölt ugyan, de a számolás után ritkának bizonyul."><img src="../figures/build/06-halo.svg" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-halo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;6.1.. Az elemhalmazok hálója a mini-kosárpélda négy termékére (a számok a támogatottságot jelzik, <span class="math inline">\(\sigma_{\min} = 3\)</span>). A {tej, cukor} és a {cukor, keksz} ritka, ezért egyetlen bővítésük sem lehet gyakori; a {kávé, tej, keksz} jelölt ugyan, de a számolás után ritkának bizonyul.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="az-algoritmus" class="level3" data-number="6.2.2">
+<h3 data-number="6.2.2" class="anchored" data-anchor-id="az-algoritmus"><span class="header-section-number">6.2.2</span> Az algoritmus</h3>
+<p>Az <strong>Apriori-algoritmus</strong> <span class="citation" data-cites="agrawal1994">(<a href="../references.html#ref-agrawal1994" role="doc-biblioref">Agrawal &amp; Srikant, 1994</a>)</span> szintenként halad: először a gyakori 1-elemhalmazokat keresi meg, majd a <span class="math inline">\(k\)</span>-adik szinten a <span class="math inline">\((k-1)\)</span>-elemű gyakori halmazokból állítja elő a <span class="math inline">\(k\)</span>-elemű <strong>jelölteket</strong>, és ezek támogatottságát egyetlen adatbázis-bejárással számolja meg. A jelöltképzés két lépésből áll:</p>
+<ol type="1">
+<li><strong>Összekapcsolás</strong>: két gyakori <span class="math inline">\((k-1)\)</span>-elemhalmazt, amelyek (rendezett alakban) az első <span class="math inline">\(k-2\)</span> elemükben megegyeznek, egy <span class="math inline">\(k\)</span>-elemű jelöltté egyesítünk.</li>
+<li><strong>Metszés</strong>: elhagyjuk azokat a jelölteket, amelyeknek van ritka <span class="math inline">\((k-1)\)</span>-elemű részhalmaza (<a href="#eq-antimonoton" class="quarto-xref"><span>6.3</span></a>).</li>
+</ol>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Fontos</span>Az algoritmus összefoglalása: Apriori
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Számoljuk meg az egyes elemek támogatottságát; <span class="math inline">\(F_1\)</span> a gyakori elemek halmaza.</li>
+<li><span class="math inline">\(k = 2, 3, \dots\)</span> esetén, amíg <span class="math inline">\(F_{k-1}\)</span> nem üres:
+<ol type="a">
+<li>állítsuk elő a <span class="math inline">\(C_k\)</span> jelölthalmazt <span class="math inline">\(F_{k-1}\)</span> elemeinek összekapcsolásával és metszéssel;</li>
+<li>egy adatbázis-bejárással számoljuk meg a jelöltek támogatottságát;</li>
+<li><span class="math inline">\(F_k\)</span> a <span class="math inline">\(C_k\)</span> gyakori elemei.</li>
+</ol></li>
+<li>A gyakori elemhalmazok: <span class="math inline">\(F_1\cup F_2\cup\dots\)</span></li>
+</ol>
+</div>
+</div>
+</section>
+<section id="kézi-példa" class="level3" data-number="6.2.3">
+<h3 data-number="6.2.3" class="anchored" data-anchor-id="kézi-példa"><span class="header-section-number">6.2.3</span> Kézi példa</h3>
+<p>A segédcsomag nyolc kosarán kövessük végig az algoritmust <span class="math inline">\(\sigma_{\min} = 3\)</span> (azaz <span class="math inline">\(s_{\min} = 37{,}5\%\)</span>) mellett!</p>
+<div id="c6844e5f" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>kosarak <span class="op">=</span> ab.kosar_mini()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, k <span class="kw">in</span> <span class="bu">enumerate</span>(kosarak, <span class="dv">1</span>):</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"T</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="st">', '</span><span class="sc">.</span>join(k)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>T1: kávé, tej, cukor
+T2: kávé, tej
+T3: tea, citrom, cukor
+T4: kávé, tej, keksz
+T5: tea, citrom
+T6: kávé, cukor, keksz
+T7: kávé, tej, cukor, keksz
+T8: tea, tej, keksz</code></pre>
+</div>
+</div>
+<p>Az elemek támogatottsága alapján <span class="math inline">\(F_1 = \{\)</span>kávé (5), tej (5), cukor (4), keksz (4), tea (3)<span class="math inline">\(\}\)</span>; a citrom (2) ritka. A <span class="math inline">\(C_2\)</span> jelöltek <span class="math inline">\(F_1\)</span> összes párja (10 db); közülük gyakori a {kávé, tej} (4), a {kávé, cukor} (3), a {kávé, keksz} (3) és a {tej, keksz} (3). A <span class="math inline">\(C_3\)</span> jelöltek összekapcsolással: {kávé, tej, cukor}, {kávé, tej, keksz} és {kávé, cukor, keksz}. A metszés az elsőt elhagyja (a {tej, cukor} ritka) és a harmadikat is (a {cukor, keksz} ritka), így csak a {kávé, tej, keksz} marad; ennek támogatottsága 2, tehát ritka. <span class="math inline">\(F_3\)</span> üres, az algoritmus megáll.</p>
+<p>Írjuk meg az algoritmust Pythonban – a kód szinte szó szerint követi az összefoglalást:</p>
+<div id="39b12d4c" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> combinations</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> apriori_sajat(tranzakciok, min_sigma):</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    T <span class="op">=</span> [<span class="bu">frozenset</span>(t) <span class="cf">for</span> t <span class="kw">in</span> tranzakciok]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> szamol(jeloltek):</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {c: <span class="bu">sum</span>(c <span class="op">&lt;=</span> t <span class="cf">for</span> t <span class="kw">in</span> T) <span class="cf">for</span> c <span class="kw">in</span> jeloltek}</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    elemek <span class="op">=</span> {<span class="bu">frozenset</span>([i]) <span class="cf">for</span> t <span class="kw">in</span> T <span class="cf">for</span> i <span class="kw">in</span> t}</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    F <span class="op">=</span> {c: s <span class="cf">for</span> c, s <span class="kw">in</span> szamol(elemek).items() <span class="cf">if</span> s <span class="op">&gt;=</span> min_sigma}</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    osszes, k <span class="op">=</span> <span class="bu">dict</span>(F), <span class="dv">2</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> F:</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        elozo <span class="op">=</span> <span class="bu">sorted</span>(<span class="bu">tuple</span>(<span class="bu">sorted</span>(c)) <span class="cf">for</span> c <span class="kw">in</span> F)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        jeloltek <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> a, b <span class="kw">in</span> combinations(elozo, <span class="dv">2</span>):                 <span class="co"># összekapcsolás</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> a[:k <span class="op">-</span> <span class="dv">2</span>] <span class="op">==</span> b[:k <span class="op">-</span> <span class="dv">2</span>]:</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>                c <span class="op">=</span> <span class="bu">frozenset</span>(a) <span class="op">|</span> <span class="bu">frozenset</span>(b)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="bu">all</span>(<span class="bu">frozenset</span>(r) <span class="kw">in</span> F <span class="cf">for</span> r <span class="kw">in</span> combinations(<span class="bu">sorted</span>(c), k <span class="op">-</span> <span class="dv">1</span>)):   <span class="co"># metszés</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>                    jeloltek.add(c)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        F <span class="op">=</span> {c: s <span class="cf">for</span> c, s <span class="kw">in</span> szamol(jeloltek).items() <span class="cf">if</span> s <span class="op">&gt;=</span> min_sigma}</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        osszes.update(F)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        k <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> osszes</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>gyakori <span class="op">=</span> apriori_sajat(kosarak, min_sigma<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c, s <span class="kw">in</span> <span class="bu">sorted</span>(gyakori.items(), key<span class="op">=</span><span class="kw">lambda</span> x: (<span class="bu">len</span>(x[<span class="dv">0</span>]), <span class="op">-</span>x[<span class="dv">1</span>])):</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">set</span>(c)<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>s<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'kávé'}: 5
+{'tej'}: 5
+{'cukor'}: 4
+{'keksz'}: 4
+{'tea'}: 3
+{'tej', 'kávé'}: 4
+{'keksz', 'kávé'}: 3
+{'cukor', 'kávé'}: 3
+{'tej', 'keksz'}: 3</code></pre>
+</div>
+</div>
+</section>
+<section id="az-apriori-továbbfejlesztései" class="level3" data-number="6.2.4">
+<h3 data-number="6.2.4" class="anchored" data-anchor-id="az-apriori-továbbfejlesztései"><span class="header-section-number">6.2.4</span> Az Apriori továbbfejlesztései</h3>
+<p>Az Apriori fő költsége a sok jelölt és az ismételt adatbázis-bejárás. A klasszikus továbbfejlesztések ezeket csökkentik: a <strong>DHP</strong> <span class="citation" data-cites="park1995">(<a href="../references.html#ref-park1995" role="doc-biblioref">Park és mtsai., 1995</a>)</span> hasítótáblával szűri a <span class="math inline">\(C_2\)</span> jelölteket, és bejárásonként szűkíti az adatbázist; a <strong>DIC</strong> <span class="citation" data-cites="brin1997">(<a href="../references.html#ref-brin1997" role="doc-biblioref">Brin és mtsai., 1997</a>)</span> a bejárás közben, menet közben indít új jelölteket, így kevesebb bejárás kell. A ma használt algoritmusok azonban más elven működnek.</p>
+</section>
+</section>
+<section id="sec-fpgrowth" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="sec-fpgrowth"><span class="header-section-number">6.3</span> Mélységi és mintanövelő algoritmusok</h2>
+<section id="vertikális-adatábrázolás-eclat" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="vertikális-adatábrázolás-eclat"><span class="header-section-number">6.3.1</span> Vertikális adatábrázolás: Eclat</h3>
+<p>Az <strong>Eclat</strong> <span class="citation" data-cites="zaki2000">(<a href="../references.html#ref-zaki2000" role="doc-biblioref">Zaki, 2000</a>)</span> a tranzakciós adatbázist <em>függőlegesen</em> tárolja: minden elemhez a tartalmazó tranzakciók azonosítóinak listáját (tid-listáját) rendeli. Egy elemhalmaz támogatottsága így a tid-listák metszetének hossza – nem kell az adatbázist újra bejárni. A mini-példában a kávé tid-listája <span class="math inline">\(\{1,2,4,6,7\}\)</span>, a tejé <span class="math inline">\(\{1,2,4,7,8\}\)</span>, a metszet <span class="math inline">\(\{1,2,4,7\}\)</span>, tehát <span class="math inline">\(\sigma(\{\text{kávé, tej}\}) = 4\)</span>. Az Eclat a hálót mélységben járja be, és a metszeteket fokozatosan szűkíti.</p>
+</section>
+<section id="fp-growth" class="level3" data-number="6.3.2">
+<h3 data-number="6.3.2" class="anchored" data-anchor-id="fp-growth"><span class="header-section-number">6.3.2</span> FP-growth</h3>
+<p>Az <strong>FP-growth</strong> <span class="citation" data-cites="han2000">(<a href="../references.html#ref-han2000" role="doc-biblioref">Han és mtsai., 2000</a>)</span> egyáltalán nem állít elő jelölteket. Két bejárással egy tömör prefixfát, az <strong>FP-fát</strong> építi fel (<a href="#fig-fpfa" class="quarto-xref"><span>6.2</span></a>. ábra): az első bejárás megszámolja az elemek gyakoriságát, a második minden tranzakció gyakori elemeit gyakoriság szerint csökkenő sorrendbe rendezi, és a fába illeszti. A közös előtagú tranzakciók közös utat használnak, így a fa gyakran sokkal kisebb, mint az adatbázis. A gyakori elemhalmazokat ezután rekurzívan bányászuk: minden elemre összegyűjtjük a fában hozzá vezető utakat (a <strong>feltételes mintabázist</strong>), ebből feltételes FP-fát építünk, és azon folytatjuk a keresést.</p>
+<div id="fig-fpfa" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fpfa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/06-fpfa.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="ábra&nbsp;6.2.. A mini-kosárpélda FP-fája (\sigma_{\min} = 3, az elemek gyakoriság szerint rendezve). A csomópontok az elem nevét és az adott úton átmenő tranzakciók számát mutatják; a fejléctábla szaggatott láncai az azonos elemű csomópontokat kötik össze."><img src="../figures/build/06-fpfa.svg" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fpfa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;6.2.. A mini-kosárpélda FP-fája (<span class="math inline">\(\sigma_{\min} = 3\)</span>, az elemek gyakoriság szerint rendezve). A csomópontok az elem nevét és az adott úton átmenő tranzakciók számát mutatják; a fejléctábla szaggatott láncai az azonos elemű csomópontokat kötik össze.
+</figcaption>
+</figure>
+</div>
+<p>A „cukor” feltételes mintabázisa a fából kiolvasható: a {kávé, tej} út kétszer, a {kávé} út egyszer vezet cukor csomóponthoz (a gyökértől közvetlenül induló cukor csomópont előtt nincs elem). A cukorral együtt gyakori elem tehát csak a kávé (3), így a {kávé, cukor} gyakori, a {tej, cukor} (2) nem – egyezésben a hálóból kapott eredménnyel.</p>
+</section>
+</section>
+<section id="sec-zart-maximalis" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="sec-zart-maximalis"><span class="header-section-number">6.4</span> Tömör reprezentációk: zárt és maximális elemhalmazok</h2>
+<p>Alacsony támogatottsági küszöbnél a gyakori elemhalmazok száma óriási lehet, hiszen egy <span class="math inline">\(k\)</span> elemű gyakori halmaz minden részhalmaza is gyakori. Két tömör reprezentáció csökkenti ezt a redundanciát:</p>
+<ul>
+<li>Egy gyakori elemhalmaz <strong>maximális</strong>, ha egyik valódi bővítése sem gyakori <span class="citation" data-cites="bayardo1998">(<a href="../references.html#ref-bayardo1998" role="doc-biblioref">Bayardo, 1998</a>)</span>. A maximális gyakori elemhalmazokból az összes gyakori elemhalmaz előállítható (mint részhalmazaik), de a támogatottságuk nem.</li>
+<li>Egy elemhalmaz <strong>zárt</strong>, ha egyik valódi bővítésének sem ugyanakkora a támogatottsága <span class="citation" data-cites="pasquier1999">(<a href="../references.html#ref-pasquier1999" role="doc-biblioref">Pasquier és mtsai., 1999</a>)</span>. A zárt gyakori elemhalmazokból a gyakori elemhalmazok <em>és</em> támogatottságaik is visszaállíthatók: egy elemhalmaz támogatottsága a legkisebb őt tartalmazó zárt halmaz támogatottsága.</li>
+</ul>
+<p>A kettő viszonya: minden maximális gyakori elemhalmaz zárt is, így <span class="math inline">\(\text{maximális}\subseteq\text{zárt}\subseteq\text{gyakori}\)</span>.</p>
+</section>
+<section id="sec-szabalyok" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="sec-szabalyok"><span class="header-section-number">6.5</span> Szabályok előállítása és értékelése</h2>
+<section id="szabályok-a-gyakori-elemhalmazokból" class="level3" data-number="6.5.1">
+<h3 data-number="6.5.1" class="anchored" data-anchor-id="szabályok-a-gyakori-elemhalmazokból"><span class="header-section-number">6.5.1</span> Szabályok a gyakori elemhalmazokból</h3>
+<p>Egy <span class="math inline">\(Z\)</span> gyakori elemhalmazból minden <span class="math inline">\(X\Rightarrow Z\setminus X\)</span> szabály (<span class="math inline">\(\emptyset\ne X\subset Z\)</span>) támogatottsága ugyanaz, <span class="math inline">\(s(Z)\)</span>; csak a megbízhatóságot kell kiszámolni. A megbízhatóság általában nem anti-monoton, egy rögzített <span class="math inline">\(Z\)</span>-ből képzett szabályokra viszont igen: ha a következményt bővítjük (az előzményt szűkítjük), a megbízhatóság nem nőhet, mert <span class="math inline">\(c = s(Z)/s(X)\)</span> és a kisebb <span class="math inline">\(X\)</span> támogatottsága nagyobb. Ezért ha egy szabály nem megbízható, a több elemű következményű „rokonai” sem azok.</p>
+</section>
+<section id="az-érdekesség-mérése" class="level3" data-number="6.5.2">
+<h3 data-number="6.5.2" class="anchored" data-anchor-id="az-érdekesség-mérése"><span class="header-section-number">6.5.2</span> Az érdekesség mérése</h3>
+<p>A támogatottság és a megbízhatóság önmagában félrevezető lehet. Ha egy termék nagyon népszerű, minden szabály, amelynek következménye, nagy megbízhatóságú lesz – akkor is, ha az előzménynek semmi köze hozzá. A <strong>lift</strong> a megbízhatóságot a következmény alapgyakoriságához viszonyítja:</p>
+<p><span id="eq-lift"><span class="math display">\[
+\mathrm{lift}(X\Rightarrow Y) = \frac{c(X\Rightarrow Y)}{s(Y)} = \frac{s(X\cup Y)}{s(X)\,s(Y)} .
+\tag{6.4}\]</span></span></p>
+<p>A lift értéke 1, ha <span class="math inline">\(X\)</span> és <span class="math inline">\(Y\)</span> előfordulása (a mintán) független; 1 fölött pozitív, alatta negatív kapcsolatot jelez. További gyakori mérőszámok a <strong>leverage</strong> (más néven Piatetsky-Shapiro-mérték) <span class="citation" data-cites="piatetsky1991">(<a href="../references.html#ref-piatetsky1991" role="doc-biblioref">Piatetsky-Shapiro, 1991</a>)</span>, amely a különbséget méri a független esethez képest, és a <strong>conviction</strong> <span class="citation" data-cites="brin1997">(<a href="../references.html#ref-brin1997" role="doc-biblioref">Brin és mtsai., 1997</a>)</span>, amely azt méri, hányszor gyakrabban fordulna elő a szabály „megsértése” (<span class="math inline">\(X\)</span> előfordul, de <span class="math inline">\(Y\)</span> nem), ha <span class="math inline">\(X\)</span> és <span class="math inline">\(Y\)</span> független lenne:</p>
+<p><span id="eq-leverage"><span class="math display">\[
+\mathrm{leverage}(X\Rightarrow Y) = s(X\cup Y) - s(X)\,s(Y),
+\qquad
+\mathrm{conviction}(X\Rightarrow Y) = \frac{1 - s(Y)}{1 - c(X\Rightarrow Y)} .
+\tag{6.5}\]</span></span></p>
+<p>A mérőszámok eltérő tulajdonságúak (szimmetrikusak-e, hogyan viselkednek ritka elemekre, hogyan függnek a kosarak számától); választásukhoz <span class="citation" data-cites="tan2004">Tan és mtsai. (<a href="../references.html#ref-tan2004" role="doc-biblioref">2004</a>)</span> ad szempontokat.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Figyelem</span>Buktató: a megbízható, de érdektelen szabály
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ha a vásárlók 80%-a vesz kávét, és a teát vásárlók 75%-a is vesz kávét, a „tea ⇒ kávé” szabály megbízhatósága 75% – mégis <em>negatív</em> kapcsolatot jelez, hiszen a teát vásárlók kevésbé valószínűen vesznek kávét, mint egy átlagos vásárló (lift = 0,75/0,80 ≈ 0,94). A megbízhatóságot mindig a következmény alapgyakoriságához kell viszonyítani.</p>
+</div>
+</div>
+<p>Az asszociációs szabályok együttes előfordulást írnak le, <strong>nem okozati kapcsolatot</strong>. Egy erős szabály oka lehet egy közös harmadik tényező (például egy akció, amelyben a két termék együtt szerepelt), és a sok tesztelt szabály között a véletlen is produkál „erős” szabályokat; a nagyon kis támogatottságú szabályokat ezért óvatosan kell kezelni.</p>
+</section>
+</section>
+<section id="sec-asszoc-kiterjesztesek" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="sec-asszoc-kiterjesztesek"><span class="header-section-number">6.6</span> Kiterjesztések</h2>
+<p><strong>Többszintű szabályok.</strong> A termékek gyakran hierarchiába szerveződnek (termék → alkategória → kategória). Termékszinten egy kapcsolat túl ritka lehet ahhoz, hogy kimutassuk, kategóriaszinten viszont már erős. Az általánosított asszociációs szabályok <span class="citation" data-cites="srikant1995">(<a href="../references.html#ref-srikant1995" role="doc-biblioref">Srikant &amp; Agrawal, 1995</a>)</span> egyszerre több szinten keresnek, és kiszűrik azokat az alacsonyabb szintű szabályokat, amelyek csak a magasabb szintű szabályt ismétlik.</p>
+<p><strong>Mennyiségi szabályok.</strong> Numerikus attribútumok (életkor, vásárlási érték, hőmérséklet) esetén az értékeket intervallumokra bontjuk, és az „attribútum ∈ intervallum” állításokat tekintjük elemeknek <span class="citation" data-cites="srikant1996q">(<a href="../references.html#ref-srikant1996q" role="doc-biblioref">Srikant &amp; Agrawal, 1996a</a>)</span>. Az eredmény erősen függ a diszkretizálástól: a túl keskeny intervallumok ritkák, a túl szélesek elmossák a kapcsolatot.</p>
+<p><strong>Sorozatminták.</strong> Ha a tranzakciók időrendje is számít (egy vevő egymást követő vásárlásai, egy üzem riasztásainak sorrendje), <strong>gyakori sorozatokat</strong> keresünk: olyan eseménysorozatokat, amelyek sok sorozatban ugyanabban a sorrendben fordulnak elő. A klasszikus algoritmusok a GSP <span class="citation" data-cites="srikant1996s">(<a href="../references.html#ref-srikant1996s" role="doc-biblioref">Srikant &amp; Agrawal, 1996b</a>)</span>, amely az Apriori-elvet viszi át sorozatokra, és a PrefixSpan <span class="citation" data-cites="pei2001">(<a href="../references.html#ref-pei2001" role="doc-biblioref">Pei és mtsai., 2001</a>)</span>, amely az FP-growth-hoz hasonlóan vetített adatbázisokon dolgozik. Ipari riasztásnaplókban a gyakori riasztássorozatok feltárása a riasztási „árvizek” csökkentésének egyik eszköze <span class="citation" data-cites="dorgo2018 wang2016">(<a href="../references.html#ref-dorgo2018" role="doc-biblioref">Dorgo &amp; Abonyi, 2018</a>; <a href="../references.html#ref-wang2016" role="doc-biblioref">Wang és mtsai., 2016</a>)</span> (<a href="#fig-riasztas" class="quarto-xref"><span>6.3</span></a>. ábra).</p>
+<div id="fig-riasztas" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-riasztas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/06-riasztas.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="ábra&nbsp;6.3.. Gyakori sorozat egy riasztásnaplóban. Ha ugyanaz az eseménysorrend egy rövid időablakon belül ismételten előfordul, a riasztások valószínűleg egy közös kiváltó okra vezethetők vissza."><img src="../figures/build/06-riasztas.svg" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-riasztas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;6.3.. Gyakori sorozat egy riasztásnaplóban. Ha ugyanaz az eseménysorrend egy rövid időablakon belül ismételten előfordul, a riasztások valószínűleg egy közös kiváltó okra vezethetők vissza.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-asszoc-gyakorlat" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="sec-asszoc-gyakorlat"><span class="header-section-number">6.7</span> Gyakorlat: kosárelemzés és riasztássorozatok</h2>
+<section id="a-pannonshop-kosarai" class="level3" data-number="6.7.1">
+<h3 data-number="6.7.1" class="anchored" data-anchor-id="a-pannonshop-kosarai"><span class="header-section-number">6.7.1</span> A PannonShop kosarai</h3>
+<p>A <code>mlxtend</code> csomag <span class="citation" data-cites="raschka2018">(<a href="../references.html#ref-raschka2018" role="doc-biblioref">Raschka, 2018</a>)</span> a gyakori elemhalmazok keresését <code>pandas</code> adattáblákon végzi, amelyekben minden sor egy kosár, minden oszlop egy termék logikai jelzője. A sztornózott számlák nélküli, megtisztított számlatételekből indulunk (<a href="03-adatelokeszites.html" class="quarto-xref"><span>3</span></a>. fejezet).</p>
+<div id="e1acc5ff" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mlxtend.preprocessing <span class="im">import</span> TransactionEncoder</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mlxtend.frequent_patterns <span class="im">import</span> fpgrowth, apriori, association_rules</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>tiszta <span class="op">=</span> ab.shop_clean()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>kosar <span class="op">=</span> tiszta.groupby(<span class="st">"Invoice"</span>).Description.<span class="bu">apply</span>(<span class="kw">lambda</span> s: <span class="bu">sorted</span>(<span class="bu">set</span>(s)))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"kosarak: </span><span class="sc">{</span><span class="bu">len</span>(kosar)<span class="sc">:,}</span><span class="ss">, átlagos kosárméret: </span><span class="sc">{</span>kosar<span class="sc">.</span><span class="bu">str</span><span class="sc">.</span><span class="bu">len</span>()<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">"</span>.replace(<span class="st">","</span>, <span class="st">" "</span>))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>te <span class="op">=</span> TransactionEncoder()</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> pd.DataFrame(te.fit_transform(kosar), columns<span class="op">=</span>te.columns_)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>B.iloc[:<span class="dv">3</span>, :<span class="dv">6</span>]</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>kosarak: 15 295  átlagos kosárméret: 4.16</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Adventi koszorú</th>
+<th data-quarto-table-cell-role="th">Ajándékcsomagolás</th>
+<th data-quarto-table-cell-role="th">Ajándékkísérő kártya</th>
+<th data-quarto-table-cell-role="th">Ajándékutalvány 10 000 Ft</th>
+<th data-quarto-table-cell-role="th">Asztali futó</th>
+<th data-quarto-table-cell-role="th">Díszdoboz</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="1a31ffd5" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> alg, f <span class="kw">in</span> [(<span class="st">"Apriori"</span>, apriori), (<span class="st">"FP-growth"</span>, fpgrowth)]:</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    gy <span class="op">=</span> f(B, min_support<span class="op">=</span><span class="fl">0.005</span>, use_colnames<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>alg<span class="sc">:10s}</span><span class="ss">: </span><span class="sc">{</span><span class="bu">len</span>(gy)<span class="sc">:5d}</span><span class="ss"> gyakori elemhalmaz, </span><span class="sc">{</span>time<span class="sc">.</span>perf_counter() <span class="op">-</span> t0<span class="sc">:6.2f}</span><span class="ss"> s"</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Apriori   :   919 gyakori elemhalmaz,   0.29 s
+FP-growth :   919 gyakori elemhalmaz,   0.30 s</code></pre>
+</div>
+</div>
+<p>Mindkét algoritmus ugyanazokat a gyakori elemhalmazokat adja; az FP-growth jellemzően gyorsabb, különösen alacsony küszöbnél. A szabályokat a lift szerint rendezzük:</p>
+<div id="789fc484" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>gy <span class="op">=</span> fpgrowth(B, min_support<span class="op">=</span><span class="fl">0.005</span>, use_colnames<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>sz <span class="op">=</span> association_rules(gy, metric<span class="op">=</span><span class="st">"confidence"</span>, min_threshold<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>sz[<span class="st">"szabaly"</span>] <span class="op">=</span> sz.antecedents.<span class="bu">apply</span>(<span class="kw">lambda</span> s: <span class="st">", "</span>.join(<span class="bu">sorted</span>(s))) <span class="op">+</span> <span class="st">"  ⇒  "</span> <span class="op">+</span> sz.consequents.<span class="bu">apply</span>(<span class="kw">lambda</span> s: <span class="st">", "</span>.join(<span class="bu">sorted</span>(s)))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>sz[[<span class="st">"szabaly"</span>, <span class="st">"support"</span>, <span class="st">"confidence"</span>, <span class="st">"lift"</span>, <span class="st">"leverage"</span>, <span class="st">"conviction"</span>]] <span class="op">\</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  .sort_values(<span class="st">"lift"</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">12</span>).<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">szabaly</th>
+<th data-quarto-table-cell-role="th">support</th>
+<th data-quarto-table-cell-role="th">confidence</th>
+<th data-quarto-table-cell-role="th">lift</th>
+<th data-quarto-table-cell-role="th">leverage</th>
+<th data-quarto-table-cell-role="th">conviction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">93</th>
+<td>Kávébab 1 kg, Teáskanna&nbsp;&nbsp;⇒&nbsp;&nbsp;Fekete tea 50 filter, Zöld t...</td>
+<td>0.006</td>
+<td>0.312</td>
+<td>8.309</td>
+<td>0.005</td>
+<td>1.399</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">91</th>
+<td>Fekete tea 50 filter, Kávébab 1 kg, Zöld tea 50 filter&nbsp;&nbsp;...</td>
+<td>0.006</td>
+<td>0.649</td>
+<td>7.913</td>
+<td>0.005</td>
+<td>2.617</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">103</th>
+<td>Kávébab 1 kg, Vízkőoldó 500 ml&nbsp;&nbsp;⇒&nbsp;&nbsp;Kávéfőző gép</td>
+<td>0.023</td>
+<td>0.485</td>
+<td>7.908</td>
+<td>0.020</td>
+<td>1.823</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">106</th>
+<td>Kávéfőző gép&nbsp;&nbsp;⇒&nbsp;&nbsp;Kávébab 1 kg, Vízkőoldó 500 ml</td>
+<td>0.023</td>
+<td>0.378</td>
+<td>7.908</td>
+<td>0.020</td>
+<td>1.532</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">75</th>
+<td>Fekete tea 50 filter, Zöld tea 50 filter&nbsp;&nbsp;⇒&nbsp;&nbsp;Teáskanna</td>
+<td>0.024</td>
+<td>0.632</td>
+<td>7.707</td>
+<td>0.021</td>
+<td>2.497</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">125</th>
+<td>Kávékapszula 30 db, Tollkészlet&nbsp;&nbsp;⇒&nbsp;&nbsp;Pontozott füzet A5</td>
+<td>0.005</td>
+<td>0.440</td>
+<td>6.304</td>
+<td>0.005</td>
+<td>1.661</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">124</th>
+<td>Kávékapszula 30 db, Pontozott füzet A5&nbsp;&nbsp;⇒&nbsp;&nbsp;Tollkészlet</td>
+<td>0.005</td>
+<td>0.609</td>
+<td>5.964</td>
+<td>0.005</td>
+<td>2.295</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">127</th>
+<td>Gyümölcstea 40 g, Tollkészlet&nbsp;&nbsp;⇒&nbsp;&nbsp;Pontozott füzet A5</td>
+<td>0.006</td>
+<td>0.413</td>
+<td>5.915</td>
+<td>0.005</td>
+<td>1.584</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">126</th>
+<td>Gyümölcstea 40 g, Pontozott füzet A5&nbsp;&nbsp;⇒&nbsp;&nbsp;Tollkészlet</td>
+<td>0.006</td>
+<td>0.578</td>
+<td>5.666</td>
+<td>0.005</td>
+<td>2.129</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">23</th>
+<td>Illatgyertya, Kávébab 1 kg&nbsp;&nbsp;⇒&nbsp;&nbsp;Gyertyatartó</td>
+<td>0.008</td>
+<td>0.467</td>
+<td>5.661</td>
+<td>0.006</td>
+<td>1.723</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">22</th>
+<td>Gyertyatartó, Kávébab 1 kg&nbsp;&nbsp;⇒&nbsp;&nbsp;Illatgyertya</td>
+<td>0.008</td>
+<td>0.380</td>
+<td>5.603</td>
+<td>0.006</td>
+<td>1.503</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">122</th>
+<td>Pontozott füzet A5, Vízkőoldó 500 ml&nbsp;&nbsp;⇒&nbsp;&nbsp;Tollkészlet</td>
+<td>0.006</td>
+<td>0.565</td>
+<td>5.535</td>
+<td>0.005</td>
+<td>2.064</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="eset-uzleti">
+<p>A legnagyobb liftű szabályok között szerepelnek a szimulátor által „beültetett” kapcsolatok (kávéfőző gép ⇒ kávébab, vízkőoldó; teáskanna ⇒ zöld és fekete tea; pontozott füzet ⇒ tollkészlet; illatgyertya ⇒ gyertyatartó). Ellenőrizzük szisztematikusan, hogy az algoritmus mindegyiket megtalálta-e, és mekkora lifttel!</p>
+</div>
+<div id="0571ca30" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>beultetett <span class="op">=</span> ab.load_shop().truth[<span class="st">"planted_rules"</span>]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>sorok <span class="op">=</span> []</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ante, cons, p <span class="kw">in</span> beultetett:</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> sz[(sz.antecedents <span class="op">==</span> <span class="bu">frozenset</span>(ante)) <span class="op">&amp;</span> (sz.consequents <span class="op">==</span> <span class="bu">frozenset</span>([cons]))]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    sorok.append({<span class="st">"szabály"</span>: <span class="ss">f"</span><span class="sc">{</span>ante[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> ⇒ </span><span class="sc">{</span>cons<span class="sc">}</span><span class="ss">"</span>, <span class="st">"beültetett valószínűség"</span>: p,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"megtalálva"</span>: <span class="bu">len</span>(m) <span class="op">&gt;</span> <span class="dv">0</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"megbízhatóság"</span>: m.confidence.iat[<span class="dv">0</span>] <span class="cf">if</span> <span class="bu">len</span>(m) <span class="cf">else</span> np.nan,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"lift"</span>: m.lift.iat[<span class="dv">0</span>] <span class="cf">if</span> <span class="bu">len</span>(m) <span class="cf">else</span> np.nan})</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(sorok).<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">szabály</th>
+<th data-quarto-table-cell-role="th">beültetett valószínűség</th>
+<th data-quarto-table-cell-role="th">megtalálva</th>
+<th data-quarto-table-cell-role="th">megbízhatóság</th>
+<th data-quarto-table-cell-role="th">lift</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Kávéfőző gép ⇒ Kávébab 1 kg</td>
+<td>0.70</td>
+<td>True</td>
+<td>0.745</td>
+<td>3.306</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Kávéfőző gép ⇒ Vízkőoldó 500 ml</td>
+<td>0.45</td>
+<td>True</td>
+<td>0.498</td>
+<td>3.672</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Kávédaráló ⇒ Kávébab 1 kg</td>
+<td>0.60</td>
+<td>True</td>
+<td>0.635</td>
+<td>2.816</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Teáskanna ⇒ Zöld tea 50 filter</td>
+<td>0.55</td>
+<td>True</td>
+<td>0.604</td>
+<td>4.111</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Teáskanna ⇒ Fekete tea 50 filter</td>
+<td>0.40</td>
+<td>True</td>
+<td>0.466</td>
+<td>3.433</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>Pontozott füzet A5 ⇒ Tollkészlet</td>
+<td>0.50</td>
+<td>True</td>
+<td>0.532</td>
+<td>5.216</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>Tejhabosító kancsó ⇒ Kávébab 1 kg</td>
+<td>0.50</td>
+<td>True</td>
+<td>0.592</td>
+<td>2.625</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">7</th>
+<td>Illatgyertya ⇒ Gyertyatartó</td>
+<td>0.35</td>
+<td>True</td>
+<td>0.412</td>
+<td>4.991</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>A megtalált szabályok megbízhatósága nem pontosan egyezik a beültetett valószínűséggel. Ennek két oka van: a következmény néha a szabálytól függetlenül, a vevő saját preferenciái miatt is a kosárba kerül (ez növeli a megbízhatóságot), és ha a kosárban több előzmény is van, a szabályok egymást erősítik.</p>
+<div id="cell-fig-szabalyok" class="cell" data-fig-height="3.4" data-fig-width="6" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> ax.scatter(sz.support, sz.confidence, c<span class="op">=</span>sz.lift, cmap<span class="op">=</span><span class="st">"viridis"</span>, s<span class="op">=</span><span class="dv">12</span> <span class="op">+</span> <span class="dv">4</span> <span class="op">*</span> sz.lift, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>fig.colorbar(sc, ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">"lift"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>ax.set_xscale(<span class="st">"log"</span>)<span class="op">;</span> ax.set_xlabel(<span class="st">"támogatottság (log)"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"megbízhatóság"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-szabalyok" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-szabalyok-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="06-asszociacios-szabalyok_files/figure-html/fig-szabalyok-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="ábra&nbsp;6.4.. A PannonShop asszociációs szabályai a támogatottság–megbízhatóság síkon, a lift szerint színezve. A kis támogatottságú, de nagy liftű szabályok (jobb felső színek a bal oldalon) a legérdekesebbek."><img src="06-asszociacios-szabalyok_files/figure-html/fig-szabalyok-output-1.png" width="657" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-szabalyok-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;6.4.. A PannonShop asszociációs szabályai a támogatottság–megbízhatóság síkon, a lift szerint színezve. A kis támogatottságú, de nagy liftű szabályok (jobb felső színek a bal oldalon) a legérdekesebbek.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="kategóriaszintű-szabályok" class="level3" data-number="6.7.2">
+<h3 data-number="6.7.2" class="anchored" data-anchor-id="kategóriaszintű-szabályok"><span class="header-section-number">6.7.2</span> Kategóriaszintű szabályok</h3>
+<p>A termékeket kategóriájukkal helyettesítve kategóriaszintű kosarakat kapunk; a kategóriák között gyakoribb, de gyengébb kapcsolatok mutathatók ki:</p>
+<div id="e3dda2e8" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>termek_kat <span class="op">=</span> ab.load_shop().products.set_index(<span class="st">"Description"</span>).Kategoria</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>kat_kosar <span class="op">=</span> tiszta.assign(kat<span class="op">=</span>tiszta.Description.<span class="bu">map</span>(termek_kat)).groupby(<span class="st">"Invoice"</span>).kat.<span class="bu">apply</span>(<span class="kw">lambda</span> s: <span class="bu">sorted</span>(<span class="bu">set</span>(s)))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>te2 <span class="op">=</span> TransactionEncoder()</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>BK <span class="op">=</span> pd.DataFrame(te2.fit_transform(kat_kosar), columns<span class="op">=</span>te2.columns_)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>szk <span class="op">=</span> association_rules(fpgrowth(BK, min_support<span class="op">=</span><span class="fl">0.03</span>, use_colnames<span class="op">=</span><span class="va">True</span>), metric<span class="op">=</span><span class="st">"lift"</span>, min_threshold<span class="op">=</span><span class="fl">1.05</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>szk[<span class="st">"szabaly"</span>] <span class="op">=</span> szk.antecedents.<span class="bu">apply</span>(<span class="kw">lambda</span> s: <span class="st">", "</span>.join(<span class="bu">sorted</span>(s))) <span class="op">+</span> <span class="st">"  ⇒  "</span> <span class="op">+</span> szk.consequents.<span class="bu">apply</span>(<span class="kw">lambda</span> s: <span class="st">", "</span>.join(<span class="bu">sorted</span>(s)))</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>szk[[<span class="st">"szabaly"</span>, <span class="st">"support"</span>, <span class="st">"confidence"</span>, <span class="st">"lift"</span>]].sort_values(<span class="st">"lift"</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">8</span>).<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">szabaly</th>
+<th data-quarto-table-cell-role="th">support</th>
+<th data-quarto-table-cell-role="th">confidence</th>
+<th data-quarto-table-cell-role="th">lift</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">36</th>
+<td>Ajándék, Háztartási gépek&nbsp;&nbsp;⇒&nbsp;&nbsp;Dekoráció, Kávé és tea</td>
+<td>0.035</td>
+<td>0.376</td>
+<td>1.666</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">33</th>
+<td>Dekoráció, Kávé és tea&nbsp;&nbsp;⇒&nbsp;&nbsp;Ajándék, Háztartási gépek</td>
+<td>0.035</td>
+<td>0.156</td>
+<td>1.666</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">29</th>
+<td>Ajándék, Háztartási gépek, Kávé és tea&nbsp;&nbsp;⇒&nbsp;&nbsp;Dekoráció</td>
+<td>0.035</td>
+<td>0.528</td>
+<td>1.360</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">40</th>
+<td>Dekoráció&nbsp;&nbsp;⇒&nbsp;&nbsp;Ajándék, Háztartási gépek, Kávé és tea</td>
+<td>0.035</td>
+<td>0.091</td>
+<td>1.360</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">52</th>
+<td>Ajándék, Kávé és tea&nbsp;&nbsp;⇒&nbsp;&nbsp;Dekoráció, Írószer</td>
+<td>0.034</td>
+<td>0.144</td>
+<td>1.354</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">55</th>
+<td>Dekoráció, Írószer&nbsp;&nbsp;⇒&nbsp;&nbsp;Ajándék, Kávé és tea</td>
+<td>0.034</td>
+<td>0.318</td>
+<td>1.354</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">26</th>
+<td>Ajándék, Háztartási gépek&nbsp;&nbsp;⇒&nbsp;&nbsp;Dekoráció</td>
+<td>0.048</td>
+<td>0.517</td>
+<td>1.332</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">27</th>
+<td>Dekoráció&nbsp;&nbsp;⇒&nbsp;&nbsp;Ajándék, Háztartási gépek</td>
+<td>0.048</td>
+<td>0.125</td>
+<td>1.332</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="zárt-és-maximális-elemhalmazok" class="level3" data-number="6.7.3">
+<h3 data-number="6.7.3" class="anchored" data-anchor-id="zárt-és-maximális-elemhalmazok"><span class="header-section-number">6.7.3</span> Zárt és maximális elemhalmazok</h3>
+<div id="628a6109" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> zart_maximalis(gy):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    halmazok <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(gy.itemsets, gy.support))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    zart <span class="op">=</span> maxi <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> X, s <span class="kw">in</span> halmazok.items():</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        bovitesek <span class="op">=</span> [Y <span class="cf">for</span> Y <span class="kw">in</span> halmazok <span class="cf">if</span> <span class="bu">len</span>(Y) <span class="op">==</span> <span class="bu">len</span>(X) <span class="op">+</span> <span class="dv">1</span> <span class="kw">and</span> X <span class="op">&lt;</span> Y]</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        zart <span class="op">+=</span> <span class="bu">all</span>(<span class="bu">abs</span>(halmazok[Y] <span class="op">-</span> s) <span class="op">&gt;</span> <span class="fl">1e-12</span> <span class="cf">for</span> Y <span class="kw">in</span> bovitesek)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        maxi <span class="op">+=</span> <span class="bu">len</span>(bovitesek) <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> zart, maxi</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s_min <span class="kw">in</span> [<span class="fl">0.02</span>, <span class="fl">0.01</span>, <span class="fl">0.005</span>, <span class="fl">0.002</span>]:</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    g <span class="op">=</span> fpgrowth(B, min_support<span class="op">=</span>s_min, use_colnames<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    z, m <span class="op">=</span> zart_maximalis(g)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"s_min = </span><span class="sc">{</span>s_min<span class="sc">:&lt;6}</span><span class="ss">: gyakori </span><span class="sc">{</span><span class="bu">len</span>(g)<span class="sc">:5d}</span><span class="ss">   zárt </span><span class="sc">{</span>z<span class="sc">:5d}</span><span class="ss">   maximális </span><span class="sc">{</span>m<span class="sc">:5d}</span><span class="ss">"</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>s_min = 0.02  : gyakori    81   zárt    81   maximális    56
+s_min = 0.01  : gyakori   282   zárt   282   maximális   217
+s_min = 0.005 : gyakori   919   zárt   919   maximális   736
+s_min = 0.002 : gyakori  2781   zárt  2781   maximális  1863</code></pre>
+</div>
+</div>
+<p>(Elég az eggyel nagyobb gyakori bővítéseket vizsgálni: ha egy elemhalmaznak van azonos támogatottságú bővítése, akkor eggyel nagyobb is van, és egy nem gyakori bővítés nem lehet azonos támogatottságú.) Ezen az adaton minden gyakori elemhalmaz zárt is – a viszonylag kis, változatos kosaraknál ritka, hogy egy bővítés pontosan ugyanannyi kosárban forduljon elő –, a maximális elemhalmazok viszont lényegesen kevesebben vannak. Erősen korrelált elemeket tartalmazó adatokon (például összetartozó termékcsomagoknál) a zárt halmazok is jelentős tömörítést adnak.</p>
+</section>
+<section id="riasztássorozatok-a-pannon-üzemben" class="level3" data-number="6.7.4">
+<h3 data-number="6.7.4" class="anchored" data-anchor-id="riasztássorozatok-a-pannon-üzemben"><span class="header-section-number">6.7.4</span> Riasztássorozatok a Pannon üzemben</h3>
+<div class="eset-mernoki">
+<p>A Pannon üzem riasztásnaplója időbélyeggel ellátott eseményekből áll. Arra vagyunk kíváncsiak, mely riasztások követik rendszeresen egymást rövid időn belül, mert az ilyen láncok egy közös kiváltó okra utalhatnak, és a kezelő a lánc első elemére reagálva megelőzheti a többit.</p>
+</div>
+<p>Egyszerű, de hatékony módszer a <strong>rendezett párok</strong> és hármasok számlálása egy időablakon belül. Minden <span class="math inline">\(A\)</span> riasztásnál megnézzük, milyen riasztások követték a következő <span class="math inline">\(w = 3\)</span> órán belül; így megkapjuk az „<span class="math inline">\(A\)</span> után <span class="math inline">\(w\)</span>-n belül <span class="math inline">\(B\)</span>” sorozatszabály megbízhatóságát, és ezt összevetjük <span class="math inline">\(B\)</span> alapgyakoriságával (liftjével).</p>
+<div id="21063180" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>plant <span class="op">=</span> ab.load_plant()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>R <span class="op">=</span> plant.alarms.copy()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> pd.Timedelta(hours<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>ido, nev <span class="op">=</span> R.ido.to_numpy(), R.riasztas.to_numpy()</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>parok <span class="op">=</span> []</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(R)):</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    kovetok <span class="op">=</span> <span class="bu">set</span>(nev[(ido <span class="op">&gt;</span> ido[i]) <span class="op">&amp;</span> (ido <span class="op">&lt;=</span> ido[i] <span class="op">+</span> w)]) <span class="op">-</span> {nev[i]}</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    parok <span class="op">+=</span> [(nev[i], b) <span class="cf">for</span> b <span class="kw">in</span> kovetok]</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>parok <span class="op">=</span> pd.DataFrame(parok, columns<span class="op">=</span>[<span class="st">"A"</span>, <span class="st">"B"</span>])</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>nA <span class="op">=</span> R.riasztas.value_counts()</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co"># B alapgyakorisága: a 3 órás ablakok mekkora hányadában fordul elő B</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>ablakok <span class="op">=</span> pd.date_range(R.ido.<span class="bu">min</span>().floor(<span class="st">"3h"</span>), R.ido.<span class="bu">max</span>(), freq<span class="op">=</span><span class="st">"3h"</span>)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>alap <span class="op">=</span> {b: np.isin(ablakok, R.loc[R.riasztas <span class="op">==</span> b, <span class="st">"ido"</span>].dt.floor(<span class="st">"3h"</span>).unique()).mean() <span class="cf">for</span> b <span class="kw">in</span> nA.index}</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>sorozat <span class="op">=</span> (parok.value_counts().rename(<span class="st">"db"</span>).reset_index()</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>           .assign(megbizhatosag<span class="op">=</span><span class="kw">lambda</span> d: d.db <span class="op">/</span> d.A.<span class="bu">map</span>(nA),</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>                   lift<span class="op">=</span><span class="kw">lambda</span> d: d.megbizhatosag <span class="op">/</span> d.B.<span class="bu">map</span>(alap)))</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>sorozat[sorozat.db <span class="op">&gt;=</span> <span class="dv">8</span>].sort_values(<span class="st">"db"</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">10</span>).<span class="bu">round</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">A</th>
+<th data-quarto-table-cell-role="th">B</th>
+<th data-quarto-table-cell-role="th">db</th>
+<th data-quarto-table-cell-role="th">megbizhatosag</th>
+<th data-quarto-table-cell-role="th">lift</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>HUTOVIZ_MELEG</td>
+<td>HUTES_TELITETT</td>
+<td>17</td>
+<td>0.24</td>
+<td>8.65</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>T_MAGAS</td>
+<td>MINOSEG_ELTERES</td>
+<td>16</td>
+<td>0.22</td>
+<td>3.31</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>HUTES_TELITETT</td>
+<td>HUTOVIZ_OSZCILLACIO</td>
+<td>13</td>
+<td>0.14</td>
+<td>4.00</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>HUTES_TELITETT</td>
+<td>HUTOVIZ_MELEG</td>
+<td>13</td>
+<td>0.14</td>
+<td>6.96</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>T_MAGAS</td>
+<td>HUTOVIZ_OSZCILLACIO</td>
+<td>12</td>
+<td>0.16</td>
+<td>4.65</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>HUTOVIZ_OSZCILLACIO</td>
+<td>HUTES_TELITETT</td>
+<td>9</td>
+<td>0.09</td>
+<td>3.20</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>HUTOVIZ_MELEG</td>
+<td>T_MAGAS</td>
+<td>9</td>
+<td>0.12</td>
+<td>5.50</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">7</th>
+<td>HUTES_TELITETT</td>
+<td>MINOSEG_ELTERES</td>
+<td>9</td>
+<td>0.10</td>
+<td>1.48</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">8</th>
+<td>HUTOVIZ_OSZCILLACIO</td>
+<td>MINOSEG_ELTERES</td>
+<td>8</td>
+<td>0.08</td>
+<td>1.17</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">9</th>
+<td>MINOSEG_ELTERES</td>
+<td>T_MAGAS</td>
+<td>8</td>
+<td>0.04</td>
+<td>1.86</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="9f11b331" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>harmasok <span class="op">=</span> []</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(R)):</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    utana <span class="op">=</span> R[(R.ido <span class="op">&gt;</span> R.ido.iat[i]) <span class="op">&amp;</span> (R.ido <span class="op">&lt;=</span> R.ido.iat[i] <span class="op">+</span> w)].riasztas.tolist()</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j, b <span class="kw">in</span> <span class="bu">enumerate</span>(utana):</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> c <span class="kw">in</span> utana[j <span class="op">+</span> <span class="dv">1</span>:]:</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">len</span>({nev[i], b, c}) <span class="op">==</span> <span class="dv">3</span>:</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>                harmasok.append((nev[i], b, c))</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>pd.Series([<span class="st">" → "</span>.join(h) <span class="cf">for</span> h <span class="kw">in</span> harmasok]).value_counts().head(<span class="dv">6</span>).to_frame(<span class="st">"előfordulás"</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">előfordulás</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">MINOSEG_ELTERES → HUTOVIZ_MELEG → T_MAGAS</th>
+<td>3</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">HUTOVIZ_OSZCILLACIO → HUTES_TELITETT → T_MAGAS</th>
+<td>3</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">HUTOVIZ_MELEG → HUTES_TELITETT → T_MAGAS</th>
+<td>3</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">HUTOVIZ_MELEG → T_MAGAS → HUTES_TELITETT</th>
+<td>3</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">HUTES_TELITETT → HUTOVIZ_OSZCILLACIO → BETAP_KONC_ALACSONY</th>
+<td>2</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">HUTOVIZ_MELEG → T_MAGAS → MINOSEG_ELTERES</th>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>A hármas sorozatok ritkák – egy év alatt csak néhány teljes lánc fordul elő –, a párok azonban egyértelmű képet adnak, és fizikailag értelmezhetők: a meleg hűtővizet a hűtés telítődése és a reaktorhőmérséklet emelkedése követi, a magas hőmérsékletet pedig minőségi eltérés. Más párok mögött mérési vagy szabályozási jelenség áll: a hűtővízszelep akadozásakor az oszcilláló szelepállás időnként eléri a határt, ezért a „hűtés telített” és a „hűtővíz-oszcilláció” riasztás együtt jár, holott a hűtés valójában nem telített. A sorozatminták így nemcsak a riasztási „árvizek” csökkentésére (a következményként fellépő riasztások elnyomására), hanem a kiváltó ok gyors azonosítására és a félrevezető riasztások felderítésére is használhatók. A <a href="15-folyamatanalitika.html" class="quarto-xref"><span>15</span></a>. fejezetben ezt a gondolatot a hibadiagnosztikával kapcsoljuk össze.</p>
+<div class="pe-app"><div class="pe-app-bar"><span>Apriori lépésről lépésre: támogatottság, megbízhatóság, lift</span><a href="../apps/apriori.html" target="_blank" rel="noopener">Megnyitás új lapon ↗</a></div><iframe src="../apps/apriori.html" style="height:600px" loading="lazy" title="Apriori lépésről lépésre: támogatottság, megbízhatóság, lift"></iframe></div>
+<div class="pe-badges"><a href="https://colab.research.google.com/github/ComplexSystemsIntelligence/adatbanyaszat/blob/main/notebooks/06-asszociacios-szabalyok.ipynb" target="_blank" rel="noopener">▶ Colab: 6. fejezet – asszociációs szabályok</a><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/notebooks/06-asszociacios-szabalyok.ipynb" target="_blank" rel="noopener">GitHub forrás</a></div>
+</section>
+</section>
+<section id="sec-asszoc-osszefoglalas" class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="sec-asszoc-osszefoglalas"><span class="header-section-number">6.8</span> Összefoglalás</h2>
+<ul>
+<li>Az asszociációs szabályok keresése két lépés: a gyakori elemhalmazok feltárása és a megbízható szabályok előállítása; a számításigényes rész az első.</li>
+<li>A támogatottság anti-monoton: egy ritka elemhalmaz minden bővítése ritka. Ez teszi lehetővé az Apriori-algoritmus metszését.</li>
+<li>Az Eclat vertikális tid-listákkal, az FP-growth egy tömör prefixfával, jelöltképzés nélkül dolgozik; nagy adatbázisokon ezek a hatékonyabbak.</li>
+<li>A zárt gyakori elemhalmazok a támogatottságokat is megőrző, a maximálisak még tömörebb, de veszteséges reprezentációt adnak.</li>
+<li>A megbízhatóság a következmény alapgyakoriságát nem veszi figyelembe; a lift, a leverage és a conviction ezt korrigálja. A szabályok együttes előfordulást, nem okozatot írnak le.</li>
+<li>A módszer kiterjeszthető fogalmi hierarchiákra, numerikus attribútumokra és időrendezett eseménysorozatokra.</li>
+</ul>
+</section>
+<section id="ellenőrző-kérdések" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="ellenőrző-kérdések">Ellenőrző kérdések</h2>
+<ol type="1">
+<li>Mit jelent, hogy a támogatottság anti-monoton? Miért nem az a megbízhatóság általában?</li>
+<li>Hány jelöltet állít elő az Apriori a második szinten, ha <span class="math inline">\(|F_1| = 40\)</span>?</li>
+<li>Mi a különbség a zárt és a maximális gyakori elemhalmaz között? Melyikből állíthatók vissza a támogatottságok?</li>
+<li>Mikor lehet egy 90%-os megbízhatóságú szabály érdektelen?</li>
+<li>Miért nem következik egy erős asszociációs szabályból, hogy az egyik termék ajánlása növelni fogja a másik eladását?</li>
+</ol>
+</section>
+<section id="feladatok" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="feladatok">Feladatok</h2>
+<ol type="1">
+<li><strong>Kézi Apriori.</strong> Végezze el a mini-példát <span class="math inline">\(\sigma_{\min} = 2\)</span> küszöbbel! Állítsa elő a {kávé, tej, cukor} gyakori elemhalmazból képezhető összes szabályt, és számítsa ki a megbízhatóságukat és a liftjüket!</li>
+<li><strong>FP-fa.</strong> Rajzolja meg a mini-példa FP-fáját <span class="math inline">\(\sigma_{\min} = 2\)</span> esetén! Mi a „keksz” feltételes mintabázisa?</li>
+<li><strong>Küszöbök hatása.</strong> Ábrázolja a PannonShop gyakori elemhalmazainak és szabályainak számát a támogatottsági küszöb függvényében! Hol jelennek meg a beültetett szabályok?</li>
+<li><strong>Szezonális szabályok.</strong> Keressen szabályokat külön a decemberi és a többi hónap kosaraiban! Mely szabályok jellemzőek csak a karácsonyi időszakra?</li>
+<li><strong>Időablak.</strong> Vizsgálja meg, hogyan változnak a riasztássorozatok megbízhatóságai és liftjei 30 perces, 2 órás és 6 órás időablak esetén! Melyik ablak adja a fizikailag legjobban értelmezhető láncokat?</li>
+</ol>
+</section>
+<section id="további-olvasmányok" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="további-olvasmányok">További olvasmányok</h2>
+<p>Az asszociációs szabályok és az Apriori eredeti leírása <span class="citation" data-cites="agrawal1993">Agrawal és mtsai. (<a href="../references.html#ref-agrawal1993" role="doc-biblioref">1993</a>)</span> és <span class="citation" data-cites="agrawal1994">Agrawal &amp; Srikant (<a href="../references.html#ref-agrawal1994" role="doc-biblioref">1994</a>)</span>. A mintanövelő módszerekről <span class="citation" data-cites="han2000">Han és mtsai. (<a href="../references.html#ref-han2000" role="doc-biblioref">2000</a>)</span>, a vertikális algoritmusokról <span class="citation" data-cites="zaki2000">Zaki (<a href="../references.html#ref-zaki2000" role="doc-biblioref">2000</a>)</span> ír. Az érdekességi mértékek összehasonlítását <span class="citation" data-cites="tan2004">Tan és mtsai. (<a href="../references.html#ref-tan2004" role="doc-biblioref">2004</a>)</span> végezte el. A terület átfogó tárgyalása <span class="citation" data-cites="han2022">Han és mtsai. (<a href="../references.html#ref-han2022" role="doc-biblioref">2022</a>)</span> két mintabányászati fejezetében olvasható. A riasztásnaplók sorozatbányászatáról <span class="citation" data-cites="dorgo2018">Dorgo &amp; Abonyi (<a href="../references.html#ref-dorgo2018" role="doc-biblioref">2018</a>)</span>, az ipari riasztáskezelés problémáiról <span class="citation" data-cites="wang2016">Wang és mtsai. (<a href="../references.html#ref-wang2016" role="doc-biblioref">2016</a>)</span> ad áttekintést.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-agrawal1993" class="csl-entry" role="listitem">
+Agrawal, R., Imieliński, T., &amp; Swami, A. (1993). Mining Association Rules between Sets of Items in Large Databases. <em>Proceedings of the 1993 ACM SIGMOD International Conference on Management of Data</em>, 207–216.
+</div>
+<div id="ref-agrawal1994" class="csl-entry" role="listitem">
+Agrawal, R., &amp; Srikant, R. (1994). Fast Algorithms for Mining Association Rules. <em>Proceedings of the 20th International Conference on Very Large Data Bases</em>, 487–499.
+</div>
+<div id="ref-bayardo1998" class="csl-entry" role="listitem">
+Bayardo, R. J. (1998). Efficiently Mining Long Patterns from Databases. <em>Proceedings of the 1998 ACM SIGMOD International Conference on Management of Data</em>, 85–93.
+</div>
+<div id="ref-brin1997" class="csl-entry" role="listitem">
+Brin, S., Motwani, R., Ullman, J. D., &amp; Tsur, S. (1997). Dynamic Itemset Counting and Implication Rules for Market Basket Data. <em>Proceedings of the 1997 ACM SIGMOD International Conference on Management of Data</em>, 255–264.
+</div>
+<div id="ref-dorgo2018" class="csl-entry" role="listitem">
+Dorgo, G., &amp; Abonyi, J. (2018). Sequence Mining Based Alarm Suppression. <em>IEEE Access</em>, <em>6</em>.
+</div>
+<div id="ref-han2022" class="csl-entry" role="listitem">
+Han, J., Pei, J., &amp; Tong, H. (2022). <em>Data Mining: Concepts and Techniques</em> (4. kiad.). Morgan Kaufmann.
+</div>
+<div id="ref-han2000" class="csl-entry" role="listitem">
+Han, J., Pei, J., &amp; Yin, Y. (2000). Mining Frequent Patterns without Candidate Generation. <em>Proceedings of the 2000 ACM SIGMOD International Conference on Management of Data</em>, 1–12.
+</div>
+<div id="ref-park1995" class="csl-entry" role="listitem">
+Park, J. S., Chen, M.-S., &amp; Yu, P. S. (1995). An Effective Hash-Based Algorithm for Mining Association Rules. <em>Proceedings of the 1995 ACM SIGMOD International Conference on Management of Data</em>, 175–186.
+</div>
+<div id="ref-pasquier1999" class="csl-entry" role="listitem">
+Pasquier, N., Bastide, Y., Taouil, R., &amp; Lakhal, L. (1999). Discovering Frequent Closed Itemsets for Association Rules. <em>Database Theory – ICDT’99, Lecture Notes in Computer Science</em>, <em>1540</em>, 398–416.
+</div>
+<div id="ref-pei2001" class="csl-entry" role="listitem">
+Pei, J., Han, J., Mortazavi-Asl, B., Pinto, H., Chen, Q., Dayal, U., &amp; Hsu, M.-C. (2001). <span>PrefixSpan</span>: Mining Sequential Patterns Efficiently by Prefix-Projected Pattern Growth. <em>Proceedings of the 17th International Conference on Data Engineering</em>, 215–224.
+</div>
+<div id="ref-piatetsky1991" class="csl-entry" role="listitem">
+Piatetsky-Shapiro, G. (1991). Discovery, Analysis, and Presentation of Strong Rules. In G. Piatetsky-Shapiro &amp; W. J. Frawley (Szerk.), <em>Knowledge Discovery in Databases</em> (o. 229–248). AAAI/MIT Press.
+</div>
+<div id="ref-raschka2018" class="csl-entry" role="listitem">
+Raschka, S. (2018). <span>MLxtend</span>: Providing machine learning and data science utilities and extensions to Python’s scientific computing stack. <em>Journal of Open Source Software</em>, <em>3</em>(24), 638.
+</div>
+<div id="ref-srikant1995" class="csl-entry" role="listitem">
+Srikant, R., &amp; Agrawal, R. (1995). Mining Generalized Association Rules. <em>Proceedings of the 21st International Conference on Very Large Data Bases</em>, 407–419.
+</div>
+<div id="ref-srikant1996q" class="csl-entry" role="listitem">
+Srikant, R., &amp; Agrawal, R. (1996a). Mining Quantitative Association Rules in Large Relational Tables. <em>Proceedings of the 1996 ACM SIGMOD International Conference on Management of Data</em>, 1–12.
+</div>
+<div id="ref-srikant1996s" class="csl-entry" role="listitem">
+Srikant, R., &amp; Agrawal, R. (1996b). Mining Sequential Patterns: Generalizations and Performance Improvements. <em>Advances in Database Technology – EDBT’96, Lecture Notes in Computer Science</em>, <em>1057</em>, 3–17.
+</div>
+<div id="ref-tan2004" class="csl-entry" role="listitem">
+Tan, P.-N., Kumar, V., &amp; Srivastava, J. (2004). Selecting the right objective measure for association analysis. <em>Information Systems</em>, <em>29</em>(4), 293–313.
+</div>
+<div id="ref-wang2016" class="csl-entry" role="listitem">
+Wang, J., Yang, F., Chen, T., &amp; Shah, S. L. (2016). An Overview of Industrial Alarm Systems: Main Causes for Alarm Overloading, Research Status, and Open Problems. <em>IEEE Transactions on Automation Science and Engineering</em>, <em>13</em>(2), 1045–1061.
+</div>
+<div id="ref-zaki2000" class="csl-entry" role="listitem">
+Zaki, M. J. (2000). Scalable Algorithms for Association Mining. <em>IEEE Transactions on Knowledge and Data Engineering</em>, <em>12</em>(3), 372–390.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script>
+/* Magyar ábra- és táblázatfelirat-sorrend a HTML-kiadásban: "ábra 1.1." -> "1.1. ábra." */
+document.addEventListener("DOMContentLoaded", function () {
+  const re = /^(ábra|táblázat|algoritmus)\s+([0-9A-Z]+(?:\.[0-9]+)*)\.?\s*/i;
+  document.querySelectorAll("figcaption, .figure-caption, caption, .quarto-float-caption").forEach(function (el) {
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const t = w.nextNode();
+    if (!t) return;
+    const m = t.nodeValue.match(re);
+    if (m) { t.nodeValue = t.nodeValue.replace(re, m[2] + ". " + m[1].toLowerCase() + ". "); }
+  });
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kimásolva!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kimásolva!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/complexsystemsintelligence\.github\.io\/adatbanyaszat\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/05-csoportositas.html" class="pagination-link" aria-label="Csoportosítás">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Csoportosítás</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/07-modellertekeles.html" class="pagination-link" aria-label="A felügyelt tanulás alapjai és a modellek értékelése">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A felügyelt tanulás alapjai és a modellek értékelése</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/chapters/06-asszociacios-szabalyok.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/chapters/06-asszociacios-szabalyok.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>

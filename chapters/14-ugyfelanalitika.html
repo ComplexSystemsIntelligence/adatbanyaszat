@@ -1,0 +1,1837 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="hu" xml:lang="hu"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>14&nbsp; Ügyfélkapcsolat-menedzsment és ügyfélanalitika – Adatbányászat</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/15-folyamatanalitika.html" rel="next">
+<link href="../chapters/13-szovegbanyaszat.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-18038207a4bfd50187eff2b2f0526436.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-27594bbe69c1d9222c0eb88c018d43c1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nincs találat",
+    "search-matching-documents-text": "találat",
+    "search-copy-link-title": "Keresési link másolása",
+    "search-hide-matches-text": "További találatok elrejtése",
+    "search-more-match-text": "további találat ebben a dokumentumban",
+    "search-more-matches-text": "további találat ebben a dokumentumban",
+    "search-clear-button-title": "Törlés",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Mégse",
+    "search-submit-button-title": "Keresés",
+    "search-label": "Keresés"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../assets/pannon-fonts.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Oldalsáv ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/14-ugyfelanalitika.html">V. Alkalmazások</a></li><li class="breadcrumb-item"><a href="../chapters/14-ugyfelanalitika.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Ügyfélkapcsolat-menedzsment és ügyfélanalitika</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Keresés" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Adatbányászat</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat" title="Forráskód" class="quarto-navigation-tool px-1" aria-label="Forráskód"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Letöltés" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Letöltés"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../adatbanyaszat.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Letöltés PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../adatbanyaszat.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Letöltés ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Keresés"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Előszó</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. Alapok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01-bevezetes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Adatból tudás: az adatbányászat folyamata</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02-adattarhazak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Adattárházak és analitikus adatkezelés</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-adatelokeszites.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Adatok előkészítése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-feltaro-elemzes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Feltáró adatelemzés és dimenziócsökkentés</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. Mintázatok felügyelet nélkül</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05-csoportositas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Csoportosítás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-asszociacios-szabalyok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Gyakori mintázatok és asszociációs szabályok</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. Prediktív modellezés</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07-modellertekeles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A felügyelt tanulás alapjai és a modellek értékelése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08-regresszio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regresszió</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09-osztalyozas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Osztályozás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/10-melytanulas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Neurális hálózatok és mélytanulás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/11-anomaliak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Anomáliák és eltérések észlelése</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. Speciális adattípusok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/12-idosorok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Idősorok elemzése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/13-szovegbanyaszat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Szövegbányászat</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. Alkalmazások</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/14-ugyfelanalitika.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Ügyfélkapcsolat-menedzsment és ügyfélanalitika</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/15-folyamatanalitika.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Ipari folyamatanalitika</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Irodalomjegyzék</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Függelékek</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/a-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Python-alapok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/b-linearis-algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Lineáris algebra az adatbányászathoz</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/c-valoszinuseg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Valószínűségszámítási és statisztikai alapok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/d-adatsorok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Az adatsorok leírása</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/e-jelolesek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Jelölések</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/f-szojegyzek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Magyar–angol szójegyzék</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Tartalom</h2>
+   
+  <ul>
+  <li><a href="#sec-crm-eletciklus" id="toc-sec-crm-eletciklus" class="nav-link active" data-scroll-target="#sec-crm-eletciklus"><span class="header-section-number">14.1</span> A vevői életciklus és az analitika</a></li>
+  <li><a href="#sec-rfm" id="toc-sec-rfm" class="nav-link" data-scroll-target="#sec-rfm"><span class="header-section-number">14.2</span> RFM-elemzés és szegmentálás</a></li>
+  <li><a href="#sec-clv" id="toc-sec-clv" class="nav-link" data-scroll-target="#sec-clv"><span class="header-section-number">14.3</span> Az ügyfélérték modellezése</a>
+  <ul class="collapse">
+  <li><a href="#az-ügyfélérték-fogalma" id="toc-az-ügyfélérték-fogalma" class="nav-link" data-scroll-target="#az-ügyfélérték-fogalma"><span class="header-section-number">14.3.1</span> Az ügyfélérték fogalma</a></li>
+  <li><a href="#a-bgnbd-modell" id="toc-a-bgnbd-modell" class="nav-link" data-scroll-target="#a-bgnbd-modell"><span class="header-section-number">14.3.2</span> A BG/NBD modell</a></li>
+  </ul></li>
+  <li><a href="#sec-ajanlo" id="toc-sec-ajanlo" class="nav-link" data-scroll-target="#sec-ajanlo"><span class="header-section-number">14.4</span> Ajánlórendszerek</a></li>
+  <li><a href="#sec-uplift" id="toc-sec-uplift" class="nav-link" data-scroll-target="#sec-uplift"><span class="header-section-number">14.5</span> A kampányhatás mérése: A/B teszt és uplift-modellezés</a>
+  <ul class="collapse">
+  <li><a href="#korreláció-helyett-oksági-hatás" id="toc-korreláció-helyett-oksági-hatás" class="nav-link" data-scroll-target="#korreláció-helyett-oksági-hatás"><span class="header-section-number">14.5.1</span> Korreláció helyett oksági hatás</a></li>
+  <li><a href="#a-randomizált-kísérlet" id="toc-a-randomizált-kísérlet" class="nav-link" data-scroll-target="#a-randomizált-kísérlet"><span class="header-section-number">14.5.2</span> A randomizált kísérlet</a></li>
+  <li><a href="#uplift-modellek" id="toc-uplift-modellek" class="nav-link" data-scroll-target="#uplift-modellek"><span class="header-section-number">14.5.3</span> Uplift-modellek</a></li>
+  </ul></li>
+  <li><a href="#sec-ugyfel-etika" id="toc-sec-ugyfel-etika" class="nav-link" data-scroll-target="#sec-ugyfel-etika"><span class="header-section-number">14.6</span> Jogi és etikai keretek</a></li>
+  <li><a href="#sec-ugyfel-gyakorlat" id="toc-sec-ugyfel-gyakorlat" class="nav-link" data-scroll-target="#sec-ugyfel-gyakorlat"><span class="header-section-number">14.7</span> Gyakorlat: a PannonShop vevőinek értéke és megtartása</a>
+  <ul class="collapse">
+  <li><a href="#rfm-pontszámok" id="toc-rfm-pontszámok" class="nav-link" data-scroll-target="#rfm-pontszámok"><span class="header-section-number">14.7.1</span> RFM-pontszámok</a></li>
+  <li><a href="#ügyfélérték-a-bgnbd-és-a-gammagamma-modellel" id="toc-ügyfélérték-a-bgnbd-és-a-gammagamma-modellel" class="nav-link" data-scroll-target="#ügyfélérték-a-bgnbd-és-a-gammagamma-modellel"><span class="header-section-number">14.7.2</span> Ügyfélérték a BG/NBD és a gamma–gamma modellel</a></li>
+  <li><a href="#ajánlások-a-második-félévre" id="toc-ajánlások-a-második-félévre" class="nav-link" data-scroll-target="#ajánlások-a-második-félévre"><span class="header-section-number">14.7.3</span> Ajánlások a második félévre</a></li>
+  <li><a href="#megtartási-kampány-kísérlet-és-uplift-modell" id="toc-megtartási-kampány-kísérlet-és-uplift-modell" class="nav-link" data-scroll-target="#megtartási-kampány-kísérlet-és-uplift-modell"><span class="header-section-number">14.7.4</span> Megtartási kampány: kísérlet és uplift-modell</a></li>
+  </ul></li>
+  <li><a href="#sec-ugyfel-osszefoglalas" id="toc-sec-ugyfel-osszefoglalas" class="nav-link" data-scroll-target="#sec-ugyfel-osszefoglalas"><span class="header-section-number">14.8</span> Összefoglalás</a></li>
+  <li><a href="#ellenőrző-kérdések" id="toc-ellenőrző-kérdések" class="nav-link" data-scroll-target="#ellenőrző-kérdések">Ellenőrző kérdések</a></li>
+  <li><a href="#feladatok" id="toc-feladatok" class="nav-link" data-scroll-target="#feladatok">Feladatok</a></li>
+  <li><a href="#további-olvasmányok" id="toc-további-olvasmányok" class="nav-link" data-scroll-target="#további-olvasmányok">További olvasmányok</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/chapters/14-ugyfelanalitika.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/chapters/14-ugyfelanalitika.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/14-ugyfelanalitika.html">V. Alkalmazások</a></li><li class="breadcrumb-item"><a href="../chapters/14-ugyfelanalitika.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Ügyfélkapcsolat-menedzsment és ügyfélanalitika</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-ugyfel" class="quarto-section-identifier"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Ügyfélkapcsolat-menedzsment és ügyfélanalitika</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="roadmap">
+<p>Az ügyfélkapcsolat-menedzsment (customer relationship management, CRM) az adatbányászat egyik legrégebbi és legnagyobb alkalmazási területe. Ez a fejezet az eddigi módszereket – szegmentálás, asszociációs szabályok, osztályozás, értékelés – egy egységes üzleti keretbe illeszti: a vevői életciklus szakaszaihoz rendeli őket, és olyan új eszközökkel egészíti ki, amelyek kifejezetten az ügyfélanalitika kérdéseire válaszolnak. Ezek az RFM-elemzés, az ügyfélérték (CLV) valószínűségi modellezése, az ajánlórendszerek, valamint a kampányok valódi, oksági hatását mérő A/B tesztek és uplift-modellek. A fejezet végén az ügyféladatok elemzésének jogi és etikai kereteit foglaljuk össze.</p>
+<p><strong>A fejezet végére az olvasó</strong> képes lesz RFM-pontszámokat és -szegmenseket képezni; a BG/NBD és a gamma–gamma modellt illeszteni és az ügyfélértéket előre jelezni; egyszerű kollaboratív szűrést megvalósítani és népszerűségi viszonyítási alappal összevetni; egy randomizált kampánykísérletet kiértékelni; és megérteni, miért a kampány hatására reagáló, nem pedig a legnagyobb kockázatú vevőket kell megcélozni.</p>
+</div>
+<section id="sec-crm-eletciklus" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="sec-crm-eletciklus"><span class="header-section-number">14.1</span> A vevői életciklus és az analitika</h2>
+<p>A CRM stratégiai keretrendszere <span class="citation" data-cites="payne2005 kumar2018">(<a href="../references.html#ref-kumar2018" role="doc-biblioref">Kumar &amp; Reinartz, 2018</a>; <a href="../references.html#ref-payne2005" role="doc-biblioref">Payne &amp; Frow, 2005</a>)</span> a vevőkapcsolatot életciklusként írja le (<a href="#fig-eletciklus" class="quarto-xref"><span>14.1</span></a>. ábra): a vevőt meg kell szerezni, a kapcsolatot fejleszteni (több és értékesebb vásárlás), a vevőt megtartani, és ha mégis távozik, esetleg visszanyerni. Minden szakaszhoz jellegzetes elemzési feladatok tartoznak <span class="citation" data-cites="ngai2009">(<a href="../references.html#ref-ngai2009" role="doc-biblioref">Ngai és mtsai., 2009</a>)</span>, és mindegyik döntés közös mércéje az <strong>ügyfélérték</strong>: az a jövőbeli nyereség, amelyet a vevő a kapcsolat során várhatóan termel.</p>
+<div id="fig-eletciklus" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-eletciklus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/14-eletciklus.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="ábra&nbsp;14.1.. A vevői életciklus szakaszai és a hozzájuk tartozó elemzési feladatok. Az ügyfélérték (CLV) minden szakasz döntéseinek közös mércéje."><img src="../figures/build/14-eletciklus.svg" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-eletciklus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;14.1.. A vevői életciklus szakaszai és a hozzájuk tartozó elemzési feladatok. Az ügyfélérték (CLV) minden szakasz döntéseinek közös mércéje.
+</figcaption>
+</figure>
+</div>
+<p>Az ügyfélanalitika adatai jellemzően tranzakciós adatok (a <a href="02-adattarhazak.html" class="quarto-xref"><span>2</span></a>. fejezet értékesítési ténytáblája), kiegészítve a vevők jellemzőivel, az interakciós adatokkal (webes viselkedés, kampányreakciók, ügyfélszolgálati megkeresések) és a szöveges visszajelzésekkel (<a href="13-szovegbanyaszat.html" class="quarto-xref"><span>13</span></a>. fejezet). Az ilyen adatok személyes adatok, ezért kezelésüket a GDPR szabályozza (<a href="#sec-ugyfel-etika" class="quarto-xref"><span>14.6</span></a>. alfejezet).</p>
+</section>
+<section id="sec-rfm" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="sec-rfm"><span class="header-section-number">14.2</span> RFM-elemzés és szegmentálás</h2>
+<p>Az <strong>RFM-elemzés</strong> <span class="citation" data-cites="hughes1994">(<a href="../references.html#ref-hughes1994" role="doc-biblioref">Hughes, 1994</a>)</span> a vevők vásárlási viselkedését három mutatóval írja le: mennyi ideje vásárolt utoljára (<em>recency</em>), milyen gyakran vásárol (<em>frequency</em>) és mennyit költ (<em>monetary</em>). A három mutató egyszerű, könnyen kommunikálható, és sok vizsgálat szerint a jövőbeli viselkedés legerősebb előrejelzői közé tartozik – ezt láttuk a <a href="09-osztalyozas.html" class="quarto-xref"><span>9</span></a>. fejezet lemorzsolódási modelljeiben is. A klasszikus eljárás minden mutatót kvintilisekre bont (1–5 pont, ahol 5 a legjobb: a legutóbbi, leggyakoribb, legnagyobb értékű vásárlás), és a pontkombinációk alapján nevesített szegmenseket képez, például „bajnokok” (magas R és F), „veszélyeztetettek” (korábban gyakori, de régóta nem vásárló vevők) vagy „alvók” (alacsony R és F). Rugalmasabb a <a href="05-csoportositas.html" class="quarto-xref"><span>5</span></a>. fejezet klaszterezési módszereivel, az RFM- és egyéb viselkedési jellemzők alapján képzett szegmentálás – ezt a PannonShop vevőin ott már elvégeztük.</p>
+<p>Az RFM korlátja, hogy pillanatfelvétel: nem mondja meg, mennyi a vevő <em>jövőbeli</em> értéke, és nem veszi figyelembe, hogy egy ritkán vásárló vevőnél egy hosszabb szünet teljesen normális lehet, egy gyakorinál viszont a távozás jele. Erre adnak választ a következő alfejezet valószínűségi modelljei.</p>
+</section>
+<section id="sec-clv" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="sec-clv"><span class="header-section-number">14.3</span> Az ügyfélérték modellezése</h2>
+<section id="az-ügyfélérték-fogalma" class="level3" data-number="14.3.1">
+<h3 data-number="14.3.1" class="anchored" data-anchor-id="az-ügyfélérték-fogalma"><span class="header-section-number">14.3.1</span> Az ügyfélérték fogalma</h3>
+<p>Az <strong>ügyfélérték</strong> (customer lifetime value, CLV) a vevőtől várható jövőbeli nyereségáramok jelenértéke <span class="citation" data-cites="gupta2006">(<a href="../references.html#ref-gupta2006" role="doc-biblioref">Gupta és mtsai., 2006</a>)</span>:</p>
+<p><span id="eq-clv"><span class="math display">\[
+\mathrm{CLV} = \sum_{t=1}^{H}\frac{m_t\,s_t}{(1 + d)^t} ,
+\tag{14.1}\]</span></span></p>
+<p>ahol <span class="math inline">\(m_t\)</span> a <span class="math inline">\(t\)</span>-edik időszakban várható fedezet (nyereség), <span class="math inline">\(s_t\)</span> annak valószínűsége, hogy a vevő a <span class="math inline">\(t\)</span>-edik időszakban még aktív, <span class="math inline">\(d\)</span> a diszkontráta, <span class="math inline">\(H\)</span> a horizont. Állandó <span class="math inline">\(m\)</span> fedezet és <span class="math inline">\(r\)</span> megtartási ráta mellett végtelen horizonton <span class="math inline">\(s_t = r^t\)</span>, és a képlet a <span class="math inline">\(\mathrm{CLV} = m\,r/(1 + d - r)\)</span> zárt alakra egyszerűsödik. Ez a „szerződéses” helyzetben (előfizetések, ahol a lemorzsolódás megfigyelhető) jó közelítés. A webáruházak vevői azonban <strong>nem szerződéses</strong> kapcsolatban állnak a céggel: a távozás nem figyelhető meg közvetlenül, csak az, hogy a vevő egy ideje nem vásárolt. Ilyenkor a „még vásárol-e” kérdést valószínűségi modellel kell megválaszolni.</p>
+</section>
+<section id="a-bgnbd-modell" class="level3" data-number="14.3.2">
+<h3 data-number="14.3.2" class="anchored" data-anchor-id="a-bgnbd-modell"><span class="header-section-number">14.3.2</span> A BG/NBD modell</h3>
+<p>A „buy till you die” (BTYD) modellcsalád <span class="citation" data-cites="schmittlein1987 fader2005">(<a href="../references.html#ref-fader2005" role="doc-biblioref">Fader és mtsai., 2005a</a>; <a href="../references.html#ref-schmittlein1987" role="doc-biblioref">Schmittlein és mtsai., 1987</a>)</span> azt feltételezi, hogy a vevő egy ideig aktív, ezalatt véletlenszerűen vásárol, majd egy nem megfigyelhető időpontban végleg inaktívvá válik (<a href="#fig-btyd" class="quarto-xref"><span>14.2</span></a>. ábra). A <strong>BG/NBD</strong> modell <span class="citation" data-cites="fader2005">(<a href="../references.html#ref-fader2005" role="doc-biblioref">Fader és mtsai., 2005a</a>)</span> feltevései:</p>
+<ol type="1">
+<li>Aktív állapotban a vevő vásárlásai <span class="math inline">\(\lambda\)</span> intenzitású Poisson-folyamatot követnek.</li>
+<li>A <span class="math inline">\(\lambda\)</span> a vevők között <span class="math inline">\(\mathrm{Gamma}(r, \alpha)\)</span> eloszlású (heterogenitás a vásárlási gyakoriságban).</li>
+<li>Minden vásárlás után a vevő <span class="math inline">\(p\)</span> valószínűséggel inaktívvá válik.</li>
+<li>A <span class="math inline">\(p\)</span> a vevők között <span class="math inline">\(\mathrm{Béta}(a, b)\)</span> eloszlású (heterogenitás a hűségben).</li>
+<li>A <span class="math inline">\(\lambda\)</span> és a <span class="math inline">\(p\)</span> egymástól független.</li>
+</ol>
+<div id="fig-btyd" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-btyd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/14-btyd.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="ábra&nbsp;14.2.. A BG/NBD modell története egy vevőre. A modell csak a vásárlások számát (x), az utolsó vásárlás idejét (t_x) és a megfigyelés hosszát (T) használja; azt, hogy a vevő mikor vált inaktívvá, nem figyeljük meg."><img src="../figures/build/14-btyd.svg" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-btyd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;14.2.. A BG/NBD modell története egy vevőre. A modell csak a vásárlások számát (<span class="math inline">\(x\)</span>), az utolsó vásárlás idejét (<span class="math inline">\(t_x\)</span>) és a megfigyelés hosszát (<span class="math inline">\(T\)</span>) használja; azt, hogy a vevő mikor vált inaktívvá, nem figyeljük meg.
+</figcaption>
+</figure>
+</div>
+<p>A modell figyelemre méltó tulajdonsága, hogy egy vevő teljes vásárlási története helyett elegendő három szám: az ismételt vásárlások száma (<span class="math inline">\(x\)</span>), az utolsó vásárlás ideje az első óta (<span class="math inline">\(t_x\)</span>) és a megfigyelés hossza (<span class="math inline">\(T\)</span>) – lényegében az RFM-mutatók. A vevő likelihoodja</p>
+<p><span id="eq-bgnbd"><span class="math display">\[
+L(r, \alpha, a, b\mid x, t_x, T) = \frac{B(a, b + x)}{B(a, b)}\,\frac{\Gamma(r + x)\,\alpha^r}{\Gamma(r)\,(\alpha + T)^{r + x}}
++ \delta_{x&gt;0}\,\frac{B(a + 1, b + x - 1)}{B(a, b)}\,\frac{\Gamma(r + x)\,\alpha^r}{\Gamma(r)\,(\alpha + t_x)^{r + x}} ,
+\tag{14.2}\]</span></span></p>
+<p>ahol <span class="math inline">\(B\)</span> a béta-, <span class="math inline">\(\Gamma\)</span> a gammafüggvény, <span class="math inline">\(\delta_{x&gt;0}\)</span> pedig 1, ha volt ismételt vásárlás. Az első tag annak felel meg, hogy a vevő a megfigyelés végén még aktív, a második annak, hogy az utolsó vásárlása után inaktívvá vált. A négy paramétert a vevők log-likelihoodjainak összegét maximalizálva becsüljük, és a modellből zárt alakban számolható annak valószínűsége, hogy a vevő még aktív,</p>
+<p><span id="eq-p-aktiv"><span class="math display">\[
+P(\text{aktív}\mid x, t_x, T) = \Biggl[1 + \delta_{x&gt;0}\,\frac{a}{b + x - 1}\Bigl(\frac{\alpha + T}{\alpha + t_x}\Bigr)^{r + x}\Biggr]^{-1} ,
+\tag{14.3}\]</span></span></p>
+<p>valamint a következő <span class="math inline">\(t\)</span> időegységben várható vásárlások száma (lásd a gyakorlatot). Az (<a href="#eq-p-aktiv" class="quarto-xref"><span>14.3</span></a>) képlet formalizálja az RFM intuícióját: a <span class="math inline">\(T - t_x\)</span> inaktív idő annál inkább a távozás jele, minél gyakrabban vásárolt korábban a vevő (nagy <span class="math inline">\(x\)</span>).</p>
+<p>A vásárlások <em>értékét</em> a <strong>gamma–gamma modell</strong> <span class="citation" data-cites="fader2005jmr">(<a href="../references.html#ref-fader2005jmr" role="doc-biblioref">Fader és mtsai., 2005b</a>)</span> írja le: a vevő tranzakcióinak értéke a vevőre jellemző átlag körül gamma-eloszlású, és ez az átlag a vevők között szintén gamma-eloszlású. A modellből a vevő várható átlagos vásárlási értéke a populációs átlag és a vevő saját megfigyelt átlaga (<span class="math inline">\(\bar z\)</span>) közötti súlyozott átlag:</p>
+<p><span id="eq-gamma-gamma"><span class="math display">\[
+E[Z\mid\bar z, n] = \frac{q - 1}{pn + q - 1}\cdot\frac{\gamma p}{q - 1} + \frac{pn}{pn + q - 1}\,\bar z ,
+\tag{14.4}\]</span></span></p>
+<p>ahol <span class="math inline">\(n\)</span> a vevő tranzakcióinak száma, <span class="math inline">\(p, q, \gamma\)</span> a modell paraméterei. Kevés tranzakció esetén a becslés a populációs átlag felé húzódik (zsugorítás), sok tranzakció esetén a vevő saját átlaga dominál. A modell feltételezi, hogy a vásárlások értéke független a gyakoriságuktól – ezt az adatokon ellenőrizni kell.</p>
+<div class="eset-mernoki">
+<p>A BTYD-modellek logikája – egy rejtett „aktív/inaktív” állapot, amelyről csak a megfigyelt események alapján következtethetünk – a mérnöki megbízhatóság-elmélet modelljeire emlékeztet, ahol egy berendezés rejtett állapotára a meghibásodásokból és a karbantartási eseményekből következtetünk. A <a href="15-folyamatanalitika.html" class="quarto-xref"><span>15</span></a>. fejezetben a berendezések állapotfüggő karbantartásánál hasonló gondolatmenettel találkozunk.</p>
+</div>
+</section>
+</section>
+<section id="sec-ajanlo" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="sec-ajanlo"><span class="header-section-number">14.4</span> Ajánlórendszerek</h2>
+<p>A kapcsolat fejlesztésének fő eszköze a <strong>kereszt- és felülértékesítés</strong>: olyan termékek ajánlása, amelyek a vevőt valószínűleg érdeklik. A <a href="06-asszociacios-szabalyok.html" class="quarto-xref"><span>6</span></a>. fejezet asszociációs szabályai („aki kávéfőzőt vesz, az kávébabot is”) az ajánlás legegyszerűbb formái; az <strong>ajánlórendszerek</strong> ennél általánosabbak, és minden vevőnek személyre szabott listát adnak <span class="citation" data-cites="aggarwal2016rec">(<a href="../references.html#ref-aggarwal2016rec" role="doc-biblioref">Aggarwal, 2016</a>)</span>.</p>
+<p>A <strong>kollaboratív szűrés</strong> a vevők közös vásárlási mintázataiból tanul. A <em>felhasználóalapú</em> változat a vevőhöz leginkább hasonló vevőket (szomszédokat) keresi meg, és azokat a termékeket ajánlja, amelyeket a szomszédok vettek, ő még nem. A <em>tételalapú</em> változat <span class="citation" data-cites="sarwar2001 linden2003">(<a href="../references.html#ref-linden2003" role="doc-biblioref">Linden és mtsai., 2003</a>; <a href="../references.html#ref-sarwar2001" role="doc-biblioref">Sarwar és mtsai., 2001</a>)</span> a termékek hasonlóságát számolja ki a közös vásárlók alapján, és a vevő korábbi vásárlásaihoz hasonló termékeket ajánl; nagy vevőszámnál ez hatékonyabb, mert a termék–termék hasonlósági mátrix kisebb és stabilabb. A vevő–termék mátrix bináris (vásárolt-e) vagy értékelési adatokat tartalmaz; a hasonlóság rendszerint koszinusz-hasonlóság (<a href="13-szovegbanyaszat.html#eq-koszinusz" class="quarto-xref"><span>13.2</span></a>). A <strong>mátrixfaktorizációs</strong> módszerek <span class="citation" data-cites="koren2009">(<a href="../references.html#ref-koren2009" role="doc-biblioref">Koren és mtsai., 2009</a>)</span> a vevőket és a termékeket egy közös, alacsony dimenziós látens térbe képezik – ez a <a href="13-szovegbanyaszat.html" class="quarto-xref"><span>13</span></a>. fejezet NMF- és LSA-módszereinek közeli rokona.</p>
+<p>Az ajánlórendszerek értékelése a jövőbeli vásárlások visszatartásával történik: a modellt egy korábbi időszakon tanítjuk, és azt mérjük, hogy a későbbi időszakban ténylegesen megvásárolt termékek közül hány szerepel az ajánlólista első <span class="math inline">\(K\)</span> helyén (találati arány, precision@<span class="math inline">\(K\)</span>, recall@<span class="math inline">\(K\)</span>) <span class="citation" data-cites="herlocker2004">(<a href="../references.html#ref-herlocker2004" role="doc-biblioref">Herlocker és mtsai., 2004</a>)</span>. Mindig érdemes egy egyszerű népszerűségi ajánlóval (mindenkinek a legnépszerűbb, még meg nem vásárolt termékeket ajánlja) összevetni: kis termékválaszték mellett ezt meglepően nehéz legyőzni.</p>
+</section>
+<section id="sec-uplift" class="level2" data-number="14.5">
+<h2 data-number="14.5" class="anchored" data-anchor-id="sec-uplift"><span class="header-section-number">14.5</span> A kampányhatás mérése: A/B teszt és uplift-modellezés</h2>
+<section id="korreláció-helyett-oksági-hatás" class="level3" data-number="14.5.1">
+<h3 data-number="14.5.1" class="anchored" data-anchor-id="korreláció-helyett-oksági-hatás"><span class="header-section-number">14.5.1</span> Korreláció helyett oksági hatás</h3>
+<p>A <a href="09-osztalyozas.html" class="quarto-xref"><span>9</span></a>. fejezet lemorzsolódási modellje megmondja, kik a legnagyobb kockázatú vevők. Egy megtartási kampány célzásához azonban nem ez a kérdés, hanem az, hogy <em>kinél változtat a kampány</em> a kimeneten. A vevők négy csoportba sorolhatók aszerint, hogyan viselkednének kampánnyal és kampány nélkül (<a href="#fig-uplift-negyed" class="quarto-xref"><span>14.3</span></a>. ábra): a <strong>meggyőzhetők</strong> csak a kampány hatására maradnak, a <strong>biztosak</strong> enélkül is maradnának, az <strong>elveszettek</strong> kampánnyal sem maradnak, az <strong>alvó kutyák</strong> pedig éppen a kampány hatására távoznak (például mert egy kéretlen megkeresés emlékezteti őket arra, hogy lemondják a szolgáltatást). A kockázatalapú célzás az elveszetteket és az alvó kutyákat is megcélozza, a biztosakra pedig fölöslegesen költ – a kampány haszna ezért kisebb lehet a vártnál, vagy akár negatív is.</p>
+<div id="fig-uplift-negyed" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-uplift-negyed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/14-uplift.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="ábra&nbsp;14.3.. A vevők négy csoportja egy megtartási kampány szempontjából. A kampány csak a meggyőzhetőknél hoz hasznot; az alvó kutyáknál kárt okoz. Egy vevőnél a két lehetséges kimenetel közül mindig csak az egyik figyelhető meg."><img src="../figures/build/14-uplift.svg" class="img-fluid figure-img" style="width:75.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-uplift-negyed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;14.3.. A vevők négy csoportja egy megtartási kampány szempontjából. A kampány csak a meggyőzhetőknél hoz hasznot; az alvó kutyáknál kárt okoz. Egy vevőnél a két lehetséges kimenetel közül mindig csak az egyik figyelhető meg.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="a-randomizált-kísérlet" class="level3" data-number="14.5.2">
+<h3 data-number="14.5.2" class="anchored" data-anchor-id="a-randomizált-kísérlet"><span class="header-section-number">14.5.2</span> A randomizált kísérlet</h3>
+<p>Egy vevőnél soha nem figyelhetjük meg egyszerre, mi történik kampánnyal és kampány nélkül – ez az oksági következtetés alapproblémája. A <strong>randomizált kontrollált kísérlet</strong> (az online világban A/B teszt) <span class="citation" data-cites="kohavi2020">(<a href="../references.html#ref-kohavi2020" role="doc-biblioref">Kohavi és mtsai., 2020</a>)</span> ezt úgy oldja fel, hogy a vevőket véletlenszerűen osztja kezelt (<span class="math inline">\(T = 1\)</span>) és kontroll (<span class="math inline">\(T = 0\)</span>) csoportra; így a két csoport minden más szempontból azonos eloszlású, és a kimenetek különbsége a kampány átlagos oksági hatását (average treatment effect, ATE) becsli:</p>
+<p><span id="eq-ate"><span class="math display">\[
+\hat\tau = \bar y_{T=1} - \bar y_{T=0},\qquad
+\mathrm{SE}(\hat\tau) = \sqrt{\frac{\hat p_1(1 - \hat p_1)}{n_1} + \frac{\hat p_0(1 - \hat p_0)}{n_0}} ,
+\tag{14.5}\]</span></span></p>
+<p>ahol bináris kimenetnél <span class="math inline">\(\hat p_1\)</span> és <span class="math inline">\(\hat p_0\)</span> a két csoport kimeneti aránya, <span class="math inline">\(n_1\)</span> és <span class="math inline">\(n_0\)</span> a csoportok mérete.</p>
+</section>
+<section id="uplift-modellek" class="level3" data-number="14.5.3">
+<h3 data-number="14.5.3" class="anchored" data-anchor-id="uplift-modellek"><span class="header-section-number">14.5.3</span> Uplift-modellek</h3>
+<p>Az <strong>uplift-modell</strong> az egyéni (feltételes) hatást becsli a vevők jellemzői alapján <span class="citation" data-cites="gutierrez2017 devriendt2018">(<a href="../references.html#ref-devriendt2018" role="doc-biblioref">Devriendt és mtsai., 2018</a>; <a href="../references.html#ref-gutierrez2017" role="doc-biblioref">Gutierrez &amp; Gérardy, 2017</a>)</span>:</p>
+<p><span id="eq-uplift"><span class="math display">\[
+\tau(\mathbf{x}) = P(Y = 1\mid\mathbf{x}, T = 0) - P(Y = 1\mid\mathbf{x}, T = 1) ,
+\tag{14.6}\]</span></span></p>
+<p>ahol <span class="math inline">\(Y = 1\)</span> a lemorzsolódást jelöli, így a pozitív <span class="math inline">\(\tau(\mathbf{x})\)</span> a kampány által megelőzött lemorzsolódás valószínűsége. A legegyszerűbb a <strong>kétmodelles megközelítés</strong> (T-learner) <span class="citation" data-cites="kunzel2019">(<a href="../references.html#ref-kunzel2019" role="doc-biblioref">Künzel és mtsai., 2019</a>)</span>: külön osztályozót tanítunk a kezelt és a kontroll csoport adatain, és a becsült valószínűségek különbsége az uplift. Az uplift-modellt nem lehet a szokásos módon, egyedi előrejelzésenként értékelni, hiszen az egyéni hatás nem figyelhető meg. Ehelyett a vevőket a becsült uplift szerint rendezzük, és a lista elejére számoljuk a kezelt és a kontroll csoport kimenetének különbségét; a <strong>Qini-görbe</strong> ezt a kumulált többlethatást mutatja a megcélzott hányad függvényében.</p>
+</section>
+</section>
+<section id="sec-ugyfel-etika" class="level2" data-number="14.6">
+<h2 data-number="14.6" class="anchored" data-anchor-id="sec-ugyfel-etika"><span class="header-section-number">14.6</span> Jogi és etikai keretek</h2>
+<p>Az ügyfélanalitika személyes adatokkal dolgozik, ezért a GDPR <span class="citation" data-cites="gdpr2016">(<a href="../references.html#ref-gdpr2016" role="doc-biblioref">Európai Parlament és Tanács, 2016</a>)</span> elvei közvetlenül érintik (<a href="01-bevezetes.html" class="quarto-xref"><span>1</span></a>. fejezet). A <strong>célhoz kötöttség</strong> és az <strong>adattakarékosság</strong> elve szerint csak a kitűzött célhoz szükséges adatokat szabad gyűjteni és felhasználni. A vevők RFM-, CLV- vagy lemorzsolódási pontszám szerinti besorolása <strong>profilalkotás</strong>, amelyről a vevőt tájékoztatni kell, és a kizárólag automatizált, a vevőre jelentős hatással járó döntésekkel szemben (22. cikk) a vevőnek joga van emberi beavatkozást kérni. Az ügyfélérték szerinti megkülönböztetés – például eltérő árak vagy kiszolgálási színvonal – etikai kérdéseket is felvet: a modell a múltbeli egyenlőtlenségeket újratermelheti, és a védett tulajdonságokkal korreláló jellemzők (lakóhely, eszköztípus) közvetett diszkriminációhoz vezethetnek <span class="citation" data-cites="barocas2023">(<a href="../references.html#ref-barocas2023" role="doc-biblioref">Barocas és mtsai., 2023</a>)</span>. A gyakorlatban ezért a modellek fejlesztését dokumentálni, a döntések hatását csoportonként monitorozni, és a vevők felé átláthatóan kommunikálni kell.</p>
+</section>
+<section id="sec-ugyfel-gyakorlat" class="level2" data-number="14.7">
+<h2 data-number="14.7" class="anchored" data-anchor-id="sec-ugyfel-gyakorlat"><span class="header-section-number">14.7</span> Gyakorlat: a PannonShop vevőinek értéke és megtartása</h2>
+<section id="rfm-pontszámok" class="level3" data-number="14.7.1">
+<h3 data-number="14.7.1" class="anchored" data-anchor-id="rfm-pontszámok"><span class="header-section-number">14.7.1</span> RFM-pontszámok</h3>
+<div class="eset-uzleti">
+<p>A PannonShop marketingcsapata egyszerű, kommunikálható szegmenseket kér a vevőkről a 2025. július 1-jei állapot szerint. Képezzük az RFM-pontokat kvintilisek alapján!</p>
+</div>
+<div id="cell-fig-rfm-hokep" class="cell" data-fig-height="3.8" data-fig-width="5.4" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>vevok <span class="op">=</span> ab.customer_table(ref_date<span class="op">=</span><span class="st">"2025-07-01"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>rfm <span class="op">=</span> pd.DataFrame(index<span class="op">=</span>vevok.index)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>rfm[<span class="st">"R"</span>] <span class="op">=</span> pd.qcut(vevok.R_nap.rank(method<span class="op">=</span><span class="st">"first"</span>), <span class="dv">5</span>, labels<span class="op">=</span>[<span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>]).astype(<span class="bu">int</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>rfm[<span class="st">"F"</span>] <span class="op">=</span> pd.qcut(vevok.F_szamla.rank(method<span class="op">=</span><span class="st">"first"</span>), <span class="dv">5</span>, labels<span class="op">=</span>[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>]).astype(<span class="bu">int</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>rfm[<span class="st">"M"</span>] <span class="op">=</span> pd.qcut(vevok.M_ertek.rank(method<span class="op">=</span><span class="st">"first"</span>), <span class="dv">5</span>, labels<span class="op">=</span>[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>]).astype(<span class="bu">int</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>racs <span class="op">=</span> vevok.M_ertek.groupby([rfm.R, rfm.F]).mean().unstack() <span class="op">/</span> <span class="dv">1000</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> rfm.groupby([<span class="st">"R"</span>, <span class="st">"F"</span>]).size().unstack()</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> ax.imshow(racs.loc[::<span class="op">-</span><span class="dv">1</span>].to_numpy(), cmap<span class="op">=</span><span class="st">"Blues"</span>, aspect<span class="op">=</span><span class="st">"auto"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(<span class="bu">range</span>(<span class="dv">5</span>), racs.columns)<span class="op">;</span> ax.set_yticks(<span class="bu">range</span>(<span class="dv">5</span>), racs.index[::<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"F-pontszám"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"R-pontszám"</span>)<span class="op">;</span> ax.grid(<span class="va">False</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, r_ <span class="kw">in</span> <span class="bu">enumerate</span>(racs.index[::<span class="op">-</span><span class="dv">1</span>]):</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j, f_ <span class="kw">in</span> <span class="bu">enumerate</span>(racs.columns):</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        n <span class="op">=</span> db.loc[r_, f_] <span class="cf">if</span> f_ <span class="kw">in</span> db.columns <span class="kw">and</span> r_ <span class="kw">in</span> db.index <span class="cf">else</span> <span class="dv">0</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        ax.text(j, i, <span class="ss">f"</span><span class="sc">{</span><span class="dv">0</span> <span class="cf">if</span> pd<span class="sc">.</span>isna(n) <span class="cf">else</span> <span class="bu">int</span>(n)<span class="sc">}</span><span class="ss">"</span>, ha<span class="op">=</span><span class="st">"center"</span>, va<span class="op">=</span><span class="st">"center"</span>, fontsize<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>                color<span class="op">=</span><span class="st">"white"</span> <span class="cf">if</span> racs.loc[r_, f_] <span class="op">&gt;</span> racs.to_numpy()[<span class="op">~</span>np.isnan(racs.to_numpy())].mean() <span class="op">*</span> <span class="fl">1.6</span> <span class="cf">else</span> <span class="st">"#1F2933"</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>fig.colorbar(im, ax<span class="op">=</span>ax, shrink<span class="op">=</span><span class="fl">0.8</span>, label<span class="op">=</span><span class="st">"átlagos érték [ezer Ft]"</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-rfm-hokep" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rfm-hokep-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="14-ugyfelanalitika_files/figure-html/fig-rfm-hokep-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="ábra&nbsp;14.4.. A vevők átlagos vásárlási értéke (ezer Ft) az R- és az F-pontszám szerint (5 = legutóbbi, illetve leggyakoribb vásárlás). A cellák felirata a vevők száma."><img src="14-ugyfelanalitika_files/figure-html/fig-rfm-hokep-output-1.png" width="677" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rfm-hokep-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;14.4.. A vevők átlagos vásárlási értéke (ezer Ft) az R- és az F-pontszám szerint (5 = legutóbbi, illetve leggyakoribb vásárlás). A cellák felirata a vevők száma.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="6514e52d" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rfm_szegmens(s):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> s.R <span class="op">&gt;=</span> <span class="dv">4</span> <span class="kw">and</span> s.F <span class="op">&gt;=</span> <span class="dv">4</span>: <span class="cf">return</span> <span class="st">"bajnok"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> s.R <span class="op">&gt;=</span> <span class="dv">3</span> <span class="kw">and</span> s.F <span class="op">&gt;=</span> <span class="dv">3</span>: <span class="cf">return</span> <span class="st">"hűséges"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> s.R <span class="op">&lt;=</span> <span class="dv">2</span> <span class="kw">and</span> s.F <span class="op">&gt;=</span> <span class="dv">4</span>: <span class="cf">return</span> <span class="st">"veszélyeztetett"</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> s.R <span class="op">&gt;=</span> <span class="dv">4</span> <span class="kw">and</span> s.F <span class="op">&lt;=</span> <span class="dv">2</span>: <span class="cf">return</span> <span class="st">"új vagy alkalmi"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> s.R <span class="op">&lt;=</span> <span class="dv">2</span> <span class="kw">and</span> s.F <span class="op">&lt;=</span> <span class="dv">2</span>: <span class="cf">return</span> <span class="st">"alvó"</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"átlagos"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>rfm[<span class="st">"szegmens"</span>] <span class="op">=</span> rfm.<span class="bu">apply</span>(rfm_szegmens, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>valodi <span class="op">=</span> rfm.index.<span class="bu">map</span>(ab.load_shop().truth[<span class="st">"segment"</span>])</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>pd.crosstab(rfm.szegmens, valodi, margins<span class="op">=</span><span class="va">True</span>, margins_name<span class="op">=</span><span class="st">"összesen"</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">col_0</th>
+<th data-quarto-table-cell-role="th">akcióvadász</th>
+<th data-quarto-table-cell-role="th">alkalmi</th>
+<th data-quarto-table-cell-role="th">lemorzsolódó</th>
+<th data-quarto-table-cell-role="th">törzsvásárló</th>
+<th data-quarto-table-cell-role="th">viszonteladó</th>
+<th data-quarto-table-cell-role="th">összesen</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">szegmens</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">alvó</th>
+<td>105</td>
+<td>301</td>
+<td>134</td>
+<td>16</td>
+<td>7</td>
+<td>563</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">bajnok</th>
+<td>81</td>
+<td>15</td>
+<td>15</td>
+<td>405</td>
+<td>65</td>
+<td>581</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">hűséges</th>
+<td>154</td>
+<td>96</td>
+<td>29</td>
+<td>129</td>
+<td>36</td>
+<td>444</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">veszélyeztetett</th>
+<td>65</td>
+<td>9</td>
+<td>29</td>
+<td>30</td>
+<td>7</td>
+<td>140</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">átlagos</th>
+<td>100</td>
+<td>162</td>
+<td>68</td>
+<td>23</td>
+<td>8</td>
+<td>361</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">új vagy alkalmi</th>
+<td>28</td>
+<td>90</td>
+<td>20</td>
+<td>25</td>
+<td>13</td>
+<td>176</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">összesen</th>
+<td>533</td>
+<td>673</td>
+<td>295</td>
+<td>628</td>
+<td>136</td>
+<td>2265</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="eset-uzleti">
+<p>Az RFM-szegmensek jól tükrözik a szimulált „valódi” vevőtípusokat: a bajnokok között a törzsvásárlók, a hűségesek között az akcióvadászok és a törzsvásárlók, az alvók között az alkalmi és a lemorzsolódó vevők vannak túlsúlyban. A „veszélyeztetett” szegmens – korábban gyakran, de régóta nem vásárló vevők, köztük sok akcióvadász – a megtartási kampány kézenfekvő célcsoportja lehetne; hogy valóban az-e, azt a fejezet végén, az uplift-modellel vizsgáljuk meg.</p>
+</div>
+</section>
+<section id="ügyfélérték-a-bgnbd-és-a-gammagamma-modellel" class="level3" data-number="14.7.2">
+<h3 data-number="14.7.2" class="anchored" data-anchor-id="ügyfélérték-a-bgnbd-és-a-gammagamma-modellel"><span class="header-section-number">14.7.2</span> Ügyfélérték a BG/NBD és a gamma–gamma modellel</h3>
+<p>A modellt a 2024. január 1. és 2025. június 30. közötti kalibrációs időszakon illesztjük, és a második félévben ellenőrizzük. Az egy napon belüli vásárlásokat egy tranzakcióvá vonjuk össze, az időt hetekben mérjük.</p>
+<div id="77060cff" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.special <span class="im">import</span> gammaln, betaln, hyp2f1</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.optimize <span class="im">import</span> minimize</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>tx <span class="op">=</span> ab.shop_clean()</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>tx <span class="op">=</span> tx[tx.CustomerID.notna()]</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>napi <span class="op">=</span> (tx.assign(nap<span class="op">=</span>tx.InvoiceDate.dt.normalize())</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>          .groupby([<span class="st">"CustomerID"</span>, <span class="st">"nap"</span>]).Ertek.<span class="bu">sum</span>().reset_index())</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>kal_vege, ell_vege <span class="op">=</span> pd.Timestamp(<span class="st">"2025-07-01"</span>), pd.Timestamp(<span class="st">"2026-01-01"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>kal <span class="op">=</span> napi[napi.nap <span class="op">&lt;</span> kal_vege]</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>ell <span class="op">=</span> napi[(napi.nap <span class="op">&gt;=</span> kal_vege) <span class="op">&amp;</span> (napi.nap <span class="op">&lt;</span> ell_vege)]</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> kal.groupby(<span class="st">"CustomerID"</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> pd.DataFrame({<span class="st">"x"</span>: g.size() <span class="op">-</span> <span class="dv">1</span>, <span class="st">"elso"</span>: g.nap.<span class="bu">min</span>(), <span class="st">"utolso"</span>: g.nap.<span class="bu">max</span>(), <span class="st">"z_atl"</span>: g.Ertek.mean()})</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>d[<span class="st">"t_x"</span>] <span class="op">=</span> (d.utolso <span class="op">-</span> d.elso).dt.days <span class="op">/</span> <span class="dv">7</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>d[<span class="st">"T"</span>] <span class="op">=</span> (kal_vege <span class="op">-</span> d.elso).dt.days <span class="op">/</span> <span class="dv">7</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>d[<span class="st">"y_ell"</span>] <span class="op">=</span> ell.groupby(<span class="st">"CustomerID"</span>).size().reindex(d.index).fillna(<span class="dv">0</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>x, t_x, T <span class="op">=</span> d.x.to_numpy(), d.t_x.to_numpy(), d[<span class="st">"T"</span>].to_numpy()</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bgnbd_negloglik(log_par):</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    r, alfa, a, b <span class="op">=</span> np.exp(log_par)                     <span class="co"># logaritmikus paraméterezés: pozitivitás</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    A1 <span class="op">=</span> gammaln(r <span class="op">+</span> x) <span class="op">-</span> gammaln(r) <span class="op">+</span> r <span class="op">*</span> np.log(alfa)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    A2 <span class="op">=</span> betaln(a, b <span class="op">+</span> x) <span class="op">-</span> betaln(a, b)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    A3 <span class="op">=</span> <span class="op">-</span>(r <span class="op">+</span> x) <span class="op">*</span> np.log(alfa <span class="op">+</span> T)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    A4 <span class="op">=</span> np.where(x <span class="op">&gt;</span> <span class="dv">0</span>, np.log(a) <span class="op">-</span> np.log(np.maximum(b <span class="op">+</span> x <span class="op">-</span> <span class="dv">1</span>, <span class="fl">1e-12</span>)) <span class="op">-</span> (r <span class="op">+</span> x) <span class="op">*</span> np.log(alfa <span class="op">+</span> t_x), <span class="op">-</span>np.inf)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">-</span>np.<span class="bu">sum</span>(A1 <span class="op">+</span> A2 <span class="op">+</span> np.logaddexp(A3, A4))      <span class="co"># a (-@eq-bgnbd) log-likelihood</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>illesztes <span class="op">=</span> minimize(bgnbd_negloglik, np.zeros(<span class="dv">4</span>), method<span class="op">=</span><span class="st">"Nelder-Mead"</span>,</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>                     options<span class="op">=</span>{<span class="st">"maxiter"</span>: <span class="dv">5000</span>, <span class="st">"xatol"</span>: <span class="fl">1e-6</span>, <span class="st">"fatol"</span>: <span class="fl">1e-6</span>})</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>r, alfa, a, b <span class="op">=</span> np.exp(illesztes.x)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"r = </span><span class="sc">{</span>r<span class="sc">:.3f}</span><span class="ss">, α = </span><span class="sc">{</span>alfa<span class="sc">:.2f}</span><span class="ss">, a = </span><span class="sc">{</span>a<span class="sc">:.3f}</span><span class="ss">, b = </span><span class="sc">{</span>b<span class="sc">:.2f}</span><span class="ss">  (konvergált: </span><span class="sc">{</span>illesztes<span class="sc">.</span>success<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"átlagos heti vásárlási intenzitás aktív vevőnél: r/α = </span><span class="sc">{</span>r <span class="op">/</span> alfa<span class="sc">:.3f}</span><span class="ss">; "</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"várható lemorzsolódási valószínűség vásárlásonként: a/(a+b) = </span><span class="sc">{</span>a <span class="op">/</span> (a <span class="op">+</span> b)<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>r = 1.070, α = 12.13, a = 4.402, b = 68.44  (konvergált: True)
+átlagos heti vásárlási intenzitás aktív vevőnél: r/α = 0.088; várható lemorzsolódási valószínűség vásárlásonként: a/(a+b) = 0.060</code></pre>
+</div>
+</div>
+<div id="bda184d7" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> p_aktiv(x, t_x, T):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> (x <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">*</span> a <span class="op">/</span> (b <span class="op">+</span> x <span class="op">-</span> <span class="dv">1</span> <span class="op">+</span> (x <span class="op">==</span> <span class="dv">0</span>)) <span class="op">*</span> ((alfa <span class="op">+</span> T) <span class="op">/</span> (alfa <span class="op">+</span> t_x)) <span class="op">**</span> (r <span class="op">+</span> x))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> varhato_vasarlas(t, x, t_x, T):</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""A következő t hétben várható vásárlások száma (Fader, Hardie és Lee, 2005)."""</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    hyp <span class="op">=</span> hyp2f1(r <span class="op">+</span> x, b <span class="op">+</span> x, a <span class="op">+</span> b <span class="op">+</span> x <span class="op">-</span> <span class="dv">1</span>, t <span class="op">/</span> (alfa <span class="op">+</span> T <span class="op">+</span> t))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    szamlalo <span class="op">=</span> (a <span class="op">+</span> b <span class="op">+</span> x <span class="op">-</span> <span class="dv">1</span>) <span class="op">/</span> (a <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> ((alfa <span class="op">+</span> T) <span class="op">/</span> (alfa <span class="op">+</span> T <span class="op">+</span> t)) <span class="op">**</span> (r <span class="op">+</span> x) <span class="op">*</span> hyp)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> szamlalo <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> (x <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">*</span> a <span class="op">/</span> (b <span class="op">+</span> x <span class="op">-</span> <span class="dv">1</span> <span class="op">+</span> (x <span class="op">==</span> <span class="dv">0</span>)) <span class="op">*</span> ((alfa <span class="op">+</span> T) <span class="op">/</span> (alfa <span class="op">+</span> t_x)) <span class="op">**</span> (r <span class="op">+</span> x))</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>H <span class="op">=</span> (ell_vege <span class="op">-</span> kal_vege).days <span class="op">/</span> <span class="dv">7</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>d[<span class="st">"p_aktiv"</span>] <span class="op">=</span> p_aktiv(x, t_x, T)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>d[<span class="st">"y_becsult"</span>] <span class="op">=</span> varhato_vasarlas(H, x, t_x, T)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>d[<span class="st">"y_naiv"</span>] <span class="op">=</span> (d.x <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> d[<span class="st">"T"</span>] <span class="op">*</span> H                    <span class="co"># a múltbeli átlagos gyakoriság kivetítése</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"a második félév vásárlásai: tény </span><span class="sc">{</span>d<span class="sc">.</span>y_ell<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:.0f}</span><span class="ss">, BG/NBD </span><span class="sc">{</span>d<span class="sc">.</span>y_becsult<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:.0f}</span><span class="ss">, naiv </span><span class="sc">{</span>d<span class="sc">.</span>y_naiv<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:.0f}</span><span class="ss">"</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"átlagos abszolút hiba vevőnként: BG/NBD </span><span class="sc">{</span>np<span class="sc">.</span>mean(np.<span class="bu">abs</span>(d.y_ell <span class="op">-</span> d.y_becsult))<span class="sc">:.2f}</span><span class="ss">, "</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"naiv </span><span class="sc">{</span>np<span class="sc">.</span>mean(np.<span class="bu">abs</span>(d.y_ell <span class="op">-</span> d.y_naiv))<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>a második félév vásárlásai: tény 3656, BG/NBD 3179, naiv 6094
+átlagos abszolút hiba vevőnként: BG/NBD 1.26, naiv 1.76</code></pre>
+</div>
+</div>
+<div id="cell-fig-bgnbd" class="cell" data-fig-height="3" data-fig-width="5.4" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>cs <span class="op">=</span> d.groupby(d.x.clip(upper<span class="op">=</span><span class="dv">8</span>)).agg(teny<span class="op">=</span>(<span class="st">"y_ell"</span>, <span class="st">"mean"</span>), becsult<span class="op">=</span>(<span class="st">"y_becsult"</span>, <span class="st">"mean"</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>ax.plot(cs.index, cs.teny, <span class="st">"o-"</span>, color<span class="op">=</span>ab.PALETTE[<span class="dv">0</span>], label<span class="op">=</span><span class="st">"tény"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>ax.plot(cs.index, cs.becsult, <span class="st">"s--"</span>, color<span class="op">=</span>ab.PALETTE[<span class="dv">1</span>], label<span class="op">=</span><span class="st">"BG/NBD"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(cs.index, [<span class="bu">str</span>(i) <span class="cf">for</span> i <span class="kw">in</span> cs.index[:<span class="op">-</span><span class="dv">1</span>]] <span class="op">+</span> [<span class="st">"8+"</span>])</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"ismételt vásárlások a kalibrációs időszakban ($x$)"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"vásárlások a 2. félévben"</span>)<span class="op">;</span> ax.legend()</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-bgnbd" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bgnbd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="14-ugyfelanalitika_files/figure-html/fig-bgnbd-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="ábra&nbsp;14.5.. A BG/NBD modell ellenőrzése: a második félévben átlagosan várható és ténylegesen megfigyelt vásárlások száma a kalibrációs időszak ismételt vásárlásainak száma szerint csoportosítva."><img src="14-ugyfelanalitika_files/figure-html/fig-bgnbd-output-1.png" width="693" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bgnbd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;14.5.. A BG/NBD modell ellenőrzése: a második félévben átlagosan várható és ténylegesen megfigyelt vásárlások száma a kalibrációs időszak ismételt vásárlásainak száma szerint csoportosítva.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="eset-uzleti">
+<p>A modell a vevők sorrendjét jól eltalálja, és vevőnként jóval pontosabb, mint a múltbeli gyakoriság egyszerű kivetítése, összességében azonban alulbecsli a második félév vásárlásait. Ennek oka a modell egyik alapfeltevésében keresendő: a BG/NBD időben állandó vásárlási intenzitást feltételez, a második félév viszont a teljes év végi szezonális csúcsot tartalmazza, a kalibrációs időszak pedig másfél évre átlagolja azt – és a forgalom közben nőtt is. A szezonalitás és a növekedés kezelésére a modellt idővel változó intenzitással vagy kovariánsokkal lehet bővíteni; az egyszerű változat ereje a vevők <em>rangsorolásában</em> van.</p>
+</div>
+<p>Végül a gamma–gamma modellel a vásárlási értéket, majd a kettő szorzataként az egyéves ügyfélértéket becsüljük (30%-os fedezettel, diszkontálás nélkül):</p>
+<div id="05bcdb32" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>n_tr, z <span class="op">=</span> (d.x <span class="op">+</span> <span class="dv">1</span>).to_numpy(), d.z_atl.to_numpy()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"a gyakoriság és az átlagos érték korrelációja: </span><span class="sc">{</span>np<span class="sc">.</span>corrcoef(n_tr, z)[<span class="dv">0</span>, <span class="dv">1</span>]<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gg_negloglik(log_par):</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    p, q, gamma <span class="op">=</span> np.exp(log_par)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    ll <span class="op">=</span> (gammaln(p <span class="op">*</span> n_tr <span class="op">+</span> q) <span class="op">-</span> gammaln(p <span class="op">*</span> n_tr) <span class="op">-</span> gammaln(q) <span class="op">+</span> q <span class="op">*</span> np.log(gamma)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>          <span class="op">+</span> (p <span class="op">*</span> n_tr <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> np.log(z) <span class="op">+</span> p <span class="op">*</span> n_tr <span class="op">*</span> np.log(n_tr) <span class="op">-</span> (p <span class="op">*</span> n_tr <span class="op">+</span> q) <span class="op">*</span> np.log(gamma <span class="op">+</span> n_tr <span class="op">*</span> z))</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">-</span>ll.<span class="bu">sum</span>()</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>gg <span class="op">=</span> minimize(gg_negloglik, np.log([<span class="fl">1.0</span>, <span class="fl">2.0</span>, <span class="fl">1e4</span>]), method<span class="op">=</span><span class="st">"Nelder-Mead"</span>, options<span class="op">=</span>{<span class="st">"maxiter"</span>: <span class="dv">5000</span>})</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>p_, q_, gamma_ <span class="op">=</span> np.exp(gg.x)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>d[<span class="st">"z_varhato"</span>] <span class="op">=</span> (gamma_ <span class="op">+</span> n_tr <span class="op">*</span> z) <span class="op">*</span> p_ <span class="op">/</span> (p_ <span class="op">*</span> n_tr <span class="op">+</span> q_ <span class="op">-</span> <span class="dv">1</span>)        <span class="co"># (-@eq-gamma-gamma)</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>d[<span class="st">"CLV_12ho"</span>] <span class="op">=</span> varhato_vasarlas(<span class="dv">52</span>, x, t_x, T) <span class="op">*</span> d.z_varhato <span class="op">*</span> <span class="fl">0.30</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>d[<span class="st">"tipus"</span>] <span class="op">=</span> d.index.<span class="bu">map</span>(ab.load_shop().truth[<span class="st">"segment"</span>])</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>(d.groupby(<span class="st">"tipus"</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>   .agg(vevok<span class="op">=</span>(<span class="st">"x"</span>, <span class="st">"size"</span>), p_aktiv<span class="op">=</span>(<span class="st">"p_aktiv"</span>, <span class="st">"mean"</span>), CLV_median<span class="op">=</span>(<span class="st">"CLV_12ho"</span>, <span class="st">"median"</span>),</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        CLV_osszes<span class="op">=</span>(<span class="st">"CLV_12ho"</span>, <span class="st">"sum"</span>))</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>   .assign(CLV_reszesedes<span class="op">=</span><span class="kw">lambda</span> t: t.CLV_osszes <span class="op">/</span> t.CLV_osszes.<span class="bu">sum</span>())</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>   .drop(columns<span class="op">=</span><span class="st">"CLV_osszes"</span>).<span class="bu">round</span>({<span class="st">"p_aktiv"</span>: <span class="dv">2</span>, <span class="st">"CLV_median"</span>: <span class="dv">0</span>, <span class="st">"CLV_reszesedes"</span>: <span class="dv">3</span>}))</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>a gyakoriság és az átlagos érték korrelációja: 0.045</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">vevok</th>
+<th data-quarto-table-cell-role="th">p_aktiv</th>
+<th data-quarto-table-cell-role="th">CLV_median</th>
+<th data-quarto-table-cell-role="th">CLV_reszesedes</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">tipus</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">akcióvadász</th>
+<td>533</td>
+<td>0.75</td>
+<td>59843.0</td>
+<td>0.174</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">alkalmi</th>
+<td>673</td>
+<td>0.88</td>
+<td>19244.0</td>
+<td>0.068</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">lemorzsolódó</th>
+<td>295</td>
+<td>0.74</td>
+<td>14473.0</td>
+<td>0.025</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">törzsvásárló</th>
+<td>628</td>
+<td>0.78</td>
+<td>59469.0</td>
+<td>0.179</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">viszonteladó</th>
+<td>136</td>
+<td>0.81</td>
+<td>798112.0</td>
+<td>0.554</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="eset-uzleti">
+<p>A gyakoriság és az átlagos vásárlási érték gyakorlatilag független, így a gamma–gamma modell feltevése teljesül. Az ügyfélérték nagyon egyenlőtlenül oszlik meg: a viszonteladók a vevők kis hányadát teszik ki, mégis a várható érték jelentős részét adják, a törzsvásárlók és az akcióvadászok mediánértéke pedig többszöröse az alkalmi és a lemorzsolódó vevőkének. Ez a megoszlás határozza meg, mennyit érdemes egy-egy vevőcsoport megtartására költeni.</p>
+</div>
+</section>
+<section id="ajánlások-a-második-félévre" class="level3" data-number="14.7.3">
+<h3 data-number="14.7.3" class="anchored" data-anchor-id="ajánlások-a-második-félévre"><span class="header-section-number">14.7.3</span> Ajánlások a második félévre</h3>
+<div class="eset-uzleti">
+<p>Melyik, a vevő által még meg nem vásárolt termékeket ajánljuk? A kalibrációs időszak vásárlásaiból tanulunk, és azt mérjük, hogy a második félévben a vevők által először megvásárolt termékek közül legalább egy szerepel-e az ötelemű ajánlólistán (top-5 találati arány). Három módszert vetünk össze: a népszerűségi ajánlót, a tételalapú és a felhasználóalapú (50 szomszédos) kollaboratív szűrést.</p>
+</div>
+<div id="dc43e3bc" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> sparse</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> normalize</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>kal_tx, ell_tx <span class="op">=</span> tx[tx.InvoiceDate <span class="op">&lt;</span> kal_vege], tx[(tx.InvoiceDate <span class="op">&gt;=</span> kal_vege) <span class="op">&amp;</span> (tx.InvoiceDate <span class="op">&lt;</span> ell_vege)]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>vevo_idx <span class="op">=</span> {c: i <span class="cf">for</span> i, c <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">sorted</span>(kal_tx.CustomerID.unique()))}</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>termekek <span class="op">=</span> <span class="bu">sorted</span>(tx.StockCode.unique())<span class="op">;</span> termek_idx <span class="op">=</span> {p: j <span class="cf">for</span> j, p <span class="kw">in</span> <span class="bu">enumerate</span>(termekek)}</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>R <span class="op">=</span> sparse.csr_matrix((np.ones(<span class="bu">len</span>(kal_tx)), (kal_tx.CustomerID.<span class="bu">map</span>(vevo_idx), kal_tx.StockCode.<span class="bu">map</span>(termek_idx))),</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                      shape<span class="op">=</span>(<span class="bu">len</span>(vevo_idx), <span class="bu">len</span>(termekek)))</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>R <span class="op">=</span> (R <span class="op">&gt;</span> <span class="dv">0</span>).astype(<span class="bu">float</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>Rs <span class="op">=</span> R.toarray()</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>nepszeruseg <span class="op">=</span> Rs.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>Rn <span class="op">=</span> normalize(R, axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>S_tetel <span class="op">=</span> (Rn.T <span class="op">@</span> Rn).toarray()<span class="op">;</span> np.fill_diagonal(S_tetel, <span class="dv">0</span>)       <span class="co"># termék–termék koszinusz</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>Un <span class="op">=</span> normalize(Rs)                                                   <span class="co"># vevővektorok egységnyi hosszra</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> felhasznaloalapu(u, k<span class="op">=</span><span class="dv">50</span>):</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    hasonl <span class="op">=</span> Un <span class="op">@</span> (u <span class="op">/</span> np.linalg.norm(u))</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    szomszed <span class="op">=</span> np.argsort(<span class="op">-</span>hasonl)[<span class="dv">1</span>:k <span class="op">+</span> <span class="dv">1</span>]</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> hasonl[szomszed] <span class="op">@</span> Rs[szomszed]</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>modszerek <span class="op">=</span> {<span class="st">"népszerűség"</span>: <span class="kw">lambda</span> u: nepszeruseg,</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>             <span class="st">"tételalapú CF"</span>: <span class="kw">lambda</span> u: S_tetel <span class="op">@</span> u,</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>             <span class="st">"felhasználóalapú CF (k = 50)"</span>: felhasznaloalapu}</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>kesobbi <span class="op">=</span> ell_tx.groupby(<span class="st">"CustomerID"</span>).StockCode.<span class="bu">apply</span>(<span class="bu">set</span>)</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>talalat <span class="op">=</span> {nev: [] <span class="cf">for</span> nev <span class="kw">in</span> modszerek}</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> <span class="bu">sorted</span>(<span class="bu">set</span>(vevo_idx) <span class="op">&amp;</span> <span class="bu">set</span>(kesobbi.index)):</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    u <span class="op">=</span> Rs[vevo_idx[c]]</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    uj <span class="op">=</span> {termek_idx[p] <span class="cf">for</span> p <span class="kw">in</span> kesobbi[c]} <span class="op">-</span> <span class="bu">set</span>(np.flatnonzero(u))</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> uj:</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> nev, f <span class="kw">in</span> modszerek.items():</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>        pont <span class="op">=</span> f(u).astype(<span class="bu">float</span>)</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>        pont[u <span class="op">&gt;</span> <span class="dv">0</span>] <span class="op">=</span> <span class="op">-</span>np.inf                                        <span class="co"># csak új termékeket ajánlunk</span></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>        talalat[nev].append(<span class="bu">len</span>(<span class="bu">set</span>(np.argsort(<span class="op">-</span>pont)[:<span class="dv">5</span>]) <span class="op">&amp;</span> uj) <span class="op">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>pd.Series({nev: np.mean(v) <span class="cf">for</span> nev, v <span class="kw">in</span> talalat.items()}, name<span class="op">=</span><span class="ss">f"top-5 találati arány (</span><span class="sc">{</span><span class="bu">len</span>(talalat[<span class="st">'népszerűség'</span>])<span class="sc">}</span><span class="ss"> vevő)"</span>).<span class="bu">round</span>(<span class="dv">3</span>).to_frame()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">top-5 találati arány (1121 vevő)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">népszerűség</th>
+<td>0.709</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">tételalapú CF</th>
+<td>0.675</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">felhasználóalapú CF (k = 50)</th>
+<td>0.782</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="eset-uzleti">
+<p>A népszerűségi ajánló erős viszonyítási alap: hatvan termék közül a legnépszerűbbek sok vevőnél eltalálják a következő vásárlást. Az egyszerű, összegző tételalapú szűrés ezt nem is éri el – a sok terméket vásárló vevőknél a gyakori termékek hasonlóságai összeadódnak, és a lista a népszerű termékek felé torzul. A felhasználóalapú szűrés viszont jobb a népszerűségi ajánlónál: a hasonló vásárlási mintázatú vevők a szimulációban azonos vevőtípusba tartoznak, és jellemző termékkategóriáik a következő vásárlást is előre jelzik. A tanulság általános: az ajánlórendszer pontosságát mindig népszerűségi viszonyításhoz kell mérni, és a pontozási szabály részletei (normalizálás, szomszédszám) érdemben befolyásolják az eredményt.</p>
+</div>
+</section>
+<section id="megtartási-kampány-kísérlet-és-uplift-modell" class="level3" data-number="14.7.4">
+<h3 data-number="14.7.4" class="anchored" data-anchor-id="megtartási-kampány-kísérlet-és-uplift-modell"><span class="header-section-number">14.7.4</span> Megtartási kampány: kísérlet és uplift-modell</h3>
+<div class="eset-uzleti">
+<p>A PannonShop 2025. július 1-jén megtartási kampányt indít (személyre szóló kupon), és – a helyes gyakorlatnak megfelelően – előbb randomizált kísérletben teszteli: a vevők fele véletlenszerűen kapja meg a kupont. A kísérletet itt szimuláljuk. A kampány hatását vevőtípusonként rögzítjük: az akcióvadászok lemorzsolódását 20, a lemorzsolódókét 10, az alkalmi vevőkét 5 százalékponttal csökkenti, a törzsvásárlókra nincs hatással, a viszonteladók egy részét viszont – akik a kéretlen kuponos megkeresést kéretlen reklámnak tekintik – 6 százalékponttal nagyobb valószínűséggel elriasztja. Az elemző a vevőtípusokat természetesen nem ismeri, csak a jellemzőket és a kísérlet kimenetelét.</p>
+</div>
+<div id="4e548841" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>churn <span class="op">=</span> ab.churn_table(cutoff<span class="op">=</span><span class="st">"2025-07-01"</span>, horizon_days<span class="op">=</span><span class="dv">183</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>tipus <span class="op">=</span> np.asarray(churn.index.<span class="bu">map</span>(ab.load_shop().truth[<span class="st">"segment"</span>]).fillna(<span class="st">"egyéb"</span>))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>hatas <span class="op">=</span> {<span class="st">"akcióvadász"</span>: <span class="op">-</span><span class="fl">0.20</span>, <span class="st">"lemorzsolódó"</span>: <span class="op">-</span><span class="fl">0.10</span>, <span class="st">"alkalmi"</span>: <span class="op">-</span><span class="fl">0.05</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">"törzsvásárló"</span>: <span class="fl">0.0</span>, <span class="st">"viszonteladó"</span>: <span class="fl">0.06</span>, <span class="st">"egyéb"</span>: <span class="fl">0.0</span>}</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>kezelt <span class="op">=</span> rng.random(<span class="bu">len</span>(churn)) <span class="op">&lt;</span> <span class="fl">0.5</span>                 <span class="co"># véletlen besorolás</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>Y0 <span class="op">=</span> churn.lemorzsolodik.to_numpy().astype(<span class="bu">int</span>)        <span class="co"># kimenet kampány nélkül</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>alap <span class="op">=</span> pd.Series(Y0).groupby(tipus).mean()</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>tau <span class="op">=</span> np.array([hatas[t] <span class="cf">for</span> t <span class="kw">in</span> tipus])<span class="op">;</span> p_t <span class="op">=</span> np.array([alap[t] <span class="cf">for</span> t <span class="kw">in</span> tipus])</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>u <span class="op">=</span> rng.random(<span class="bu">len</span>(churn))</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>Y1 <span class="op">=</span> Y0.copy()                                         <span class="co"># kimenet kampánnyal</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>Y1[(tau <span class="op">&lt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (Y0 <span class="op">==</span> <span class="dv">1</span>) <span class="op">&amp;</span> (u <span class="op">&lt;</span> <span class="op">-</span>tau <span class="op">/</span> np.maximum(p_t, <span class="fl">1e-9</span>))] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>Y1[(tau <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (Y0 <span class="op">==</span> <span class="dv">0</span>) <span class="op">&amp;</span> (u <span class="op">&lt;</span> tau <span class="op">/</span> np.maximum(<span class="dv">1</span> <span class="op">-</span> p_t, <span class="fl">1e-9</span>))] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> np.where(kezelt, Y1, Y0)                           <span class="co"># csak ez figyelhető meg</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>p1, p0 <span class="op">=</span> Y[kezelt].mean(), Y[<span class="op">~</span>kezelt].mean()</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>se <span class="op">=</span> np.sqrt(p1 <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> p1) <span class="op">/</span> kezelt.<span class="bu">sum</span>() <span class="op">+</span> p0 <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> p0) <span class="op">/</span> (<span class="op">~</span>kezelt).<span class="bu">sum</span>())</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"lemorzsolódás: kezelt </span><span class="sc">{</span>p1<span class="sc">:.3f}</span><span class="ss">, kontroll </span><span class="sc">{</span>p0<span class="sc">:.3f}</span><span class="ss">; becsült hatás </span><span class="sc">{</span>p1 <span class="op">-</span> p0<span class="sc">:+.3f}</span><span class="ss"> "</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"(95% CI: </span><span class="sc">{</span>p1 <span class="op">-</span> p0 <span class="op">-</span> <span class="fl">1.96</span> <span class="op">*</span> se<span class="sc">:+.3f}</span><span class="ss"> … </span><span class="sc">{</span>p1 <span class="op">-</span> p0 <span class="op">+</span> <span class="fl">1.96</span> <span class="op">*</span> se<span class="sc">:+.3f}</span><span class="ss">); valódi átlagos hatás </span><span class="sc">{</span>np<span class="sc">.</span>mean(Y1 <span class="op">-</span> Y0)<span class="sc">:+.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>lemorzsolódás: kezelt 0.353, kontroll 0.423; becsült hatás -0.070 (95% CI: -0.113 … -0.027); valódi átlagos hatás -0.075</code></pre>
+</div>
+</div>
+<p>A kísérlet szerint a kampány átlagosan mintegy hét százalékponttal csökkenti a lemorzsolódást. De kiket érdemes megcélozni, ha a költségkeret csak a vevők egy részére elég? Tanítsunk kétmodelles uplift-modellt a kísérlet adatainak 60%-án, és értékeljük a maradék 40%-on, összevetve a lemorzsolódási kockázat szerinti célzással!</p>
+<div id="dc4a7b35" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> FunctionTransformer, StandardScaler</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> SimpleImputer</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>jell <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> churn.columns <span class="cf">if</span> c <span class="kw">not</span> <span class="kw">in</span> (<span class="st">"lemorzsolodik"</span>, <span class="st">"atl_koztes_nap"</span>)]</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> churn[jell].astype(<span class="bu">float</span>).to_numpy()</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>teszt <span class="op">=</span> np.random.default_rng(<span class="dv">1</span>).random(<span class="bu">len</span>(X)) <span class="op">&lt;</span> <span class="fl">0.4</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>modell <span class="op">=</span> <span class="kw">lambda</span> C<span class="op">=</span><span class="fl">0.5</span>: make_pipeline(SimpleImputer(strategy<span class="op">=</span><span class="st">"median"</span>), FunctionTransformer(np.log1p),</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>                                     StandardScaler(), LogisticRegression(max_iter<span class="op">=</span><span class="dv">2000</span>, C<span class="op">=</span>C))</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>m_kontroll <span class="op">=</span> modell().fit(X[<span class="op">~</span>teszt <span class="op">&amp;</span> <span class="op">~</span>kezelt], Y[<span class="op">~</span>teszt <span class="op">&amp;</span> <span class="op">~</span>kezelt])</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>m_kezelt <span class="op">=</span> modell().fit(X[<span class="op">~</span>teszt <span class="op">&amp;</span> kezelt], Y[<span class="op">~</span>teszt <span class="op">&amp;</span> kezelt])</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>uplift <span class="op">=</span> m_kontroll.predict_proba(X)[:, <span class="dv">1</span>] <span class="op">-</span> m_kezelt.predict_proba(X)[:, <span class="dv">1</span>]     <span class="co"># (-@eq-uplift)</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>kockazat <span class="op">=</span> m_kontroll.predict_proba(X)[:, <span class="dv">1</span>]                                       <span class="co"># kampány nélküli kockázat</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co"># A szimulációban mindkét lehetséges kimenetel ismert, így a célzás valódi haszna – a megcélzott</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co"># vevők közül a kampány hatására megtartottak száma – közvetlenül kiszámítható.</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>tobblet <span class="op">=</span> (Y0 <span class="op">-</span> Y1)[teszt]</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> valodi_haszon(pont):</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    sorrend <span class="op">=</span> np.argsort(<span class="op">-</span>pont[teszt])</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.cumsum(tobblet[sorrend])</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>n_teszt <span class="op">=</span> teszt.<span class="bu">sum</span>()</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>gorbek <span class="op">=</span> {<span class="st">"uplift-modell"</span>: valodi_haszon(uplift),</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>          <span class="st">"kockázat szerinti célzás"</span>: valodi_haszon(kockazat),</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>          <span class="st">"véletlen célzás"</span>: valodi_haszon(np.random.default_rng(<span class="dv">5</span>).random(<span class="bu">len</span>(X)))}</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({nev: {<span class="ss">f"felső </span><span class="sc">{</span><span class="bu">int</span>(f <span class="op">*</span> <span class="dv">100</span>)<span class="sc">}</span><span class="ss">%"</span>: g[<span class="bu">int</span>(f <span class="op">*</span> n_teszt) <span class="op">-</span> <span class="dv">1</span>] <span class="cf">for</span> f <span class="kw">in</span> (<span class="fl">0.1</span>, <span class="fl">0.3</span>, <span class="fl">0.5</span>, <span class="fl">1.0</span>)}</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>              <span class="cf">for</span> nev, g <span class="kw">in</span> gorbek.items()}).T.astype(<span class="bu">int</span>).rename_axis(<span class="st">"megtartott többletvevő (tesztcsoport)"</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">felső 10%</th>
+<th data-quarto-table-cell-role="th">felső 30%</th>
+<th data-quarto-table-cell-role="th">felső 50%</th>
+<th data-quarto-table-cell-role="th">felső 100%</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">megtartott többletvevő (tesztcsoport)</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">uplift-modell</th>
+<td>14</td>
+<td>31</td>
+<td>41</td>
+<td>58</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">kockázat szerinti célzás</th>
+<td>4</td>
+<td>24</td>
+<td>43</td>
+<td>58</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">véletlen célzás</th>
+<td>2</td>
+<td>16</td>
+<td>29</td>
+<td>58</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="cell-fig-qini" class="cell" data-fig-height="3.4" data-fig-width="5.6" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (nev, gorbe), szin, vonal <span class="kw">in</span> <span class="bu">zip</span>(gorbek.items(), [ab.PALETTE[<span class="dv">0</span>], ab.PALETTE[<span class="dv">1</span>], <span class="st">"#6B7785"</span>], [<span class="st">"-"</span>, <span class="st">"-"</span>, <span class="st">"--"</span>]):</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    ax.plot(np.arange(<span class="dv">1</span>, n_teszt <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> n_teszt, gorbe, color<span class="op">=</span>szin, ls<span class="op">=</span>vonal, lw<span class="op">=</span><span class="fl">1.6</span>, label<span class="op">=</span>nev)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"megcélzott hányad"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"megtartott többletvevő"</span>)<span class="op">;</span> ax.legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-qini" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-qini-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="14-ugyfelanalitika_files/figure-html/fig-qini-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="ábra&nbsp;14.6.. A célzási stratégiák valódi haszna a tesztcsoporton (a szimulációban ismert lehetséges kimenetelek alapján): a kampány hatására megtartott vevők kumulált száma a megcélzott hányad függvényében. Az uplift-modell a kampány hatásának nagy részét a vevők kisebb hányadával éri el."><img src="14-ugyfelanalitika_files/figure-html/fig-qini-output-1.png" width="693" height="406" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-qini-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;14.6.. A célzási stratégiák valódi haszna a tesztcsoporton (a szimulációban ismert lehetséges kimenetelek alapján): a kampány hatására megtartott vevők kumulált száma a megcélzott hányad függvényében. Az uplift-modell a kampány hatásának nagy részét a vevők kisebb hányadával éri el.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({<span class="st">"vevők"</span>: pd.Series(tipus).value_counts(),</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>              <span class="st">"valódi hatás [százalékpont]"</span>: pd.Series({t: <span class="op">-</span><span class="dv">100</span> <span class="op">*</span> h <span class="op">+</span> <span class="fl">0.0</span> <span class="cf">for</span> t, h <span class="kw">in</span> hatas.items()}),</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>              <span class="st">"becsült uplift [százalékpont]"</span>: pd.Series(<span class="dv">100</span> <span class="op">*</span> uplift).groupby(tipus).mean(),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>              <span class="st">"kockázat kampány nélkül"</span>: pd.Series(kockazat).groupby(tipus).mean()}).drop(index<span class="op">=</span><span class="st">"egyéb"</span>).<span class="bu">round</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="tbl-uplift-tipus" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="12">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-uplift-tipus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+táblázat&nbsp;14.1.. A becsült uplift és a lemorzsolódási kockázat vevőtípusonként, a szimulációban rögzített valódi hatással összevetve.
+</figcaption>
+<div aria-describedby="tbl-uplift-tipus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display" data-execution_count="12">
+<div>
+
+
+<table class="dataframe cell caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">vevők</th>
+<th data-quarto-table-cell-role="th">valódi hatás [százalékpont]</th>
+<th data-quarto-table-cell-role="th">becsült uplift [százalékpont]</th>
+<th data-quarto-table-cell-role="th">kockázat kampány nélkül</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">akcióvadász</th>
+<td>483</td>
+<td>20.0</td>
+<td>17.39</td>
+<td>0.46</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">alkalmi</th>
+<td>553</td>
+<td>5.0</td>
+<td>13.08</td>
+<td>0.65</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">lemorzsolódó</th>
+<td>187</td>
+<td>10.0</td>
+<td>7.33</td>
+<td>0.65</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">törzsvásárló</th>
+<td>611</td>
+<td>0.0</td>
+<td>1.76</td>
+<td>0.23</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">viszonteladó</th>
+<td>133</td>
+<td>-6.0</td>
+<td>-4.12</td>
+<td>0.12</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<div class="eset-uzleti">
+<p>A kockázat szerinti célzás a legnagyobb lemorzsolódási valószínűségű vevőket – főként az alkalmi és a lemorzsolódó vevőket – célozza meg, akiknél a kupon csak kis hatású; az uplift-modell ezzel szemben elsősorban az akcióvadászokat sorolja előre, akiknél a kampány valóban változtat. A vevők 30%-ának megcélzásával az uplift-modell a teljes kampányhatás mintegy felét éri el, a kockázatalapú célzás jóval kevesebbet, bár többet, mint a véletlenszerű célzás; ha viszont a vevők felét vagy többet célzunk meg, a különbség eltűnik – a kis költségkeretű kampányoknál számít igazán a jó célzás. (A gyakorlatban a lehetséges kimenetelek nem ismertek; ott a célzás hasznát a kísérlet kezelt és kontroll csoportjának összevetésével, a Qini-görbével kell becsülni, ami ilyen mintaméretnél jelentős véletlen ingadozással jár – lásd a feladatokat.) A becsült egyéni hatások zajosak – a törzsvásárlóknál például a modell pozitív hatást becsül, holott a szimulációban nincs –, ami a kétmodelles megközelítés ismert gyengesége: a két modell hibái összeadódnak. Ezért a gyakorlatban az uplift-modellt mindig egy új, randomizált kísérletben kell ellenőrizni, mielőtt a teljes vevőkörre alkalmaznák.</p>
+</div>
+<div class="pe-app"><div class="pe-app-bar"><span>Ügyfélérték-kalkulátor: megtartási ráta, fedezet, diszkontráta</span><a href="../apps/clv.html" target="_blank" rel="noopener">Megnyitás új lapon ↗</a></div><iframe src="../apps/clv.html" style="height:520px" loading="lazy" title="Ügyfélérték-kalkulátor: megtartási ráta, fedezet, diszkontráta"></iframe></div>
+<div class="pe-badges"><a href="https://colab.research.google.com/github/ComplexSystemsIntelligence/adatbanyaszat/blob/main/notebooks/14-ugyfelanalitika.ipynb" target="_blank" rel="noopener">▶ Colab: 14. fejezet – ügyfélanalitika</a><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/notebooks/14-ugyfelanalitika.ipynb" target="_blank" rel="noopener">GitHub forrás</a></div>
+</section>
+</section>
+<section id="sec-ugyfel-osszefoglalas" class="level2" data-number="14.8">
+<h2 data-number="14.8" class="anchored" data-anchor-id="sec-ugyfel-osszefoglalas"><span class="header-section-number">14.8</span> Összefoglalás</h2>
+<ul>
+<li>Az ügyfélanalitika feladatai a vevői életciklus szakaszaihoz kapcsolódnak; közös mércéjük az ügyfélérték.</li>
+<li>Az RFM-elemzés egyszerű, kommunikálható szegmentálást ad, de pillanatfelvétel.</li>
+<li>Nem szerződéses kapcsolatban a BG/NBD modell becsli, mekkora valószínűséggel aktív még egy vevő, és hányszor fog vásárolni; a gamma–gamma modell a vásárlások értékét. A kettő együtt adja az ügyfélérték előrejelzését.</li>
+<li>Az ajánlórendszerek a vevők közös vásárlási mintázataiból tanulnak; a népszerűségi ajánló erős viszonyítási alap.</li>
+<li>A kampányok oksági hatását randomizált kísérlettel kell mérni; a célzáshoz a lemorzsolódási kockázat helyett a kampány egyéni hatását (uplift) kell becsülni.</li>
+<li>Az ügyfélanalitika profilalkotás: a GDPR elvei és az etikai szempontok (átláthatóság, méltányosság) a módszertan részei.</li>
+</ul>
+</section>
+<section id="ellenőrző-kérdések" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="ellenőrző-kérdések">Ellenőrző kérdések</h2>
+<ol type="1">
+<li>Miben különbözik a szerződéses és a nem szerződéses vevőkapcsolat, és miért kell az utóbbiban valószínűségi modell az ügyfélérték becsléséhez?</li>
+<li>Mit jelentenek a BG/NBD modell paraméterei, és milyen heterogenitást írnak le?</li>
+<li>Miért nő egy vevő inaktivitásának valószínűsége az (<a href="#eq-p-aktiv" class="quarto-xref"><span>14.3</span></a>) szerint gyorsabban, ha korábban gyakran vásárolt?</li>
+<li>Mit jelent a gamma–gamma modellben a zsugorítás, és mikor erős?</li>
+<li>Miért nem a legnagyobb lemorzsolódási kockázatú vevőket kell egy megtartási kampányban megcélozni?</li>
+<li>Miért nem értékelhető egy uplift-modell egyedi előrejelzésenként, és mit mutat a Qini-görbe?</li>
+<li>Milyen GDPR-kötelezettségek kapcsolódnak a vevők pontozásához?</li>
+</ol>
+</section>
+<section id="feladatok" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="feladatok">Feladatok</h2>
+<ol type="1">
+<li><strong>Megtartási ráta.</strong> Egy előfizetéses szolgáltatás havi fedezete vevőnként 3000 Ft, a havi megtartási ráta 0,9, a havi diszkontráta 1%. Mekkora a végtelen horizontú ügyfélérték? Hogyan változik, ha a megtartási ráta 0,92-re nő?</li>
+<li><strong>Aktív valószínűség.</strong> Ábrázolja a BG/NBD modell <span class="math inline">\(P(\text{aktív})\)</span> valószínűségét a <span class="math inline">\(T - t_x\)</span> inaktív idő függvényében <span class="math inline">\(x = 1, 5, 15\)</span> ismételt vásárlás mellett! Értelmezze az eredményt!</li>
+<li><strong>Szezonalitás.</strong> Illessze a BG/NBD modellt úgy, hogy a kalibrációs időszak 2024. december 31-én érjen véget, és a következő félévre ellenőrizze! Mennyit változik az összesített előrejelzés hibája?</li>
+<li><strong>Ajánló.</strong> Vizsgálja meg a felhasználóalapú szűrés találati arányát a szomszédszám (<span class="math inline">\(k = 10, 25, 50, 100, 200\)</span>) függvényében! Készítsen hibrid ajánlót, amely a népszerűségi és a felhasználóalapú pontszámot súlyozza!</li>
+<li><strong>Qini-görbe.</strong> Számítsa ki a tesztcsoporton a Qini-görbét – a lista elejére a kontroll és a kezelt csoport lemorzsolódási arányának különbsége szorozva a kezeltek számával –, és vesse össze a valódi haszon görbéjével! Mekkora a véletlen ingadozás? (Segítség: ismételje meg a kísérlet véletlen besorolását több véletlenmaggal.)</li>
+<li><strong>Kampányprofit.</strong> Tegyük fel, hogy egy megtartott vevő 20 000 Ft fedezetet hoz, a kupon költsége 1500 Ft. Ábrázolja a kampány nyereségét a megcélzott hányad függvényében az uplift-modell és a kockázatalapú célzás esetén! Mekkora az optimális hányad?</li>
+</ol>
+</section>
+<section id="további-olvasmányok" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="további-olvasmányok">További olvasmányok</h2>
+<p>A CRM stratégiai kereteiről <span class="citation" data-cites="payne2005">Payne &amp; Frow (<a href="../references.html#ref-payne2005" role="doc-biblioref">2005</a>)</span> és <span class="citation" data-cites="kumar2018">Kumar &amp; Reinartz (<a href="../references.html#ref-kumar2018" role="doc-biblioref">2018</a>)</span>, az adatbányászati módszerek CRM-beli alkalmazásairól <span class="citation" data-cites="ngai2009">Ngai és mtsai. (<a href="../references.html#ref-ngai2009" role="doc-biblioref">2009</a>)</span> áttekintése ajánlott. Az ügyfélérték modellezésének áttekintése <span class="citation" data-cites="gupta2006">Gupta és mtsai. (<a href="../references.html#ref-gupta2006" role="doc-biblioref">2006</a>)</span>; a BTYD-modellek alapcikkei <span class="citation" data-cites="schmittlein1987">Schmittlein és mtsai. (<a href="../references.html#ref-schmittlein1987" role="doc-biblioref">1987</a>)</span>, <span class="citation" data-cites="fader2005">Fader és mtsai. (<a href="../references.html#ref-fader2005" role="doc-biblioref">2005a</a>)</span> és <span class="citation" data-cites="fader2005jmr">Fader és mtsai. (<a href="../references.html#ref-fader2005jmr" role="doc-biblioref">2005b</a>)</span>. Az ajánlórendszerekről <span class="citation" data-cites="aggarwal2016rec">Aggarwal (<a href="../references.html#ref-aggarwal2016rec" role="doc-biblioref">2016</a>)</span> tankönyve, az online kísérletekről <span class="citation" data-cites="kohavi2020">Kohavi és mtsai. (<a href="../references.html#ref-kohavi2020" role="doc-biblioref">2020</a>)</span> könyve, az uplift-modellezésről <span class="citation" data-cites="gutierrez2017">Gutierrez &amp; Gérardy (<a href="../references.html#ref-gutierrez2017" role="doc-biblioref">2017</a>)</span> és <span class="citation" data-cites="devriendt2018">Devriendt és mtsai. (<a href="../references.html#ref-devriendt2018" role="doc-biblioref">2018</a>)</span> áttekintése ajánlott.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-aggarwal2016rec" class="csl-entry" role="listitem">
+Aggarwal, C. C. (2016). <em>Recommender Systems: The Textbook</em>. Springer. <a href="https://doi.org/10.1007/978-3-319-29659-3">https://doi.org/10.1007/978-3-319-29659-3</a>
+</div>
+<div id="ref-barocas2023" class="csl-entry" role="listitem">
+Barocas, S., Hardt, M., &amp; Narayanan, A. (2023). <em>Fairness and Machine Learning: Limitations and Opportunities</em>. MIT Press.
+</div>
+<div id="ref-devriendt2018" class="csl-entry" role="listitem">
+Devriendt, F., Moldovan, D., &amp; Verbeke, W. (2018). A Literature Survey and Experimental Evaluation of the State-of-the-Art in Uplift Modeling: A Stepping Stone Toward the Development of Prescriptive Analytics. <em>Big Data</em>, <em>6</em>(1), 13–41. <a href="https://doi.org/10.1089/big.2017.0104">https://doi.org/10.1089/big.2017.0104</a>
+</div>
+<div id="ref-gdpr2016" class="csl-entry" role="listitem">
+Európai Parlament és Tanács. (2016). <em>Az Európai Parlament és a Tanács (EU) 2016/679 rendelete (2016. április 27.) a természetes személyeknek a személyes adatok kezelése tekintetében történő védelméről és az ilyen adatok szabad áramlásáról (általános adatvédelmi rendelet)</em>. Az Európai Unió Hivatalos Lapja, L 119, 2016.5.4., 1–88. o.
+</div>
+<div id="ref-fader2005" class="csl-entry" role="listitem">
+Fader, P. S., Hardie, B. G. S., &amp; Lee, K. L. (2005a). <span>„Counting Your Customers”</span> the Easy Way: An Alternative to the <span>Pareto/NBD</span> Model. <em>Marketing Science</em>, <em>24</em>(2), 275–284.
+</div>
+<div id="ref-fader2005jmr" class="csl-entry" role="listitem">
+Fader, P. S., Hardie, B. G. S., &amp; Lee, K. L. (2005b). <span>RFM</span> and <span>CLV</span>: Using Iso-Value Curves for Customer Base Analysis. <em>Journal of Marketing Research</em>, <em>42</em>(4), 415–430. <a href="https://doi.org/10.1509/jmkr.2005.42.4.415">https://doi.org/10.1509/jmkr.2005.42.4.415</a>
+</div>
+<div id="ref-gupta2006" class="csl-entry" role="listitem">
+Gupta, S., Hanssens, D., Hardie, B., Kahn, W., Kumar, V., Lin, N., Ravishanker, N., &amp; Sriram, S. (2006). Modeling Customer Lifetime Value. <em>Journal of Service Research</em>, <em>9</em>(2), 139–155.
+</div>
+<div id="ref-gutierrez2017" class="csl-entry" role="listitem">
+Gutierrez, P., &amp; Gérardy, J.-Y. (2017). Causal Inference and Uplift Modelling: A Review of the Literature. <em>Proceedings of the 3rd International Conference on Predictive Applications and APIs, Proceedings of Machine Learning Research</em>, <em>67</em>, 1–13.
+</div>
+<div id="ref-herlocker2004" class="csl-entry" role="listitem">
+Herlocker, J. L., Konstan, J. A., Terveen, L. G., &amp; Riedl, J. T. (2004). Evaluating Collaborative Filtering Recommender Systems. <em>ACM Transactions on Information Systems</em>, <em>22</em>(1), 5–53. <a href="https://doi.org/10.1145/963770.963772">https://doi.org/10.1145/963770.963772</a>
+</div>
+<div id="ref-hughes1994" class="csl-entry" role="listitem">
+Hughes, A. M. (1994). <em>Strategic Database Marketing</em>. Probus.
+</div>
+<div id="ref-kohavi2020" class="csl-entry" role="listitem">
+Kohavi, R., Tang, D., &amp; Xu, Y. (2020). <em>Trustworthy Online Controlled Experiments: A Practical Guide to <span>A/B</span> Testing</em>. Cambridge University Press.
+</div>
+<div id="ref-koren2009" class="csl-entry" role="listitem">
+Koren, Y., Bell, R., &amp; Volinsky, C. (2009). Matrix Factorization Techniques for Recommender Systems. <em>Computer</em>, <em>42</em>(8), 30–37. <a href="https://doi.org/10.1109/MC.2009.263">https://doi.org/10.1109/MC.2009.263</a>
+</div>
+<div id="ref-kumar2018" class="csl-entry" role="listitem">
+Kumar, V., &amp; Reinartz, W. (2018). <em>Customer Relationship Management: Concept, Strategy, and Tools</em> (3. kiad.). Springer.
+</div>
+<div id="ref-kunzel2019" class="csl-entry" role="listitem">
+Künzel, S. R., Sekhon, J. S., Bickel, P. J., &amp; Yu, B. (2019). Metalearners for Estimating Heterogeneous Treatment Effects Using Machine Learning. <em>Proceedings of the National Academy of Sciences</em>, <em>116</em>(10), 4156–4165. <a href="https://doi.org/10.1073/pnas.1804597116">https://doi.org/10.1073/pnas.1804597116</a>
+</div>
+<div id="ref-linden2003" class="csl-entry" role="listitem">
+Linden, G., Smith, B., &amp; York, J. (2003). Amazon.com Recommendations: Item-to-Item Collaborative Filtering. <em>IEEE Internet Computing</em>, <em>7</em>(1), 76–80. <a href="https://doi.org/10.1109/MIC.2003.1167344">https://doi.org/10.1109/MIC.2003.1167344</a>
+</div>
+<div id="ref-ngai2009" class="csl-entry" role="listitem">
+Ngai, E. W. T., Xiu, L., &amp; Chau, D. C. K. (2009). Application of data mining techniques in customer relationship management: A literature review and classification. <em>Expert Systems with Applications</em>, <em>36</em>(2), 2592–2602.
+</div>
+<div id="ref-payne2005" class="csl-entry" role="listitem">
+Payne, A., &amp; Frow, P. (2005). A Strategic Framework for Customer Relationship Management. <em>Journal of Marketing</em>, <em>69</em>(4), 167–176.
+</div>
+<div id="ref-sarwar2001" class="csl-entry" role="listitem">
+Sarwar, B., Karypis, G., Konstan, J., &amp; Riedl, J. (2001). Item-Based Collaborative Filtering Recommendation Algorithms. <em>Proceedings of the 10th International Conference on World Wide Web</em>, 285–295. <a href="https://doi.org/10.1145/371920.372071">https://doi.org/10.1145/371920.372071</a>
+</div>
+<div id="ref-schmittlein1987" class="csl-entry" role="listitem">
+Schmittlein, D. C., Morrison, D. G., &amp; Colombo, R. (1987). Counting Your Customers: Who Are They and What Will They Do Next? <em>Management Science</em>, <em>33</em>(1), 1–24. <a href="https://doi.org/10.1287/mnsc.33.1.1">https://doi.org/10.1287/mnsc.33.1.1</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script>
+/* Magyar ábra- és táblázatfelirat-sorrend a HTML-kiadásban: "ábra 1.1." -> "1.1. ábra." */
+document.addEventListener("DOMContentLoaded", function () {
+  const re = /^(ábra|táblázat|algoritmus)\s+([0-9A-Z]+(?:\.[0-9]+)*)\.?\s*/i;
+  document.querySelectorAll("figcaption, .figure-caption, caption, .quarto-float-caption").forEach(function (el) {
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const t = w.nextNode();
+    if (!t) return;
+    const m = t.nodeValue.match(re);
+    if (m) { t.nodeValue = t.nodeValue.replace(re, m[2] + ". " + m[1].toLowerCase() + ". "); }
+  });
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kimásolva!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kimásolva!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/complexsystemsintelligence\.github\.io\/adatbanyaszat\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/13-szovegbanyaszat.html" class="pagination-link" aria-label="Szövegbányászat">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Szövegbányászat</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/15-folyamatanalitika.html" class="pagination-link" aria-label="Ipari folyamatanalitika">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Ipari folyamatanalitika</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/chapters/14-ugyfelanalitika.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/chapters/14-ugyfelanalitika.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>

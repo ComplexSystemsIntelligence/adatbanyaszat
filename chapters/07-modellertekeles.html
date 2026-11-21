@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="hu" xml:lang="hu"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>7&nbsp; A felügyelt tanulás alapjai és a modellek értékelése – Adatbányászat</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/08-regresszio.html" rel="next">
+<link href="../chapters/06-asszociacios-szabalyok.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-18038207a4bfd50187eff2b2f0526436.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-27594bbe69c1d9222c0eb88c018d43c1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nincs találat",
+    "search-matching-documents-text": "találat",
+    "search-copy-link-title": "Keresési link másolása",
+    "search-hide-matches-text": "További találatok elrejtése",
+    "search-more-match-text": "további találat ebben a dokumentumban",
+    "search-more-matches-text": "további találat ebben a dokumentumban",
+    "search-clear-button-title": "Törlés",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Mégse",
+    "search-submit-button-title": "Keresés",
+    "search-label": "Keresés"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../assets/pannon-fonts.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Oldalsáv ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/07-modellertekeles.html">III. Prediktív modellezés</a></li><li class="breadcrumb-item"><a href="../chapters/07-modellertekeles.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A felügyelt tanulás alapjai és a modellek értékelése</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Keresés" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Adatbányászat</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat" title="Forráskód" class="quarto-navigation-tool px-1" aria-label="Forráskód"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Letöltés" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Letöltés"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../adatbanyaszat.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Letöltés PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../adatbanyaszat.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Letöltés ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Keresés"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Előszó</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. Alapok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01-bevezetes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Adatból tudás: az adatbányászat folyamata</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02-adattarhazak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Adattárházak és analitikus adatkezelés</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-adatelokeszites.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Adatok előkészítése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-feltaro-elemzes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Feltáró adatelemzés és dimenziócsökkentés</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. Mintázatok felügyelet nélkül</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05-csoportositas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Csoportosítás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-asszociacios-szabalyok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Gyakori mintázatok és asszociációs szabályok</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. Prediktív modellezés</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07-modellertekeles.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A felügyelt tanulás alapjai és a modellek értékelése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08-regresszio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regresszió</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09-osztalyozas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Osztályozás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/10-melytanulas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Neurális hálózatok és mélytanulás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/11-anomaliak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Anomáliák és eltérések észlelése</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. Speciális adattípusok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/12-idosorok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Idősorok elemzése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/13-szovegbanyaszat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Szövegbányászat</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. Alkalmazások</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/14-ugyfelanalitika.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Ügyfélkapcsolat-menedzsment és ügyfélanalitika</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/15-folyamatanalitika.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Ipari folyamatanalitika</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Irodalomjegyzék</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Függelékek</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/a-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Python-alapok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/b-linearis-algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Lineáris algebra az adatbányászathoz</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/c-valoszinuseg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Valószínűségszámítási és statisztikai alapok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/d-adatsorok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Az adatsorok leírása</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/e-jelolesek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Jelölések</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/f-szojegyzek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Magyar–angol szójegyzék</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Tartalom</h2>
+   
+  <ul>
+  <li><a href="#sec-altalanositas" id="toc-sec-altalanositas" class="nav-link active" data-scroll-target="#sec-altalanositas"><span class="header-section-number">7.1</span> Az általánosítás problémája</a>
+  <ul class="collapse">
+  <li><a href="#a-torzításvariancia-felbontás" id="toc-a-torzításvariancia-felbontás" class="nav-link" data-scroll-target="#a-torzításvariancia-felbontás"><span class="header-section-number">7.1.1</span> A torzítás–variancia felbontás</a></li>
+  </ul></li>
+  <li><a href="#sec-validacio-semak" id="toc-sec-validacio-semak" class="nav-link" data-scroll-target="#sec-validacio-semak"><span class="header-section-number">7.2</span> Adatfelosztás és validáció</a>
+  <ul class="collapse">
+  <li><a href="#tanító--validációs-és-teszthalmaz" id="toc-tanító--validációs-és-teszthalmaz" class="nav-link" data-scroll-target="#tanító--validációs-és-teszthalmaz"><span class="header-section-number">7.2.1</span> Tanító-, validációs és teszthalmaz</a></li>
+  <li><a href="#keresztvalidáció" id="toc-keresztvalidáció" class="nav-link" data-scroll-target="#keresztvalidáció"><span class="header-section-number">7.2.2</span> Keresztvalidáció</a></li>
+  <li><a href="#hiperparaméter-hangolás-és-beágyazott-keresztvalidáció" id="toc-hiperparaméter-hangolás-és-beágyazott-keresztvalidáció" class="nav-link" data-scroll-target="#hiperparaméter-hangolás-és-beágyazott-keresztvalidáció"><span class="header-section-number">7.2.3</span> Hiperparaméter-hangolás és beágyazott keresztvalidáció</a></li>
+  </ul></li>
+  <li><a href="#sec-regresszio-metrikak" id="toc-sec-regresszio-metrikak" class="nav-link" data-scroll-target="#sec-regresszio-metrikak"><span class="header-section-number">7.3</span> Regressziós mérőszámok</a></li>
+  <li><a href="#sec-osztalyozas-metrikak" id="toc-sec-osztalyozas-metrikak" class="nav-link" data-scroll-target="#sec-osztalyozas-metrikak"><span class="header-section-number">7.4</span> Osztályozási mérőszámok</a>
+  <ul class="collapse">
+  <li><a href="#a-tévesztési-mátrix-és-a-belőle-származó-mérőszámok" id="toc-a-tévesztési-mátrix-és-a-belőle-származó-mérőszámok" class="nav-link" data-scroll-target="#a-tévesztési-mátrix-és-a-belőle-származó-mérőszámok"><span class="header-section-number">7.4.1</span> A tévesztési mátrix és a belőle származó mérőszámok</a></li>
+  <li><a href="#a-roc-görbe-és-az-auc" id="toc-a-roc-görbe-és-az-auc" class="nav-link" data-scroll-target="#a-roc-görbe-és-az-auc"><span class="header-section-number">7.4.2</span> A ROC-görbe és az AUC</a></li>
+  <li><a href="#a-döntési-küszöb-megválasztása" id="toc-a-döntési-küszöb-megválasztása" class="nav-link" data-scroll-target="#a-döntési-küszöb-megválasztása"><span class="header-section-number">7.4.3</span> A döntési küszöb megválasztása</a></li>
+  <li><a href="#kalibráció" id="toc-kalibráció" class="nav-link" data-scroll-target="#kalibráció"><span class="header-section-number">7.4.4</span> Kalibráció</a></li>
+  <li><a href="#kiegyensúlyozatlan-osztályok" id="toc-kiegyensúlyozatlan-osztályok" class="nav-link" data-scroll-target="#kiegyensúlyozatlan-osztályok"><span class="header-section-number">7.4.5</span> Kiegyensúlyozatlan osztályok</a></li>
+  </ul></li>
+  <li><a href="#sec-osszehasonlitas" id="toc-sec-osszehasonlitas" class="nav-link" data-scroll-target="#sec-osszehasonlitas"><span class="header-section-number">7.5</span> A modellek összehasonlítása</a></li>
+  <li><a href="#sec-ertekeles-gyakorlat" id="toc-sec-ertekeles-gyakorlat" class="nav-link" data-scroll-target="#sec-ertekeles-gyakorlat"><span class="header-section-number">7.6</span> Gyakorlat: lemorzsolódás és termékminőség</a>
+  <ul class="collapse">
+  <li><a href="#a-pannonshop-lemorzsolódási-feladata" id="toc-a-pannonshop-lemorzsolódási-feladata" class="nav-link" data-scroll-target="#a-pannonshop-lemorzsolódási-feladata"><span class="header-section-number">7.6.1</span> A PannonShop lemorzsolódási feladata</a></li>
+  <li><a href="#a-pannon-üzem-termékminőségi-feladata" id="toc-a-pannon-üzem-termékminőségi-feladata" class="nav-link" data-scroll-target="#a-pannon-üzem-termékminőségi-feladata"><span class="header-section-number">7.6.2</span> A Pannon üzem termékminőségi feladata</a></li>
+  </ul></li>
+  <li><a href="#sec-ertekeles-osszefoglalas" id="toc-sec-ertekeles-osszefoglalas" class="nav-link" data-scroll-target="#sec-ertekeles-osszefoglalas"><span class="header-section-number">7.7</span> Összefoglalás</a></li>
+  <li><a href="#ellenőrző-kérdések" id="toc-ellenőrző-kérdések" class="nav-link" data-scroll-target="#ellenőrző-kérdések">Ellenőrző kérdések</a></li>
+  <li><a href="#feladatok" id="toc-feladatok" class="nav-link" data-scroll-target="#feladatok">Feladatok</a></li>
+  <li><a href="#további-olvasmányok" id="toc-további-olvasmányok" class="nav-link" data-scroll-target="#további-olvasmányok">További olvasmányok</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/chapters/07-modellertekeles.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/chapters/07-modellertekeles.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/07-modellertekeles.html">III. Prediktív modellezés</a></li><li class="breadcrumb-item"><a href="../chapters/07-modellertekeles.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A felügyelt tanulás alapjai és a modellek értékelése</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-ertekeles" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A felügyelt tanulás alapjai és a modellek értékelése</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="roadmap">
+<p>Mielőtt a regressziós és osztályozó modellek családjait sorra vennénk, tisztázzuk, mit jelent, hogy egy modell „jó”, és hogyan mérhető ez megbízhatóan. A fejezet a felügyelt tanulás általános keretéből indul: az általánosítási hiba, a túltanulás és a torzítás–variancia felbontás fogalmaiból. Ezután a modellek kiértékelésének gyakorlati eszközeit tárgyalja: a tanító-, validációs és teszthalmazokra bontást, a keresztvalidációt (az idősoros és a csoportos változatokkal együtt), a regressziós és az osztályozási mérőszámokat, a ROC- és PR-görbéket, a döntési küszöb költségalapú megválasztását, a valószínűségek kalibrációját és a kiegyensúlyozatlan osztályok kezelését.</p>
+<p><strong>A fejezet végére az olvasó</strong> képes lesz egy modell várható teljesítményét torzítatlanul becsülni; az adatok szerkezetének megfelelő validációs sémát választani; a feladathoz illő mérőszámot kiválasztani és értelmezni; és a döntési küszöböt az üzleti költségek alapján megállapítani.</p>
+</div>
+<section id="sec-altalanositas" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="sec-altalanositas"><span class="header-section-number">7.1</span> Az általánosítás problémája</h2>
+<p>A <a href="01-bevezetes.html" class="quarto-xref"><span>1</span></a>. fejezetben a felügyelt tanulást a tanítóadatokon számolt átlagos veszteség minimalizálásaként írtuk fel (<a href="01-bevezetes.html#eq-erm" class="quarto-xref"><span>1.3</span></a>). A valódi cél azonban nem a tanítóadatok minél pontosabb visszaadása, hanem az, hogy a modell az ugyanabból a folyamatból származó <em>új</em> adatokon is jól teljesítsen. Ha az adatok egy <span class="math inline">\(p(\mathbf{x}, y)\)</span> együttes eloszlásból származnak, a modell <strong>általánosítási hibája</strong> (várható kockázata)</p>
+<p><span id="eq-kockazat"><span class="math display">\[
+R(f) = \mathbb{E}_{(\mathbf{x},y)\sim p}\bigl[L\bigl(y, f(\mathbf{x})\bigr)\bigr],
+\tag{7.1}\]</span></span></p>
+<p>amelyet nem ismerünk, csak becsülhetünk. A tanítóhiba ennek <em>optimista</em> becslése, hiszen a modell paramétereit éppen ezekre az adatokra hangoltuk. Minél rugalmasabb a modellcsalád, annál nagyobb lehet a különbség.</p>
+<p>A <a href="#fig-komplexitas" class="quarto-xref"><span>7.1</span></a>. ábra ezt egy egyszerű kísérlettel szemlélteti. 25 zajos mérési pontra egyre magasabb fokszámú polinomot illesztünk. A tanítóhiba a fokszámmal monoton csökken – egy elég magas fokú polinom minden ponton áthaladhat –, a független teszthalmazon mért hiba viszont egy darabig csökken, majd növekedni kezd. Az alacsony fokszámú modell <strong>alultanul</strong> (nem képes leírni a valódi összefüggést), a magas fokszámú <strong>túltanul</strong> (a zajt is megtanulja).</p>
+<div id="fig-komplexitas" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-komplexitas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/07-komplexitas.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="ábra&nbsp;7.1.. A modellkomplexitás hatása. (a)–(c) Elsőfokú, negyedfokú és tizenkettedfokú polinom illesztése ugyanarra a 25 zajos pontra (szaggatott vonal: a valódi függvény). (d) A tanító- és a teszthiba a fokszám függvényében; a szaggatott vízszintes vonal a zaj szórásnégyzete, amely alá a teszthiba nem csökkenhet."><img src="../figures/build/07-komplexitas.svg" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-komplexitas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;7.1.. A modellkomplexitás hatása. (a)–(c) Elsőfokú, negyedfokú és tizenkettedfokú polinom illesztése ugyanarra a 25 zajos pontra (szaggatott vonal: a valódi függvény). (d) A tanító- és a teszthiba a fokszám függvényében; a szaggatott vízszintes vonal a zaj szórásnégyzete, amely alá a teszthiba nem csökkenhet.
+</figcaption>
+</figure>
+</div>
+<section id="a-torzításvariancia-felbontás" class="level3" data-number="7.1.1">
+<h3 data-number="7.1.1" class="anchored" data-anchor-id="a-torzításvariancia-felbontás"><span class="header-section-number">7.1.1</span> A torzítás–variancia felbontás</h3>
+<p>A jelenség négyzetes veszteség esetén pontosan elemezhető <span class="citation" data-cites="geman1992 hastie2009">(<a href="../references.html#ref-geman1992" role="doc-biblioref">Geman és mtsai., 1992</a>; <a href="../references.html#ref-hastie2009" role="doc-biblioref">Hastie és mtsai., 2009</a>)</span>. Tegyük fel, hogy <span class="math inline">\(y = g(\mathbf{x}) + \varepsilon\)</span>, ahol <span class="math inline">\(\varepsilon\)</span> nulla várható értékű, <span class="math inline">\(\sigma^2\)</span> szórásnégyzetű zaj, és a <span class="math inline">\(\hat f\)</span> modellt egy véletlen tanítóhalmazon becsüljük. Egy rögzített <span class="math inline">\(\mathbf{x}_0\)</span> pontban a várható négyzetes hiba – a zaj és a tanítóhalmaz véletlenségére vett várható érték – három részre bomlik:</p>
+<p><span id="eq-torzitas-variancia"><span class="math display">\[
+\mathbb{E}\bigl[(y_0 - \hat f(\mathbf{x}_0))^2\bigr]
+= \underbrace{\sigma^2}_{\text{csökkenthetetlen zaj}}
++ \underbrace{\bigl(\mathbb{E}[\hat f(\mathbf{x}_0)] - g(\mathbf{x}_0)\bigr)^2}_{\text{torzítás}^2}
++ \underbrace{\mathbb{E}\bigl[(\hat f(\mathbf{x}_0) - \mathbb{E}[\hat f(\mathbf{x}_0)])^2\bigr]}_{\text{variancia}} .
+\tag{7.2}\]</span></span></p>
+<p>A <strong>torzítás</strong> azt méri, mennyire tér el a modell <em>átlagos</em> előrejelzése (sok lehetséges tanítóhalmazon) a valódi függvénytől; a <strong>variancia</strong> azt, hogy mennyire ingadozik az előrejelzés tanítóhalmazról tanítóhalmazra. Az egyszerű modellek torzítása nagy, varianciája kicsi; a rugalmas modelleké fordítva. A jó modell a kettő közötti egyensúlyt találja meg. A (<a href="#eq-torzitas-variancia" class="quarto-xref"><span>7.2</span></a>) felbontás levezetéséhez az <span class="math inline">\(y_0 - \hat f = (y_0 - g) + (g - \mathbb{E}\hat f) + (\mathbb{E}\hat f - \hat f)\)</span> összeget kell négyzetre emelni; a vegyes szorzatok várható értéke nulla, mert a zaj független a tanítóhalmaztól, és <span class="math inline">\(\mathbb{E}[\mathbb{E}\hat f - \hat f] = 0\)</span>.</p>
+<p>A felbontás a gyakorlatban két irányt jelöl ki. A torzítást rugalmasabb modellcsaláddal, jobb jellemzőkkel csökkenthetjük; a varianciát több adattal, egyszerűbb modellel, <strong>regularizációval</strong> (<a href="08-regresszio.html" class="quarto-xref"><span>8</span></a>. fejezet) vagy sok modell átlagolásával (<a href="09-osztalyozas.html" class="quarto-xref"><span>9</span></a>. fejezet, együttes modellek).</p>
+</section>
+</section>
+<section id="sec-validacio-semak" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="sec-validacio-semak"><span class="header-section-number">7.2</span> Adatfelosztás és validáció</h2>
+<section id="tanító--validációs-és-teszthalmaz" class="level3" data-number="7.2.1">
+<h3 data-number="7.2.1" class="anchored" data-anchor-id="tanító--validációs-és-teszthalmaz"><span class="header-section-number">7.2.1</span> Tanító-, validációs és teszthalmaz</h3>
+<p>Az általánosítási hiba becsléséhez olyan adatok kellenek, amelyeket a modell a tanítás során nem látott. A legegyszerűbb a <strong>visszatartásos</strong> (hold-out) módszer: az adatokat véletlenszerűen tanító- és teszthalmazra bontjuk (például 80–20%-os arányban). Ha a modellnek hangolandó <strong>hiperparaméterei</strong> is vannak (például a polinom fokszáma, egy fa mélysége), a teszthalmaz nem használható a hangolásra, különben az is optimistává válik. Ilyenkor háromfelé bontunk: a <strong>tanítóhalmazon</strong> illesztjük a paramétereket, a <strong>validációs halmazon</strong> választjuk ki a hiperparamétereket, és a <strong>teszthalmazt</strong> csak egyszer, a végső modell értékelésére használjuk.</p>
+</section>
+<section id="keresztvalidáció" class="level3" data-number="7.2.2">
+<h3 data-number="7.2.2" class="anchored" data-anchor-id="keresztvalidáció"><span class="header-section-number">7.2.2</span> Keresztvalidáció</h3>
+<p>Kis adathalmazon a visszatartás pazarló, és a becslés erősen függ a véletlen felosztástól. A <strong><span class="math inline">\(K\)</span>-szoros keresztvalidáció</strong> <span class="citation" data-cites="stone1974">(<a href="../references.html#ref-stone1974" role="doc-biblioref">Stone, 1974</a>)</span> az adatokat <span class="math inline">\(K\)</span> közel egyenlő részre (foldra) osztja, és <span class="math inline">\(K\)</span>-szor tanít: mindig egy rész a validációs, a többi a tanítóhalmaz (<a href="#fig-cv" class="quarto-xref"><span>7.2</span></a>. ábra). Az általánosítási hiba becslése a <span class="math inline">\(K\)</span> validációs hiba átlaga:</p>
+<p><span id="eq-cv"><span class="math display">\[
+\hat{E}_{\mathrm{CV}} = \frac{1}{K}\sum_{j=1}^{K}\frac{1}{|\mathcal{V}_j|}
+\sum_{k\in\mathcal{V}_j}L\bigl(y_k, \hat f^{(-j)}(\mathbf{x}_k)\bigr),
+\tag{7.3}\]</span></span></p>
+<p>ahol <span class="math inline">\(\mathcal{V}_j\)</span> a <span class="math inline">\(j\)</span>-edik validációs rész, <span class="math inline">\(\hat f^{(-j)}\)</span> pedig a nélküle tanított modell. A gyakorlatban a <span class="math inline">\(K = 5\)</span> vagy <span class="math inline">\(K = 10\)</span> jó kompromisszum a becslés torzítása és varianciája között <span class="citation" data-cites="kohavi1995">(<a href="../references.html#ref-kohavi1995" role="doc-biblioref">Kohavi, 1995</a>)</span>. Osztályozásnál a <strong>rétegzett</strong> keresztvalidáció minden részben megőrzi az osztályarányokat; ez kiegyensúlyozatlan osztályoknál különösen fontos.</p>
+<div id="fig-cv" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/07-cv.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="ábra&nbsp;7.2.. (a) Ötszörös keresztvalidáció: minden kör más részt tart vissza validálásra, a becslés a körök átlaga. (b) Idősoros validáció: mindig a múltból tanítunk, és a közvetlenül következő időszakon validálunk."><img src="../figures/build/07-cv.svg" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;7.2.. (a) Ötszörös keresztvalidáció: minden kör más részt tart vissza validálásra, a becslés a körök átlaga. (b) Idősoros validáció: mindig a múltból tanítunk, és a közvetlenül következő időszakon validálunk.
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Figyelem</span>A véletlen felosztás feltételezi a függetlenséget
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A keresztvalidáció azt feltételezi, hogy a megfigyelések függetlenek. Ha nem azok, a véletlen felosztás optimista becslést ad:</p>
+<ul>
+<li><strong>Idősorokban</strong> a szomszédos időpontok erősen hasonlók; véletlen felosztásnál a modell „interpolál” a tanítóhalmaz közeli pontjai között, élesben viszont <em>előre</em> kell jeleznie. Ilyenkor a gördülő kezdetű (expanding window) validációt kell használni, ahol a modell mindig csak a múltból tanul (<a href="#fig-cv" class="quarto-xref"><span>7.2</span></a>. (b) ábra) <span class="citation" data-cites="bergmeir2012">(<a href="../references.html#ref-bergmeir2012" role="doc-biblioref">Bergmeir &amp; Benítez, 2012</a>)</span>.</li>
+<li><strong>Csoportos adatokban</strong> (egy vevő több rekordja, egy gép több mérése) ugyanazon csoport rekordjai nem kerülhetnek a tanító- és a validációs halmazba is; ezt a csoportos keresztvalidáció biztosítja.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="hiperparaméter-hangolás-és-beágyazott-keresztvalidáció" class="level3" data-number="7.2.3">
+<h3 data-number="7.2.3" class="anchored" data-anchor-id="hiperparaméter-hangolás-és-beágyazott-keresztvalidáció"><span class="header-section-number">7.2.3</span> Hiperparaméter-hangolás és beágyazott keresztvalidáció</h3>
+<p>A hiperparamétereket rendszerint rácskereséssel (az összes kombináció kipróbálásával) vagy véletlen kereséssel választjuk; utóbbi sok hiperparaméter esetén gyakran hatékonyabb, mert a fontos hiperparaméterek több különböző értékét próbálja ki <span class="citation" data-cites="bergstra2012">(<a href="../references.html#ref-bergstra2012" role="doc-biblioref">Bergstra &amp; Bengio, 2012</a>)</span>. A kiválasztott modell keresztvalidációs hibája azonban már optimista, hiszen a legjobbat választottuk ki sok közül. Torzítatlan becsléshez <strong>beágyazott</strong> keresztvalidáció kell: egy külső ciklus becsli a teljesítményt, és minden külső körben egy belső keresztvalidáció hangolja a hiperparamétereket, kizárólag a külső kör tanítórészén.</p>
+</section>
+</section>
+<section id="sec-regresszio-metrikak" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="sec-regresszio-metrikak"><span class="header-section-number">7.3</span> Regressziós mérőszámok</h2>
+<p>Ha <span class="math inline">\(y_k\)</span> a valódi, <span class="math inline">\(\hat y_k\)</span> az előrejelzett érték, a leggyakoribb mérőszámok:</p>
+<p><span id="eq-regresszio-metrikak"><span class="math display">\[
+\mathrm{MAE} = \frac1N\sum_{k}\lvert y_k - \hat y_k\rvert,\qquad
+\mathrm{RMSE} = \sqrt{\frac1N\sum_{k}(y_k - \hat y_k)^2},\qquad
+R^2 = 1 - \frac{\sum_k (y_k - \hat y_k)^2}{\sum_k (y_k - \bar y)^2} .
+\tag{7.4}\]</span></span></p>
+<p>Az MAE és az RMSE a célváltozó mértékegységében fejezi ki a hibát; az RMSE a nagy hibákat jobban bünteti. Az <span class="math inline">\(R^2\)</span> (determinációs együttható) azt méri, hogy a modell a célváltozó szórásnégyzetének mekkora hányadát magyarázza meg; az átlaggal való előrejelzés <span class="math inline">\(R^2 =
+0\)</span>-t ad, és új adatokon az <span class="math inline">\(R^2\)</span> negatív is lehet. A százalékos hibák (MAPE) könnyen értelmezhetők, de nulla közeli valódi értékeknél használhatatlanok.</p>
+</section>
+<section id="sec-osztalyozas-metrikak" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="sec-osztalyozas-metrikak"><span class="header-section-number">7.4</span> Osztályozási mérőszámok</h2>
+<section id="a-tévesztési-mátrix-és-a-belőle-származó-mérőszámok" class="level3" data-number="7.4.1">
+<h3 data-number="7.4.1" class="anchored" data-anchor-id="a-tévesztési-mátrix-és-a-belőle-származó-mérőszámok"><span class="header-section-number">7.4.1</span> A tévesztési mátrix és a belőle származó mérőszámok</h3>
+<p>Kétosztályos feladatban az egyik osztályt – rendszerint a ritkábbat, a „keresettet” (lemorzsolódó vevő, hibás termék) – <strong>pozitívnak</strong>, a másikat negatívnak nevezzük. A <strong>tévesztési mátrix</strong> (keveredési mátrix, confusion matrix) a valódi és az előrejelzett osztályok szerint négy cellába sorolja az eseteket (<a href="#fig-tevesztes" class="quarto-xref"><span>7.3</span></a>. ábra): valódi pozitív (TP), álnegatív (FN), álpozitív (FP), valódi negatív (TN).</p>
+<div id="fig-tevesztes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tevesztes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/07-tevesztes.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="ábra&nbsp;7.3.. A tévesztési mátrix és a belőle számolt fő mérőszámok. Az álpozitív a „téves riasztás”, az álnegatív a „kimaradt eset”."><img src="../figures/build/07-tevesztes.svg" class="img-fluid figure-img" style="width:95.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tevesztes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;7.3.. A tévesztési mátrix és a belőle számolt fő mérőszámok. Az álpozitív a „téves riasztás”, az álnegatív a „kimaradt eset”.
+</figcaption>
+</figure>
+</div>
+<p>A <strong>helyes arány</strong> (accuracy) a helyesen osztályozott esetek hányada. Kiegyensúlyozatlan osztályoknál félrevezető: ha a termékek 9%-a hibás, a „minden termék jó” triviális osztályozó is 91%-os helyes arányt ér el, miközben egyetlen hibát sem talál meg. Ezért az osztályonkénti mérőszámokat kell néznünk:</p>
+<ul>
+<li><strong>érzékenység</strong> (recall, sensitivity, valódi pozitív arány): a pozitívak hányadát találja meg a modell;</li>
+<li><strong>specificitás</strong> (valódi negatív arány): a negatívak hányadát sorolja helyesen;</li>
+<li><strong>pontosság</strong> (precision): a pozitívnak jelzett esetek hányada valóban pozitív;</li>
+<li>az <strong>F1-mérték</strong> a pontosság és az érzékenység harmonikus közepe, <span class="math inline">\(F_1 = 2PR/(P+R)\)</span>;</li>
+<li>a <strong>kiegyensúlyozott helyes arány</strong> az érzékenység és a specificitás átlaga.</li>
+</ul>
+<p>A magyar szakirodalomban a <em>precision</em> fordítása nem egységes (pontosság, megbízhatóság, precizitás); e könyvben a <em>pontosság</em> a precision, a <em>helyes arány</em> az accuracy megfelelője. Többosztályos feladatban a mérőszámokat osztályonként számoljuk, és átlagoljuk: a <em>makroátlag</em> minden osztályt egyenlő súllyal, a <em>súlyozott átlag</em> az osztályok gyakoriságával vesz figyelembe.</p>
+</section>
+<section id="a-roc-görbe-és-az-auc" class="level3" data-number="7.4.2">
+<h3 data-number="7.4.2" class="anchored" data-anchor-id="a-roc-görbe-és-az-auc"><span class="header-section-number">7.4.2</span> A ROC-görbe és az AUC</h3>
+<p>A legtöbb osztályozó nem csak osztálycímkét, hanem egy <strong>pontszámot</strong> (például a pozitív osztály becsült valószínűségét) ad, és a címkét egy küszöbérték határozza meg. A küszöb csökkentésével több esetet jelzünk pozitívnak: nő az érzékenység, de nő az álpozitívak aránya is. A <strong>ROC-görbe</strong> (receiver operating characteristic) az összes lehetséges küszöbre ábrázolja a valódi pozitív arányt az álpozitív arány (<span class="math inline">\(1 -\)</span> specificitás) függvényében <span class="citation" data-cites="fawcett2006">(<a href="../references.html#ref-fawcett2006" role="doc-biblioref">Fawcett, 2006</a>)</span>. A véletlen találgatás az átlót adja, a tökéletes osztályozó a bal felső sarkon halad át.</p>
+<p>A görbe alatti terület (<strong>AUC</strong>) egyetlen számban foglalja össze az osztályozó rangsorolási képességét. Fontos értelmezése: az AUC annak a valószínűsége, hogy egy véletlenszerűen választott pozitív eset pontszáma nagyobb, mint egy véletlenszerűen választott negatívé:</p>
+<p><span id="eq-auc"><span class="math display">\[
+\mathrm{AUC} = P\bigl(\hat s(\mathbf{x}^{+}) &gt; \hat s(\mathbf{x}^{-})\bigr).
+\tag{7.5}\]</span></span></p>
+<p>Az AUC független a küszöbtől és az osztályaránytól. Erősen kiegyensúlyozatlan feladatokban azonban túl kedvező képet adhat, mert a sok negatív eset miatt az álpozitív arány akkor is kicsi marad, ha az álpozitívak száma nagy. Ilyenkor informatívabb a <strong>pontosság–érzékenység (PR) görbe</strong> és az alatta lévő terület (átlagos pontosság) <span class="citation" data-cites="saito2015">(<a href="../references.html#ref-saito2015" role="doc-biblioref">Saito &amp; Rehmsmeier, 2015</a>)</span>. A PR-görbén a véletlen osztályozó szintje a pozitív osztály aránya.</p>
+</section>
+<section id="a-döntési-küszöb-megválasztása" class="level3" data-number="7.4.3">
+<h3 data-number="7.4.3" class="anchored" data-anchor-id="a-döntési-küszöb-megválasztása"><span class="header-section-number">7.4.3</span> A döntési küszöb megválasztása</h3>
+<p>Az alapértelmezett 0,5-ös küszöb ritkán optimális. A küszöbválasztás üzleti döntés: a két hibatípus költsége általában nagyon különböző. Ha egy lemorzsolódó vevő elvesztése <span class="math inline">\(C_{FN}\)</span>, egy fölösleges megtartási ajánlat <span class="math inline">\(C_{FP}\)</span> költséggel jár, és a modell valószínűségei jól kalibráltak, akkor az a döntés minimalizálja a várható költséget, amely pozitívnak jelöl minden esetet, ahol</p>
+<p><span id="eq-kuszob"><span class="math display">\[
+\hat p(\mathbf{x})\,C_{FN} &gt; \bigl(1-\hat p(\mathbf{x})\bigr)\,C_{FP}
+\quad\Longleftrightarrow\quad
+\hat p(\mathbf{x}) &gt; \frac{C_{FP}}{C_{FP}+C_{FN}} .
+\tag{7.6}\]</span></span></p>
+<p>Ha a kimaradt eset tízszer drágább a téves riasztásnál, az optimális küszöb <span class="math inline">\(1/11 \approx
+0{,}09\)</span> – messze a 0,5 alatt. A (<a href="#eq-kuszob" class="quarto-xref"><span>7.6</span></a>) képlet csak jól kalibrált valószínűségekre érvényes; egyébként a küszöböt egy validációs halmazon, a várható költség közvetlen minimalizálásával kell meghatározni.</p>
+</section>
+<section id="kalibráció" class="level3" data-number="7.4.4">
+<h3 data-number="7.4.4" class="anchored" data-anchor-id="kalibráció"><span class="header-section-number">7.4.4</span> Kalibráció</h3>
+<p>Egy osztályozó <strong>kalibrált</strong>, ha a becsült valószínűségei a valódi relatív gyakoriságokat tükrözik: azok közül az esetek közül, amelyekre 0,3-et becsül, nagyjából 30% legyen pozitív. A kalibrációt <strong>megbízhatósági diagrammal</strong> ellenőrizzük (a becsült valószínűségek intervallumaiban ábrázoljuk a tényleges pozitív arányt), a valószínűségek összesített minőségét pedig a <strong>Brier-pontszámmal</strong>, <span class="math inline">\(\frac1N\sum_k(\hat p_k - y_k)^2\)</span> <span class="citation" data-cites="brier1950">(<a href="../references.html#ref-brier1950" role="doc-biblioref">Brier, 1950</a>)</span>. Sok népszerű modell (például a döntési fák, a támaszvektor-gépek, a naiv Bayes) rosszul kalibrált valószínűségeket ad; ezek utólag kalibrálhatók (Platt-skálázás, izotonikus regresszió) <span class="citation" data-cites="niculescu2005">(<a href="../references.html#ref-niculescu2005" role="doc-biblioref">Niculescu-Mizil &amp; Caruana, 2005</a>)</span>.</p>
+</section>
+<section id="kiegyensúlyozatlan-osztályok" class="level3" data-number="7.4.5">
+<h3 data-number="7.4.5" class="anchored" data-anchor-id="kiegyensúlyozatlan-osztályok"><span class="header-section-number">7.4.5</span> Kiegyensúlyozatlan osztályok</h3>
+<p>Ha a pozitív osztály ritka, a tanulóalgoritmus a többségi osztályt „preferálja”. A fő kezelési lehetőségek <span class="citation" data-cites="he2009">(<a href="../references.html#ref-he2009" role="doc-biblioref">He &amp; Garcia, 2009</a>)</span>: (1) a költségek beépítése a tanításba (osztálysúlyozás, a <code>scikit-learn</code> <code>class_weight</code> paramétere); (2) újramintavételezés: a ritka osztály felülmintavételezése vagy a gyakori alulmintavételezése, illetve szintetikus pozitív esetek előállítása (SMOTE) <span class="citation" data-cites="chawla2002">(<a href="../references.html#ref-chawla2002" role="doc-biblioref">Chawla és mtsai., 2002</a>)</span>; (3) a döntési küszöb eltolása. Az újramintavételezést csak a tanítóhalmazon szabad végezni, a validációs és a teszthalmaz eredeti eloszlását meg kell őrizni. A gyakorlatban a küszöb megfelelő megválasztása és a súlyozás gyakran ugyanannyit ér, mint az újramintavételezés.</p>
+</section>
+</section>
+<section id="sec-osszehasonlitas" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="sec-osszehasonlitas"><span class="header-section-number">7.5</span> A modellek összehasonlítása</h2>
+<p>Két modell keresztvalidációs eredményeinek különbsége lehet véletlen is. Ugyanazokon a foldokon kiértékelt modellek eredményei páronként összehasonlíthatók, de a foldok eredményei nem függetlenek (a tanítóhalmazok átfednek), ezért a szokásos <span class="math inline">\(t\)</span>-próba túl gyakran mutat ki „szignifikáns” különbséget. Több adathalmazon végzett összehasonlításra nemparaméteres próbák ajánlottak <span class="citation" data-cites="demsar2006">(<a href="../references.html#ref-demsar2006" role="doc-biblioref">Demšar, 2006</a>)</span>. A legfontosabb gyakorlati szabály azonban egyszerűbb: <strong>mindig hasonlítsunk egy egyszerű viszonyítási modellhez</strong> (többségi osztály, átlag, előző érték), mert csak így derül ki, mennyit ér a bonyolult modell.</p>
+</section>
+<section id="sec-ertekeles-gyakorlat" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="sec-ertekeles-gyakorlat"><span class="header-section-number">7.6</span> Gyakorlat: lemorzsolódás és termékminőség</h2>
+<section id="a-pannonshop-lemorzsolódási-feladata" class="level3" data-number="7.6.1">
+<h3 data-number="7.6.1" class="anchored" data-anchor-id="a-pannonshop-lemorzsolódási-feladata"><span class="header-section-number">7.6.1</span> A PannonShop lemorzsolódási feladata</h3>
+<div class="eset-uzleti">
+<p>A lemorzsolódás-előrejelzés első és legfontosabb lépése a célváltozó pontos definiálása. A 2025. július 1-jei határnapot választjuk: a jellemzőket kizárólag az ezt megelőző vásárlásokból számoljuk, és azokat a vevőket tekintjük lemorzsolódónak, akik a megelőző évben vásároltak, de a határnapot követő fél évben nem. Így a tanítás során a modell pontosan azt az információt kapja, amely egy valós, július 1-jén meghozott döntéskor rendelkezésre állna.</p>
+</div>
+<div id="e71ee446" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>churn <span class="op">=</span> ab.churn_table(cutoff<span class="op">=</span><span class="st">"2025-07-01"</span>, horizon_days<span class="op">=</span><span class="dv">183</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>jell <span class="op">=</span> [<span class="st">"R_nap"</span>, <span class="st">"F_szamla"</span>, <span class="st">"M_ertek"</span>, <span class="st">"atl_kosarertek"</span>, <span class="st">"atl_kosarmeret"</span>, <span class="st">"atl_mennyiseg"</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"elso_vasarlas_nap"</span>, <span class="st">"akcios_arany"</span>, <span class="st">"arany_kave"</span>, <span class="st">"arany_gep"</span>, <span class="st">"arany_konyha"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"arany_dekor"</span>, <span class="st">"arany_ajandek"</span>, <span class="st">"arany_iroszer"</span>]</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> churn[jell], churn.lemorzsolodik</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"aktív vevők: </span><span class="sc">{</span><span class="bu">len</span>(y)<span class="sc">}</span><span class="ss">, lemorzsolódási arány: </span><span class="sc">{</span>y<span class="sc">.</span>mean()<span class="sc">:.1%}</span><span class="ss">"</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>aktív vevők: 1979, lemorzsolódási arány: 42.4%</code></pre>
+</div>
+</div>
+<p>Egy logisztikus regressziós modellt (<a href="09-osztalyozas.html" class="quarto-xref"><span>9</span></a>. fejezet) hasonlítunk össze a többségi osztályt előrejelző viszonyítási modellel, rétegzett 5-szörös keresztvalidációval. Az előfeldolgozás a folyamat része, így szivárgásmentes (<a href="03-adatelokeszites.html#sec-szivargas" class="quarto-xref"><span>3.7</span></a>. alfejezet).</p>
+<div id="2ac0aa24" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> FunctionTransformer, StandardScaler</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> SimpleImputer</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.dummy <span class="im">import</span> DummyClassifier</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> StratifiedKFold, cross_validate, cross_val_predict</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>elo <span class="op">=</span> make_pipeline(SimpleImputer(strategy<span class="op">=</span><span class="st">"median"</span>), FunctionTransformer(np.log1p), StandardScaler())</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>modellek <span class="op">=</span> {</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"többségi osztály"</span>: DummyClassifier(strategy<span class="op">=</span><span class="st">"most_frequent"</span>),</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"logisztikus regresszió"</span>: make_pipeline(elo, LogisticRegression(max_iter<span class="op">=</span><span class="dv">2000</span>)),</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>metrikak <span class="op">=</span> [<span class="st">"accuracy"</span>, <span class="st">"balanced_accuracy"</span>, <span class="st">"precision"</span>, <span class="st">"recall"</span>, <span class="st">"f1"</span>, <span class="st">"roc_auc"</span>, <span class="st">"average_precision"</span>]</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({nev: {m: cross_validate(mod, X, y, cv<span class="op">=</span>cv, scoring<span class="op">=</span>metrikak)[<span class="ss">f"test_</span><span class="sc">{</span>m<span class="sc">}</span><span class="ss">"</span>].mean()</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">for</span> m <span class="kw">in</span> metrikak} <span class="cf">for</span> nev, mod <span class="kw">in</span> modellek.items()}).<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">többségi osztály</th>
+<th data-quarto-table-cell-role="th">logisztikus regresszió</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">accuracy</th>
+<td>0.576</td>
+<td>0.728</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">balanced_accuracy</th>
+<td>0.500</td>
+<td>0.719</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">precision</th>
+<td>0.000</td>
+<td>0.687</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">recall</th>
+<td>0.000</td>
+<td>0.661</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">f1</th>
+<td>0.000</td>
+<td>0.674</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">roc_auc</th>
+<td>0.500</td>
+<td>0.790</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">average_precision</th>
+<td>0.424</td>
+<td>0.700</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>A többségi osztályt előrejelző modell helyes aránya is jelentős, mert a vevők többsége nem morzsolódik le; az érzékenysége és a pontossága viszont nulla. A logisztikus regresszió minden mérőszámon jobb, az AUC alapján rangsorolási képessége jó.</p>
+<div id="cell-fig-roc-pr" class="cell" data-fig-height="3.1" data-fig-width="7" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_curve, precision_recall_curve, roc_auc_score, average_precision_score</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>p_cv <span class="op">=</span> cross_val_predict(modellek[<span class="st">"logisztikus regresszió"</span>], X, y, cv<span class="op">=</span>cv, method<span class="op">=</span><span class="st">"predict_proba"</span>)[:, <span class="dv">1</span>]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>fpr, tpr, _ <span class="op">=</span> roc_curve(y, p_cv)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>prec, rec, _ <span class="op">=</span> precision_recall_curve(y, p_cv)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].plot(fpr, tpr, color<span class="op">=</span>ab.PALETTE[<span class="dv">0</span>], label<span class="op">=</span><span class="ss">f"AUC = </span><span class="sc">{</span>roc_auc_score(y, p_cv)<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], ls<span class="op">=</span><span class="st">"--"</span>, color<span class="op">=</span><span class="st">"0.6"</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_xlabel(<span class="st">"álpozitív arány (1 − specificitás)"</span>)<span class="op">;</span> ax[<span class="dv">0</span>].set_ylabel(<span class="st">"érzékenység"</span>)<span class="op">;</span> ax[<span class="dv">0</span>].legend(loc<span class="op">=</span><span class="st">"lower right"</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].plot(rec, prec, color<span class="op">=</span>ab.PALETTE[<span class="dv">1</span>], label<span class="op">=</span><span class="ss">f"átlagos pontosság = </span><span class="sc">{</span>average_precision_score(y, p_cv)<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].axhline(y.mean(), ls<span class="op">=</span><span class="st">"--"</span>, color<span class="op">=</span><span class="st">"0.6"</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_xlabel(<span class="st">"érzékenység"</span>)<span class="op">;</span> ax[<span class="dv">1</span>].set_ylabel(<span class="st">"pontosság"</span>)<span class="op">;</span> ax[<span class="dv">1</span>].legend(loc<span class="op">=</span><span class="st">"lower left"</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-roc-pr" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-roc-pr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="07-modellertekeles_files/figure-html/fig-roc-pr-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="ábra&nbsp;7.4.. A lemorzsolódás-előrejelző logisztikus regresszió ROC-görbéje (balra) és pontosság–érzékenység görbéje (jobbra), keresztvalidált előrejelzésekből. A szaggatott vonal a véletlen osztályozó szintje."><img src="07-modellertekeles_files/figure-html/fig-roc-pr-output-1.png" width="693" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-roc-pr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;7.4.. A lemorzsolódás-előrejelző logisztikus regresszió ROC-görbéje (balra) és pontosság–érzékenység görbéje (jobbra), keresztvalidált előrejelzésekből. A szaggatott vonal a véletlen osztályozó szintje.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Tegyük fel, hogy egy megtartási ajánlat (kupon) költsége 2 000 Ft, egy lemorzsolódó vevő elvesztése pedig átlagosan 20 000 Ft kiesett fedezetet jelent, és az ajánlat a megkeresett lemorzsolódók felét tartja meg. Ekkor egy álpozitív 2 000 Ft, egy álnegatív 20 000 Ft veszteség, egy valódi pozitív pedig <span class="math inline">\(2\,000 + 0{,}5\cdot 20\,000 = 12\,000\)</span> Ft. A várható költséget a küszöb függvényében a keresztvalidált valószínűségekből számoljuk:</p>
+<div id="cell-fig-kuszob-koltseg" class="cell" data-fig-height="2.8" data-fig-width="5.5" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>C_FP, C_FN, C_TP <span class="op">=</span> <span class="dv">2_000</span>, <span class="dv">20_000</span>, <span class="dv">2_000</span> <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="dv">20_000</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>kuszobok <span class="op">=</span> np.linspace(<span class="fl">0.01</span>, <span class="fl">0.99</span>, <span class="dv">99</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>koltseg <span class="op">=</span> []</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> kuszobok:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    jelolt <span class="op">=</span> p_cv <span class="op">&gt;=</span> t</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    tp, fp <span class="op">=</span> np.<span class="bu">sum</span>(jelolt <span class="op">&amp;</span> (y <span class="op">==</span> <span class="dv">1</span>)), np.<span class="bu">sum</span>(jelolt <span class="op">&amp;</span> (y <span class="op">==</span> <span class="dv">0</span>))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    fn <span class="op">=</span> np.<span class="bu">sum</span>(<span class="op">~</span>jelolt <span class="op">&amp;</span> (y <span class="op">==</span> <span class="dv">1</span>))</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    koltseg.append((tp <span class="op">*</span> C_TP <span class="op">+</span> fp <span class="op">*</span> C_FP <span class="op">+</span> fn <span class="op">*</span> C_FN) <span class="op">/</span> <span class="bu">len</span>(y))</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>koltseg <span class="op">=</span> np.array(koltseg)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>t_opt <span class="op">=</span> kuszobok[koltseg.argmin()]</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>ax.plot(kuszobok, koltseg <span class="op">/</span> <span class="dv">1000</span>, color<span class="op">=</span>ab.PALETTE[<span class="dv">0</span>])</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>ax.axvline(t_opt, color<span class="op">=</span>ab.PALETTE[<span class="dv">1</span>], ls<span class="op">=</span><span class="st">"--"</span>)<span class="op">;</span> ax.axvline(<span class="fl">0.5</span>, color<span class="op">=</span><span class="st">"0.6"</span>, ls<span class="op">=</span><span class="st">":"</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"döntési küszöb"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"várható költség [ezer Ft/vevő]"</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>ft <span class="op">=</span> <span class="kw">lambda</span> v: <span class="ss">f"</span><span class="sc">{</span>v<span class="sc">:,.0f}</span><span class="ss">"</span>.replace(<span class="st">","</span>, <span class="st">" "</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"optimális küszöb: </span><span class="sc">{</span>t_opt<span class="sc">:.2f}</span><span class="ss">;  költség: </span><span class="sc">{</span>ft(koltseg.<span class="bu">min</span>())<span class="sc">}</span><span class="ss"> Ft/vevő "</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"(a 0,5-ös küszöbnél </span><span class="sc">{</span>ft(koltseg[<span class="dv">49</span>])<span class="sc">}</span><span class="ss"> Ft/vevő)"</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>optimális küszöb: 0.27;  költség: 6 015 Ft/vevő (a 0,5-ös küszöbnél 6 501 Ft/vevő)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-kuszob-koltseg" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kuszob-koltseg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="07-modellertekeles_files/figure-html/fig-kuszob-koltseg-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="ábra&nbsp;7.5.. A lemorzsolódás-kezelés várható költsége vevőnként a döntési küszöb függvényében. A minimum messze a 0,5-ös alapértelmezés alatt van, mert a kimaradt lemorzsolódó vevő sokkal drágább a fölösleges ajánlatnál."><img src="07-modellertekeles_files/figure-html/fig-kuszob-koltseg-output-2.png" width="693" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kuszob-koltseg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;7.5.. A lemorzsolódás-kezelés várható költsége vevőnként a döntési küszöb függvényében. A minimum messze a 0,5-ös alapértelmezés alatt van, mert a kimaradt lemorzsolódó vevő sokkal drágább a fölösleges ajánlatnál.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A költségoptimális küszöb jóval kisebb a 0,5-nél, és a megtakarítás vevőnként érezhető. Ugyanaz a modell tehát a küszöbtől függően nagyon különböző üzleti eredményt adhat – a modell kiértékelését mindig a felhasználási döntéssel együtt kell végezni.</p>
+<div id="cell-fig-kalibracio" class="cell" data-fig-height="3.4" data-fig-width="4.2" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.calibration <span class="im">import</span> calibration_curve</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> brier_score_loss</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>frac, mean_p <span class="op">=</span> calibration_curve(y, p_cv, n_bins<span class="op">=</span><span class="dv">10</span>, strategy<span class="op">=</span><span class="st">"quantile"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>ax.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], ls<span class="op">=</span><span class="st">"--"</span>, color<span class="op">=</span><span class="st">"0.6"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ax.plot(mean_p, frac, marker<span class="op">=</span><span class="st">"o"</span>, color<span class="op">=</span>ab.PALETTE[<span class="dv">0</span>], label<span class="op">=</span><span class="ss">f"Brier = </span><span class="sc">{</span>brier_score_loss(y, p_cv)<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"becsült valószínűség"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"tényleges arány"</span>)<span class="op">;</span> ax.legend(loc<span class="op">=</span><span class="st">"upper left"</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-kalibracio" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kalibracio-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="07-modellertekeles_files/figure-html/fig-kalibracio-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="ábra&nbsp;7.6.. A lemorzsolódási valószínűségek megbízhatósági diagramja: a becsült valószínűségek tizedeiben a tényleges lemorzsolódási arány. A logisztikus regresszió jól kalibrált, a pontok közel vannak az átlóhoz."><img src="07-modellertekeles_files/figure-html/fig-kalibracio-output-1.png" width="693" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kalibracio-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;7.6.. A lemorzsolódási valószínűségek megbízhatósági diagramja: a becsült valószínűségek tizedeiben a tényleges lemorzsolódási arány. A logisztikus regresszió jól kalibrált, a pontok közel vannak az átlóhoz.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="a-pannon-üzem-termékminőségi-feladata" class="level3" data-number="7.6.2">
+<h3 data-number="7.6.2" class="anchored" data-anchor-id="a-pannon-üzem-termékminőségi-feladata"><span class="header-section-number">7.6.2</span> A Pannon üzem termékminőségi feladata</h3>
+<div class="eset-mernoki">
+<p>A laborminták mintegy 9%-a nem felel meg a specifikációnak. Szeretnénk a laboreredmény megérkezése előtt, a folyamatváltozókból előre jelezni a nem megfelelő tételeket. Ez egy kiegyensúlyozatlan osztályozási feladat, amelyben ráadásul az adatok időbeli sorrendje is számít.</p>
+</div>
+<div id="3901b919" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ab.quality_table()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>vlt <span class="op">=</span> [<span class="st">"T_kornyezet"</span>, <span class="st">"F_betap"</span>, <span class="st">"c_betap"</span>, <span class="st">"T_reaktor"</span>, <span class="st">"F_hutoviz"</span>, <span class="st">"T_hutoviz"</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>       <span class="st">"P_reaktor"</span>, <span class="st">"P_kevero"</span>, <span class="st">"E_fogyasztas"</span>, <span class="st">"dT"</span>]</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>Xq, yq <span class="op">=</span> q[vlt], (<span class="op">~</span>q.megfelelo).astype(<span class="bu">int</span>)              <span class="co"># pozitív osztály: nem megfelelő</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"minták: </span><span class="sc">{</span><span class="bu">len</span>(yq)<span class="sc">}</span><span class="ss">, nem megfelelő arány: </span><span class="sc">{</span>yq<span class="sc">.</span>mean()<span class="sc">:.1%}</span><span class="ss">"</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>osztalyozo <span class="op">=</span> make_pipeline(StandardScaler(), LogisticRegression(max_iter<span class="op">=</span><span class="dv">2000</span>))</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>sulyozott <span class="op">=</span> make_pipeline(StandardScaler(), LogisticRegression(max_iter<span class="op">=</span><span class="dv">2000</span>, class_weight<span class="op">=</span><span class="st">"balanced"</span>))</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>minták: 2176, nem megfelelő arány: 8.7%</code></pre>
+</div>
+</div>
+<p>Először azt vizsgáljuk meg, mennyire számít a validációs séma. A véletlen keresztvalidációt összevetjük az idősoros (gördülő kezdetű) validációval:</p>
+<div id="794ea175" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> KFold, TimeSeriesSplit</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>erdo <span class="op">=</span> RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">300</span>, min_samples_leaf<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span><span class="dv">0</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>semak <span class="op">=</span> {<span class="st">"véletlen 5-szörös"</span>: KFold(<span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">0</span>), <span class="st">"idősoros 5-szörös"</span>: TimeSeriesSplit(<span class="dv">5</span>)}</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>sor <span class="op">=</span> {}</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nev_m, mod <span class="kw">in</span> {<span class="st">"logisztikus regresszió"</span>: osztalyozo, <span class="st">"véletlen erdő"</span>: erdo}.items():</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> nev_s, s <span class="kw">in</span> semak.items():</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> cross_validate(mod, Xq, yq, cv<span class="op">=</span>s, scoring<span class="op">=</span>[<span class="st">"roc_auc"</span>, <span class="st">"average_precision"</span>])</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        sor[(nev_m, nev_s)] <span class="op">=</span> {<span class="st">"AUC"</span>: r[<span class="st">"test_roc_auc"</span>].mean(), <span class="st">"átlagos pontosság"</span>: r[<span class="st">"test_average_precision"</span>].mean()}</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(sor).T.<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">AUC</th>
+<th data-quarto-table-cell-role="th">átlagos pontosság</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th rowspan="2" data-quarto-table-cell-role="th" data-valign="top">logisztikus regresszió</th>
+<th data-quarto-table-cell-role="th">véletlen 5-szörös</th>
+<td>0.591</td>
+<td>0.292</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">idősoros 5-szörös</th>
+<td>0.550</td>
+<td>0.168</td>
+</tr>
+<tr class="odd">
+<th rowspan="2" data-quarto-table-cell-role="th" data-valign="top">véletlen erdő</th>
+<th data-quarto-table-cell-role="th">véletlen 5-szörös</th>
+<td>0.958</td>
+<td>0.763</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">idősoros 5-szörös</th>
+<td>0.863</td>
+<td>0.532</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Két tanulság is kiolvasható a táblázatból. Egyrészt a véletlen erdő (<a href="09-osztalyozas.html" class="quarto-xref"><span>9</span></a>. fejezet) a véletlen felosztásnál lényegesen jobbnak tűnik, mint idősoros validációnál. Ennek oka az időbeli függőség: a véletlen felosztásnál egy validációs minta szomszédos, szinte azonos körülmények között vett mintái a tanítóhalmazban vannak, és a rugalmas modell „megjegyzi” ezeket a körülményeket. Az idősoros validáció a valós alkalmazást tükrözi: a modellnek a jövőbeli, esetleg korábban nem látott helyzetekre kell előre jeleznie. Másrészt a logisztikus regresszió itt gyenge: a minőségi eltérés a célértéktől mindkét irányban bekövetkezhet (túl kicsi és túl nagy konverzió, illetve túlmelegedés), amit egyetlen lineáris döntési határ nem tud leírni – erre a <a href="09-osztalyozas.html" class="quarto-xref"><span>9</span></a>. fejezet nemlineáris modelljei adnak megoldást.</p>
+<p>Végül a kiegyensúlyozatlanság kezelését vizsgáljuk a véletlen erdővel. Az utolsó negyedév adatai alkotják a teszthalmazt, a modellt az azt megelőző időszakon tanítjuk:</p>
+<div id="c80ea8be" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>vagas <span class="op">=</span> q.ido <span class="op">&gt;=</span> <span class="st">"2025-10-01"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>Xtr, Xte, ytr, yte <span class="op">=</span> Xq[<span class="op">~</span>vagas], Xq[vagas], yq[<span class="op">~</span>vagas], yq[vagas]</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>erdo_s <span class="op">=</span> RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">300</span>, min_samples_leaf<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span><span class="dv">0</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                                class_weight<span class="op">=</span><span class="st">"balanced_subsample"</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>p_erdo <span class="op">=</span> erdo.fit(Xtr, ytr).predict_proba(Xte)[:, <span class="dv">1</span>]</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>p_suly <span class="op">=</span> erdo_s.fit(Xtr, ytr).predict_proba(Xte)[:, <span class="dv">1</span>]</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nev, p, t <span class="kw">in</span> [(<span class="st">"küszöb 0,5"</span>, p_erdo, <span class="fl">0.5</span>), (<span class="st">"küszöb 0,3"</span>, p_erdo, <span class="fl">0.3</span>), (<span class="st">"küszöb 0,15"</span>, p_erdo, <span class="fl">0.15</span>),</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>                  (<span class="st">"osztálysúlyozás, küszöb 0,5"</span>, p_suly, <span class="fl">0.5</span>)]:</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    tn, fp, fn, tp <span class="op">=</span> confusion_matrix(yte, p <span class="op">&gt;=</span> t).ravel()</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>nev<span class="sc">:28s}</span><span class="ss"> TP=</span><span class="sc">{</span>tp<span class="sc">:3d}</span><span class="ss"> FN=</span><span class="sc">{</span>fn<span class="sc">:3d}</span><span class="ss"> FP=</span><span class="sc">{</span>fp<span class="sc">:3d}</span><span class="ss"> TN=</span><span class="sc">{</span>tn<span class="sc">:4d}</span><span class="ss">  "</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"érzékenység=</span><span class="sc">{</span>tp <span class="op">/</span> (tp <span class="op">+</span> fn)<span class="sc">:.2f}</span><span class="ss">  pontosság=</span><span class="sc">{</span>tp <span class="op">/</span> <span class="bu">max</span>(tp <span class="op">+</span> fp, <span class="dv">1</span>)<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>küszöb 0,5                   TP= 10 FN= 29 FP=  1 TN= 508  érzékenység=0.26  pontosság=0.91
+küszöb 0,3                   TP= 16 FN= 23 FP=  6 TN= 503  érzékenység=0.41  pontosság=0.73
+küszöb 0,15                  TP= 32 FN=  7 FP= 34 TN= 475  érzékenység=0.82  pontosság=0.48
+osztálysúlyozás, küszöb 0,5  TP= 12 FN= 27 FP=  5 TN= 504  érzékenység=0.31  pontosság=0.71</code></pre>
+</div>
+</div>
+<p>Az alapértelmezett 0,5-ös küszöbbel a modell a nem megfelelő tételeknek csak kis részét találja meg, igaz, nagy pontossággal. A küszöb csökkentése – és kisebb mértékben az osztálysúlyozás is – az érzékenységet növeli a pontosság rovására. Hogy melyik működési pont a jobb, az ismét a hibák költségétől függ: egy kimaradt selejtes tétel kiszállítása többnyire sokkal drágább, mint egy fölösleges soron kívüli laborvizsgálat.</p>
+<div class="pe-app"><div class="pe-app-bar"><span>Döntési küszöb, tévesztési mátrix, ROC- és PR-görbe</span><a href="../apps/roc-kuszob.html" target="_blank" rel="noopener">Megnyitás új lapon ↗</a></div><iframe src="../apps/roc-kuszob.html" style="height:600px" loading="lazy" title="Döntési küszöb, tévesztési mátrix, ROC- és PR-görbe"></iframe></div>
+<div class="pe-badges"><a href="https://colab.research.google.com/github/ComplexSystemsIntelligence/adatbanyaszat/blob/main/notebooks/07-modellertekeles.ipynb" target="_blank" rel="noopener">▶ Colab: 7. fejezet – modellértékelés</a><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/notebooks/07-modellertekeles.ipynb" target="_blank" rel="noopener">GitHub forrás</a></div>
+</section>
+</section>
+<section id="sec-ertekeles-osszefoglalas" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="sec-ertekeles-osszefoglalas"><span class="header-section-number">7.7</span> Összefoglalás</h2>
+<ul>
+<li>A cél az általánosítás: a tanítóhiba az általánosítási hiba optimista becslése; a túl rugalmas modell túltanul, a túl merev alultanul.</li>
+<li>Négyzetes veszteségre a várható hiba a zaj, a torzítás négyzete és a variancia összege (<a href="#eq-torzitas-variancia" class="quarto-xref"><span>7.2</span></a>).</li>
+<li>A hiperparaméterek hangolására validációs halmazt vagy keresztvalidációt, a végső értékelésre érintetlen teszthalmazt vagy beágyazott keresztvalidációt kell használni.</li>
+<li>Idősorokban és csoportos adatokban a véletlen felosztás optimista; ilyenkor idősoros, illetve csoportos validáció kell.</li>
+<li>Kiegyensúlyozatlan osztályoknál a helyes arány félrevezető; az érzékenység, a pontosság, az F1, a PR-görbe és a költségalapú értékelés informatívabb.</li>
+<li>A döntési küszöb üzleti döntés; kalibrált valószínűségek esetén a hibák költségéből közvetlenül számolható (<a href="#eq-kuszob" class="quarto-xref"><span>7.6</span></a>).</li>
+</ul>
+</section>
+<section id="ellenőrző-kérdések" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="ellenőrző-kérdések">Ellenőrző kérdések</h2>
+<ol type="1">
+<li>Miért optimista becslés a tanítóhiba? Mikor nagyobb az optimizmus?</li>
+<li>Mit jelent a torzítás és a variancia? Hogyan változnak a modell rugalmasságának növelésével?</li>
+<li>Miért nem szabad a teszthalmazon hangolni a hiperparamétereket?</li>
+<li>Miért ad optimista becslést a véletlen keresztvalidáció idősorokon?</li>
+<li>Egy osztályozó érzékenysége 0,9, specificitása 0,9, a pozitív osztály aránya 1%. Mekkora a pontossága?</li>
+<li>Mi az AUC valószínűségi jelentése? Mikor informatívabb a PR-görbe?</li>
+<li>Ha egy kimaradt hiba ötször drágább egy téves riasztásnál, mekkora a (<a href="#eq-kuszob" class="quarto-xref"><span>7.6</span></a>) szerinti optimális küszöb?</li>
+</ol>
+</section>
+<section id="feladatok" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="feladatok">Feladatok</h2>
+<ol type="1">
+<li><strong>Torzítás és variancia kísérletileg.</strong> Ismételje meg a polinomillesztést 200 különböző véletlen tanítóhalmazon, és egy rögzített <span class="math inline">\(x_0\)</span> pontban becsülje meg a torzítást és a varianciát a fokszám függvényében! Ellenőrizze a (<a href="#eq-torzitas-variancia" class="quarto-xref"><span>7.2</span></a>) felbontást!</li>
+<li><strong>Keresztvalidációs becslés szórása.</strong> Futtassa a lemorzsolódási modell 5-szörös keresztvalidációját 20 különböző véletlen felosztással! Mekkora az AUC-becslés szórása? Hogyan változik 10-szeres keresztvalidációval?</li>
+<li><strong>Csoportos validáció.</strong> Készítsen olyan lemorzsolódási táblát, amelyben ugyanaz a vevő több határnaphoz (2025. január 1., április 1., július 1.) is szerepel! Hasonlítsa össze a véletlen és a vevőnkénti csoportos (<code>GroupKFold</code>) keresztvalidáció eredményét!</li>
+<li><strong>Kalibráció.</strong> Vizsgálja meg a véletlen erdő valószínűségeinek kalibrációját a minőségi feladaton, és kalibrálja őket izotonikus regresszióval (<code>CalibratedClassifierCV</code>)!</li>
+<li><strong>Költségérzékenység.</strong> Hogyan változik az optimális küszöb és a várható költség, ha a kupon csak a megkeresett lemorzsolódók 20%-át tartja meg?</li>
+</ol>
+</section>
+<section id="további-olvasmányok" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="további-olvasmányok">További olvasmányok</h2>
+<p>A torzítás–variancia felbontás és a modellválasztás elméletét <span class="citation" data-cites="hastie2009">Hastie és mtsai. (<a href="../references.html#ref-hastie2009" role="doc-biblioref">2009</a>)</span> és <span class="citation" data-cites="james2023">James és mtsai. (<a href="../references.html#ref-james2023" role="doc-biblioref">2023</a>)</span> tárgyalja. A keresztvalidációról <span class="citation" data-cites="kohavi1995">Kohavi (<a href="../references.html#ref-kohavi1995" role="doc-biblioref">1995</a>)</span>, az idősoros validációról <span class="citation" data-cites="bergmeir2012">Bergmeir &amp; Benítez (<a href="../references.html#ref-bergmeir2012" role="doc-biblioref">2012</a>)</span> ad áttekintést. A ROC-analízis bevezetése <span class="citation" data-cites="fawcett2006">Fawcett (<a href="../references.html#ref-fawcett2006" role="doc-biblioref">2006</a>)</span>, a PR-görbék előnyeiről <span class="citation" data-cites="saito2015">Saito &amp; Rehmsmeier (<a href="../references.html#ref-saito2015" role="doc-biblioref">2015</a>)</span> ír. A kalibrációról <span class="citation" data-cites="niculescu2005">Niculescu-Mizil &amp; Caruana (<a href="../references.html#ref-niculescu2005" role="doc-biblioref">2005</a>)</span>, a kiegyensúlyozatlan tanulásról <span class="citation" data-cites="he2009">He &amp; Garcia (<a href="../references.html#ref-he2009" role="doc-biblioref">2009</a>)</span> olvasható. Az osztályozók statisztikai összehasonlításának módszertanát <span class="citation" data-cites="demsar2006">Demšar (<a href="../references.html#ref-demsar2006" role="doc-biblioref">2006</a>)</span> foglalja össze.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-bergmeir2012" class="csl-entry" role="listitem">
+Bergmeir, C., &amp; Benítez, J. M. (2012). On the use of cross-validation for time series predictor evaluation. <em>Information Sciences</em>, <em>191</em>, 192–213.
+</div>
+<div id="ref-bergstra2012" class="csl-entry" role="listitem">
+Bergstra, J., &amp; Bengio, Y. (2012). Random Search for Hyper-Parameter Optimization. <em>Journal of Machine Learning Research</em>, <em>13</em>, 281–305.
+</div>
+<div id="ref-brier1950" class="csl-entry" role="listitem">
+Brier, G. W. (1950). Verification of forecasts expressed in terms of probability. <em>Monthly Weather Review</em>, <em>78</em>(1), 1–3.
+</div>
+<div id="ref-chawla2002" class="csl-entry" role="listitem">
+Chawla, N. V., Bowyer, K. W., Hall, L. O., &amp; Kegelmeyer, W. P. (2002). <span>SMOTE</span>: Synthetic Minority Over-sampling Technique. <em>Journal of Artificial Intelligence Research</em>, <em>16</em>, 321–357.
+</div>
+<div id="ref-demsar2006" class="csl-entry" role="listitem">
+Demšar, J. (2006). Statistical Comparisons of Classifiers over Multiple Data Sets. <em>Journal of Machine Learning Research</em>, <em>7</em>, 1–30.
+</div>
+<div id="ref-fawcett2006" class="csl-entry" role="listitem">
+Fawcett, T. (2006). An introduction to <span>ROC</span> analysis. <em>Pattern Recognition Letters</em>, <em>27</em>(8), 861–874.
+</div>
+<div id="ref-geman1992" class="csl-entry" role="listitem">
+Geman, S., Bienenstock, E., &amp; Doursat, R. (1992). Neural Networks and the Bias/Variance Dilemma. <em>Neural Computation</em>, <em>4</em>(1), 1–58.
+</div>
+<div id="ref-hastie2009" class="csl-entry" role="listitem">
+Hastie, T., Tibshirani, R., &amp; Friedman, J. (2009). <em>The Elements of Statistical Learning: Data Mining, Inference, and Prediction</em> (2. kiad.). Springer.
+</div>
+<div id="ref-he2009" class="csl-entry" role="listitem">
+He, H., &amp; Garcia, E. A. (2009). Learning from Imbalanced Data. <em>IEEE Transactions on Knowledge and Data Engineering</em>, <em>21</em>(9), 1263–1284.
+</div>
+<div id="ref-james2023" class="csl-entry" role="listitem">
+James, G., Witten, D., Hastie, T., Tibshirani, R., &amp; Taylor, J. (2023). <em>An Introduction to Statistical Learning with Applications in Python</em>. Springer. <a href="https://doi.org/10.1007/978-3-031-38747-0">https://doi.org/10.1007/978-3-031-38747-0</a>
+</div>
+<div id="ref-kohavi1995" class="csl-entry" role="listitem">
+Kohavi, R. (1995). A Study of Cross-Validation and Bootstrap for Accuracy Estimation and Model Selection. <em>Proceedings of the 14th International Joint Conference on Artificial Intelligence</em>, 1137–1145.
+</div>
+<div id="ref-niculescu2005" class="csl-entry" role="listitem">
+Niculescu-Mizil, A., &amp; Caruana, R. (2005). Predicting Good Probabilities with Supervised Learning. <em>Proceedings of the 22nd International Conference on Machine Learning</em>, 625–632.
+</div>
+<div id="ref-saito2015" class="csl-entry" role="listitem">
+Saito, T., &amp; Rehmsmeier, M. (2015). The Precision-Recall Plot Is More Informative than the <span>ROC</span> Plot When Evaluating Binary Classifiers on Imbalanced Datasets. <em>PLoS ONE</em>, <em>10</em>(3), e0118432.
+</div>
+<div id="ref-stone1974" class="csl-entry" role="listitem">
+Stone, M. (1974). Cross-Validatory Choice and Assessment of Statistical Predictions. <em>Journal of the Royal Statistical Society: Series B</em>, <em>36</em>(2), 111–147.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script>
+/* Magyar ábra- és táblázatfelirat-sorrend a HTML-kiadásban: "ábra 1.1." -> "1.1. ábra." */
+document.addEventListener("DOMContentLoaded", function () {
+  const re = /^(ábra|táblázat|algoritmus)\s+([0-9A-Z]+(?:\.[0-9]+)*)\.?\s*/i;
+  document.querySelectorAll("figcaption, .figure-caption, caption, .quarto-float-caption").forEach(function (el) {
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const t = w.nextNode();
+    if (!t) return;
+    const m = t.nodeValue.match(re);
+    if (m) { t.nodeValue = t.nodeValue.replace(re, m[2] + ". " + m[1].toLowerCase() + ". "); }
+  });
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kimásolva!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kimásolva!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/complexsystemsintelligence\.github\.io\/adatbanyaszat\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/06-asszociacios-szabalyok.html" class="pagination-link" aria-label="Gyakori mintázatok és asszociációs szabályok">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Gyakori mintázatok és asszociációs szabályok</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/08-regresszio.html" class="pagination-link" aria-label="Regresszió">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regresszió</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/chapters/07-modellertekeles.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/chapters/07-modellertekeles.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>

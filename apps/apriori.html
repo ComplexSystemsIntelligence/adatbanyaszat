@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Apriori: gyakori elemhalmazok és asszociációs szabályok</title><link rel="stylesheet" href="common.css"><script src="common.js"></script></head><body>
+<header><h1>Apriori: gyakori elemhalmazok és asszociációs szabályok</h1><p>Írja át a kosarakat, és figyelje, hogyan változnak a gyakori elemhalmazok és a szabályok a küszöbök függvényében.</p></header>
+<main>
+<div class="controls">
+  <label>Kosarak (soronként egy, vesszővel elválasztva)</label>
+  <textarea id="tx" rows="9">kávé, tej, cukor
+kávé, tej
+kávé, keksz
+tea, keksz
+kávé, tej, keksz
+tea, citrom, cukor
+kávé, tej, cukor
+tea, keksz, citrom</textarea>
+  <label>Minimális támogatottság (darab) <span class="val" id="ms-v"></span></label><input type="range" id="ms" min="1" max="6" value="3">
+  <label>Minimális bizonyosság <span class="val" id="mc-v"></span></label><input type="range" id="mc" min="0.1" max="1" step="0.05" value="0.6">
+  <div class="note">Apriori-elv: egy elemhalmaz csak akkor lehet gyakori, ha minden részhalmaza gyakori. A lift > 1 pozitív, a lift < 1 negatív együttjárást jelez.</div>
+</div>
+<div class="panel"><div id="out"></div></div>
+</main>
+<script>
+function run() { const T = document.getElementById("tx").value.split("\n").map(l => [...new Set(l.split(",").map(s => s.trim().toLowerCase()).filter(Boolean))]).filter(t => t.length);
+  const ms = PE.v("ms"), mc = PE.v("mc"), N = T.length, sup = I => T.filter(t => I.every(i => t.includes(i))).length, key = I => I.join(" + ");
+  let L = [...new Set(T.flat())].sort().map(i => [i]).filter(I => sup(I) >= ms); const all = []; let k = 1, html = "";
+  while (L.length) { all.push(...L); html += `<b>${k}-elemű gyakori halmazok</b>: ` + L.map(I => `{${key(I)}} (${sup(I)})`).join(", ") + "<br>";
+    const C = []; for (let i = 0; i < L.length; i++) for (let j = i + 1; j < L.length; j++) { const a = L[i], b = L[j];
+      if (a.slice(0, -1).join() === b.slice(0, -1).join()) { const c = [...a, b[b.length - 1]].sort(); if (!C.some(x => x.join() === c.join())) C.push(c); } }
+    const pruned = C.filter(c => c.every((_, r) => L.some(l => l.join() === c.filter((_, q) => q !== r).join())));
+    L = pruned.filter(c => sup(c) >= ms); k++; }
+  const rules = []; all.filter(I => I.length > 1).forEach(I => { const n = I.length;
+    for (let m = 1; m < (1 << n) - 1; m++) { const A = I.filter((_, i) => m & (1 << i)), B = I.filter((_, i) => !(m & (1 << i))), c = sup(I) / sup(A);
+      if (c >= mc) rules.push({ A, B, s: sup(I) / N, c, l: c / (sup(B) / N) }); } });
+  rules.sort((a, b) => b.l - a.l || b.c - a.c);
+  html += `<br><table class="t"><tr><th style="text-align:left">szabály</th><th>támogatottság</th><th>bizonyosság</th><th>lift</th></tr>` +
+    (rules.map(r => `<tr><td style="text-align:left">{${key(r.A)}} ⇒ {${key(r.B)}}</td><td>${PE.fmt(r.s)}</td><td>${PE.fmt(r.c)}</td><td style="color:${r.l > 1 ? "#1F9077" : "#B23A48"}">${PE.fmt(r.l)}</td></tr>`).join("") || `<tr><td colspan="4">nincs a feltételeknek megfelelő szabály</td></tr>`) + "</table>";
+  document.getElementById("out").innerHTML = `<div class="stat">${N} kosár<br>${html}</div>`; }
+PE.bind("ms", run); PE.bind("mc", run, v => PE.fmt(v)); document.getElementById("tx").addEventListener("input", run); run();
+</script></body></html>

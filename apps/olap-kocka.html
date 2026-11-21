@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OLAP-kocka: összesítés, lefúrás, szeletelés</title><link rel="stylesheet" href="common.css"><script src="common.js"></script></head><body>
+<header><h1>OLAP-kocka: összesítés, lefúrás, szeletelés</h1><p>Egy értékesítési adatkocka (régió × termékkategória × idő) kimutatásai a dimenziók és a hierarchiaszintek megválasztásával.</p></header>
+<main>
+<div class="controls">
+  <label>Sorok</label><select id="rw"><option value="reg">régió</option><option value="kat">termékkategória</option><option value="ido">idő</option></select>
+  <label>Oszlopok</label><select id="cl"><option value="ido">idő</option><option value="reg">régió</option><option value="kat">termékkategória</option></select>
+  <label>Az idődimenzió szintje (összesítés ↔ lefúrás)</label><select id="lv"><option value="ev">év</option><option value="nev" selected>negyedév</option></select>
+  <label>Szelet: termékkategória</label><select id="sl"><option value="">(mind)</option></select>
+  <label>Mérőszám</label><select id="ms"><option value="f">forgalom [millió Ft]</option><option value="d">eladott darab [ezer]</option></select>
+  <div class="note">Összesítés (roll-up): magasabb hierarchiaszint (negyedév → év). Lefúrás (drill-down): részletesebb szint. Szeletelés (slice): egy dimenzió egy értékének rögzítése. Forgatás (pivot): a sorok és oszlopok cseréje.</div>
+</div>
+<div class="panel"><div id="out"></div></div>
+</main>
+<script>
+const REG = ["Közép-Magyarország", "Észak-Alföld", "Dél-Alföld", "Közép-Dunántúl", "Észak-Magyarország", "Nyugat-Dunántúl", "Dél-Dunántúl"],
+  KAT = ["Kávé és tea", "Konyhai eszközök", "Dekoráció", "Háztartási gépek", "Ajándék", "Írószer"], NEV = ["2024 N1", "2024 N2", "2024 N3", "2024 N4", "2025 N1", "2025 N2", "2025 N3", "2025 N4"];
+const r = PE.rng(2026), CUBE = []; REG.forEach((rg, i) => KAT.forEach((k, j) => NEV.forEach((q, t) => { const base = [3.2, 1.1, 1.0, 1.0, 0.9, 0.9, 0.85][i] * [1.4, 1.0, 0.7, 1.6, 0.6, 0.4][j];
+  const seas = [1, 0.85, 0.8, 1.9][t % 4] * (t >= 4 ? 1.17 : 1) * (j === 2 || j === 4 ? (t % 4 === 3 ? 1.5 : 1) : 1); const f = base * seas * (0.9 + 0.2 * r());
+  CUBE.push({ reg: rg, kat: k, nev: q, ev: q.slice(0, 4), f: 4 * f, d: 0.9 * f / [1, 0.6, 0.5, 2.8, 0.7, 0.3][j] }); })));
+const sel = document.getElementById("sl"); KAT.forEach(k => { const o = document.createElement("option"); o.value = k; o.textContent = k; sel.appendChild(o); });
+function run() { const rw = document.getElementById("rw").value, cl = document.getElementById("cl").value, lv = document.getElementById("lv").value, sl = sel.value, ms = document.getElementById("ms").value;
+  const key = (row, dim) => dim === "ido" ? row[lv] : row[dim], data = CUBE.filter(c => !sl || c.kat === sl);
+  if (rw === cl) { document.getElementById("out").innerHTML = `<p class="stat">A sor- és oszlopdimenzió legyen különböző.</p>`; return; }
+  const R = [...new Set(data.map(c => key(c, rw)))], C = [...new Set(data.map(c => key(c, cl)))], T = {};
+  data.forEach(c => { const a = key(c, rw), b = key(c, cl); T[a + "|" + b] = (T[a + "|" + b] || 0) + c[ms]; });
+  const mx = Math.max(...Object.values(T)), sumR = a => C.reduce((s, b) => s + (T[a + "|" + b] || 0), 0), sumC = b => R.reduce((s, a) => s + (T[a + "|" + b] || 0), 0);
+  let h = `<table class="t"><tr><th></th>${C.map(c => `<th>${c}</th>`).join("")}<th>összesen</th></tr>` + R.map(a => `<tr><th style="text-align:left">${a}</th>${C.map(b => { const v = T[a + "|" + b] || 0; return `<td style="background:${PE.heat(v / mx)};color:${v / mx > .6 ? "#fff" : "#1F2933"}">${PE.fmt(v, 1)}</td>`; }).join("")}<td><b>${PE.fmt(sumR(a), 1)}</b></td></tr>`).join("") +
+    `<tr><th>összesen</th>${C.map(b => `<td><b>${PE.fmt(sumC(b), 1)}</b></td>`).join("")}<td><b>${PE.fmt(R.reduce((s, a) => s + sumR(a), 0), 1)}</b></td></tr></table>`;
+  document.getElementById("out").innerHTML = `<div class="stat">${sl ? "Szelet: <b>" + sl + "</b>" : "Teljes kocka"} · ${data.length} cella</div>` + h; }
+["rw", "cl", "lv", "sl", "ms"].forEach(id => document.getElementById(id).addEventListener("change", run)); run();
+</script></body></html>

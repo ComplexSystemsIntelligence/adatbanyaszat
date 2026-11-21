@@ -1,0 +1,1842 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="hu" xml:lang="hu"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>12&nbsp; Idősorok elemzése – Adatbányászat</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/13-szovegbanyaszat.html" rel="next">
+<link href="../chapters/11-anomaliak.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-18038207a4bfd50187eff2b2f0526436.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-27594bbe69c1d9222c0eb88c018d43c1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nincs találat",
+    "search-matching-documents-text": "találat",
+    "search-copy-link-title": "Keresési link másolása",
+    "search-hide-matches-text": "További találatok elrejtése",
+    "search-more-match-text": "további találat ebben a dokumentumban",
+    "search-more-matches-text": "további találat ebben a dokumentumban",
+    "search-clear-button-title": "Törlés",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Mégse",
+    "search-submit-button-title": "Keresés",
+    "search-label": "Keresés"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../assets/pannon-fonts.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Oldalsáv ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/12-idosorok.html">IV. Speciális adattípusok</a></li><li class="breadcrumb-item"><a href="../chapters/12-idosorok.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Idősorok elemzése</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Keresés" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Adatbányászat</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat" title="Forráskód" class="quarto-navigation-tool px-1" aria-label="Forráskód"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Letöltés" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Letöltés"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../adatbanyaszat.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Letöltés PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../adatbanyaszat.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Letöltés ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Keresés"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Előszó</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. Alapok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01-bevezetes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Adatból tudás: az adatbányászat folyamata</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02-adattarhazak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Adattárházak és analitikus adatkezelés</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-adatelokeszites.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Adatok előkészítése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-feltaro-elemzes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Feltáró adatelemzés és dimenziócsökkentés</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. Mintázatok felügyelet nélkül</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05-csoportositas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Csoportosítás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-asszociacios-szabalyok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Gyakori mintázatok és asszociációs szabályok</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. Prediktív modellezés</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07-modellertekeles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A felügyelt tanulás alapjai és a modellek értékelése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08-regresszio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regresszió</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09-osztalyozas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Osztályozás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/10-melytanulas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Neurális hálózatok és mélytanulás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/11-anomaliak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Anomáliák és eltérések észlelése</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. Speciális adattípusok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/12-idosorok.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Idősorok elemzése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/13-szovegbanyaszat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Szövegbányászat</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. Alkalmazások</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/14-ugyfelanalitika.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Ügyfélkapcsolat-menedzsment és ügyfélanalitika</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/15-folyamatanalitika.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Ipari folyamatanalitika</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Irodalomjegyzék</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Függelékek</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/a-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Python-alapok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/b-linearis-algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Lineáris algebra az adatbányászathoz</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/c-valoszinuseg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Valószínűségszámítási és statisztikai alapok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/d-adatsorok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Az adatsorok leírása</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/e-jelolesek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Jelölések</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/f-szojegyzek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Magyar–angol szójegyzék</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Tartalom</h2>
+   
+  <ul>
+  <li><a href="#sec-idosor-szerkezet" id="toc-sec-idosor-szerkezet" class="nav-link active" data-scroll-target="#sec-idosor-szerkezet"><span class="header-section-number">12.1</span> Az idősorok szerkezete</a>
+  <ul class="collapse">
+  <li><a href="#felbontás" id="toc-felbontás" class="nav-link" data-scroll-target="#felbontás"><span class="header-section-number">12.1.1</span> Felbontás</a></li>
+  <li><a href="#stacionaritás-és-autokorreláció" id="toc-stacionaritás-és-autokorreláció" class="nav-link" data-scroll-target="#stacionaritás-és-autokorreláció"><span class="header-section-number">12.1.2</span> Stacionaritás és autokorreláció</a></li>
+  </ul></li>
+  <li><a href="#sec-elorejelzes" id="toc-sec-elorejelzes" class="nav-link" data-scroll-target="#sec-elorejelzes"><span class="header-section-number">12.2</span> Előrejelzés</a>
+  <ul class="collapse">
+  <li><a href="#viszonyítási-módszerek" id="toc-viszonyítási-módszerek" class="nav-link" data-scroll-target="#viszonyítási-módszerek"><span class="header-section-number">12.2.1</span> Viszonyítási módszerek</a></li>
+  <li><a href="#exponenciális-simítás" id="toc-exponenciális-simítás" class="nav-link" data-scroll-target="#exponenciális-simítás"><span class="header-section-number">12.2.2</span> Exponenciális simítás</a></li>
+  <li><a href="#arima-modellek" id="toc-arima-modellek" class="nav-link" data-scroll-target="#arima-modellek"><span class="header-section-number">12.2.3</span> ARIMA-modellek</a></li>
+  <li><a href="#az-előrejelzések-értékelése" id="toc-az-előrejelzések-értékelése" class="nav-link" data-scroll-target="#az-előrejelzések-értékelése"><span class="header-section-number">12.2.4</span> Az előrejelzések értékelése</a></li>
+  </ul></li>
+  <li><a href="#sec-idosor-hasonlosag" id="toc-sec-idosor-hasonlosag" class="nav-link" data-scroll-target="#sec-idosor-hasonlosag"><span class="header-section-number">12.3</span> Hasonlóság és reprezentáció</a>
+  <ul class="collapse">
+  <li><a href="#dinamikus-idővetemítés" id="toc-dinamikus-idővetemítés" class="nav-link" data-scroll-target="#dinamikus-idővetemítés"><span class="header-section-number">12.3.1</span> Dinamikus idővetemítés</a></li>
+  <li><a href="#kézi-példa" id="toc-kézi-példa" class="nav-link" data-scroll-target="#kézi-példa"><span class="header-section-number">12.3.2</span> Kézi példa</a></li>
+  <li><a href="#tömör-reprezentációk" id="toc-tömör-reprezentációk" class="nav-link" data-scroll-target="#tömör-reprezentációk"><span class="header-section-number">12.3.3</span> Tömör reprezentációk</a></li>
+  </ul></li>
+  <li><a href="#sec-idosor-osztalyozas" id="toc-sec-idosor-osztalyozas" class="nav-link" data-scroll-target="#sec-idosor-osztalyozas"><span class="header-section-number">12.4</span> Idősorok osztályozása és szegmentálása</a></li>
+  <li><a href="#sec-idosor-gyakorlat" id="toc-sec-idosor-gyakorlat" class="nav-link" data-scroll-target="#sec-idosor-gyakorlat"><span class="header-section-number">12.5</span> Gyakorlat: forgalom-előrejelzés, hűtési igény és jelalakok</a>
+  <ul class="collapse">
+  <li><a href="#a-heti-rendelésszám-előrejelzése" id="toc-a-heti-rendelésszám-előrejelzése" class="nav-link" data-scroll-target="#a-heti-rendelésszám-előrejelzése"><span class="header-section-number">12.5.1</span> A heti rendelésszám előrejelzése</a></li>
+  <li><a href="#óránkénti-hűtési-igény-előrejelzése" id="toc-óránkénti-hűtési-igény-előrejelzése" class="nav-link" data-scroll-target="#óránkénti-hűtési-igény-előrejelzése"><span class="header-section-number">12.5.2</span> Óránkénti hűtési igény előrejelzése</a></li>
+  <li><a href="#jelalakok-osztályozása-dinamikus-idővetemítéssel" id="toc-jelalakok-osztályozása-dinamikus-idővetemítéssel" class="nav-link" data-scroll-target="#jelalakok-osztályozása-dinamikus-idővetemítéssel"><span class="header-section-number">12.5.3</span> Jelalakok osztályozása dinamikus idővetemítéssel</a></li>
+  <li><a href="#periodicitás-és-tömörítés" id="toc-periodicitás-és-tömörítés" class="nav-link" data-scroll-target="#periodicitás-és-tömörítés"><span class="header-section-number">12.5.4</span> Periodicitás és tömörítés</a></li>
+  </ul></li>
+  <li><a href="#sec-idosor-osszefoglalas" id="toc-sec-idosor-osszefoglalas" class="nav-link" data-scroll-target="#sec-idosor-osszefoglalas"><span class="header-section-number">12.6</span> Összefoglalás</a></li>
+  <li><a href="#ellenőrző-kérdések" id="toc-ellenőrző-kérdések" class="nav-link" data-scroll-target="#ellenőrző-kérdések">Ellenőrző kérdések</a></li>
+  <li><a href="#feladatok" id="toc-feladatok" class="nav-link" data-scroll-target="#feladatok">Feladatok</a></li>
+  <li><a href="#további-olvasmányok" id="toc-további-olvasmányok" class="nav-link" data-scroll-target="#további-olvasmányok">További olvasmányok</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/chapters/12-idosorok.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/chapters/12-idosorok.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/12-idosorok.html">IV. Speciális adattípusok</a></li><li class="breadcrumb-item"><a href="../chapters/12-idosorok.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Idősorok elemzése</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-idosor" class="quarto-section-identifier"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Idősorok elemzése</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="roadmap">
+<p>Az idősorok – időrendben rögzített megfigyelések – a futó esetek mindegyikében központi szerepet játszanak: a webáruház forgalma, az üzem mérései, a riasztási napló mind idősor. Az időbeli rendezettség új lehetőségeket és új veszélyeket hoz: a megfigyelések nem függetlenek, a jövő a múltból jelezhető előre, de a véletlen keresztvalidáció félrevezet. A fejezet az idősorok felbontásával és az autokorrelációval kezdődik, majd az előrejelzés klasszikus módszereit (exponenciális simítás, ARIMA-modellek, dinamikus regresszió) és értékelésük helyes módját tárgyalja. Ezután az idősorok hasonlóságát (dinamikus idővetemítés) és tömör reprezentációit (Fourier- és hullámtranszformáció, PAA, SAX) mutatjuk be, végül az idősorok osztályozását és szegmentálását.</p>
+<p><strong>A fejezet végére az olvasó</strong> képes lesz egy idősort trendre, szezonalitásra és maradékra bontani; az autokorrelációs függvényt értelmezni; exponenciális simító és (S)ARIMA-modellt illeszteni és gördülő kezdőpontú értékeléssel összehasonlítani egyszerű viszonyítási módszerekkel; a DTW-távolságot kézzel és programmal kiszámítani; és a legfontosabb idősor-reprezentációkat alkalmazni.</p>
+</div>
+<section id="sec-idosor-szerkezet" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="sec-idosor-szerkezet"><span class="header-section-number">12.1</span> Az idősorok szerkezete</h2>
+<section id="felbontás" class="level3" data-number="12.1.1">
+<h3 data-number="12.1.1" class="anchored" data-anchor-id="felbontás"><span class="header-section-number">12.1.1</span> Felbontás</h3>
+<p>Egy <span class="math inline">\(y_1, y_2, \dots, y_T\)</span> idősor változását rendszerint három komponensre bontjuk (<a href="#fig-komponensek" class="quarto-xref"><span>12.1</span></a>. ábra): a hosszú távú <strong>trendre</strong> (<span class="math inline">\(T_t\)</span>), a rögzített periódussal ismétlődő <strong>szezonalitásra</strong> (<span class="math inline">\(S_t\)</span>, periódusa <span class="math inline">\(m\)</span>: órás adatoknál a napi ciklusra <span class="math inline">\(m = 24\)</span>, heti adatoknál az éves ciklusra <span class="math inline">\(m \approx 52\)</span>), és a <strong>maradékra</strong> (<span class="math inline">\(R_t\)</span>). Additív felbontásban <span class="math inline">\(y_t = T_t + S_t + R_t\)</span>; ha a szezonális ingadozás a szinttel arányos, multiplikatív felbontás (<span class="math inline">\(y_t = T_t\cdot S_t\cdot R_t\)</span>) vagy a logaritmált sor additív felbontása a megfelelő. A klasszikus felbontás a trendet <span class="math inline">\(m\)</span> hosszú centrált mozgóátlaggal becsüli, a szezonális komponenst pedig a trendtől megtisztított értékek periódusonkénti átlagaként. Az <strong>STL</strong> (seasonal-trend decomposition using LOESS) <span class="citation" data-cites="cleveland1990">(<a href="../references.html#ref-cleveland1990" role="doc-biblioref">Cleveland és mtsai., 1990</a>)</span> lokális regresszióval, iteratívan becsli a komponenseket; a szezonális mintázat lassan változhat, és robusztus változata a kiugró értékekre sem érzékeny <span class="citation" data-cites="hyndman2021">(<a href="../references.html#ref-hyndman2021" role="doc-biblioref">Hyndman &amp; Athanasopoulos, 2021</a>)</span>.</p>
+<div id="fig-komponensek" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-komponensek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/12-komponensek.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="ábra&nbsp;12.1.. Az additív idősor-felbontás: a megfigyelt sor (felül) a trend, a periodikus szezonális komponens és a maradék összege."><img src="../figures/build/12-komponensek.svg" class="img-fluid figure-img" style="width:90.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-komponensek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;12.1.. Az additív idősor-felbontás: a megfigyelt sor (felül) a trend, a periodikus szezonális komponens és a maradék összege.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="stacionaritás-és-autokorreláció" class="level3" data-number="12.1.2">
+<h3 data-number="12.1.2" class="anchored" data-anchor-id="stacionaritás-és-autokorreláció"><span class="header-section-number">12.1.2</span> Stacionaritás és autokorreláció</h3>
+<p>Egy idősor (gyengén) <strong>stacionárius</strong>, ha várható értéke és szórása időben állandó, és a két időpont közötti kovariancia csak a késleltetéstől függ. A stacionaritás az előrejelző modellek többségének alapfeltevése; a trend és a szezonalitás megsérti, ezért ezeket differenciálással (<span class="math inline">\(\nabla y_t = y_t - y_{t-1}\)</span>, illetve szezonálisan <span class="math inline">\(\nabla_m y_t = y_t - y_{t-m}\)</span>) vagy felbontással távolítjuk el. A stacionaritás formálisan is vizsgálható, például a kiterjesztett Dickey–Fuller-próbával <span class="citation" data-cites="dickey1979">(<a href="../references.html#ref-dickey1979" role="doc-biblioref">Dickey &amp; Fuller, 1979</a>)</span>.</p>
+<p>Az idősor belső függőségi szerkezetét az <strong>autokorrelációs függvény</strong> (ACF) írja le:</p>
+<p><span id="eq-acf"><span class="math display">\[
+r_k = \frac{\sum_{t=k+1}^{T}(y_t - \bar y)(y_{t-k} - \bar y)}{\sum_{t=1}^{T}(y_t - \bar y)^2},\qquad k = 1, 2, \dots
+\tag{12.1}\]</span></span></p>
+<p>A <strong>parciális autokorrelációs függvény</strong> (PACF) a <span class="math inline">\(k\)</span> késleltetésű korrelációt a közbülső késleltetések hatásának kiszűrése után méri. A két függvény mintázata az ARIMA-modellek rendjének megválasztását segíti, a modell maradékainak ACF-je pedig a modell megfelelőségét mutatja: jó modell maradéka fehér zaj, amit a Ljung–Box-próba <span class="citation" data-cites="ljung1978">(<a href="../references.html#ref-ljung1978" role="doc-biblioref">Ljung &amp; Box, 1978</a>)</span> egyszerre több késleltetésre ellenőriz. Az autokorreláció a <a href="11-anomaliak.html" class="quarto-xref"><span>11</span></a>. fejezet ellenőrzőkártyáinál is gondot okozott, és ez az oka annak is, hogy idősoroknál a véletlen keresztvalidáció túl optimista képet ad (<a href="07-modellertekeles.html" class="quarto-xref"><span>7</span></a>. fejezet).</p>
+</section>
+</section>
+<section id="sec-elorejelzes" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="sec-elorejelzes"><span class="header-section-number">12.2</span> Előrejelzés</h2>
+<section id="viszonyítási-módszerek" class="level3" data-number="12.2.1">
+<h3 data-number="12.2.1" class="anchored" data-anchor-id="viszonyítási-módszerek"><span class="header-section-number">12.2.1</span> Viszonyítási módszerek</h3>
+<p>Minden előrejelző modellt egyszerű viszonyítási (benchmark) módszerekkel kell összevetni <span class="citation" data-cites="hyndman2021">(<a href="../references.html#ref-hyndman2021" role="doc-biblioref">Hyndman &amp; Athanasopoulos, 2021</a>)</span>. A <strong>naiv</strong> előrejelzés az utolsó megfigyelést ismétli, <span class="math inline">\(\hat y_{T+h} = y_T\)</span>; a <strong>szezonális naiv</strong> az egy periódussal korábbi értéket, <span class="math inline">\(\hat y_{T+h} = y_{T+h-m}\)</span>; a <strong>sodródásos</strong> változat a naiv előrejelzést az eddigi átlagos változással tolja el. A nagy nemzetközi előrejelzési versenyek egyik visszatérő tanulsága, hogy ezeket a módszereket meglepően nehéz legyőzni, és hogy a bonyolult módszerek csak akkor jobbak, ha az adatok szerkezete ezt indokolja <span class="citation" data-cites="makridakis2018">(<a href="../references.html#ref-makridakis2018" role="doc-biblioref">Makridakis és mtsai., 2018</a>)</span>.</p>
+</section>
+<section id="exponenciális-simítás" class="level3" data-number="12.2.2">
+<h3 data-number="12.2.2" class="anchored" data-anchor-id="exponenciális-simítás"><span class="header-section-number">12.2.2</span> Exponenciális simítás</h3>
+<p>Az <strong>egyszerű exponenciális simítás</strong> az előrejelzést a múltbeli értékek exponenciálisan csökkenő súlyú átlagaként képzi: <span class="math inline">\(\ell_t = \alpha y_t + (1 - \alpha)\ell_{t-1}\)</span>, és <span class="math inline">\(\hat y_{T+h} = \ell_T\)</span>. Holt <span class="citation" data-cites="holt2004">(<a href="../references.html#ref-holt2004" role="doc-biblioref">Holt, 2004</a>)</span> kiterjesztése egy trendkomponenssel, Winters <span class="citation" data-cites="winters1960">(<a href="../references.html#ref-winters1960" role="doc-biblioref">Winters, 1960</a>)</span> pedig egy szezonális komponenssel egészítette ki; az additív <strong>Holt–Winters-módszer</strong> egyenletei</p>
+<p><span id="eq-holt-winters"><span class="math display">\[
+\begin{aligned}
+\ell_t &amp;= \alpha(y_t - s_{t-m}) + (1 - \alpha)(\ell_{t-1} + b_{t-1}), &amp;
+b_t &amp;= \beta(\ell_t - \ell_{t-1}) + (1 - \beta)b_{t-1},\\
+s_t &amp;= \gamma(y_t - \ell_{t-1} - b_{t-1}) + (1 - \gamma)s_{t-m}, &amp;
+\hat y_{T+h} &amp;= \ell_T + h\,b_T + s_{T+h-m(k+1)},
+\end{aligned}
+\tag{12.2}\]</span></span></p>
+<p>ahol <span class="math inline">\(\ell_t\)</span> a szint, <span class="math inline">\(b_t\)</span> a trend, <span class="math inline">\(s_t\)</span> a szezonális komponens, <span class="math inline">\(k\)</span> pedig a <span class="math inline">\((h-1)/m\)</span> egészrésze. A hosszú távú előrejelzések túlzott meredekségét a <strong>csillapított trend</strong> mérsékli, amely a trendet minden lépésben egy <span class="math inline">\(\phi &lt; 1\)</span> tényezővel szorozza. A simítási paramétereket a maximum-likelihood vagy a legkisebb négyzetek elve szerint becsüljük; a módszercsalád állapottér-modellként (ETS: error–trend–seasonal) is felírható, ami előrejelzési intervallumokat és információs kritériumokon alapuló modellválasztást tesz lehetővé <span class="citation" data-cites="hyndman2021">(<a href="../references.html#ref-hyndman2021" role="doc-biblioref">Hyndman &amp; Athanasopoulos, 2021</a>)</span>.</p>
+</section>
+<section id="arima-modellek" class="level3" data-number="12.2.3">
+<h3 data-number="12.2.3" class="anchored" data-anchor-id="arima-modellek"><span class="header-section-number">12.2.3</span> ARIMA-modellek</h3>
+<p>Az <strong>autoregresszív</strong> AR(<span class="math inline">\(p\)</span>) modell az idősort saját késleltetett értékeinek lineáris függvényeként, a <strong>mozgóátlag</strong> MA(<span class="math inline">\(q\)</span>) modell a korábbi véletlen sokkok lineáris kombinációjaként írja le. A kettő kombinációja a differenciált sorra az <strong>ARIMA(<span class="math inline">\(p,d,q\)</span>)</strong> modell <span class="citation" data-cites="box2015">(<a href="../references.html#ref-box2015" role="doc-biblioref">Box és mtsai., 2015</a>)</span>:</p>
+<p><span id="eq-arima"><span class="math display">\[
+\Bigl(1 - \sum_{i=1}^{p}\phi_iB^i\Bigr)(1 - B)^d y_t = c + \Bigl(1 + \sum_{j=1}^{q}\theta_jB^j\Bigr)\varepsilon_t ,
+\tag{12.3}\]</span></span></p>
+<p>ahol <span class="math inline">\(B\)</span> a késleltető operátor (<span class="math inline">\(By_t = y_{t-1}\)</span>), <span class="math inline">\(\varepsilon_t\)</span> fehér zaj. A szezonális <strong>SARIMA(<span class="math inline">\(p,d,q\)</span>)(<span class="math inline">\(P,D,Q\)</span>)<span class="math inline">\(_m\)</span></strong> modell ugyanezt a szerkezetet a szezonális késleltetésekre (<span class="math inline">\(B^m\)</span>) is alkalmazza. A Box–Jenkins-módszertan lépései: a sor stacionáriussá tétele (differenciálás, transzformáció), a rend azonosítása az ACF és a PACF alapján (vagy információs kritériummal, például AIC), a paraméterek becslése, és a maradékok diagnosztikája. Ha a jövőbeli értékeket befolyásoló, ismert vagy előre jelezhető külső változók (termelési terv, időjárás-előrejelzés, akciók) vannak, a <strong>dinamikus regresszió</strong> – lineáris regresszió ARIMA-hibataggal (ARIMAX, SARIMAX) – ezeket is felhasználja.</p>
+</section>
+<section id="az-előrejelzések-értékelése" class="level3" data-number="12.2.4">
+<h3 data-number="12.2.4" class="anchored" data-anchor-id="az-előrejelzések-értékelése"><span class="header-section-number">12.2.4</span> Az előrejelzések értékelése</h3>
+<p>Az előrejelzést mindig olyan adatokon kell értékelni, amelyek a modell illesztésekor még nem voltak ismertek. Egyetlen tanító–teszt felosztás helyett a <strong>gördülő kezdőpontú értékelés</strong> (rolling origin, idősoros keresztvalidáció) több kezdőpontból készít előrejelzést, mindig csak a kezdőpont előtti adatokat felhasználva (<a href="#fig-gordulo" class="quarto-xref"><span>12.2</span></a>. ábra) <span class="citation" data-cites="bergmeir2012 hyndman2021">(<a href="../references.html#ref-bergmeir2012" role="doc-biblioref">Bergmeir &amp; Benítez, 2012</a>; <a href="../references.html#ref-hyndman2021" role="doc-biblioref">Hyndman &amp; Athanasopoulos, 2021</a>)</span>.</p>
+<div id="fig-gordulo" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gordulo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/12-gordulo.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="ábra&nbsp;12.2.. Gördülő kezdőpontú értékelés: minden kezdőpontban csak a korábbi adatokon illesztjük a modellt, és a következő h időpontra adott előrejelzést értékeljük."><img src="../figures/build/12-gordulo.svg" class="img-fluid figure-img" style="width:90.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gordulo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;12.2.. Gördülő kezdőpontú értékelés: minden kezdőpontban csak a korábbi adatokon illesztjük a modellt, és a következő <span class="math inline">\(h\)</span> időpontra adott előrejelzést értékeljük.
+</figcaption>
+</figure>
+</div>
+<p>A hibamértékek közül a MAE és az RMSE az eredeti mértékegységben értelmezhető, de sorok között nem hasonlítható össze. A MAPE (átlagos abszolút százalékos hiba) nullához közeli értékeknél instabil, és aszimmetrikusan bünteti a túl- és az alulbecslést. <span class="citation" data-cites="hyndman2006">Hyndman &amp; Koehler (<a href="../references.html#ref-hyndman2006" role="doc-biblioref">2006</a>)</span> ezért a <strong>skálázott abszolút hibát</strong> (MASE) javasolta, amely a MAE-t a tanítóadatokon számolt naiv (vagy szezonális naiv) egylépéses előrejelzés MAE-jével osztja: az 1-nél kisebb érték azt jelenti, hogy a módszer jobb a naiv viszonyításnál.</p>
+</section>
+</section>
+<section id="sec-idosor-hasonlosag" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="sec-idosor-hasonlosag"><span class="header-section-number">12.3</span> Hasonlóság és reprezentáció</h2>
+<section id="dinamikus-idővetemítés" class="level3" data-number="12.3.1">
+<h3 data-number="12.3.1" class="anchored" data-anchor-id="dinamikus-idővetemítés"><span class="header-section-number">12.3.1</span> Dinamikus idővetemítés</h3>
+<p>Két idősor euklideszi távolsága az azonos időpontú értékeket veti össze, ezért már egy kis időbeli eltolódás vagy eltérő sebesség is nagy távolságot ad. A <strong>dinamikus idővetemítés</strong> (dynamic time warping, DTW) <span class="citation" data-cites="sakoe1978 berndt1994">(<a href="../references.html#ref-berndt1994" role="doc-biblioref">Berndt &amp; Clifford, 1994</a>; <a href="../references.html#ref-sakoe1978" role="doc-biblioref">Sakoe &amp; Chiba, 1978</a>)</span> az időtengelyt rugalmasan „vetemíti”: azt a monoton illesztést keresi a két sor pontjai között, amely mentén az összesített eltérés a legkisebb (<a href="#fig-dtw" class="quarto-xref"><span>12.3</span></a>. ábra). Az <span class="math inline">\(\mathbf{a}\)</span> és <span class="math inline">\(\mathbf{b}\)</span> sorok kumulált költségmátrixát dinamikus programozással töltjük ki:</p>
+<p><span id="eq-dtw"><span class="math display">\[
+D(i, j) = (a_i - b_j)^2 + \min\bigl\{D(i-1, j),\; D(i, j-1),\; D(i-1, j-1)\bigr\},
+\qquad D(0, 0) = 0 ,
+\tag{12.4}\]</span></span></p>
+<p>és <span class="math inline">\(\operatorname{DTW}(\mathbf{a}, \mathbf{b}) = \sqrt{D(n, m)}\)</span>. Az optimális illesztés (vetemítési út) a <span class="math inline">\(D(n, m)\)</span> cellából visszakövethető. A számítás költsége <span class="math inline">\(O(nm)\)</span>; a <strong>Sakoe–Chiba-sáv</strong> az utat a főátló <span class="math inline">\(w\)</span> szélességű környezetére korlátozza, ami gyorsít, és megakadályozza a fizikailag értelmetlen, túlzott vetemítést. Nagy adatbázisokban a DTW-t olcsó alsó korlátokkal (például az LB_Keogh-korláttal <span class="citation" data-cites="keogh2005">(<a href="../references.html#ref-keogh2005" role="doc-biblioref">Keogh &amp; Ratanamahatana, 2005</a>)</span>) kombinálják, így a legtöbb jelöltet a teljes számítás nélkül ki lehet zárni <span class="citation" data-cites="rakthanmanon2012">(<a href="../references.html#ref-rakthanmanon2012" role="doc-biblioref">Rakthanmanon és mtsai., 2012</a>)</span>.</p>
+<div id="fig-dtw" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dtw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/12-dtw.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="ábra&nbsp;12.3.. A dinamikus idővetemítés kézi példája. (a) Az euklideszi távolság az azonos indexű pontokat veti össze, a DTW a jelalakokat illeszti egymáshoz. (b) A kumulált költségmátrix a vetemítési úttal (kiemelve); a szaggatott vonal az euklideszi illesztésnek megfelelő főátló."><img src="../figures/build/12-dtw.svg" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dtw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;12.3.. A dinamikus idővetemítés kézi példája. (a) Az euklideszi távolság az azonos indexű pontokat veti össze, a DTW a jelalakokat illeszti egymáshoz. (b) A kumulált költségmátrix a vetemítési úttal (kiemelve); a szaggatott vonal az euklideszi illesztésnek megfelelő főátló.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="kézi-példa" class="level3" data-number="12.3.2">
+<h3 data-number="12.3.2" class="anchored" data-anchor-id="kézi-példa"><span class="header-section-number">12.3.2</span> Kézi példa</h3>
+<p>A segédcsomag két rövid jelalakja ugyanaz a „hegy”, egy lépéssel eltolva. Az euklideszi távolság a (<a href="#eq-dtw" class="quarto-xref"><span>12.4</span></a>) rekurzió nélkül, a pontonkénti eltérésekből számolható:</p>
+<div id="ddeca170" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>a, b <span class="op">=</span> ab.mini.idosor_mini()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"a ="</span>, a, <span class="st">"</span><span class="ch">\n</span><span class="st">b ="</span>, b)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"euklideszi távolság: </span><span class="sc">{</span>np<span class="sc">.</span>sqrt(((a <span class="op">-</span> b) <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>())<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dtw(a, b, w<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Kumulált költségmátrix a (-@eq-dtw) rekurzióval, opcionális Sakoe–Chiba-sávval."""</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    n, m <span class="op">=</span> <span class="bu">len</span>(a), <span class="bu">len</span>(b)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    D <span class="op">=</span> np.full((n <span class="op">+</span> <span class="dv">1</span>, m <span class="op">+</span> <span class="dv">1</span>), np.inf)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    D[<span class="dv">0</span>, <span class="dv">0</span>] <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        jlo, jhi <span class="op">=</span> (<span class="dv">1</span>, m) <span class="cf">if</span> w <span class="kw">is</span> <span class="va">None</span> <span class="cf">else</span> (<span class="bu">max</span>(<span class="dv">1</span>, i <span class="op">-</span> w), <span class="bu">min</span>(m, i <span class="op">+</span> w))</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(jlo, jhi <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>            D[i, j] <span class="op">=</span> (a[i <span class="op">-</span> <span class="dv">1</span>] <span class="op">-</span> b[j <span class="op">-</span> <span class="dv">1</span>]) <span class="op">**</span> <span class="dv">2</span> <span class="op">+</span> <span class="bu">min</span>(D[i <span class="op">-</span> <span class="dv">1</span>, j], D[i, j <span class="op">-</span> <span class="dv">1</span>], D[i <span class="op">-</span> <span class="dv">1</span>, j <span class="op">-</span> <span class="dv">1</span>])</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> D</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>D <span class="op">=</span> dtw(a, b)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"DTW-távolság: </span><span class="sc">{</span>np<span class="sc">.</span>sqrt(D[<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>])<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(D[<span class="dv">1</span>:, <span class="dv">1</span>:].astype(<span class="bu">int</span>), index<span class="op">=</span>[<span class="ss">f"a</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">=</span><span class="sc">{</span>v<span class="sc">:g}</span><span class="ss">"</span> <span class="cf">for</span> i, v <span class="kw">in</span> <span class="bu">enumerate</span>(a)],</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>             columns<span class="op">=</span>[<span class="ss">f"b</span><span class="sc">{</span>j<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">=</span><span class="sc">{</span>v<span class="sc">:g}</span><span class="ss">"</span> <span class="cf">for</span> j, v <span class="kw">in</span> <span class="bu">enumerate</span>(b)])</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>a = [0. 1. 3. 4. 3. 1. 0. 0.] 
+b = [0. 0. 1. 3. 4. 3. 1. 0.]
+euklideszi távolság: 3.464
+DTW-távolság: 0.000</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">b1=0</th>
+<th data-quarto-table-cell-role="th">b2=0</th>
+<th data-quarto-table-cell-role="th">b3=1</th>
+<th data-quarto-table-cell-role="th">b4=3</th>
+<th data-quarto-table-cell-role="th">b5=4</th>
+<th data-quarto-table-cell-role="th">b6=3</th>
+<th data-quarto-table-cell-role="th">b7=1</th>
+<th data-quarto-table-cell-role="th">b8=0</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">a1=0</th>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>10</td>
+<td>26</td>
+<td>35</td>
+<td>36</td>
+<td>36</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">a2=1</th>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>4</td>
+<td>13</td>
+<td>17</td>
+<td>17</td>
+<td>18</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">a3=3</th>
+<td>10</td>
+<td>10</td>
+<td>4</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>5</td>
+<td>14</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">a4=4</th>
+<td>26</td>
+<td>26</td>
+<td>13</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>10</td>
+<td>21</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">a5=3</th>
+<td>35</td>
+<td>35</td>
+<td>17</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>4</td>
+<td>13</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">a6=1</th>
+<td>36</td>
+<td>36</td>
+<td>17</td>
+<td>5</td>
+<td>10</td>
+<td>4</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">a7=0</th>
+<td>36</td>
+<td>36</td>
+<td>18</td>
+<td>14</td>
+<td>21</td>
+<td>13</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">a8=0</th>
+<td>36</td>
+<td>36</td>
+<td>19</td>
+<td>23</td>
+<td>30</td>
+<td>22</td>
+<td>2</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>A DTW-távolság nulla: a vetemítési út az <span class="math inline">\(a_1\)</span> értéket <span class="math inline">\(b_1\)</span>-hez és <span class="math inline">\(b_2\)</span>-höz is hozzárendeli, a hegyet egy lépéssel eltolva tökéletesen illeszti, végül <span class="math inline">\(a_8\)</span>-at is <span class="math inline">\(b_8\)</span>-hoz rendeli. Az euklideszi távolság ezzel szemben 3,46, pedig a két jelalak szemmel láthatóan ugyanaz.</p>
+</section>
+<section id="tömör-reprezentációk" class="level3" data-number="12.3.3">
+<h3 data-number="12.3.3" class="anchored" data-anchor-id="tömör-reprezentációk"><span class="header-section-number">12.3.3</span> Tömör reprezentációk</h3>
+<p>Hosszú idősorok hasonlóságkereséséhez, csoportosításához és indexeléséhez az idősort kevés együtthatóval leíró, tömör <strong>reprezentációra</strong> van szükség, amelyben a távolság jól közelíti (lehetőleg alulról becsüli) az eredeti távolságot <span class="citation" data-cites="faloutsos1994">(<a href="../references.html#ref-faloutsos1994" role="doc-biblioref">Faloutsos és mtsai., 1994</a>)</span>. A legfontosabbak:</p>
+<ul>
+<li>A <strong>diszkrét Fourier-transzformáció</strong> (DFT) az idősort különböző frekvenciájú szinuszok összegeként írja le, <span class="math inline">\(X_k = \sum_{t=0}^{T-1}y_te^{-2\pi ikt/T}\)</span>; az első néhány együttható a lassú változásokat őrzi meg <span class="citation" data-cites="agrawal1993ts">(<a href="../references.html#ref-agrawal1993ts" role="doc-biblioref">Agrawal és mtsai., 1993</a>)</span>. A <strong>periodogram</strong> (<span class="math inline">\(|X_k|^2\)</span> a frekvencia függvényében) a rejtett periodicitások felderítésének eszköze.</li>
+<li>A <strong>diszkrét hullámtranszformáció</strong> (DWT) <span class="citation" data-cites="daubechies1992">(<a href="../references.html#ref-daubechies1992" role="doc-biblioref">Daubechies, 1992</a>)</span> időben és frekvenciában egyaránt lokalizált bázisfüggvényeket használ; a legegyszerűbb Haar-hullámnál az együtthatók szomszédos szakaszok átlagai és különbségei <span class="citation" data-cites="chan1999">(<a href="../references.html#ref-chan1999" role="doc-biblioref">Chan &amp; Fu, 1999</a>)</span>. Hirtelen változásokat és tranzienseket jobban leír, mint a DFT.</li>
+<li>A <strong>darabonként konstans közelítés</strong> (piecewise aggregate approximation, PAA) <span class="citation" data-cites="keogh2001">(<a href="../references.html#ref-keogh2001" role="doc-biblioref">Keogh és mtsai., 2001</a>)</span> az idősort <span class="math inline">\(w\)</span> egyenlő hosszú szakaszra bontja, és mindegyiket az átlagával helyettesíti.</li>
+<li>A <strong>SAX</strong> (symbolic aggregate approximation) <span class="citation" data-cites="lin2007">(<a href="../references.html#ref-lin2007" role="doc-biblioref">Lin és mtsai., 2007</a>)</span> a <span class="math inline">\(z\)</span>-normalizált sor PAA-értékeit a standard normális eloszlás kvantilisei által meghatározott sávok szerint betűkké alakítja (<a href="#fig-sax" class="quarto-xref"><span>12.4</span></a>. ábra). Az így kapott szövegszerű reprezentációra a szövegbányászat és a sorozatminta-keresés eszközei (például a <a href="06-asszociacios-szabalyok.html" class="quarto-xref"><span>6</span></a>. fejezet módszerei) is alkalmazhatók.</li>
+</ul>
+<div id="fig-sax" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sax-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/12-sax.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="ábra&nbsp;12.4.. A PAA és a SAX reprezentáció a hűtővízáram három napos, z-normalizált órás adatsorán. A 12 szakasz átlaga (vastag vonal) a normális eloszlás kvantilisei (szaggatott vonalak) szerint négybetűs ábécé elemeivé alakul."><img src="../figures/build/12-sax.svg" class="img-fluid figure-img" style="width:95.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sax-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;12.4.. A PAA és a SAX reprezentáció a hűtővízáram három napos, <span class="math inline">\(z\)</span>-normalizált órás adatsorán. A 12 szakasz átlaga (vastag vonal) a normális eloszlás kvantilisei (szaggatott vonalak) szerint négybetűs ábécé elemeivé alakul.
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="sec-idosor-osztalyozas" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="sec-idosor-osztalyozas"><span class="header-section-number">12.4</span> Idősorok osztályozása és szegmentálása</h2>
+<p>Az idősor-osztályozás feladata egy teljes idősor (vagy idősorszakasz) osztályba sorolása: egy gépindítás jó vagy rossz lefutású volt-e, milyen hibatípus jellemző egy jelablakra. Kiterjedt összehasonlító vizsgálatok szerint az 1-legközelebbi szomszéd osztályozó DTW-távolsággal évtizedekig nehezen legyőzhető viszonyítási alap volt <span class="citation" data-cites="bagnall2017">(<a href="../references.html#ref-bagnall2017" role="doc-biblioref">Bagnall és mtsai., 2017</a>)</span>; az újabb módszerek – az idősorok jellemzőit véletlen konvolúciós szűrőkkel kinyerő ROCKET <span class="citation" data-cites="dempster2020">(<a href="../references.html#ref-dempster2020" role="doc-biblioref">Dempster és mtsai., 2020</a>)</span> és a <a href="10-melytanulas.html" class="quarto-xref"><span>10</span></a>. fejezet konvolúciós hálózatai <span class="citation" data-cites="ismail2019">(<a href="../references.html#ref-ismail2019" role="doc-biblioref">Ismail Fawaz és mtsai., 2019</a>)</span> – a pontosságot és a sebességet tekintve egyaránt előrelépést hoztak. A módszerek értékelésének közös alapja a nyilvános UCR-idősorarchívum <span class="citation" data-cites="dau2019">(<a href="../references.html#ref-dau2019" role="doc-biblioref">Dau és mtsai., 2019</a>)</span>.</p>
+<p>A <strong>szegmentálás</strong> az idősort belsőleg homogén szakaszokra bontja: működési állapotokra, termékváltásokra, hibaepizódokra. A klasszikus algoritmusok (csúszóablakos, felülről lefelé és alulról felfelé haladó módszerek) a szakaszokat egyszerű – például lineáris – modellekkel közelítik, és a közelítési hiba alapján vágnak <span class="citation" data-cites="keogh2004seg">(<a href="../references.html#ref-keogh2004seg" role="doc-biblioref">Keogh és mtsai., 2004</a>)</span>; a <strong>változáspont-észlelés</strong> a szakaszok számát és határait egy büntetett költségfüggvény optimumaként határozza meg, amire a PELT-algoritmus lineáris időben ad egzakt megoldást <span class="citation" data-cites="killick2012">(<a href="../references.html#ref-killick2012" role="doc-biblioref">Killick és mtsai., 2012</a>)</span>. Többváltozós folyamatadatoknál a szakaszok homogenitása a változók közötti összefüggések (például lokális PCA-modellek) alapján is mérhető; ilyen a fuzzy klaszterezésen alapuló szegmentálás, amely a szakaszhatárok bizonytalanságát is kezeli <span class="citation" data-cites="abonyi2005seg">(<a href="../references.html#ref-abonyi2005seg" role="doc-biblioref">Abonyi és mtsai., 2005</a>)</span>.</p>
+</section>
+<section id="sec-idosor-gyakorlat" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="sec-idosor-gyakorlat"><span class="header-section-number">12.5</span> Gyakorlat: forgalom-előrejelzés, hűtési igény és jelalakok</h2>
+<section id="a-heti-rendelésszám-előrejelzése" class="level3" data-number="12.5.1">
+<h3 data-number="12.5.1" class="anchored" data-anchor-id="a-heti-rendelésszám-előrejelzése"><span class="header-section-number">12.5.1</span> A heti rendelésszám előrejelzése</h3>
+<div class="eset-uzleti">
+<p>A PannonShop logisztikája a következő négy hét rendelésszámát szeretné előre látni a raktári létszám tervezéséhez. A heti rendelésszám két év adatából áll; erős éves szezonalitás (az év végi csúcs), két akciós időszak és növekedés jellemzi.</p>
+</div>
+<div id="cell-fig-heti-rendelesek" class="cell" data-fig-height="2.6" data-fig-width="7.2" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>tx <span class="op">=</span> ab.shop_clean()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>heti <span class="op">=</span> tx.set_index(<span class="st">"InvoiceDate"</span>).groupby(pd.Grouper(freq<span class="op">=</span><span class="st">"W-SUN"</span>)).Invoice.nunique()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>heti <span class="op">=</span> heti[(heti.index <span class="op">&gt;</span> <span class="st">"2024-01-01"</span>) <span class="op">&amp;</span> (heti.index <span class="op">&lt;=</span> <span class="st">"2025-12-28"</span>)]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>het_sorszam <span class="op">=</span> heti.index.isocalendar().week.to_numpy().astype(<span class="bu">int</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>akcio <span class="op">=</span> np.isin(het_sorszam, ab.load_shop().truth[<span class="st">"promo_weeks"</span>][<span class="dv">2025</span>]).astype(<span class="bu">float</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>ax.plot(heti.index, heti.values, color<span class="op">=</span>ab.PALETTE[<span class="dv">0</span>], lw<span class="op">=</span><span class="fl">1.3</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>ax.scatter(heti.index[akcio <span class="op">==</span> <span class="dv">1</span>], heti.values[akcio <span class="op">==</span> <span class="dv">1</span>], color<span class="op">=</span>ab.PALETTE[<span class="dv">1</span>], s<span class="op">=</span><span class="dv">18</span>, zorder<span class="op">=</span><span class="dv">3</span>, label<span class="op">=</span><span class="st">"akciós hét"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"rendelések / hét"</span>)<span class="op">;</span> ax.legend()</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(heti.groupby(heti.index.year).<span class="bu">sum</span>().rename(<span class="st">"rendelések száma"</span>))</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>InvoiceDate
+2024    7001
+2025    8207
+Name: rendelések száma, dtype: int64</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-heti-rendelesek" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-heti-rendelesek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="12-idosorok_files/figure-html/fig-heti-rendelesek-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="ábra&nbsp;12.5.. A PannonShop heti rendelésszáma. Az év végi csúcs és az akciós hetek (pontok) határozzák meg a sor szerkezetét; a második évben a forgalom nagyobb."><img src="12-idosorok_files/figure-html/fig-heti-rendelesek-output-2.png" width="690" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-heti-rendelesek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;12.5.. A PannonShop heti rendelésszáma. Az év végi csúcs és az akciós hetek (pontok) határozzák meg a sor szerkezetét; a második évben a forgalom nagyobb.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Négy módszert hasonlítunk össze gördülő kezdőpontú értékeléssel (a 65. héttől négyhetente, négyhetes horizonttal): a naiv és a szezonális naiv előrejelzést, a szezonális naiv előrejelzés növekedéssel korrigált változatát (az elmúlt nyolc hét és az egy évvel korábbi nyolc hét log-szintjének különbségével), valamint egy dinamikus harmonikus regressziót, amely a logaritmált rendelésszámot Fourier-tagokkal (az éves szezonalitás), trenddel, valamint az akciós és az ünnepi hetek indikátoraival magyarázza, AR(1) hibataggal. Az éves periódusú Holt–Winters- és SARIMA-modellekhez két év kevés: a szezonális komponens becsléséhez legalább két teljes periódus kellene már a legelső kezdőpontban is.</p>
+<div id="68dd51ce" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.statespace.sarimax <span class="im">import</span> SARIMAX</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.log(heti.to_numpy())</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.arange(<span class="bu">len</span>(y))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>unnepi <span class="op">=</span> np.isin(het_sorszam, [<span class="dv">49</span>, <span class="dv">50</span>, <span class="dv">51</span>, <span class="dv">52</span>]).astype(<span class="bu">float</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fourier(t, K, P<span class="op">=</span><span class="fl">52.18</span>):</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.column_stack([f(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> k <span class="op">*</span> t <span class="op">/</span> P) <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, K <span class="op">+</span> <span class="dv">1</span>) <span class="cf">for</span> f <span class="kw">in</span> (np.sin, np.cos)])</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>Xdhr <span class="op">=</span> np.column_stack([fourier(t, <span class="dv">3</span>), t <span class="op">/</span> <span class="dv">52</span>, akcio, unnepi])</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>H <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>kezdopontok <span class="op">=</span> <span class="bu">range</span>(<span class="dv">64</span>, <span class="bu">len</span>(y) <span class="op">-</span> H <span class="op">+</span> <span class="dv">1</span>, <span class="dv">4</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> naiv(o):            <span class="cf">return</span> np.repeat(y[o <span class="op">-</span> <span class="dv">1</span>], H)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> szez_naiv(o):       <span class="cf">return</span> y[o <span class="op">-</span> <span class="dv">52</span>:o <span class="op">-</span> <span class="dv">52</span> <span class="op">+</span> H]</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> szez_naiv_nov(o):   <span class="cf">return</span> y[o <span class="op">-</span> <span class="dv">52</span>:o <span class="op">-</span> <span class="dv">52</span> <span class="op">+</span> H] <span class="op">+</span> (y[o <span class="op">-</span> <span class="dv">8</span>:o].mean() <span class="op">-</span> y[o <span class="op">-</span> <span class="dv">60</span>:o <span class="op">-</span> <span class="dv">52</span>].mean())</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dhr(o):</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    illesztett <span class="op">=</span> SARIMAX(y[:o], exog<span class="op">=</span>Xdhr[:o], order<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>), trend<span class="op">=</span><span class="st">"c"</span>).fit(disp<span class="op">=</span><span class="va">False</span>, maxiter<span class="op">=</span><span class="dv">200</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> illesztett.forecast(H, exog<span class="op">=</span>Xdhr[o:o <span class="op">+</span> H])</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>skala <span class="op">=</span> np.mean(np.<span class="bu">abs</span>(np.diff(heti.to_numpy()[:<span class="dv">64</span>])))     <span class="co"># naiv egylépéses MAE a tanítóadatokon</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>eredm <span class="op">=</span> {}</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nev, f <span class="kw">in</span> [(<span class="st">"naiv"</span>, naiv), (<span class="st">"szezonális naiv"</span>, szez_naiv),</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>               (<span class="st">"szezonális naiv + növekedés"</span>, szez_naiv_nov), (<span class="st">"dinamikus harmonikus regresszió"</span>, dhr)]:</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    hibak <span class="op">=</span> np.concatenate([np.<span class="bu">abs</span>(np.exp(f(o)) <span class="op">-</span> heti.to_numpy()[o:o <span class="op">+</span> H]) <span class="cf">for</span> o <span class="kw">in</span> kezdopontok])</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    eredm[nev] <span class="op">=</span> {<span class="st">"MAE [rendelés/hét]"</span>: hibak.mean(), <span class="st">"MASE"</span>: hibak.mean() <span class="op">/</span> skala}</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(eredm).T.<span class="bu">round</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">MAE [rendelés/hét]</th>
+<th data-quarto-table-cell-role="th">MASE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">naiv</th>
+<td>45.45</td>
+<td>1.48</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">szezonális naiv</th>
+<td>28.12</td>
+<td>0.91</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">szezonális naiv + növekedés</th>
+<td>16.65</td>
+<td>0.54</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">dinamikus harmonikus regresszió</th>
+<td>26.74</td>
+<td>0.87</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="eset-uzleti">
+<p>A legjobb eredményt a legegyszerűbb, a szakterületi tudást (az éves ismétlődést és a növekedést) közvetlenül felhasználó módszer adja: a növekedéssel korrigált szezonális naiv előrejelzés MASE-értéke jóval 1 alatt van. A dinamikus harmonikus regresszió ugyan jobb a szezonális naiv módszernél, de két év adatából a Fourier-tagok és a indikátorváltozók együtthatói bizonytalanok, és a hirtelen év végi felfutást csak elmosódottan írják le. A tanulság általános: rövid, erősen szezonális soroknál a jól megválasztott viszonyítási módszer gyakran a legjobb választás, és egy bonyolultabb modell bevezetését mindig ehhez kell mérni.</p>
+</div>
+</section>
+<section id="óránkénti-hűtési-igény-előrejelzése" class="level3" data-number="12.5.2">
+<h3 data-number="12.5.2" class="anchored" data-anchor-id="óránkénti-hűtési-igény-előrejelzése"><span class="header-section-number">12.5.2</span> Óránkénti hűtési igény előrejelzése</h3>
+<div class="eset-mernoki">
+<p>A hűtővízrendszer üzemeltetője 24 órával előre szeretné látni a hűtővízigényt. Az órás adatok bőségesek, a sor napi periodicitású (a környezeti hőmérséklet napi járása miatt), és szintje a gyártott terméktől és a hűtőköpeny állapotától függ. Bontsuk fel a sort STL-lel, és vizsgáljuk meg az autokorrelációját!</p>
+</div>
+<div id="cell-fig-stl" class="cell" data-fig-height="4.6" data-fig-width="7.2" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.seasonal <span class="im">import</span> STL</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ora <span class="op">=</span> ab.load_plant().hourly.set_index(<span class="st">"ido"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> ora.F_hutoviz[<span class="st">"2025-08-26"</span>:<span class="st">"2025-12-05"</span>]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>stl <span class="op">=</span> STL(s[<span class="st">"2025-10-01"</span>:<span class="st">"2025-10-28"</span>], period<span class="op">=</span><span class="dv">24</span>, robust<span class="op">=</span><span class="va">True</span>).fit()</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">4</span>, <span class="dv">1</span>, sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a, (sor, nev) <span class="kw">in</span> <span class="bu">zip</span>(ax, [(stl.observed, <span class="st">"mért"</span>), (stl.trend, <span class="st">"trend"</span>), (stl.seasonal, <span class="st">"napi szezonalitás"</span>), (stl.resid, <span class="st">"maradék"</span>)]):</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    a.plot(sor.index, sor.values, color<span class="op">=</span>ab.PALETTE[<span class="dv">0</span>], lw<span class="op">=</span><span class="fl">0.8</span>)<span class="op">;</span> a.set_ylabel(nev, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>fig.autofmt_xdate()</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-stl" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-stl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="12-idosorok_files/figure-html/fig-stl-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="ábra&nbsp;12.6.. A hűtővízáram órás idősorának STL-felbontása (24 órás periódus, robusztus változat) négy hétre. A trend az október 12-i leállás – a hűtőköpeny tisztítása – után jelentősen csökken, mert a tiszta hőátadó felület kevesebb hűtővizet igényel; a napi szezonalitás amplitúdója a környezeti hőmérséklet napi ingadozását követi."><img src="12-idosorok_files/figure-html/fig-stl-output-1.png" width="693" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;12.6.. A hűtővízáram órás idősorának STL-felbontása (24 órás periódus, robusztus változat) négy hétre. A trend az október 12-i leállás – a hűtőköpeny tisztítása – után jelentősen csökken, mert a tiszta hőátadó felület kevesebb hűtővizet igényel; a napi szezonalitás amplitúdója a környezeti hőmérséklet napi ingadozását követi.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-fig-acf" class="cell" data-fig-height="2.6" data-fig-width="7.2" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.graphics.tsaplots <span class="im">import</span> plot_acf, plot_pacf</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>plot_acf(s[<span class="st">"2025-09-01"</span>:<span class="st">"2025-09-14"</span>], lags<span class="op">=</span><span class="dv">72</span>, ax<span class="op">=</span>ax[<span class="dv">0</span>], color<span class="op">=</span>ab.PALETTE[<span class="dv">0</span>], vlines_kwargs<span class="op">=</span>{<span class="st">"colors"</span>: ab.PALETTE[<span class="dv">0</span>]})</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>plot_pacf(s[<span class="st">"2025-09-01"</span>:<span class="st">"2025-09-14"</span>], lags<span class="op">=</span><span class="dv">72</span>, ax<span class="op">=</span>ax[<span class="dv">1</span>], color<span class="op">=</span>ab.PALETTE[<span class="dv">0</span>], vlines_kwargs<span class="op">=</span>{<span class="st">"colors"</span>: ab.PALETTE[<span class="dv">0</span>]}, method<span class="op">=</span><span class="st">"ywm"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a, cim <span class="kw">in</span> <span class="bu">zip</span>(ax, [<span class="st">"ACF"</span>, <span class="st">"PACF"</span>]):</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    a.set_title(cim, fontsize<span class="op">=</span><span class="dv">9</span>)<span class="op">;</span> a.set_xlabel(<span class="st">"késleltetés [óra]"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-acf" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-acf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="12-idosorok_files/figure-html/fig-acf-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="ábra&nbsp;12.7.. A hűtővízáram órás sorának autokorrelációs (balra) és parciális autokorrelációs függvénye (jobbra) az első két hétre. A 24 óránként ismétlődő csúcsok a napi szezonalitást jelzik."><img src="12-idosorok_files/figure-html/fig-acf-output-1.png" width="693" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-acf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;12.7.. A hűtővízáram órás sorának autokorrelációs (balra) és parciális autokorrelációs függvénye (jobbra) az első két hétre. A 24 óránként ismétlődő csúcsok a napi szezonalitást jelzik.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Öt módszert hasonlítunk össze tizenöt kezdőponttal (október közepétől háromnaponta), 24 órás horizonttal, mindig az előző három hét adataira illesztve: a szezonális naiv előrejelzést (a tegnapi azonos óra), a csillapított trendű Holt–Winters-módszert, egy SARIMA<span class="math inline">\((1,0,1)(0,1,1)_{24}\)</span> modellt, valamint két dinamikus regressziót. Ez utóbbiak a termelési tervből ismert alapjelet, betáplálási áramot és koncentrációt, valamint a környezeti hőmérsékletet is felhasználják; a jövőbeli környezeti hőmérsékletet itt a mért értékkel helyettesítjük, ami az időjárás-előrejelzés hibáját figyelmen kívül hagyja, tehát a valóságnál kissé optimista.</p>
+<div id="db0e9d0c" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.holtwinters <span class="im">import</span> ExponentialSmoothing</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.diagnostic <span class="im">import</span> acorr_ljungbox</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>kulso <span class="op">=</span> ora.loc[<span class="st">"2025-08-26"</span>:<span class="st">"2025-12-05"</span>, [<span class="st">"T_alapjel"</span>, <span class="st">"F_betap"</span>, <span class="st">"c_betap"</span>, <span class="st">"T_kornyezet"</span>]]</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>H <span class="op">=</span> <span class="dv">24</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>kezdo <span class="op">=</span> pd.date_range(<span class="st">"2025-10-15"</span>, <span class="st">"2025-11-28"</span>, freq<span class="op">=</span><span class="st">"3D"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>modszerek <span class="op">=</span> {</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"szezonális naiv"</span>: <span class="kw">lambda</span> tr, Xtr, Xte: tr.to_numpy()[<span class="op">-</span><span class="dv">24</span>:],</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Holt–Winters (csillapított)"</span>: <span class="kw">lambda</span> tr, Xtr, Xte: ExponentialSmoothing(</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        tr.to_numpy(), trend<span class="op">=</span><span class="st">"add"</span>, damped_trend<span class="op">=</span><span class="va">True</span>, seasonal<span class="op">=</span><span class="st">"add"</span>, seasonal_periods<span class="op">=</span><span class="dv">24</span>).fit().forecast(H),</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SARIMA(1,0,1)(0,1,1)₂₄"</span>: <span class="kw">lambda</span> tr, Xtr, Xte: SARIMAX(</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        tr.to_numpy(), order<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>), seasonal_order<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">24</span>)).fit(disp<span class="op">=</span><span class="va">False</span>).forecast(H),</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"regresszió + AR(1) hiba"</span>: <span class="kw">lambda</span> tr, Xtr, Xte: SARIMAX(</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        tr.to_numpy(), exog<span class="op">=</span>Xtr, order<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>), trend<span class="op">=</span><span class="st">"c"</span>).fit(disp<span class="op">=</span><span class="va">False</span>).forecast(H, exog<span class="op">=</span>Xte),</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SARIMAX"</span>: <span class="kw">lambda</span> tr, Xtr, Xte: SARIMAX(</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        tr.to_numpy(), exog<span class="op">=</span>Xtr, order<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>), seasonal_order<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">24</span>)).fit(disp<span class="op">=</span><span class="va">False</span>).forecast(H, exog<span class="op">=</span>Xte),</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>eredm <span class="op">=</span> {}</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nev, f <span class="kw">in</span> modszerek.items():</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    mae, mase <span class="op">=</span> [], []</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> o <span class="kw">in</span> kezdo:</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>        tr_idx <span class="op">=</span> <span class="bu">slice</span>(o <span class="op">-</span> pd.Timedelta(days<span class="op">=</span><span class="dv">21</span>), o <span class="op">-</span> pd.Timedelta(hours<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>        te_idx <span class="op">=</span> <span class="bu">slice</span>(o, o <span class="op">+</span> pd.Timedelta(hours<span class="op">=</span>H <span class="op">-</span> <span class="dv">1</span>))</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>        elorejelzes <span class="op">=</span> f(s[tr_idx], kulso[tr_idx].to_numpy(), kulso[te_idx].to_numpy())</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>        hiba <span class="op">=</span> np.mean(np.<span class="bu">abs</span>(elorejelzes <span class="op">-</span> s[te_idx].to_numpy()))</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>        skala <span class="op">=</span> np.mean(np.<span class="bu">abs</span>(s[tr_idx].diff(<span class="dv">24</span>).dropna()))         <span class="co"># szezonális naiv MAE a tanítóablakon</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>        mae.append(hiba)<span class="op">;</span> mase.append(hiba <span class="op">/</span> skala)</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    eredm[nev] <span class="op">=</span> {<span class="st">"MAE [m³/h]"</span>: np.mean(mae), <span class="st">"MASE (szezonális)"</span>: np.mean(mase),</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"a kezdőpontok hányadában jobb a szez. naivnál"</span>: <span class="va">None</span>}</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    eredm[nev][<span class="st">"_mae"</span>] <span class="op">=</span> mae</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>alap <span class="op">=</span> np.array(eredm[<span class="st">"szezonális naiv"</span>][<span class="st">"_mae"</span>])</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nev <span class="kw">in</span> eredm:</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    eredm[nev][<span class="st">"a kezdőpontok hányadában jobb a szez. naivnál"</span>] <span class="op">=</span> np.mean(np.array(eredm[nev].pop(<span class="st">"_mae"</span>)) <span class="op">&lt;</span> alap)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(eredm).T.astype(<span class="bu">float</span>).<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">MAE [m³/h]</th>
+<th data-quarto-table-cell-role="th">MASE (szezonális)</th>
+<th data-quarto-table-cell-role="th">a kezdőpontok hányadában jobb a szez. naivnál</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">szezonális naiv</th>
+<td>0.528</td>
+<td>0.846</td>
+<td>0.000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Holt–Winters (csillapított)</th>
+<td>0.509</td>
+<td>0.783</td>
+<td>0.533</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">SARIMA(1,0,1)(0,1,1)₂₄</th>
+<td>0.547</td>
+<td>0.823</td>
+<td>0.600</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">regresszió + AR(1) hiba</th>
+<td>0.456</td>
+<td>0.655</td>
+<td>0.733</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">SARIMAX</th>
+<td>0.415</td>
+<td>0.631</td>
+<td>0.800</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="cb72c634" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>utolso <span class="op">=</span> SARIMAX(s[<span class="st">"2025-11-05"</span>:<span class="st">"2025-11-25"</span>].to_numpy(), order<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>), seasonal_order<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">24</span>)).fit(disp<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>lb <span class="op">=</span> acorr_ljungbox(utolso.resid[<span class="dv">25</span>:], lags<span class="op">=</span>[<span class="dv">24</span>, <span class="dv">48</span>])</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Ljung–Box-próba a SARIMA maradékain (p-érték):"</span>, lb[<span class="st">"lb_pvalue"</span>].<span class="bu">round</span>(<span class="dv">4</span>).to_dict())</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Ljung–Box-próba a SARIMA maradékain (p-érték): {24: 0.0269, 48: 0.1404}</code></pre>
+</div>
+</div>
+<div class="eset-mernoki">
+<p>A tisztán idősoros modellek (Holt–Winters, SARIMA) legfeljebb kevéssel jobbak a szezonális naiv előrejelzésnél – a kezdőpontok megválasztásától függően akár rosszabbak is –, igazán nagy javulást a külső változók hoznak: a termelési terv és a környezeti hőmérséklet ismeretében a hűtési igény szintjének változásai – amelyeket a tisztán idősoros modellek csak utólag követnek – előre láthatók. A szezonális tagot is tartalmazó SARIMAX a legjobb. A SARIMA-modell maradékaiban a Ljung–Box-próba szerint rövid távon (24 óráig) szignifikáns autokorreláció marad: a termékváltások okozta szintugrásokat a tisztán idősoros modell nem tudja leírni – ez is a külső változók felhasználása mellett szól. A táblázat utolsó oszlopa arra is figyelmeztet, hogy az átlagos hiba mögött nagy kezdőpontonkénti ingadozás áll: kevés kezdőpont esetén a módszerek sorrendje véletlenszerűen is megfordulhat, ezért érdemes sok kezdőpontot használni, és a hibák eloszlását is megnézni. Ez ugyanaz a tanulság, mint a <a href="10-melytanulas.html" class="quarto-xref"><span>10</span></a>. fejezet hűtési igény modelljénél: a folyamat fizikájából ismert bemenetek felhasználása többet ér, mint a modell bonyolultsága.</p>
+</div>
+</section>
+<section id="jelalakok-osztályozása-dinamikus-idővetemítéssel" class="level3" data-number="12.5.3">
+<h3 data-number="12.5.3" class="anchored" data-anchor-id="jelalakok-osztályozása-dinamikus-idővetemítéssel"><span class="header-section-number">12.5.3</span> Jelalakok osztályozása dinamikus idővetemítéssel</h3>
+<p>A DTW előnye ott mutatkozik meg, ahol az azonos osztályba tartozó jelalakok időben eltolódnak vagy eltérő sebességgel zajlanak le. Ennek klasszikus mintapéldája a „henger–harang–tölcsér” (Cylinder–Bell–Funnel, CBF) feladat <span class="citation" data-cites="saito1994">(<a href="../references.html#ref-saito1994" role="doc-biblioref">Saito, 1994</a>)</span>, amely az UCR-archívum egyik referenciaadatsora is <span class="citation" data-cites="dau2019">(<a href="../references.html#ref-dau2019" role="doc-biblioref">Dau és mtsai., 2019</a>)</span>: három jelalak (állandó szintű szakasz, felfutó és lefutó rámpa), véletlen kezdettel, hosszal és amplitúdóval, zajjal terhelve. A DTW-t sok sorpárra egyszerre, a párok mentén vektorizálva számítjuk.</p>
+<div id="96796c0a" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cbf(n_osztalyonkent, rng, L<span class="op">=</span><span class="dv">128</span>):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""A Cylinder–Bell–Funnel mintaadatsor generátora (Saito, 1994)."""</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> np.arange(L)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    X, y <span class="op">=</span> [], []</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_osztalyonkent):</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>            a <span class="op">=</span> rng.integers(<span class="dv">16</span>, <span class="dv">33</span>)<span class="op">;</span> b <span class="op">=</span> <span class="bu">min</span>(a <span class="op">+</span> rng.integers(<span class="dv">32</span>, <span class="dv">97</span>), L <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>            chi <span class="op">=</span> ((t <span class="op">&gt;=</span> a) <span class="op">&amp;</span> (t <span class="op">&lt;=</span> b)).astype(<span class="bu">float</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>            alak <span class="op">=</span> [chi, chi <span class="op">*</span> (t <span class="op">-</span> a) <span class="op">/</span> (b <span class="op">-</span> a), chi <span class="op">*</span> (b <span class="op">-</span> t) <span class="op">/</span> (b <span class="op">-</span> a)][c]</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>            X.append((<span class="dv">6</span> <span class="op">+</span> rng.normal()) <span class="op">*</span> alak <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, L))<span class="op">;</span> y.append(c)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array(X), np.array(y)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dtw_parok(A, B, w<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""DTW-távolság az A[k] és B[k] sorpárokra, a párok mentén vektorizálva."""</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    n, L <span class="op">=</span> A.shape</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    elozo <span class="op">=</span> np.full((n, L <span class="op">+</span> <span class="dv">1</span>), np.inf)<span class="op">;</span> elozo[:, <span class="dv">0</span>] <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, L <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>        akt <span class="op">=</span> np.full((n, L <span class="op">+</span> <span class="dv">1</span>), np.inf)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>        jlo, jhi <span class="op">=</span> (<span class="dv">1</span>, L) <span class="cf">if</span> w <span class="kw">is</span> <span class="va">None</span> <span class="cf">else</span> (<span class="bu">max</span>(<span class="dv">1</span>, i <span class="op">-</span> w), <span class="bu">min</span>(L, i <span class="op">+</span> w))</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(jlo, jhi <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>            c <span class="op">=</span> (A[:, i <span class="op">-</span> <span class="dv">1</span>] <span class="op">-</span> B[:, j <span class="op">-</span> <span class="dv">1</span>]) <span class="op">**</span> <span class="dv">2</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>            akt[:, j] <span class="op">=</span> c <span class="op">+</span> np.minimum(np.minimum(elozo[:, j], akt[:, j <span class="op">-</span> <span class="dv">1</span>]), elozo[:, j <span class="op">-</span> <span class="dv">1</span>])</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>        elozo <span class="op">=</span> akt</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.sqrt(elozo[:, L])</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>Xtr, ytr <span class="op">=</span> cbf(<span class="dv">10</span>, rng)<span class="op">;</span> Xte, yte <span class="op">=</span> cbf(<span class="dv">100</span>, rng)</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>znorm <span class="op">=</span> <span class="kw">lambda</span> X: (X <span class="op">-</span> X.mean(axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)) <span class="op">/</span> X.std(axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>Xtr, Xte <span class="op">=</span> znorm(Xtr), znorm(Xte)</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>ii, jj <span class="op">=</span> np.meshgrid(np.arange(<span class="bu">len</span>(Xte)), np.arange(<span class="bu">len</span>(Xtr)), indexing<span class="op">=</span><span class="st">"ij"</span>)</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>tav <span class="op">=</span> {<span class="st">"euklideszi"</span>: np.sqrt(((Xte[ii.ravel()] <span class="op">-</span> Xtr[jj.ravel()]) <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>))}</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> [<span class="dv">4</span>, <span class="dv">12</span>, <span class="va">None</span>]:</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>    tav[<span class="ss">f"DTW, w = </span><span class="sc">{</span>w <span class="cf">if</span> w <span class="cf">else</span> <span class="st">'nincs korlát'</span><span class="sc">}</span><span class="ss">"</span>] <span class="op">=</span> dtw_parok(Xte[ii.ravel()], Xtr[jj.ravel()], w<span class="op">=</span>w)</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>pd.Series({nev: (ytr[d.reshape(<span class="bu">len</span>(Xte), <span class="bu">len</span>(Xtr)).argmin(axis<span class="op">=</span><span class="dv">1</span>)] <span class="op">!=</span> yte).mean() <span class="cf">for</span> nev, d <span class="kw">in</span> tav.items()},</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>          name<span class="op">=</span><span class="st">"1-NN tévesztési arány"</span>).<span class="bu">round</span>(<span class="dv">3</span>).to_frame()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">1-NN tévesztési arány</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">euklideszi</th>
+<td>0.177</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">DTW, w = 4</th>
+<td>0.067</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">DTW, w = 12</th>
+<td>0.010</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">DTW, w = nincs korlát</th>
+<td>0.003</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="cell-fig-cbf" class="cell" data-fig-height="2.4" data-fig-width="7.2" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c, nev <span class="kw">in</span> <span class="bu">enumerate</span>([<span class="st">"henger"</span>, <span class="st">"harang"</span>, <span class="st">"tölcsér"</span>]):</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        ax[c].plot(Xtr[ytr <span class="op">==</span> c][k], color<span class="op">=</span>ab.PALETTE[c], lw<span class="op">=</span><span class="fl">0.9</span>, alpha<span class="op">=</span><span class="fl">0.9</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    ax[c].set_title(nev, fontsize<span class="op">=</span><span class="dv">9</span>)<span class="op">;</span> ax[c].set_xlabel(<span class="st">"idő"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-cbf" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cbf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="12-idosorok_files/figure-html/fig-cbf-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="ábra&nbsp;12.8.. A Cylinder–Bell–Funnel feladat osztályonként három-három mintája. Az osztályon belüli eltérés főként időbeli (kezdet, hossz), amit az euklideszi távolság nagy különbségként érzékel, a DTW viszont kiegyenlít."><img src="12-idosorok_files/figure-html/fig-cbf-output-1.png" width="693" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cbf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;12.8.. A Cylinder–Bell–Funnel feladat osztályonként három-három mintája. Az osztályon belüli eltérés főként időbeli (kezdet, hossz), amit az euklideszi távolság nagy különbségként érzékel, a DTW viszont kiegyenlít.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Osztályonként mindössze tíz tanítómintával az euklideszi 1-NN osztályozó a tesztminták mintegy hatodát téveszti el, a DTW-vel a tévesztés néhány százalékra, korlátozás nélküli vetemítéssel szinte nullára csökken – összhangban az UCR-archívumban közölt eredményekkel. A Sakoe–Chiba-sáv szélessége itt kompromisszum: a keskeny sáv gyorsabb, de túl kevés vetemítést enged. A futó üzemi esetben a DTW nem hozna ilyen javulást: ott a hibák nem eltolt jelalakokban, hanem szintekben és ingadozásokban különböznek – a távolságmértéket mindig a feladat jellegéhez kell választani.</p>
+</section>
+<section id="periodicitás-és-tömörítés" class="level3" data-number="12.5.4">
+<h3 data-number="12.5.4" class="anchored" data-anchor-id="periodicitás-és-tömörítés"><span class="header-section-number">12.5.4</span> Periodicitás és tömörítés</h3>
+<p>Végül nézzük meg, mit árul el a periodogram a környezeti hőmérsékletről, és mennyire jól őrzik meg a különböző reprezentációk a hűtővízáram egy hetes sorát azonos számú (24) együtthatóval!</p>
+<div id="cell-fig-periodogram" class="cell" data-fig-height="2.6" data-fig-width="7.2" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>sor <span class="op">=</span> ora.T_kornyezet[<span class="st">"2025-04-01"</span>:<span class="st">"2025-09-30"</span>]</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> (sor <span class="op">-</span> sor.rolling(<span class="dv">168</span>, center<span class="op">=</span><span class="va">True</span>, min_periods<span class="op">=</span><span class="dv">1</span>).mean()).to_numpy()   <span class="co"># a heti mozgóátlag (lassú változás) levonása</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.fft.rfft(x)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>freq <span class="op">=</span> np.fft.rfftfreq(<span class="bu">len</span>(x), d<span class="op">=</span><span class="fl">1.0</span>)                  <span class="co"># ciklus / óra</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> np.<span class="bu">abs</span>(X[<span class="dv">1</span>:]) <span class="op">**</span> <span class="dv">2</span> <span class="op">/</span> <span class="bu">len</span>(x)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>ax.semilogy(<span class="dv">1</span> <span class="op">/</span> freq[<span class="dv">1</span>:], P, color<span class="op">=</span>ab.PALETTE[<span class="dv">0</span>], lw<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>ax.set_xscale(<span class="st">"log"</span>)<span class="op">;</span> ax.set_xlim(<span class="dv">4</span>, <span class="dv">1000</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>ax.set_xticks([<span class="dv">6</span>, <span class="dv">12</span>, <span class="dv">24</span>, <span class="dv">48</span>, <span class="dv">168</span>, <span class="dv">720</span>], [<span class="st">"6"</span>, <span class="st">"12"</span>, <span class="st">"24"</span>, <span class="st">"48"</span>, <span class="st">"168"</span>, <span class="st">"720"</span>])</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"periódus [óra]"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"teljesítmény"</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"a legerősebb periódus: </span><span class="sc">{</span><span class="dv">1</span> <span class="op">/</span> freq[<span class="dv">1</span>:][np.argmax(P)]<span class="sc">:.1f}</span><span class="ss"> óra"</span>)</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>a legerősebb periódus: 24.0 óra</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-periodogram" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-periodogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="12-idosorok_files/figure-html/fig-periodogram-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="ábra&nbsp;12.9.. A környezeti hőmérséklet órás sorának periodogramja (logaritmikus skálán) a periódusidő függvényében, a heti mozgóátlag levonása után. A legerősebb csúcs a 24 órás napi ciklus."><img src="12-idosorok_files/figure-html/fig-periodogram-output-2.png" width="693" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-periodogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;12.9.. A környezeti hőmérséklet órás sorának periodogramja (logaritmikus skálán) a periódusidő függvényében, a heti mozgóátlag levonása után. A legerősebb csúcs a 24 órás napi ciklus.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="0456918e" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pywt</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>het <span class="op">=</span> ora.F_hutoviz[<span class="st">"2025-10-20"</span>:<span class="st">"2025-10-26"</span>].to_numpy()           <span class="co"># 168 óra</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">24</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> (het <span class="op">-</span> het.mean()) <span class="op">/</span> het.std()</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>paa <span class="op">=</span> np.repeat(z.reshape(k, <span class="op">-</span><span class="dv">1</span>).mean(axis<span class="op">=</span><span class="dv">1</span>), <span class="bu">len</span>(z) <span class="op">//</span> k)         <span class="co"># 24 szakasz, egyenként 7 óra</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># DFT: a 12 legkisebb frekvenciájú komplex együttható = 24 valós szám</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>F <span class="op">=</span> np.fft.rfft(z)<span class="op">;</span> F[<span class="dv">12</span>:] <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> dft <span class="op">=</span> np.fft.irfft(F, n<span class="op">=</span><span class="bu">len</span>(z))</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Haar-DWT: a 24 legnagyobb abszolút értékű együttható</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>egyutt <span class="op">=</span> pywt.wavedec(z, <span class="st">"haar"</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>lapos, szerk <span class="op">=</span> pywt.coeffs_to_array(egyutt)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>kuszob <span class="op">=</span> np.sort(np.<span class="bu">abs</span>(lapos))[<span class="op">-</span>k]</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>dwt <span class="op">=</span> pywt.waverec(pywt.array_to_coeffs(np.where(np.<span class="bu">abs</span>(lapos) <span class="op">&gt;=</span> kuszob, lapos, <span class="dv">0</span>), szerk, output_format<span class="op">=</span><span class="st">"wavedec"</span>), <span class="st">"haar"</span>)[:<span class="bu">len</span>(z)]</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>rmse <span class="op">=</span> <span class="kw">lambda</span> r: <span class="bu">float</span>(np.sqrt(np.mean((z <span class="op">-</span> r) <span class="op">**</span> <span class="dv">2</span>)))</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>pd.Series({<span class="st">"PAA (24 szakasz)"</span>: rmse(paa), <span class="st">"DFT (12 komplex = 24 valós együttható)"</span>: rmse(dft),</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Haar-DWT (24 legnagyobb együttható)"</span>: rmse(dwt)}, name<span class="op">=</span><span class="st">"RMSE (z-normalizált)"</span>).<span class="bu">round</span>(<span class="dv">3</span>).to_frame()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">RMSE (z-normalizált)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">PAA (24 szakasz)</th>
+<td>0.342</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">DFT (12 komplex = 24 valós együttható)</th>
+<td>0.221</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">Haar-DWT (24 legnagyobb együttható)</th>
+<td>0.241</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Ezen a heti soron a DFT a legpontosabb, mert a jelet a sima napi ciklus uralja, amelyet néhány alacsony frekvenciás szinusz jól leír. A Haar-hullámtranszformáció a legnagyobb együtthatók megtartásával a lokális változásokhoz alkalmazkodik, ezért hirtelen szintugrásokat és tranzienseket tartalmazó soroknál kerül előnybe; az egyenletes felbontású PAA a legkevésbé pontos. A PAA és a SAX előnye az egyszerűség és az, hogy a távolságuk alsó korlátja az eredeti sorok euklideszi távolságának, ami gyors indexelést tesz lehetővé <span class="citation" data-cites="keogh2001 lin2007">(<a href="../references.html#ref-keogh2001" role="doc-biblioref">Keogh és mtsai., 2001</a>; <a href="../references.html#ref-lin2007" role="doc-biblioref">Lin és mtsai., 2007</a>)</span>.</p>
+<div class="pe-app"><div class="pe-app-bar"><span>Dinamikus idővetemítés: illesztés, költségmátrix és Sakoe–Chiba-sáv</span><a href="../apps/dtw.html" target="_blank" rel="noopener">Megnyitás új lapon ↗</a></div><iframe src="../apps/dtw.html" style="height:620px" loading="lazy" title="Dinamikus idővetemítés: illesztés, költségmátrix és Sakoe–Chiba-sáv"></iframe></div>
+<div class="pe-badges"><a href="https://colab.research.google.com/github/ComplexSystemsIntelligence/adatbanyaszat/blob/main/notebooks/12-idosorok.ipynb" target="_blank" rel="noopener">▶ Colab: 12. fejezet – idősorok</a><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/notebooks/12-idosorok.ipynb" target="_blank" rel="noopener">GitHub forrás</a></div>
+</section>
+</section>
+<section id="sec-idosor-osszefoglalas" class="level2" data-number="12.6">
+<h2 data-number="12.6" class="anchored" data-anchor-id="sec-idosor-osszefoglalas"><span class="header-section-number">12.6</span> Összefoglalás</h2>
+<ul>
+<li>Az idősorok trendre, szezonalitásra és maradékra bonthatók; az STL robusztus, rugalmas felbontást ad.</li>
+<li>Az autokorreláció az idősorok alapvető jellemzője: az előrejelzés erre épül, a független mintavételt feltételező módszereket (véletlen keresztvalidáció, ellenőrzőkártyák) viszont félrevezeti.</li>
+<li>Az exponenciális simítás és az (S)ARIMA-modellek a klasszikus előrejelzési eszközök; a külső változókat a dinamikus regresszió (SARIMAX) használja fel.</li>
+<li>Az előrejelzéseket gördülő kezdőpontú értékeléssel, skálázott hibamértékkel (MASE) és egyszerű viszonyítási módszerekhez mérten kell értékelni.</li>
+<li>A dinamikus idővetemítés az időbeli eltolódásokat és sebességkülönbségeket kiegyenlítő távolságmérték; a Sakoe–Chiba-sáv és az alsó korlátok gyorsítják.</li>
+<li>A DFT, a DWT, a PAA és a SAX tömör reprezentációk; a SAX szimbolikus sorozattá alakítja az idősort.</li>
+<li>Az idősor-osztályozás erős viszonyítási alapja az 1-NN DTW; a szegmentálás homogén szakaszokra bontja a sort.</li>
+</ul>
+</section>
+<section id="ellenőrző-kérdések" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="ellenőrző-kérdések">Ellenőrző kérdések</h2>
+<ol type="1">
+<li>Mikor alkalmazunk multiplikatív felbontást, és hogyan vezethető vissza additívra?</li>
+<li>Mit jelez, ha az ACF 24, 48, 72 óra késleltetésnél csúcsokat mutat?</li>
+<li>Miért nem alkalmas a véletlen keresztvalidáció idősoros előrejelzők értékelésére?</li>
+<li>Mit jelent, ha egy módszer MASE-értéke 1-nél nagyobb?</li>
+<li>Mi a különbség a Holt–Winters-módszer additív és multiplikatív változata között?</li>
+<li>Miért lehet a DTW-távolság nulla két különböző hosszú sor között?</li>
+<li>Hogyan függ a SAX-reprezentáció az ábécé méretétől és a szakaszok számától?</li>
+</ol>
+</section>
+<section id="feladatok" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="feladatok">Feladatok</h2>
+<ol type="1">
+<li><strong>Kézi DTW.</strong> Számítsa ki kézzel az <span class="math inline">\(\mathbf{a} = (1, 2, 3)\)</span> és a <span class="math inline">\(\mathbf{b} = (1, 1, 2, 3)\)</span> sorok DTW-távolságát és a vetemítési utat! Ellenőrizze a <code>dtw()</code> függvénnyel!</li>
+<li><strong>Heti előrejelzés.</strong> Bővítse a heti rendelésszám előrejelzését egy olyan változattal, amely a szezonális naiv előrejelzést az akciós hetekre külön korrigálja! Javul-e a MASE?</li>
+<li><strong>SARIMA-rendválasztás.</strong> Válassza meg a hűtési igény SARIMA-modelljének rendjét AIC alapján egy kis rácson (<span class="math inline">\(p, q \in \{0, 1, 2\}\)</span>, <span class="math inline">\(Q \in \{0, 1\}\)</span>), és vizsgálja meg a maradékok ACF-jét!</li>
+<li><strong>Előrejelzési intervallum.</strong> Ábrázolja a SARIMAX-modell 24 órás előrejelzését 95%-os előrejelzési intervallummal (<code>get_forecast().conf_int()</code>) egy kiválasztott napra! Hány mért érték esik az intervallumon kívül a hét kezdőpont során?</li>
+<li><strong>Szegmentálás.</strong> Bontsa szakaszokra a reaktorhőmérséklet alapjelének és a hűtővízáram órás sorának együttesét egy egyszerű alulról felfelé haladó algoritmussal (szakaszonként konstans közelítés)! Mennyire esnek egybe a szakaszhatárok a termékváltásokkal?</li>
+</ol>
+</section>
+<section id="további-olvasmányok" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="további-olvasmányok">További olvasmányok</h2>
+<p>Az előrejelzés módszereinek kiváló, ingyenesen elérhető tankönyve <span class="citation" data-cites="hyndman2021">Hyndman &amp; Athanasopoulos (<a href="../references.html#ref-hyndman2021" role="doc-biblioref">2021</a>)</span>; az ARIMA-modellek klasszikus műve <span class="citation" data-cites="box2015">Box és mtsai. (<a href="../references.html#ref-box2015" role="doc-biblioref">2015</a>)</span>. Az idősor-osztályozás módszereit <span class="citation" data-cites="bagnall2017">Bagnall és mtsai. (<a href="../references.html#ref-bagnall2017" role="doc-biblioref">2017</a>)</span>, a mélytanulási megközelítéseket <span class="citation" data-cites="ismail2019">Ismail Fawaz és mtsai. (<a href="../references.html#ref-ismail2019" role="doc-biblioref">2019</a>)</span> tekinti át. A DTW gyors számításáról <span class="citation" data-cites="keogh2005">Keogh &amp; Ratanamahatana (<a href="../references.html#ref-keogh2005" role="doc-biblioref">2005</a>)</span> és <span class="citation" data-cites="rakthanmanon2012">Rakthanmanon és mtsai. (<a href="../references.html#ref-rakthanmanon2012" role="doc-biblioref">2012</a>)</span>, az idősor-reprezentációkról <span class="citation" data-cites="lin2007">Lin és mtsai. (<a href="../references.html#ref-lin2007" role="doc-biblioref">2007</a>)</span> cikke ajánlott; a szegmentálás módszereit <span class="citation" data-cites="keogh2004seg">Keogh és mtsai. (<a href="../references.html#ref-keogh2004seg" role="doc-biblioref">2004</a>)</span> foglalja össze.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-abonyi2005seg" class="csl-entry" role="listitem">
+Abonyi, J., Feil, B., Németh, S., &amp; Árva, P. (2005). Modified <span>Gath–Geva</span> Clustering for Fuzzy Segmentation of Multivariate Time-Series. <em>Fuzzy Sets and Systems</em>, <em>149</em>(1), 39–56. <a href="https://doi.org/10.1016/j.fss.2004.07.008">https://doi.org/10.1016/j.fss.2004.07.008</a>
+</div>
+<div id="ref-agrawal1993ts" class="csl-entry" role="listitem">
+Agrawal, R., Faloutsos, C., &amp; Swami, A. (1993). Efficient Similarity Search in Sequence Databases. <em>Foundations of Data Organization and Algorithms (FODO 1993), Lecture Notes in Computer Science</em>, <em>730</em>, 69–84.
+</div>
+<div id="ref-bagnall2017" class="csl-entry" role="listitem">
+Bagnall, A., Lines, J., Bostrom, A., Large, J., &amp; Keogh, E. (2017). The great time series classification bake off: a review and experimental evaluation of recent algorithmic advances. <em>Data Mining and Knowledge Discovery</em>, <em>31</em>(3), 606–660.
+</div>
+<div id="ref-bergmeir2012" class="csl-entry" role="listitem">
+Bergmeir, C., &amp; Benítez, J. M. (2012). On the use of cross-validation for time series predictor evaluation. <em>Information Sciences</em>, <em>191</em>, 192–213.
+</div>
+<div id="ref-berndt1994" class="csl-entry" role="listitem">
+Berndt, D. J., &amp; Clifford, J. (1994). Using Dynamic Time Warping to Find Patterns in Time Series. <em>KDD Workshop (AAAI Technical Report WS-94-03)</em>, 359–370.
+</div>
+<div id="ref-box2015" class="csl-entry" role="listitem">
+Box, G. E. P., Jenkins, G. M., Reinsel, G. C., &amp; Ljung, G. M. (2015). <em>Time Series Analysis: Forecasting and Control</em> (5. kiad.). Wiley.
+</div>
+<div id="ref-chan1999" class="csl-entry" role="listitem">
+Chan, K.-P., &amp; Fu, A. W.-C. (1999). Efficient Time Series Matching by Wavelets. <em>Proceedings of the 15th International Conference on Data Engineering</em>, 126–133.
+</div>
+<div id="ref-cleveland1990" class="csl-entry" role="listitem">
+Cleveland, R. B., Cleveland, W. S., McRae, J. E., &amp; Terpenning, I. (1990). <span>STL</span>: A Seasonal-Trend Decomposition Procedure Based on Loess. <em>Journal of Official Statistics</em>, <em>6</em>(1), 3–73.
+</div>
+<div id="ref-dau2019" class="csl-entry" role="listitem">
+Dau, H. A., Bagnall, A., Kamgar, K., Yeh, C.-C. M., Zhu, Y., Gharghabi, S., Ratanamahatana, C. A., &amp; Keogh, E. (2019). The <span>UCR</span> Time Series Archive. <em>IEEE/CAA Journal of Automatica Sinica</em>, <em>6</em>(6), 1293–1305. <a href="https://doi.org/10.1109/JAS.2019.1911747">https://doi.org/10.1109/JAS.2019.1911747</a>
+</div>
+<div id="ref-daubechies1992" class="csl-entry" role="listitem">
+Daubechies, I. (1992). <em>Ten Lectures on Wavelets</em>. SIAM.
+</div>
+<div id="ref-dempster2020" class="csl-entry" role="listitem">
+Dempster, A., Petitjean, F., &amp; Webb, G. I. (2020). <span>ROCKET</span>: Exceptionally Fast and Accurate Time Series Classification Using Random Convolutional Kernels. <em>Data Mining and Knowledge Discovery</em>, <em>34</em>(5), 1454–1495. <a href="https://doi.org/10.1007/s10618-020-00701-z">https://doi.org/10.1007/s10618-020-00701-z</a>
+</div>
+<div id="ref-dickey1979" class="csl-entry" role="listitem">
+Dickey, D. A., &amp; Fuller, W. A. (1979). Distribution of the Estimators for Autoregressive Time Series with a Unit Root. <em>Journal of the American Statistical Association</em>, <em>74</em>(366a), 427–431.
+</div>
+<div id="ref-faloutsos1994" class="csl-entry" role="listitem">
+Faloutsos, C., Ranganathan, M., &amp; Manolopoulos, Y. (1994). Fast Subsequence Matching in Time-Series Databases. <em>Proceedings of the 1994 ACM SIGMOD International Conference on Management of Data</em>, 419–429.
+</div>
+<div id="ref-holt2004" class="csl-entry" role="listitem">
+Holt, C. C. (2004). Forecasting seasonals and trends by exponentially weighted moving averages. <em>International Journal of Forecasting</em>, <em>20</em>(1), 5–10.
+</div>
+<div id="ref-hyndman2021" class="csl-entry" role="listitem">
+Hyndman, R. J., &amp; Athanasopoulos, G. (2021). <em>Forecasting: Principles and Practice</em> (3. kiad.). OTexts. <a href="https://otexts.com/fpp3/">https://otexts.com/fpp3/</a>
+</div>
+<div id="ref-hyndman2006" class="csl-entry" role="listitem">
+Hyndman, R. J., &amp; Koehler, A. B. (2006). Another Look at Measures of Forecast Accuracy. <em>International Journal of Forecasting</em>, <em>22</em>(4), 679–688. <a href="https://doi.org/10.1016/j.ijforecast.2006.03.001">https://doi.org/10.1016/j.ijforecast.2006.03.001</a>
+</div>
+<div id="ref-ismail2019" class="csl-entry" role="listitem">
+Ismail Fawaz, H., Forestier, G., Weber, J., Idoumghar, L., &amp; Muller, P.-A. (2019). Deep Learning for Time Series Classification: A Review. <em>Data Mining and Knowledge Discovery</em>, <em>33</em>(4), 917–963. <a href="https://doi.org/10.1007/s10618-019-00619-1">https://doi.org/10.1007/s10618-019-00619-1</a>
+</div>
+<div id="ref-keogh2001" class="csl-entry" role="listitem">
+Keogh, E., Chakrabarti, K., Pazzani, M., &amp; Mehrotra, S. (2001). Dimensionality Reduction for Fast Similarity Search in Large Time Series Databases. <em>Knowledge and Information Systems</em>, <em>3</em>(3), 263–286.
+</div>
+<div id="ref-keogh2004seg" class="csl-entry" role="listitem">
+Keogh, E., Chu, S., Hart, D., &amp; Pazzani, M. (2004). Segmenting Time Series: A Survey and Novel Approach. In M. Last, A. Kandel, &amp; H. Bunke (Szerk.), <em>Data Mining in Time Series Databases</em> (o. 1–21). World Scientific.
+</div>
+<div id="ref-keogh2005" class="csl-entry" role="listitem">
+Keogh, E., &amp; Ratanamahatana, C. A. (2005). Exact indexing of dynamic time warping. <em>Knowledge and Information Systems</em>, <em>7</em>(3), 358–386.
+</div>
+<div id="ref-killick2012" class="csl-entry" role="listitem">
+Killick, R., Fearnhead, P., &amp; Eckley, I. A. (2012). Optimal Detection of Changepoints With a Linear Computational Cost. <em>Journal of the American Statistical Association</em>, <em>107</em>(500), 1590–1598. <a href="https://doi.org/10.1080/01621459.2012.737745">https://doi.org/10.1080/01621459.2012.737745</a>
+</div>
+<div id="ref-lin2007" class="csl-entry" role="listitem">
+Lin, J., Keogh, E., Wei, L., &amp; Lonardi, S. (2007). Experiencing <span>SAX</span>: a novel symbolic representation of time series. <em>Data Mining and Knowledge Discovery</em>, <em>15</em>(2), 107–144.
+</div>
+<div id="ref-ljung1978" class="csl-entry" role="listitem">
+Ljung, G. M., &amp; Box, G. E. P. (1978). On a measure of lack of fit in time series models. <em>Biometrika</em>, <em>65</em>(2), 297–303.
+</div>
+<div id="ref-makridakis2018" class="csl-entry" role="listitem">
+Makridakis, S., Spiliotis, E., &amp; Assimakopoulos, V. (2018). The <span>M4</span> Competition: Results, Findings, Conclusion and Way Forward. <em>International Journal of Forecasting</em>, <em>34</em>(4), 802–808. <a href="https://doi.org/10.1016/j.ijforecast.2018.06.001">https://doi.org/10.1016/j.ijforecast.2018.06.001</a>
+</div>
+<div id="ref-rakthanmanon2012" class="csl-entry" role="listitem">
+Rakthanmanon, T., Campana, B., Mueen, A., Batista, G., Westover, B., Zhu, Q., Zakaria, J., &amp; Keogh, E. (2012). Searching and Mining Trillions of Time Series Subsequences under Dynamic Time Warping. <em>Proceedings of the 18th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining</em>, 262–270.
+</div>
+<div id="ref-saito1994" class="csl-entry" role="listitem">
+Saito, N. (1994). <em>Local Feature Extraction and Its Applications Using a Library of Bases</em> [Phdthesis]. Yale University.
+</div>
+<div id="ref-sakoe1978" class="csl-entry" role="listitem">
+Sakoe, H., &amp; Chiba, S. (1978). Dynamic programming algorithm optimization for spoken word recognition. <em>IEEE Transactions on Acoustics, Speech, and Signal Processing</em>, <em>26</em>(1), 43–49.
+</div>
+<div id="ref-winters1960" class="csl-entry" role="listitem">
+Winters, P. R. (1960). Forecasting Sales by Exponentially Weighted Moving Averages. <em>Management Science</em>, <em>6</em>(3), 324–342.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script>
+/* Magyar ábra- és táblázatfelirat-sorrend a HTML-kiadásban: "ábra 1.1." -> "1.1. ábra." */
+document.addEventListener("DOMContentLoaded", function () {
+  const re = /^(ábra|táblázat|algoritmus)\s+([0-9A-Z]+(?:\.[0-9]+)*)\.?\s*/i;
+  document.querySelectorAll("figcaption, .figure-caption, caption, .quarto-float-caption").forEach(function (el) {
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const t = w.nextNode();
+    if (!t) return;
+    const m = t.nodeValue.match(re);
+    if (m) { t.nodeValue = t.nodeValue.replace(re, m[2] + ". " + m[1].toLowerCase() + ". "); }
+  });
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kimásolva!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kimásolva!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/complexsystemsintelligence\.github\.io\/adatbanyaszat\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/11-anomaliak.html" class="pagination-link" aria-label="Anomáliák és eltérések észlelése">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Anomáliák és eltérések észlelése</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/13-szovegbanyaszat.html" class="pagination-link" aria-label="Szövegbányászat">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Szövegbányászat</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/chapters/12-idosorok.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/chapters/12-idosorok.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>

@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="hu" xml:lang="hu"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>1&nbsp; Adatból tudás: az adatbányászat folyamata – Adatbányászat</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/02-adattarhazak.html" rel="next">
+<link href="../index.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-18038207a4bfd50187eff2b2f0526436.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-27594bbe69c1d9222c0eb88c018d43c1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nincs találat",
+    "search-matching-documents-text": "találat",
+    "search-copy-link-title": "Keresési link másolása",
+    "search-hide-matches-text": "További találatok elrejtése",
+    "search-more-match-text": "további találat ebben a dokumentumban",
+    "search-more-matches-text": "további találat ebben a dokumentumban",
+    "search-clear-button-title": "Törlés",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Mégse",
+    "search-submit-button-title": "Keresés",
+    "search-label": "Keresés"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../assets/pannon-fonts.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Oldalsáv ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01-bevezetes.html">I. Alapok</a></li><li class="breadcrumb-item"><a href="../chapters/01-bevezetes.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Adatból tudás: az adatbányászat folyamata</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Keresés" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Adatbányászat</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat" title="Forráskód" class="quarto-navigation-tool px-1" aria-label="Forráskód"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Letöltés" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Letöltés"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../adatbanyaszat.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Letöltés PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../adatbanyaszat.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Letöltés ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Keresés"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Előszó</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. Alapok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01-bevezetes.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Adatból tudás: az adatbányászat folyamata</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02-adattarhazak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Adattárházak és analitikus adatkezelés</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-adatelokeszites.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Adatok előkészítése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-feltaro-elemzes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Feltáró adatelemzés és dimenziócsökkentés</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. Mintázatok felügyelet nélkül</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05-csoportositas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Csoportosítás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-asszociacios-szabalyok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Gyakori mintázatok és asszociációs szabályok</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. Prediktív modellezés</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07-modellertekeles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A felügyelt tanulás alapjai és a modellek értékelése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08-regresszio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regresszió</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09-osztalyozas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Osztályozás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/10-melytanulas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Neurális hálózatok és mélytanulás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/11-anomaliak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Anomáliák és eltérések észlelése</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. Speciális adattípusok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/12-idosorok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Idősorok elemzése</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/13-szovegbanyaszat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Szövegbányászat</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. Alkalmazások</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/14-ugyfelanalitika.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Ügyfélkapcsolat-menedzsment és ügyfélanalitika</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/15-folyamatanalitika.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Ipari folyamatanalitika</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Irodalomjegyzék</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Függelékek</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/a-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Python-alapok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/b-linearis-algebra.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Lineáris algebra az adatbányászathoz</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/c-valoszinuseg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Valószínűségszámítási és statisztikai alapok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/d-adatsorok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Az adatsorok leírása</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/e-jelolesek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Jelölések</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/f-szojegyzek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Magyar–angol szójegyzék</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Tartalom</h2>
+   
+  <ul>
+  <li><a href="#sec-miert" id="toc-sec-miert" class="nav-link active" data-scroll-target="#sec-miert"><span class="header-section-number">1.1</span> Miért van szükség adatbányászatra?</a></li>
+  <li><a href="#sec-alapfogalmak" id="toc-sec-alapfogalmak" class="nav-link" data-scroll-target="#sec-alapfogalmak"><span class="header-section-number">1.2</span> Alapfogalmak</a>
+  <ul class="collapse">
+  <li><a href="#adat-információ-tudás" id="toc-adat-információ-tudás" class="nav-link" data-scroll-target="#adat-információ-tudás"><span class="header-section-number">1.2.1</span> Adat, információ, tudás</a></li>
+  <li><a href="#mi-az-adatbányászat" id="toc-mi-az-adatbányászat" class="nav-link" data-scroll-target="#mi-az-adatbányászat"><span class="header-section-number">1.2.2</span> Mi az adatbányászat?</a></li>
+  <li><a href="#tanulás-adatokból" id="toc-tanulás-adatokból" class="nav-link" data-scroll-target="#tanulás-adatokból"><span class="header-section-number">1.2.3</span> Tanulás adatokból</a></li>
+  </ul></li>
+  <li><a href="#sec-feladattipusok" id="toc-sec-feladattipusok" class="nav-link" data-scroll-target="#sec-feladattipusok"><span class="header-section-number">1.3</span> Adatbányászati feladattípusok</a></li>
+  <li><a href="#sec-folyamat-modellek" id="toc-sec-folyamat-modellek" class="nav-link" data-scroll-target="#sec-folyamat-modellek"><span class="header-section-number">1.4</span> Az adatbányászati projekt folyamata</a>
+  <ul class="collapse">
+  <li><a href="#a-crisp-dm-folyamatmodell" id="toc-a-crisp-dm-folyamatmodell" class="nav-link" data-scroll-target="#a-crisp-dm-folyamatmodell"><span class="header-section-number">1.4.1</span> A CRISP-DM folyamatmodell</a></li>
+  <li><a href="#kiterjesztés-a-gépi-tanulási-modellek-életciklusa" id="toc-kiterjesztés-a-gépi-tanulási-modellek-életciklusa" class="nav-link" data-scroll-target="#kiterjesztés-a-gépi-tanulási-modellek-életciklusa"><span class="header-section-number">1.4.2</span> Kiterjesztés: a gépi tanulási modellek életciklusa</a></li>
+  </ul></li>
+  <li><a href="#sec-felelos" id="toc-sec-felelos" class="nav-link" data-scroll-target="#sec-felelos"><span class="header-section-number">1.5</span> Felelős adatbányászat: adatvédelem, szabályozás, etika</a>
+  <ul class="collapse">
+  <li><a href="#személyes-adatok-és-a-gdpr" id="toc-személyes-adatok-és-a-gdpr" class="nav-link" data-scroll-target="#személyes-adatok-és-a-gdpr"><span class="header-section-number">1.5.1</span> Személyes adatok és a GDPR</a></li>
+  <li><a href="#a-mesterséges-intelligenciáról-szóló-uniós-rendelet" id="toc-a-mesterséges-intelligenciáról-szóló-uniós-rendelet" class="nav-link" data-scroll-target="#a-mesterséges-intelligenciáról-szóló-uniós-rendelet"><span class="header-section-number">1.5.2</span> A mesterséges intelligenciáról szóló uniós rendelet</a></li>
+  <li><a href="#méltányosság-és-átláthatóság" id="toc-méltányosság-és-átláthatóság" class="nav-link" data-scroll-target="#méltányosság-és-átláthatóság"><span class="header-section-number">1.5.3</span> Méltányosság és átláthatóság</a></li>
+  </ul></li>
+  <li><a href="#sec-eszkozok" id="toc-sec-eszkozok" class="nav-link" data-scroll-target="#sec-eszkozok"><span class="header-section-number">1.6</span> Eszközök: a Python adatelemzési ökoszisztémája</a></li>
+  <li><a href="#sec-futoesetek" id="toc-sec-futoesetek" class="nav-link" data-scroll-target="#sec-futoesetek"><span class="header-section-number">1.7</span> A két futó esettanulmány</a>
+  <ul class="collapse">
+  <li><a href="#pannonshop-egy-webáruház-két-éve" id="toc-pannonshop-egy-webáruház-két-éve" class="nav-link" data-scroll-target="#pannonshop-egy-webáruház-két-éve"><span class="header-section-number">1.7.1</span> PannonShop: egy webáruház két éve</a></li>
+  <li><a href="#pannon-üzem-egy-reaktor-egy-éve" id="toc-pannon-üzem-egy-reaktor-egy-éve" class="nav-link" data-scroll-target="#pannon-üzem-egy-reaktor-egy-éve"><span class="header-section-number">1.7.2</span> Pannon üzem: egy reaktor egy éve</a></li>
+  </ul></li>
+  <li><a href="#sec-bev-osszefoglalas" id="toc-sec-bev-osszefoglalas" class="nav-link" data-scroll-target="#sec-bev-osszefoglalas"><span class="header-section-number">1.8</span> Összefoglalás</a></li>
+  <li><a href="#ellenőrző-kérdések" id="toc-ellenőrző-kérdések" class="nav-link" data-scroll-target="#ellenőrző-kérdések">Ellenőrző kérdések</a></li>
+  <li><a href="#feladatok" id="toc-feladatok" class="nav-link" data-scroll-target="#feladatok">Feladatok</a></li>
+  <li><a href="#további-olvasmányok" id="toc-további-olvasmányok" class="nav-link" data-scroll-target="#további-olvasmányok">További olvasmányok</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/chapters/01-bevezetes.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/chapters/01-bevezetes.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01-bevezetes.html">I. Alapok</a></li><li class="breadcrumb-item"><a href="../chapters/01-bevezetes.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Adatból tudás: az adatbányászat folyamata</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-bevezetes" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Adatból tudás: az adatbányászat folyamata</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="roadmap">
+<p>Ez a fejezet kijelöli a könyv kereteit. Tisztázzuk, mit értünk adatbányászaton, milyen típusú kérdésekre ad választ, és milyen lépésekből áll egy adatbányászati projekt a célok megfogalmazásától a bevezetett modell karbantartásáig. Áttekintjük az adatok felhasználásának jogi és etikai kereteit, végül bemutatjuk a két futó esettanulmányt – a PannonShop webáruházat és a Pannon üzemet –, amelyekre a további fejezetek példái épülnek.</p>
+<p><strong>A fejezet végére az olvasó</strong> képes lesz megkülönböztetni a felügyelt és a felügyelet nélküli tanulási feladatokat; egy gyakorlati problémát adatbányászati feladattípushoz rendelni; a CRISP-DM és a CRISP-ML(Q) fázisai mentén megtervezni egy elemzési projektet; és felismerni azokat a helyzeteket, amelyekben az adatkezelés adatvédelmi vagy MI-szabályozási kérdéseket vet fel.</p>
+</div>
+<section id="sec-miert" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="sec-miert"><span class="header-section-number">1.1</span> Miért van szükség adatbányászatra?</h2>
+<p>A vállalatok, üzemek és intézmények működésük során folyamatosan adatokat rögzítenek: minden eladásról számla készül, minden szenzor percenként több mérést küld, minden ügyfélkapcsolat nyomot hagy egy informatikai rendszerben. Az adatok gyűjtése ma már olcsó és automatikus; a szűk keresztmetszet az, hogy a felhalmozott adatokból kinyerjük-e a döntésekhez szükséges <em>tudást</em>. Egy webáruház vezetője nem a számlatételek millióira kíváncsi, hanem arra, hogy mely vevői fognak valószínűleg elpártolni, és kiket érdemes megkeresni egy ajánlattal. Egy üzem technológusa nem a hőmérséklet-idősorokat akarja nézegetni, hanem időben szeretne értesülni arról, ha a folyamat a megszokottól eltérően kezd viselkedni.</p>
+<p>Az adatbányászat azoknak a módszereknek és eljárásoknak a gyűjtőneve, amelyek ezt a lépést – az adatoktól a döntést segítő tudásig – rendszerezetten és ellenőrizhetően teszik meg. A terület a statisztika, a gépi tanulás, az adatbázis-kezelés és a vizualizáció határán fejlődött ki, és mindegyiktől örökölt valamit: a statisztikától a bizonytalanság kezelését és a következtetés szigorát, a gépi tanulástól az automatikus modellépítést, az adatbázis-kezeléstől a nagy adatmennyiségek hatékony elérését, a vizualizációtól pedig azt a felismerést, hogy az eredményt végső soron embereknek kell megérteniük és elfogadniuk.</p>
+<p>A könyv első kiadása <span class="citation" data-cites="abonyi2006">(<a href="../references.html#ref-abonyi2006" role="doc-biblioref">Abonyi, 2006</a>)</span> óta a terület eszköztára jelentősen kibővült. Általánossá váltak az együttes (ensemble) modellek és a mély neurális hálózatok, az elemzések túlnyomó része nyílt forráskódú Python-könyvtárakkal készül, és a modellek egyre gyakrabban kerülnek éles üzembe, ahol folyamatos felügyeletet igényelnek. Az alapkérdések azonban nem változtak: <em>milyen adatból, milyen módszerrel, milyen megbízhatósággal</em> juthatunk használható tudáshoz? Ez a könyv ezekre a kérdésekre keresi a választ.</p>
+</section>
+<section id="sec-alapfogalmak" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="sec-alapfogalmak"><span class="header-section-number">1.2</span> Alapfogalmak</h2>
+<section id="adat-információ-tudás" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="adat-információ-tudás"><span class="header-section-number">1.2.1</span> Adat, információ, tudás</h3>
+<p>A hétköznapi szóhasználatban az <em>adat</em>, az <em>információ</em> és a <em>tudás</em> gyakran összemosódik, az adatbányászatban azonban érdemes különbséget tenni közöttük.</p>
+<ul>
+<li><strong>Adat</strong> a rögzített tény: „a 240679-es számlán 2 db kávébab szerepel 7990 Ft-os egységáron”. Önmagában kevés jelentést hordoz.</li>
+<li><strong>Információ</strong> az adat feldolgozott, összefüggésbe helyezett formája: „decemberben a kávébab forgalma az éves átlag többszöröse”.</li>
+<li><strong>Tudás</strong> olyan általánosítható összefüggés, amely cselekvést tesz lehetővé: „aki kávéfőző gépet vesz, nagy valószínűséggel kávébabot és vízkőoldót is vásárol – ezért érdemes a gép mellé ajánlani őket”.</li>
+</ul>
+<p>Az adatbányászat ebben a láncban a középső és a felső szint közötti átmenetet támogatja: az adatokban rejlő, előre nem ismert, de érvényes és hasznos összefüggéseket tárja fel.</p>
+</section>
+<section id="mi-az-adatbányászat" class="level3" data-number="1.2.2">
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="mi-az-adatbányászat"><span class="header-section-number">1.2.2</span> Mi az adatbányászat?</h3>
+<p>A tudásfeltárás (Knowledge Discovery in Databases, KDD) folyamatának máig legtöbbet idézett meghatározását <span class="citation" data-cites="fayyad1996">Fayyad és mtsai. (<a href="../references.html#ref-fayyad1996" role="doc-biblioref">1996</a>)</span> adta. Eszerint a tudásfeltárás az a nem triviális folyamat, amelynek során adatokban <strong>érvényes</strong>, <strong>újszerű</strong>, <strong>potenciálisan hasznos</strong> és <strong>végső soron érthető</strong> mintázatokat azonosítunk. A definíció mind a négy jelzője fontos:</p>
+<ul>
+<li><em>érvényes</em>: a mintázat új adatokra is – bizonyos megbízhatósággal – teljesül, nem csupán a véletlen műve;</li>
+<li><em>újszerű</em>: nem olyan összefüggés, amelyet a szakértők már ismernek (az, hogy a karácsonyi díszek decemberben fogynak, nem felfedezés);</li>
+<li><em>hasznos</em>: valamilyen döntést vagy cselekvést támogat;</li>
+<li><em>érthető</em>: a döntéshozó számára értelmezhető, ellenőrizhető formában jelenik meg.</li>
+</ul>
+<p>A szakirodalom az <em>adatbányászat</em> kifejezést kétféle értelemben használja. Tágabb értelemben a teljes tudásfeltárási folyamat szinonimája, szűkebb értelemben e folyamat egyetlen lépése: a mintázatkereső algoritmusok alkalmazása (lásd a <a href="#fig-kdd" class="quarto-xref"><span>1.1</span></a>. ábrát). E könyv címében a tágabb, a fejezetekben – ahol a különbség számít – a szűkebb értelmet használjuk.</p>
+<div id="fig-kdd" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kdd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/01-kdd.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="ábra&nbsp;1.1.. A tudásfeltárás (KDD) lépései @fayyad1996 nyomán. Az adatbányászat szűkebb értelemben a folyamat egyetlen lépése, de a végeredmény minősége minden lépésen múlik, és a folyamat gyakran visszalép egy korábbi szakaszba."><img src="../figures/build/01-kdd.svg" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kdd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;1.1.. A tudásfeltárás (KDD) lépései <span class="citation" data-cites="fayyad1996">Fayyad és mtsai. (<a href="../references.html#ref-fayyad1996" role="doc-biblioref">1996</a>)</span> nyomán. Az adatbányászat szűkebb értelemben a folyamat egyetlen lépése, de a végeredmény minősége minden lépésen múlik, és a folyamat gyakran visszalép egy korábbi szakaszba.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="tanulás-adatokból" class="level3" data-number="1.2.3">
+<h3 data-number="1.2.3" class="anchored" data-anchor-id="tanulás-adatokból"><span class="header-section-number">1.2.3</span> Tanulás adatokból</h3>
+<p>Szinte minden adatbányászati módszer <em>induktív</em> tanuláson alapul: konkrét példákból általános összefüggésre következtet. Ennek formalizálásához bevezetjük a könyv alapjelöléseit (a teljes jelöléslistát az <a href="../appendices/e-jelolesek.html" class="quarto-xref"><span>E</span></a>. függelék tartalmazza).</p>
+<p>Az elemzés tárgyai az <strong>objektumok</strong> (rekordok, megfigyelések, esetek), például vevők, számlák vagy 10 perces mérési időpontok. Minden objektumot <span class="math inline">\(n\)</span> darab <strong>jellemző</strong> (attribútum, változó) ír le. Az <span class="math inline">\(N\)</span> objektum adatai az <strong>adatmátrixot</strong> alkotják:</p>
+<p><span id="eq-adatmatrix"><span class="math display">\[
+\mathbf{X} =
+\begin{bmatrix}
+x_{11} &amp; x_{12} &amp; \cdots &amp; x_{1n}\\
+x_{21} &amp; x_{22} &amp; \cdots &amp; x_{2n}\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+x_{N1} &amp; x_{N2} &amp; \cdots &amp; x_{Nn}
+\end{bmatrix}
+\in \mathbb{R}^{N\times n},
+\qquad
+\mathbf{x}_k = [x_{k1},\,x_{k2},\,\dots,\,x_{kn}]^\top .
+\tag{1.1}\]</span></span></p>
+<p>Az adatmátrix <span class="math inline">\(k\)</span>-adik <strong>sora</strong> a <span class="math inline">\(k\)</span>-adik objektum, <span class="math inline">\(j\)</span>-edik <strong>oszlopa</strong> a <span class="math inline">\(j\)</span>-edik jellemző összes mért értéke. Ez a konvenció egyezik a <code>pandas</code> adattáblák és a <code>scikit-learn</code> könyvtár szokásával, így a képletek és a kódok közvetlenül megfeleltethetők egymásnak. (A szakirodalom egy része – köztük e könyv első kiadása is – helyenként a transzponált, <span class="math inline">\(n\times N\)</span>-es elrendezést használja; ilyenkor a képletekben a szorzások sorrendje megfordul.)</p>
+<p><strong>Felügyelt tanulásról</strong> beszélünk, ha minden objektumhoz ismert egy <strong>célváltozó</strong> (kimenet, címke) <span class="math inline">\(y_k\)</span> értéke is, és olyan <span class="math inline">\(f\)</span> függvényt keresünk, amely a jellemzőkből előrejelzi azt:</p>
+<p><span id="eq-modell"><span class="math display">\[
+\hat{y} = f(\mathbf{x};\boldsymbol{\theta}),
+\tag{1.2}\]</span></span></p>
+<p>ahol <span class="math inline">\(\boldsymbol{\theta}\)</span> a modell <strong>paramétereinek</strong> vektora. Ha a célváltozó kategorikus (például „lemorzsolódik / marad”), <strong>osztályozásról</strong>, ha folytonos (például termékkoncentráció mol/L-ben), <strong>regresszióról</strong> beszélünk. A paramétereket úgy választjuk meg, hogy a modell a rendelkezésre álló tanítóadatokon a lehető legkisebb hibát kövesse el. Ha a hibát egy <span class="math inline">\(L(y,\hat y)\)</span> <strong>veszteségfüggvény</strong> méri, a tanulás az <em>empirikus kockázat</em> minimalizálása:</p>
+<p><span id="eq-erm"><span class="math display">\[
+\hat{\boldsymbol{\theta}} = \arg\min_{\boldsymbol{\theta}}\;
+\frac{1}{N}\sum_{k=1}^{N} L\bigl(y_k,\, f(\mathbf{x}_k;\boldsymbol{\theta})\bigr).
+\tag{1.3}\]</span></span></p>
+<p>A (<a href="#eq-erm" class="quarto-xref"><span>1.3</span></a>) képlet a könyv egyik legfontosabb egyenlete: a regressziós modellek, a logisztikus regresszió, a támaszvektor-gépek és a neurális hálózatok mind ennek speciális esetei, csak az <span class="math inline">\(f\)</span> modellcsalád és az <span class="math inline">\(L\)</span> veszteségfüggvény más. Látni fogjuk azt is, hogy a tanítóadatokon elért kis hiba még nem garancia a jó működésre: a valódi cél az <strong>általánosítás</strong>, vagyis hogy a modell <em>új</em>, a tanítás során nem látott adatokon is jól teljesítsen (<a href="07-modellertekeles.html" class="quarto-xref"><span>7</span></a>. fejezet).</p>
+<p><strong>Felügyelet nélküli tanulásban</strong> nincs célváltozó; az adatok belső szerkezetét keressük. Ilyen feladat a hasonló objektumok csoportokba rendezése (csoportosítás), a gyakran együtt előforduló elemek feltárása (asszociációs szabályok), az adatok tömörítése kevesebb dimenzióba (dimenziócsökkentés) vagy a többségtől eltérő objektumok felderítése (anomália-észlelés). A felügyelet nélküli eredmények értékelése nehezebb, hiszen nincs „helyes válasz”, amellyel összevethetnénk őket; ezért itt különösen fontos a szakterületi értelmezés.</p>
+</section>
+</section>
+<section id="sec-feladattipusok" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="sec-feladattipusok"><span class="header-section-number">1.3</span> Adatbányászati feladattípusok</h2>
+<p>A gyakorlati kérdések sokfélék, de néhány jól körülhatárolható feladattípusra vezethetők vissza (<a href="#fig-feladatok" class="quarto-xref"><span>1.2</span></a>. ábra). A feladattípus felismerése az elemzés első és talán legfontosabb lépése, mert ez határozza meg, milyen módszerek jöhetnek szóba, és hogyan kell az eredményt értékelni.</p>
+<div id="fig-feladatok" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-feladatok-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/01-feladatok.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="ábra&nbsp;1.2.. Az adatbányászati feladattípusok rendszere a könyv két futó esetének jellegzetes kérdéseivel. A felügyelt feladatokban ismert a célváltozó, a felügyelet nélküliekben az adatok belső szerkezetét keressük, a speciális adattípusok (idősorok, szövegek) saját reprezentációt igényelnek."><img src="../figures/build/01-feladatok.svg" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-feladatok-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;1.2.. Az adatbányászati feladattípusok rendszere a könyv két futó esetének jellegzetes kérdéseivel. A felügyelt feladatokban ismert a célváltozó, a felügyelet nélküliekben az adatok belső szerkezetét keressük, a speciális adattípusok (idősorok, szövegek) saját reprezentációt igényelnek.
+</figcaption>
+</figure>
+</div>
+<div id="tbl-feladatok" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-feladatok-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+táblázat&nbsp;1.1.. Az adatbányászati feladattípusok áttekintése.
+</figcaption>
+<div aria-describedby="tbl-feladatok-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Feladattípus</th>
+<th style="text-align: left;">Jellemző kérdés</th>
+<th style="text-align: left;">Kimenet</th>
+<th style="text-align: center;">Fejezet</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Osztályozás</td>
+<td style="text-align: left;">Melyik osztályba tartozik az objektum?</td>
+<td style="text-align: left;">kategória, valószínűség</td>
+<td style="text-align: center;">9.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Regresszió</td>
+<td style="text-align: left;">Mekkora lesz egy mennyiség értéke?</td>
+<td style="text-align: left;">szám</td>
+<td style="text-align: center;">8.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Csoportosítás</td>
+<td style="text-align: left;">Milyen természetes csoportok vannak?</td>
+<td style="text-align: left;">csoportcímkék</td>
+<td style="text-align: center;">5.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Asszociációs szabályok</td>
+<td style="text-align: left;">Mi jár együtt mivel?</td>
+<td style="text-align: left;">„ha A, akkor B” szabályok</td>
+<td style="text-align: center;">6.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Anomália-észlelés</td>
+<td style="text-align: left;">Mi tér el a megszokottól?</td>
+<td style="text-align: left;">eltérési pontszám</td>
+<td style="text-align: center;">11.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dimenziócsökkentés</td>
+<td style="text-align: left;">Hogyan tömöríthető az adat?</td>
+<td style="text-align: left;">kevesebb új jellemző</td>
+<td style="text-align: center;">4.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Idősor-előrejelzés</td>
+<td style="text-align: left;">Hogyan alakul a jövőben?</td>
+<td style="text-align: left;">jövőbeli értékek</td>
+<td style="text-align: center;">12.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Szövegelemzés</td>
+<td style="text-align: left;">Miről, milyen hangulatban szól a szöveg?</td>
+<td style="text-align: left;">témák, címkék</td>
+<td style="text-align: center;">13.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>A <a href="#tbl-feladatok" class="quarto-xref"><span>1.1</span></a>. táblázat feladattípusai a gyakorlatban ritkán jelennek meg tisztán. Egy lemorzsolódás-előrejelző rendszer például csoportosítással kezdődhet (milyen vevőtípusok vannak?), osztályozással folytatódhat (ki fog elpártolni?), és asszociációs szabályokkal zárulhat (mit ajánljunk a megtartásukhoz?). A könyv utolsó két fejezete (<a href="14-ugyfelanalitika.html" class="quarto-xref"><span>14</span></a>. és <a href="15-folyamatanalitika.html" class="quarto-xref"><span>15</span></a>. fejezet) éppen ilyen összetett, több módszert összekapcsoló esettanulmányokat mutat be.</p>
+</section>
+<section id="sec-folyamat-modellek" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="sec-folyamat-modellek"><span class="header-section-number">1.4</span> Az adatbányászati projekt folyamata</h2>
+<p>Az adatbányászat nem egyetlen algoritmus lefuttatása, hanem több lépésből álló, iteratív folyamat. A tapasztalat azt mutatja, hogy a projektek sikere sokkal inkább múlik a cél pontos megfogalmazásán, az adatok megismerésén és előkészítésén, valamint az eredmények üzleti értelmezésén, mint a modellezési algoritmus kiválasztásán.</p>
+<section id="a-crisp-dm-folyamatmodell" class="level3" data-number="1.4.1">
+<h3 data-number="1.4.1" class="anchored" data-anchor-id="a-crisp-dm-folyamatmodell"><span class="header-section-number">1.4.1</span> A CRISP-DM folyamatmodell</h3>
+<p>Az ágazatfüggetlen CRISP-DM (Cross-Industry Standard Process for Data Mining) folyamatmodellt egy ipari konzorcium dolgozta ki <span class="citation" data-cites="chapman2000 wirth2000">(<a href="../references.html#ref-chapman2000" role="doc-biblioref">Chapman és mtsai., 2000</a>; <a href="../references.html#ref-wirth2000" role="doc-biblioref">Wirth &amp; Hipp, 2000</a>)</span>. Az adatbányászati folyamatmodellek összehasonlító áttekintése szerint a CRISP-DM vált a terület <em>de facto</em> szabványává <span class="citation" data-cites="mariscal2010">(<a href="../references.html#ref-mariscal2010" role="doc-biblioref">Mariscal és mtsai., 2010</a>)</span>. A modell hat fázist különböztet meg (<a href="#fig-crisp" class="quarto-xref"><span>1.3</span></a>. ábra):</p>
+<ol type="1">
+<li><strong>Az üzleti cél megértése.</strong> Mi a döntéshozó valódi problémája? Mi számít sikernek, és hogyan mérjük? Milyen erőforrások, korlátok és kockázatok vannak? A fázis végterméke az üzleti cél <em>adatbányászati</em> célként való megfogalmazása (például: „a következő negyedévben lemorzsolódó vevők azonosítása legalább 70%-os megbízhatósággal”).</li>
+<li><strong>Az adatok megismerése.</strong> Milyen adatok állnak rendelkezésre, honnan származnak, mennyire teljesek és megbízhatók? Az első feltáró elemzések (<a href="04-feltaro-elemzes.html" class="quarto-xref"><span>4</span></a>. fejezet) gyakran már ebben a szakaszban módosítják a célokat.</li>
+<li><strong>Adatelőkészítés.</strong> Az elemzéshez szükséges adattábla előállítása: kiválasztás, tisztítás, összekapcsolás, transzformálás, új jellemzők képzése (<a href="03-adatelokeszites.html" class="quarto-xref"><span>3</span></a>. fejezet). Ez a fázis rendszerint a projekt idejének jelentős részét felemészti.</li>
+<li><strong>Modellezés.</strong> A feladattípusnak megfelelő módszerek kiválasztása, a modellek felépítése és paramétereik hangolása (<a href="05-csoportositas.html" class="quarto-xref"><span>5</span></a>–<a href="13-szovegbanyaszat.html" class="quarto-xref"><span>13</span></a>. fejezet).</li>
+<li><strong>Kiértékelés.</strong> Megfelel-e a modell az <em>üzleti</em> céloknak? A statisztikai pontosság szükséges, de nem elégséges feltétel; azt is vizsgálni kell, hogy a modell használata megéri-e, és nincsenek-e nem kívánt mellékhatásai (<a href="07-modellertekeles.html" class="quarto-xref"><span>7</span></a>. fejezet).</li>
+<li><strong>Bevezetés.</strong> Az eredmények beépítése a mindennapi működésbe: egy jelentés, egy döntéstámogató felület vagy egy automatikusan futó, más rendszereket kiszolgáló modell formájában.</li>
+</ol>
+<div id="fig-crisp" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-crisp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/01-crisp.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="ábra&nbsp;1.3.. A CRISP-DM folyamatmodell hat fázisa [@chapman2000] a könyv megfelelő fejezeteivel, kiegészítve a CRISP-ML(Q) monitorozási és karbantartási fázisával [@studer2021]. A szaggatott nyilak a gyakori visszalépéseket jelölik."><img src="../figures/build/01-crisp.svg" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-crisp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;1.3.. A CRISP-DM folyamatmodell hat fázisa <span class="citation" data-cites="chapman2000">(<a href="../references.html#ref-chapman2000" role="doc-biblioref">Chapman és mtsai., 2000</a>)</span> a könyv megfelelő fejezeteivel, kiegészítve a CRISP-ML(Q) monitorozási és karbantartási fázisával <span class="citation" data-cites="studer2021">(<a href="../references.html#ref-studer2021" role="doc-biblioref">Studer és mtsai., 2021</a>)</span>. A szaggatott nyilak a gyakori visszalépéseket jelölik.
+</figcaption>
+</figure>
+</div>
+<p>A fázisok sorrendje nem merev: a nyilak a leggyakoribb visszalépéseket jelzik. Az adatok megismerése során kiderülhet, hogy a cél az adott adatokból nem érhető el; a modellezés rámutathat az előkészítés hiányosságaira; a kiértékelés pedig gyakran új iterációt indít.</p>
+</section>
+<section id="kiterjesztés-a-gépi-tanulási-modellek-életciklusa" class="level3" data-number="1.4.2">
+<h3 data-number="1.4.2" class="anchored" data-anchor-id="kiterjesztés-a-gépi-tanulási-modellek-életciklusa"><span class="header-section-number">1.4.2</span> Kiterjesztés: a gépi tanulási modellek életciklusa</h3>
+<p>A CRISP-DM eredetileg egyszeri elemzési projektekre készült. Ma azonban a modellek gyakran hónapokig vagy évekig üzemelnek, miközben a környezetük változik: új termékek jelennek meg, a vevők szokásai módosulnak, egy üzemben kicserélnek egy szenzort. A <span class="citation" data-cites="studer2021">Studer és mtsai. (<a href="../references.html#ref-studer2021" role="doc-biblioref">2021</a>)</span> által javasolt <strong>CRISP-ML(Q)</strong> folyamatmodell ezért két lényeges ponton egészíti ki a CRISP-DM-et. Egyrészt minden fázishoz minőségbiztosítási lépéseket rendel (milyen kockázatok merülnek fel, és hogyan csökkenthetők), másrészt külön fázisként kezeli a bevezetett modell <strong>monitorozását és karbantartását</strong>.</p>
+<p>Ennek oka, hogy egy éles üzemben futó modell teljesítménye idővel romolhat. A bemeneti adatok eloszlásának megváltozását <strong>adatsodródásnak</strong> (data drift), a bemenet és a célváltozó közötti kapcsolat megváltozását <strong>koncepciósodródásnak</strong> (concept drift) nevezzük <span class="citation" data-cites="gama2014">(<a href="../references.html#ref-gama2014" role="doc-biblioref">Gama és mtsai., 2014</a>)</span>. Mindkettő ellen csak folyamatos méréssel és szükség esetén a modell újratanításával lehet védekezni. Az éles gépi tanulási rendszerekben a modell kódja általában csak kis része a teljes rendszernek: a körülötte lévő adatgyűjtő, ellenőrző és kiszolgáló infrastruktúra fenntartása legalább akkora feladat, mint maga a modellezés <span class="citation" data-cites="sculley2015">(<a href="../references.html#ref-sculley2015" role="doc-biblioref">Sculley és mtsai., 2015</a>)</span>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Fontos</span>Kulcsgondolat
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Egy adatbányászati projekt eredménye nem egy algoritmus, hanem egy <em>folyamat</em>, amely a döntéshozó kérdésétől a bevezetett és felügyelt megoldásig tart. A módszerek ismerete szükséges, de a siker leggyakrabban a cél pontos megfogalmazásán, az adatok minőségén és az eredmények értelmezésén múlik.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-felelos" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="sec-felelos"><span class="header-section-number">1.5</span> Felelős adatbányászat: adatvédelem, szabályozás, etika</h2>
+<p>Az adatbányászati eredmények emberek életére is hatással lehetnek: egy hitelbírálati modell döntést hoz arról, ki kap kölcsönt, egy toborzási modell előszűri a jelentkezőket. Ezért a módszertani kérdések mellett már a projekt elején tisztázni kell az adatkezelés jogi kereteit és az alkalmazás etikai kockázatait.</p>
+<section id="személyes-adatok-és-a-gdpr" class="level3" data-number="1.5.1">
+<h3 data-number="1.5.1" class="anchored" data-anchor-id="személyes-adatok-és-a-gdpr"><span class="header-section-number">1.5.1</span> Személyes adatok és a GDPR</h3>
+<p>Az Európai Unióban a személyes adatok kezelését az általános adatvédelmi rendelet (GDPR) szabályozza <span class="citation" data-cites="gdpr2016">(<a href="../references.html#ref-gdpr2016" role="doc-biblioref">Európai Parlament és Tanács, 2016</a>)</span>. Személyes adat minden olyan információ, amely azonosított vagy azonosítható természetes személyre vonatkozik – egy vevőazonosító is az, ha más adatokkal összekapcsolva visszavezethető egy konkrét személyre. A rendelet 5. cikke rögzíti az adatkezelés alapelveit, amelyek közül az adatbányászatban különösen fontos:</p>
+<ul>
+<li>a <strong>célhoz kötöttség</strong>: az adatokat csak meghatározott, egyértelmű és jogszerű célból lehet gyűjteni, és ezzel össze nem egyeztethető módon nem szabad tovább kezelni;</li>
+<li>az <strong>adattakarékosság</strong>: csak a cél eléréséhez szükséges adatok kezelhetők;</li>
+<li>a <strong>pontosság</strong> és a <strong>korlátozott tárolhatóság</strong>;</li>
+<li>az <strong>elszámoltathatóság</strong>: az adatkezelőnek igazolnia kell a megfelelést.</li>
+</ul>
+<p>A rendelet 22. cikke külön szabályozza a kizárólag automatizált adatkezelésen – köztük a profilalkotáson – alapuló, az érintettre joghatással járó vagy őt hasonlóan jelentős mértékben érintő döntéseket.</p>
+<p>Az adatbányászati gyakorlatban két technikai fogalmat kell élesen megkülönböztetni. Az <strong>álnevesítés</strong> (pszeudonimizálás) során a közvetlen azonosítókat (név, e-mail-cím) helyettesítő kódra cseréljük, de a kapcsolat egy külön tárolt kulccsal visszaállítható; az ilyen adat a GDPR szerint továbbra is személyes adat. Az <strong>anonimizálás</strong> után a személy már semmilyen észszerűen valószínűsíthető eszközzel nem azonosítható. Ez nehezebb, mint elsőre látszik: a nem közvetlen azonosítók (például irányítószám, születési dátum, nem) kombinációja is egyedivé tehet egy rekordot. A <em><span class="math inline">\(k\)</span>-anonimitás</em> követelménye szerint minden rekordnak legalább <span class="math inline">\(k-1\)</span> másik rekorddal meg kell egyeznie ezekben a kvázi-azonosítókban <span class="citation" data-cites="sweeney2002">(<a href="../references.html#ref-sweeney2002" role="doc-biblioref">Sweeney, 2002</a>)</span>.</p>
+</section>
+<section id="a-mesterséges-intelligenciáról-szóló-uniós-rendelet" class="level3" data-number="1.5.2">
+<h3 data-number="1.5.2" class="anchored" data-anchor-id="a-mesterséges-intelligenciáról-szóló-uniós-rendelet"><span class="header-section-number">1.5.2</span> A mesterséges intelligenciáról szóló uniós rendelet</h3>
+<p>Az Európai Unió 2024-ben elfogadta a mesterséges intelligenciáról szóló rendeletet (AI Act) <span class="citation" data-cites="aiact2024">(<a href="../references.html#ref-aiact2024" role="doc-biblioref">Európai Parlament és Tanács, 2024</a>)</span>. A rendelet kockázatalapú megközelítést követ: tiltja az elfogadhatatlan kockázatú gyakorlatokat, szigorú követelményeket támaszt a <em>magas kockázatú</em> rendszerekkel szemben (ilyenek például bizonyos foglalkoztatási, oktatási, illetve a természetes személyek hitelképességét értékelő alkalmazások), egyes rendszerekre átláthatósági kötelezettségeket ír elő, a többi alkalmazást pedig lényegében szabadon hagyja. A rendelet 2024. augusztus 1-jén lépett hatályba, a rendelkezései fokozatosan válnak alkalmazandóvá; a konkrét határidőket és az esetleges módosításokat mindig a hatályos joganyagban kell ellenőrizni.</p>
+<p>A könyv módszerei önmagukban nem „magas kockázatúak” – a besorolás az <em>alkalmazási</em> területtől függ. Ugyanaz az osztályozó algoritmus lehet ártalmatlan, ha termékajánlást ad, és lehet magas kockázatú, ha munkavállalók kiválasztásában használják. Ezért a CRISP-DM első fázisában érdemes rögzíteni a tervezett alkalmazás jogi besorolását is.</p>
+</section>
+<section id="méltányosság-és-átláthatóság" class="level3" data-number="1.5.3">
+<h3 data-number="1.5.3" class="anchored" data-anchor-id="méltányosság-és-átláthatóság"><span class="header-section-number">1.5.3</span> Méltányosság és átláthatóság</h3>
+<p>A jogi megfelelésen túl az adatbányász felelőssége, hogy a modellje ne hátrányosítson meg csoportokat indokolatlanul. A torzítás forrása gyakran maga az adat: ha a múltbeli döntések igazságtalanok voltak, a belőlük tanult modell ezt újratermeli. A méltányosság mérésének és biztosításának módszereivel külön szakirodalom foglalkozik <span class="citation" data-cites="barocas2023">(<a href="../references.html#ref-barocas2023" role="doc-biblioref">Barocas és mtsai., 2023</a>)</span>; a könyvben a modellek értelmezhetőségének eszközeit (<a href="09-osztalyozas.html" class="quarto-xref"><span>9</span></a>. fejezet) és a kiértékelés csoportonkénti bontását (<a href="07-modellertekeles.html" class="quarto-xref"><span>7</span></a>. fejezet) mutatjuk be, amelyek az ilyen problémák felismerésének első lépései.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Megjegyzés</span>Megjegyzés a könyv adatairól
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A könyv mindkét futó esete <em>szintetikus</em>: az adatokat egy szimulátor állítja elő, ezért nem tartalmaznak valódi személyes adatot. A szimulátorok úgy készültek, hogy a valós adatok jellegzetes nehézségeit (hiányzó értékek, hibás rögzítés, szezonalitás, zaj) visszaadják, ugyanakkor a háttérben működő „igazság” ismert, így a módszerek eredménye pontosan ellenőrizhető.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-eszkozok" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="sec-eszkozok"><span class="header-section-number">1.6</span> Eszközök: a Python adatelemzési ökoszisztémája</h2>
+<p>Az első kiadás példái Excelre, a WEKA programcsomagra és MATLAB-programokra épültek. Ma az adatbányászati gyakorlatban – a kutatásban és az iparban egyaránt – a Python nyelv és a köré épült nyílt forráskódú könyvtárak dominálnak. A könyv következetesen a „klasszikus”, széles körben használt, jól dokumentált csomagokra támaszkodik:</p>
+<div id="tbl-csomagok" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-csomagok-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+táblázat&nbsp;1.2.. A könyvben használt fő Python-csomagok.
+</figcaption>
+<div aria-describedby="tbl-csomagok-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Csomag</th>
+<th style="text-align: left;">Feladat a könyvben</th>
+<th style="text-align: left;">Hivatkozás</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">NumPy</td>
+<td style="text-align: left;">tömb- és mátrixműveletek, az algoritmusok saját implementációja</td>
+<td style="text-align: left;"><span class="citation" data-cites="harris2020"><span class="nocase">Harris és mtsai.</span> (<a href="../references.html#ref-harris2020" role="doc-biblioref">2020</a>)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SciPy</td>
+<td style="text-align: left;">optimalizálás, statisztika, interpoláció, távolságok</td>
+<td style="text-align: left;"><span class="citation" data-cites="virtanen2020"><span class="nocase">Virtanen és mtsai.</span> (<a href="../references.html#ref-virtanen2020" role="doc-biblioref">2020</a>)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pandas</td>
+<td style="text-align: left;">adattáblák, csoportosítás, idősorok</td>
+<td style="text-align: left;"><span class="citation" data-cites="mckinney2010">McKinney (<a href="../references.html#ref-mckinney2010" role="doc-biblioref">2010</a>)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Matplotlib, seaborn</td>
+<td style="text-align: left;">ábrák</td>
+<td style="text-align: left;"><span class="citation" data-cites="hunter2007">Hunter (<a href="../references.html#ref-hunter2007" role="doc-biblioref">2007</a>)</span>; <span class="citation" data-cites="waskom2021">Waskom (<a href="../references.html#ref-waskom2021" role="doc-biblioref">2021</a>)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">scikit-learn</td>
+<td style="text-align: left;">gépi tanulási modellek, előfeldolgozás, kiértékelés</td>
+<td style="text-align: left;"><span class="citation" data-cites="pedregosa2011">Pedregosa és mtsai. (<a href="../references.html#ref-pedregosa2011" role="doc-biblioref">2011</a>)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">statsmodels</td>
+<td style="text-align: left;">statisztikai modellek, idősor-modellek</td>
+<td style="text-align: left;"><span class="citation" data-cites="seabold2010">Seabold &amp; Perktold (<a href="../references.html#ref-seabold2010" role="doc-biblioref">2010</a>)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">mlxtend</td>
+<td style="text-align: left;">gyakori elemhalmazok, asszociációs szabályok</td>
+<td style="text-align: left;"><span class="citation" data-cites="raschka2018">Raschka (<a href="../references.html#ref-raschka2018" role="doc-biblioref">2018</a>)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PyWavelets</td>
+<td style="text-align: left;">wavelet-transzformáció</td>
+<td style="text-align: left;"><span class="citation" data-cites="lee2019">Lee és mtsai. (<a href="../references.html#ref-lee2019" role="doc-biblioref">2019</a>)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PyTorch</td>
+<td style="text-align: left;">mély neurális hálózatok</td>
+<td style="text-align: left;"><span class="citation" data-cites="paszke2019"><span class="nocase">Paszke és mtsai.</span> (<a href="../references.html#ref-paszke2019" role="doc-biblioref">2019</a>)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>A Python alapjait és a fenti csomagok használatát az <a href="../appendices/a-python.html" class="quarto-xref"><span>A</span></a>. függelék foglalja össze, a módszerek mögötti lineáris algebrai és valószínűségszámítási fogalmakat pedig a <a href="../appendices/b-linearis-algebra.html" class="quarto-xref"><span>B</span></a>. és a <a href="../appendices/c-valoszinuseg.html" class="quarto-xref"><span>C</span></a>. függelék.</p>
+<p>A könyvhöz egy kis segédcsomag is tartozik (<code>adatbanyaszat</code>), amely a futó esetek adatait állítja elő, és beállítja az ábrák egységes stílusát. Minden fejezet kódja így kezdődik:</p>
+<div id="2751056d" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> adatbanyaszat <span class="im">as</span> ab</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>ab.set_style()           <span class="co"># a könyv ábrastílusa</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>shop <span class="op">=</span> ab.load_shop()    <span class="co"># PannonShop – üzleti futó eset</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>plant <span class="op">=</span> ab.load_plant()  <span class="co"># Pannon üzem – mérnöki futó eset</span></span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>A kódok a könyv honlapjáról letölthető Colab-notebookokban telepítés nélkül, a böngészőben is futtathatók (lásd az Előszót).</p>
+</section>
+<section id="sec-futoesetek" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="sec-futoesetek"><span class="header-section-number">1.7</span> A két futó esettanulmány</h2>
+<p>A módszereket a könyv két, végig ugyanazon adatokon dolgozó esettanulmányon mutatja be (<a href="#fig-futoesetek" class="quarto-xref"><span>1.4</span></a>. ábra). Így az olvasó azt is látja, hogyan épülnek egymásra a fejezetek: amit a <a href="03-adatelokeszites.html" class="quarto-xref"><span>3</span></a>. fejezetben megtisztítunk, azt a <a href="05-csoportositas.html" class="quarto-xref"><span>5</span></a>. fejezetben csoportosítjuk, a <a href="09-osztalyozas.html" class="quarto-xref"><span>9</span></a>. fejezetben pedig előrejelzésre használjuk.</p>
+<div id="fig-futoesetek" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-futoesetek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../figures/build/01-futoesetek.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="ábra&nbsp;1.4.. A két futó esettanulmány adattáblái és a fejezeteken végigvonuló kérdések. Az üzleti eset tranzakciós adatai az Online Retail II adatsor sémáját követik, a mérnöki eset egy folyamatos üzemű reaktor méréseit szimulálja."><img src="../figures/build/01-futoesetek.svg" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-futoesetek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;1.4.. A két futó esettanulmány adattáblái és a fejezeteken végigvonuló kérdések. Az üzleti eset tranzakciós adatai az Online Retail II adatsor sémáját követik, a mérnöki eset egy folyamatos üzemű reaktor méréseit szimulálja.
+</figcaption>
+</figure>
+</div>
+<section id="pannonshop-egy-webáruház-két-éve" class="level3" data-number="1.7.1">
+<h3 data-number="1.7.1" class="anchored" data-anchor-id="pannonshop-egy-webáruház-két-éve"><span class="header-section-number">1.7.1</span> PannonShop: egy webáruház két éve</h3>
+<div class="eset-uzleti">
+<p>A PannonShop kitalált magyar webáruház, amely kávét, teát, konyhai eszközöket, háztartási gépeket, dekorációs és ajándéktárgyakat, valamint írószereket árul. Az adatok 2024. január 1. és 2025. december 31. közötti számlatételeket tartalmaznak. A tábla szerkezete a nemzetközi gyakorlatban széles körben használt Online Retail II adatsorét követi <span class="citation" data-cites="chen2012">(<a href="../references.html#ref-chen2012" role="doc-biblioref">Chen és mtsai., 2012</a>)</span>: minden sor egy számla egy tétele, a számlaszám (<code>Invoice</code>), a cikkszám (<code>StockCode</code>), a megnevezés (<code>Description</code>), a mennyiség (<code>Quantity</code>), az időpont (<code>InvoiceDate</code>), az egységár (<code>Price</code>), a vevőazonosító (<code>CustomerID</code>) és a régió (<code>Regio</code>) adataival.</p>
+</div>
+<div id="766a5e4b" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>shop <span class="op">=</span> ab.load_shop()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>tx <span class="op">=</span> shop.transactions</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tx.shape)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>tx.head()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(68990, 8)</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Invoice</th>
+<th data-quarto-table-cell-role="th">StockCode</th>
+<th data-quarto-table-cell-role="th">Description</th>
+<th data-quarto-table-cell-role="th">Quantity</th>
+<th data-quarto-table-cell-role="th">InvoiceDate</th>
+<th data-quarto-table-cell-role="th">Price</th>
+<th data-quarto-table-cell-role="th">CustomerID</th>
+<th data-quarto-table-cell-role="th">Regio</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>S240018</td>
+<td>10032</td>
+<td>Pléd</td>
+<td>2</td>
+<td>2024-01-01 07:21:00</td>
+<td>9990.0</td>
+<td>12003</td>
+<td>Közép-Magyarország</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>S240018</td>
+<td>10040</td>
+<td>Ajándékutalvány 10 000 Ft</td>
+<td>1</td>
+<td>2024-01-01 07:21:00</td>
+<td>10000.0</td>
+<td>12003</td>
+<td>Közép-Magyarország</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>S247721</td>
+<td>10029</td>
+<td>Teamécses 50 db</td>
+<td>1</td>
+<td>2024-01-01 08:27:00</td>
+<td>1990.0</td>
+<td>13489</td>
+<td>Nyugat-Dunántúl</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>S247721</td>
+<td>10031</td>
+<td>Díszpárna</td>
+<td>1</td>
+<td>2024-01-01 08:27:00</td>
+<td>5990.0</td>
+<td>13489</td>
+<td>Nyugat-Dunántúl</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>S242901</td>
+<td>10003</td>
+<td>Kávékapszula 30 db</td>
+<td>1</td>
+<td>2024-01-01 09:14:00</td>
+<td>3290.0</td>
+<td>12566</td>
+<td>Közép-Dunántúl</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Az adatsor 68 990 számlatételt tartalmaz 15 919 számláról, 2 405 azonosított vevőtől, 48 termékre. Már az első sorok is mutatnak valamit abból, ami a valós adatokra jellemző: a postaköltség („POST”) nem termék, de számlatételként szerepel; a megnevezések között előfordulnak csupa nagybetűs, szóközzel lezárt változatok; a vendégvásárlásoknál hiányzik a vevőazonosító; a „C” betűvel kezdődő számlák pedig sztornók, negatív mennyiséggel. Ezekkel a <a href="03-adatelokeszites.html" class="quarto-xref"><span>3</span></a>. fejezetben foglalkozunk.</p>
+<p>A szimulátor a háttérben öt vevőszegmenssel dolgozik (törzsvásárló, alkalmi vásárló, akcióvadász, viszonteladó, lemorzsolódó), amelyek eltérő gyakorisággal, eltérő termékkörből és eltérő mennyiségben vásárolnak, és eltérő ütemben pártolnak el. A szegmensek a modellek számára rejtettek – a <a href="05-csoportositas.html" class="quarto-xref"><span>5</span></a>. fejezetben azt vizsgáljuk, mennyire lehet őket a vásárlási szokásokból visszafejteni. A kosarakba a szimulátor néhány valószerű vásárlási szabályt is „beültetett” (például a kávéfőző géphez gyakran kávébab társul), amelyeket a <a href="06-asszociacios-szabalyok.html" class="quarto-xref"><span>6</span></a>. fejezet algoritmusainak kell megtalálniuk.</p>
+</section>
+<section id="pannon-üzem-egy-reaktor-egy-éve" class="level3" data-number="1.7.2">
+<h3 data-number="1.7.2" class="anchored" data-anchor-id="pannon-üzem-egy-reaktor-egy-éve"><span class="header-section-number">1.7.2</span> Pannon üzem: egy reaktor egy éve</h3>
+<div class="eset-mernoki">
+<p>A Pannon üzem egy folyamatos üzemű, kevert tankreaktor, amelyben exoterm reakcióval három termékminőséget (A, B, C) gyártanak néhány napos kampányokban. A reaktor hőmérsékletét hűtőköpeny tartja az alapjelen; a hőcserélő felületén azonban lerakódás képződik, ezért a hűtési teljesítmény két tisztítás között fokozatosan romlik. A 10 perces mérések 2025 teljes évét lefedik; a termékkoncentrációt és a szennyezőtartalmat 4 óránként laboratóriumi minta méri.</p>
+</div>
+<div id="2de70682" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plant <span class="op">=</span> ab.load_plant()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> plant.measurements</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(m.shape)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>m.iloc[:, :<span class="dv">8</span>].head()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(52560, 14)</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">ido</th>
+<th data-quarto-table-cell-role="th">termek</th>
+<th data-quarto-table-cell-role="th">T_kornyezet</th>
+<th data-quarto-table-cell-role="th">F_betap</th>
+<th data-quarto-table-cell-role="th">c_betap</th>
+<th data-quarto-table-cell-role="th">T_betap</th>
+<th data-quarto-table-cell-role="th">T_reaktor</th>
+<th data-quarto-table-cell-role="th">T_alapjel</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>2025-01-01 00:00:00</td>
+<td>B</td>
+<td>-0.02</td>
+<td>9.722</td>
+<td>2.1051</td>
+<td>73.98</td>
+<td>86.07</td>
+<td>86.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>2025-01-01 00:10:00</td>
+<td>B</td>
+<td>-0.11</td>
+<td>9.670</td>
+<td>2.1150</td>
+<td>73.89</td>
+<td>85.85</td>
+<td>86.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>2025-01-01 00:20:00</td>
+<td>B</td>
+<td>-0.58</td>
+<td>9.656</td>
+<td>2.1131</td>
+<td>74.14</td>
+<td>86.09</td>
+<td>86.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>2025-01-01 00:30:00</td>
+<td>B</td>
+<td>-0.44</td>
+<td>9.711</td>
+<td>2.1115</td>
+<td>74.20</td>
+<td>86.21</td>
+<td>86.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>2025-01-01 00:40:00</td>
+<td>B</td>
+<td>-0.44</td>
+<td>9.587</td>
+<td>2.1180</td>
+<td>74.01</td>
+<td>86.05</td>
+<td>86.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>A szimulátor egyszerűsített, de fizikailag konzisztens modellen alapul: a konverzió a hőmérséklettől és a tartózkodási időtől függ (Arrhenius-kinetika), a szükséges hűtővízáram a hőmérlegből adódik, nyáron pedig a melegebb hűtővíz miatt a lerakódott hőcserélő a teljesítőképessége határára kerülhet. Az év során ismert időpontokban különböző hibák lépnek fel: hőmérséklet-érzékelő elcsúszása (szenzor-drift), a betáplált nyersanyag koncentrációjának visszaesése, a hűtővízszelep akadozása és a hűtővíz átmeneti felmelegedése. Ezek felismerése a <a href="11-anomaliak.html" class="quarto-xref"><span>11</span></a>. és a <a href="15-folyamatanalitika.html" class="quarto-xref"><span>15</span></a>. fejezet feladata.</p>
+<div id="cell-fig-uzem-attekintes" class="cell" data-fig-height="3.6" data-fig-width="7" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>napi <span class="op">=</span> m.set_index(<span class="st">"ido"</span>)[[<span class="st">"F_hutoviz"</span>, <span class="st">"T_hutoviz"</span>]].resample(<span class="st">"D"</span>).mean()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].plot(napi.index, napi.F_hutoviz, color<span class="op">=</span>ab.PALETTE[<span class="dv">0</span>])</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].axhline(<span class="fl">9.0</span>, color<span class="op">=</span><span class="st">"0.6"</span>, lw<span class="op">=</span><span class="dv">1</span>, ls<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_ylabel(<span class="st">"hűtővíz</span><span class="ch">\n</span><span class="st">[m³/h]"</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> plant.truth[<span class="st">"cleanings"</span>]:</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    ax[<span class="dv">0</span>].axvline(d, color<span class="op">=</span>ab.PALETTE[<span class="dv">3</span>], lw<span class="op">=</span><span class="fl">0.8</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].plot(napi.index, napi.T_hutoviz, color<span class="op">=</span>ab.PALETTE[<span class="dv">1</span>])</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_ylabel(<span class="st">"hűtővíz-hőm.</span><span class="ch">\n</span><span class="st">[°C]"</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span></code></pre></div><button title="Másolás a vágólapra" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-uzem-attekintes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-uzem-attekintes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="01-bevezetes_files/figure-html/fig-uzem-attekintes-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="ábra&nbsp;1.5.. A Pannon üzem egy évének áttekintése napi átlagokkal: a hűtővízáram a lerakódás miatt két tisztítás között fokozatosan nő, nyáron a melegebb hűtővíz miatt a szelep a határára kerül (szürke vonal: a szelep maximuma)."><img src="01-bevezetes_files/figure-html/fig-uzem-attekintes-output-1.png" width="690" height="407" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-uzem-attekintes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ábra&nbsp;1.5.. A Pannon üzem egy évének áttekintése napi átlagokkal: a hűtővízáram a lerakódás miatt két tisztítás között fokozatosan nő, nyáron a melegebb hűtővíz miatt a szelep a határára kerül (szürke vonal: a szelep maximuma).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A <a href="#fig-uzem-attekintes" class="quarto-xref"><span>1.5</span></a>. ábrán a függőleges zöld vonalak a tisztításokat jelölik. Már ez az egyszerű ábra is megmutatja az adatbányászat egyik alapvető tanulságát: a mért jelek mögött több, egymásra rakódó jelenség (évszakos változás, lerakódás, karbantartás, hibák) áll, amelyeket az elemzés során szét kell választanunk.</p>
+</section>
+</section>
+<section id="sec-bev-osszefoglalas" class="level2" data-number="1.8">
+<h2 data-number="1.8" class="anchored" data-anchor-id="sec-bev-osszefoglalas"><span class="header-section-number">1.8</span> Összefoglalás</h2>
+<ul>
+<li>Az adatbányászat az adatokból a döntést segítő tudásig vezető folyamat; a feltárt mintázatoknak érvényesnek, újszerűnek, hasznosnak és érthetőnek kell lenniük.</li>
+<li>A felügyelt tanulás ismert célváltozó előrejelzésére épít (osztályozás, regresszió), a felügyelet nélküli tanulás az adatok belső szerkezetét keresi (csoportosítás, asszociáció, anomáliák, dimenziócsökkentés).</li>
+<li>A felügyelt tanulás a veszteségfüggvény átlagának minimalizálásaként formalizálható (<a href="#eq-erm" class="quarto-xref"><span>1.3</span></a>), de a cél az új adatokra való általánosítás.</li>
+<li>A CRISP-DM hat fázisa (üzleti megértés, adatmegismerés, előkészítés, modellezés, kiértékelés, bevezetés) ma is az adatbányászati projektek vezérfonala; a CRISP-ML(Q) minőségbiztosítással és a bevezetett modellek monitorozásával egészíti ki.</li>
+<li>A személyes adatok kezelése a GDPR, az MI-alkalmazásoké az uniós MI-rendelet hatálya alá eshet; a besorolás az alkalmazási területtől függ.</li>
+</ul>
+</section>
+<section id="ellenőrző-kérdések" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="ellenőrző-kérdések">Ellenőrző kérdések</h2>
+<ol type="1">
+<li>Miben különbözik az adat, az információ és a tudás? Mondjon mindháromra egy-egy példát a Pannon üzem világából!</li>
+<li>Melyik feladattípusba sorolná az alábbi kérdéseket? (a) Melyik vevőnk nyitja meg valószínűleg a hírlevelet? (b) Mennyi villamos energiát fogyaszt az üzem jövő héten?
+<ol start="3" type="a">
+<li>Vannak-e olyan termékek, amelyeket rendszerint együtt vásárolnak? (d) Szokatlan-e a reaktor mostani viselkedése?</li>
+</ol></li>
+<li>Miért nem elegendő, ha egy modell a tanítóadatokon kis hibát ér el?</li>
+<li>Melyik CRISP-DM-fázisban dől el, hogy egy projekt sikeresnek tekinthető-e? Miért lehet szükség egy már bevezetett modell újratanítására?</li>
+<li>Mi a különbség az álnevesítés és az anonimizálás között? Melyik esetben marad az adat személyes adat?</li>
+</ol>
+</section>
+<section id="feladatok" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="feladatok">Feladatok</h2>
+<ol type="1">
+<li><strong>Probléma megfogalmazása.</strong> Válasszon egy Önhöz közel álló szervezetet (egyetem, munkahely, sportegyesület)! Fogalmazzon meg egy üzleti kérdést, majd alakítsa át adatbányászati céllá a CRISP-DM első fázisának megfelelően: határozza meg a célváltozót, a sikerkritériumot és a szükséges adatokat.</li>
+<li><strong>Az adatok első megtekintése.</strong> Töltse be a PannonShop adatait, és határozza meg:
+<ol type="a">
+<li>hány különböző számla és vevő szerepel; (b) mekkora a sztornózott számlák aránya; (c) melyik hónapban volt a legtöbb rendelés!</li>
+</ol></li>
+<li><strong>Az üzem egy hete.</strong> Ábrázolja a Pannon üzem reaktorhőmérsékletét és hűtővízáramát egy tetszőleges hétre! Mit tapasztal a termékváltások idején?</li>
+<li><strong>Kockázatelemzés.</strong> A PannonShop vezetése automatikus hitelkeret-megállapítást tervez a viszonteladói számára a vásárlási előzmények alapján. Milyen adatvédelmi és méltányossági kérdéseket kell tisztázni a projekt indítása előtt?</li>
+</ol>
+</section>
+<section id="további-olvasmányok" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="további-olvasmányok">További olvasmányok</h2>
+<p>A tudásfeltárás fogalmi kereteit <span class="citation" data-cites="fayyad1996">Fayyad és mtsai. (<a href="../references.html#ref-fayyad1996" role="doc-biblioref">1996</a>)</span> klasszikus cikke foglalja össze. A terület legátfogóbb tankönyvei <span class="citation" data-cites="han2022">Han és mtsai. (<a href="../references.html#ref-han2022" role="doc-biblioref">2022</a>)</span> és <span class="citation" data-cites="tan2019">Tan és mtsai. (<a href="../references.html#ref-tan2019" role="doc-biblioref">2019</a>)</span>; a statisztikai tanulás elméleti alapjait <span class="citation" data-cites="hastie2009">Hastie és mtsai. (<a href="../references.html#ref-hastie2009" role="doc-biblioref">2009</a>)</span>, bevezető szinten és Python-példákkal <span class="citation" data-cites="james2023">James és mtsai. (<a href="../references.html#ref-james2023" role="doc-biblioref">2023</a>)</span> tárgyalja. A CRISP-DM leírása <span class="citation" data-cites="chapman2000">Chapman és mtsai. (<a href="../references.html#ref-chapman2000" role="doc-biblioref">2000</a>)</span>, a gépi tanulási modellek életciklusára kiterjesztett változata <span class="citation" data-cites="studer2021">Studer és mtsai. (<a href="../references.html#ref-studer2021" role="doc-biblioref">2021</a>)</span> munkájában olvasható.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-abonyi2006" class="csl-entry" role="listitem">
+Abonyi, J. (Szerk.). (2006). <em>Adatbányászat – a hatékonyság eszköze. Gyakorlati útmutató kezdőknek és haladóknak</em>. ComputerBooks.
+</div>
+<div id="ref-barocas2023" class="csl-entry" role="listitem">
+Barocas, S., Hardt, M., &amp; Narayanan, A. (2023). <em>Fairness and Machine Learning: Limitations and Opportunities</em>. MIT Press.
+</div>
+<div id="ref-chapman2000" class="csl-entry" role="listitem">
+Chapman, P., Clinton, J., Kerber, R., Khabaza, T., Reinartz, T., Shearer, C., &amp; Wirth, R. (2000). <em>CRISP-DM 1.0: Step-by-step data mining guide</em>. SPSS Inc.
+</div>
+<div id="ref-chen2012" class="csl-entry" role="listitem">
+Chen, D., Sain, S. L., &amp; Guo, K. (2012). Data mining for the online retail industry: A case study of <span>RFM</span> model-based customer segmentation using data mining. <em>Journal of Database Marketing &amp; Customer Strategy Management</em>, <em>19</em>(3), 197–208.
+</div>
+<div id="ref-gdpr2016" class="csl-entry" role="listitem">
+Európai Parlament és Tanács. (2016). <em>Az Európai Parlament és a Tanács (EU) 2016/679 rendelete (2016. április 27.) a természetes személyeknek a személyes adatok kezelése tekintetében történő védelméről és az ilyen adatok szabad áramlásáról (általános adatvédelmi rendelet)</em>. Az Európai Unió Hivatalos Lapja, L 119, 2016.5.4., 1–88. o.
+</div>
+<div id="ref-aiact2024" class="csl-entry" role="listitem">
+Európai Parlament és Tanács. (2024). <em>Az Európai Parlament és a Tanács (EU) 2024/1689 rendelete (2024. június 13.) a mesterséges intelligenciára vonatkozó harmonizált szabályok megállapításáról (a mesterséges intelligenciáról szóló rendelet)</em>. Az Európai Unió Hivatalos Lapja, L sorozat, 2024/1689, 2024.7.12.
+</div>
+<div id="ref-fayyad1996" class="csl-entry" role="listitem">
+Fayyad, U., Piatetsky-Shapiro, G., &amp; Smyth, P. (1996). From Data Mining to Knowledge Discovery in Databases. <em>AI Magazine</em>, <em>17</em>(3), 37–54.
+</div>
+<div id="ref-gama2014" class="csl-entry" role="listitem">
+Gama, J., Žliobaitė, I., Bifet, A., Pechenizkiy, M., &amp; Bouchachia, A. (2014). A survey on concept drift adaptation. <em>ACM Computing Surveys</em>, <em>46</em>(4), 44:1–44:37.
+</div>
+<div id="ref-han2022" class="csl-entry" role="listitem">
+Han, J., Pei, J., &amp; Tong, H. (2022). <em>Data Mining: Concepts and Techniques</em> (4. kiad.). Morgan Kaufmann.
+</div>
+<div id="ref-harris2020" class="csl-entry" role="listitem">
+<span class="nocase">Harris, C. R. és mtsai.</span> (2020). Array programming with <span>NumPy</span>. <em>Nature</em>, <em>585</em>(7825), 357–362.
+</div>
+<div id="ref-hastie2009" class="csl-entry" role="listitem">
+Hastie, T., Tibshirani, R., &amp; Friedman, J. (2009). <em>The Elements of Statistical Learning: Data Mining, Inference, and Prediction</em> (2. kiad.). Springer.
+</div>
+<div id="ref-hunter2007" class="csl-entry" role="listitem">
+Hunter, J. D. (2007). Matplotlib: A <span>2D</span> Graphics Environment. <em>Computing in Science &amp; Engineering</em>, <em>9</em>(3), 90–95.
+</div>
+<div id="ref-james2023" class="csl-entry" role="listitem">
+James, G., Witten, D., Hastie, T., Tibshirani, R., &amp; Taylor, J. (2023). <em>An Introduction to Statistical Learning with Applications in Python</em>. Springer. <a href="https://doi.org/10.1007/978-3-031-38747-0">https://doi.org/10.1007/978-3-031-38747-0</a>
+</div>
+<div id="ref-lee2019" class="csl-entry" role="listitem">
+Lee, G. R., Gommers, R., Waselewski, F., Wohlfahrt, K., &amp; O’Leary, A. (2019). <span>PyWavelets</span>: A <span>Python</span> package for wavelet analysis. <em>Journal of Open Source Software</em>, <em>4</em>(36), 1237.
+</div>
+<div id="ref-mariscal2010" class="csl-entry" role="listitem">
+Mariscal, G., Marbán, Ó., &amp; Fernández, C. (2010). A survey of data mining and knowledge discovery process models and methodologies. <em>The Knowledge Engineering Review</em>, <em>25</em>(2), 137–166.
+</div>
+<div id="ref-mckinney2010" class="csl-entry" role="listitem">
+McKinney, W. (2010). Data Structures for Statistical Computing in <span>Python</span>. <em>Proceedings of the 9th Python in Science Conference</em>, 56–61.
+</div>
+<div id="ref-paszke2019" class="csl-entry" role="listitem">
+<span class="nocase">Paszke, A. és mtsai.</span> (2019). <span>PyTorch</span>: An Imperative Style, High-Performance Deep Learning Library. <em>Advances in Neural Information Processing Systems 32</em>, 8024–8035.
+</div>
+<div id="ref-pedregosa2011" class="csl-entry" role="listitem">
+Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M., &amp; Duchesnay, É. (2011). Scikit-learn: Machine Learning in <span>Python</span>. <em>Journal of Machine Learning Research</em>, <em>12</em>, 2825–2830.
+</div>
+<div id="ref-raschka2018" class="csl-entry" role="listitem">
+Raschka, S. (2018). <span>MLxtend</span>: Providing machine learning and data science utilities and extensions to Python’s scientific computing stack. <em>Journal of Open Source Software</em>, <em>3</em>(24), 638.
+</div>
+<div id="ref-sculley2015" class="csl-entry" role="listitem">
+Sculley, D., Holt, G., Golovin, D., Davydov, E., Phillips, T., Ebner, D., Chaudhary, V., Young, M., Crespo, J.-F., &amp; Dennison, D. (2015). Hidden Technical Debt in Machine Learning Systems. <em>Advances in Neural Information Processing Systems 28</em>, 2503–2511.
+</div>
+<div id="ref-seabold2010" class="csl-entry" role="listitem">
+Seabold, S., &amp; Perktold, J. (2010). statsmodels: Econometric and statistical modeling with <span>Python</span>. <em>Proceedings of the 9th Python in Science Conference</em>, 92–96.
+</div>
+<div id="ref-studer2021" class="csl-entry" role="listitem">
+Studer, S., Bui, T. B., Drescher, C., Hanuschkin, A., Winkler, L., Peters, S., &amp; Müller, K.-R. (2021). Towards <span>CRISP-ML(Q)</span>: A Machine Learning Process Model with Quality Assurance Methodology. <em>Machine Learning and Knowledge Extraction</em>, <em>3</em>(2), 392–413. <a href="https://doi.org/10.3390/make3020020">https://doi.org/10.3390/make3020020</a>
+</div>
+<div id="ref-sweeney2002" class="csl-entry" role="listitem">
+Sweeney, L. (2002). k-Anonymity: A Model for Protecting Privacy. <em>International Journal of Uncertainty, Fuzziness and Knowledge-Based Systems</em>, <em>10</em>(5), 557–570.
+</div>
+<div id="ref-tan2019" class="csl-entry" role="listitem">
+Tan, P.-N., Steinbach, M., Karpatne, A., &amp; Kumar, V. (2019). <em>Introduction to Data Mining</em> (2. kiad.). Pearson.
+</div>
+<div id="ref-virtanen2020" class="csl-entry" role="listitem">
+<span class="nocase">Virtanen, P. és mtsai.</span> (2020). <span>SciPy</span> 1.0: fundamental algorithms for scientific computing in <span>Python</span>. <em>Nature Methods</em>, <em>17</em>(3), 261–272.
+</div>
+<div id="ref-waskom2021" class="csl-entry" role="listitem">
+Waskom, M. L. (2021). seaborn: statistical data visualization. <em>Journal of Open Source Software</em>, <em>6</em>(60), 3021.
+</div>
+<div id="ref-wirth2000" class="csl-entry" role="listitem">
+Wirth, R., &amp; Hipp, J. (2000). CRISP-DM: Towards a Standard Process Model for Data Mining. <em>Proceedings of the 4th International Conference on the Practical Applications of Knowledge Discovery and Data Mining</em>, 29–39.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script>
+/* Magyar ábra- és táblázatfelirat-sorrend a HTML-kiadásban: "ábra 1.1." -> "1.1. ábra." */
+document.addEventListener("DOMContentLoaded", function () {
+  const re = /^(ábra|táblázat|algoritmus)\s+([0-9A-Z]+(?:\.[0-9]+)*)\.?\s*/i;
+  document.querySelectorAll("figcaption, .figure-caption, caption, .quarto-float-caption").forEach(function (el) {
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const t = w.nextNode();
+    if (!t) return;
+    const m = t.nodeValue.match(re);
+    if (m) { t.nodeValue = t.nodeValue.replace(re, m[2] + ". " + m[1].toLowerCase() + ". "); }
+  });
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kimásolva!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kimásolva!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/complexsystemsintelligence\.github\.io\/adatbanyaszat\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../index.html" class="pagination-link" aria-label="Előszó">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Előszó</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/02-adattarhazak.html" class="pagination-link" aria-label="Adattárházak és analitikus adatkezelés">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Adattárházak és analitikus adatkezelés</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/chapters/01-bevezetes.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/chapters/01-bevezetes.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>
