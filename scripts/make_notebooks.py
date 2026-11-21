@@ -127,7 +127,7 @@ def notebook(cells, title, nb_name, repo, branch, site):
            f"(2. kiadás, 2026).* A fejezet webes változata: <{site}>\n\n"
            f"[![Megnyitás Colabban](https://colab.research.google.com/assets/colab-badge.svg)]"
            f"(https://colab.research.google.com/github/{repo}/blob/{branch}/notebooks/{nb_name}.ipynb)\n\n"
-           "A szöveg CC BY 4.0, a kód MIT licenc alatt használható fel."),
+           "A szöveg CC BY-NC 4.0 (nem kereskedelmi felhasználás), a kód MIT licenc alatt használható fel."),
         code("# A könyv segédcsomagjának telepítése (Colabban; helyi futtatásnál: pip install -e .)\n"
              "import sys\n"
              "if 'google.colab' in sys.modules:\n"

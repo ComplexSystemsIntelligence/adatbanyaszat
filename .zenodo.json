@@ -7,7 +7,7 @@
     {"name": "Abonyi, János", "affiliation": "Pannon Egyetem"}
   ],
   "language": "hun",
-  "license": "CC-BY-4.0",
+  "license": "cc-by-nc-4.0",
   "keywords": ["adatbányászat", "gépi tanulás", "Python", "tankönyv", "data mining", "machine learning", "process analytics"],
   "related_identifiers": [
     {"identifier": "https://complexsystemsintelligence.github.io/adatbanyaszat/", "relation": "isSupplementTo", "scheme": "url"}

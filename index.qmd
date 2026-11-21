@@ -85,9 +85,10 @@ PDF és EPUB készül, a kiadásokat a Zenodo archiválja és DOI-azonosítóval
 
 ## Licenc és hivatkozás {.unnumbered}
 
-A könyv szövege és ábrái a [Creative Commons Nevezd meg! 4.0
-Nemzetközi](https://creativecommons.org/licenses/by/4.0/deed.hu) (CC BY 4.0) licenc, a
-programkód az MIT licenc alatt szabadon felhasználható. Hivatkozás:
+A könyv szövege és ábrái a [Creative Commons Nevezd meg! – Ne add el! 4.0
+Nemzetközi](https://creativecommons.org/licenses/by-nc/4.0/deed.hu) (CC BY-NC 4.0) licenc
+alatt nem kereskedelmi célra szabadon felhasználhatók; kereskedelmi célú felhasználásukhoz
+a szerző előzetes engedélye szükséges. A programkód az MIT licenc alatt áll. Hivatkozás:
 
 > Abonyi János (2026): *Adatbányászat – a hatékonyság eszköze. Elmélet és gyakorlat
 > Pythonban.* 2., teljesen átdolgozott kiadás. Pannon Egyetem, Veszprém.

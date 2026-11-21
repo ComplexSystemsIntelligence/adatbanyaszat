@@ -153,11 +153,12 @@ kód csak a megváltozott fejezetekben fut újra.
 
 Copyright © 2026 Abonyi János.
 
-- A könyv szövege, ábrái és táblázatai a [Creative Commons Nevezd meg! 4.0 Nemzetközi
-  (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.hu) licenc alatt állnak
-  ([teljes szöveg](LICENSE)): a mű bármilyen célra, kereskedelmi célra is szabadon
-  másolható, terjeszthető és átdolgozható a szerző és a licenc feltüntetésével, valamint a
-  változtatások jelzésével.
+- A könyv szövege, ábrái és táblázatai a [Creative Commons Nevezd meg! – Ne add el! 4.0
+  Nemzetközi (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/deed.hu) licenc
+  alatt állnak ([teljes szöveg](LICENSE)): nem kereskedelmi célra – oktatásban, tanulásra,
+  kutatásban – szabadon másolhatók, terjeszthetők és átdolgozhatók a szerző és a licenc
+  feltüntetésével, valamint a változtatások jelzésével. Kereskedelmi célú felhasználáshoz a
+  szerző előzetes engedélye szükséges.
 - A programkód (a `src/`, `scripts/`, `apps/` és `notebooks/` tartalma, valamint a fejezetek
   kódrészletei) az [MIT licenc](LICENSE-CODE) alatt áll.
 
