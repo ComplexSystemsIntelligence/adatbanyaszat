@@ -1,5 +1,8 @@
-# A könyv fordítása (HTML, PDF, EPUB) és közzététele a GitHub Pages-en a main ágra történő
-# feltöltéskor. A kiadásokat (GitHub Release) a Zenodo–GitHub integráció archiválja és DOI-val látja el.
+# A könyv fordítása (HTML, PDF, EPUB) és közzététele a GitHub Pages-en a gh-pages ágon.
+# - minden feltöltés a main ágra (vagy kézi indítás): a webhely frissül;
+# - új GitHub Release: a kiadás címkéjén lévő kiadas/ mappa PDF- és EPUB-fájljai a kiadáshoz csatolódnak
+#   (kézzel is indítható egy meglévő kiadásra a „kiadas” bemenettel).
+#   A Zenodo a GitHub-integráción keresztül a kiadás forráscsomagját archiválja és DOI-t ad.
 name: Könyv fordítása és közzététele
 on:
   push:
@@ -10,15 +13,24 @@ on:
       - "notebooks/README.md"
       - "assets/readme/**"
       - "assets/social-preview.png"
+      - "kiadas/**"
+  release:
+    types: [published]
   workflow_dispatch:
-concurrency:
-  group: pages
-  cancel-in-progress: true
+    inputs:
+      kiadas:
+        description: "Meglévő kiadás címkéje (például v2.0.0), amelyhez a kiadas/ mappa fájljait csatolni kell; üresen hagyva a webhely fordul újra"
+        required: false
+        default: ""
 permissions:
   contents: write
 jobs:
   build-deploy:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.kiadas == '')
     runs-on: ubuntu-latest
+    concurrency:
+      group: pages
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -47,3 +59,18 @@ jobs:
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  kiadas-mellekletek:
+    if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && inputs.kiadas != '')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.release.tag_name || inputs.kiadas }}
+      - name: A kiadas/ mappa PDF- és EPUB-fájljainak csatolása a kiadáshoz
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CIMKE: ${{ github.event.release.tag_name || inputs.kiadas }}
+        run: |
+          ls -la kiadas
+          gh release upload "$CIMKE" kiadas/*.pdf kiadas/*.epub --clobber

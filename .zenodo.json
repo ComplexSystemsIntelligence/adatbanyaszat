@@ -2,14 +2,42 @@
   "title": "Adatbányászat – a hatékonyság eszköze. Elmélet és gyakorlat Pythonban (2., teljesen átdolgozott kiadás)",
   "upload_type": "publication",
   "publication_type": "book",
-  "description": "Nyílt hozzáférésű egyetemi tankönyv az adatbányászat módszereiről: adattárházak, adatelőkészítés, feltáró elemzés, csoportosítás, asszociációs szabályok, modellértékelés, regresszió, osztályozás, neurális hálózatok, anomália-észlelés, idősorok, szövegbányászat, ügyfélanalitika és ipari folyamatanalitika, Python-példákkal, interaktív alkalmazásokkal és Colab-jegyzetfüzetekkel.",
+  "version": "2.0.0",
+  "description": "<p>Nyílt hozzáférésű magyar nyelvű egyetemi tankönyv az adatbányászat és a gépi tanulás módszereiről. Tizenöt fejezete az adattárházaktól és az adatelőkészítéstől a feltáró elemzésen, a csoportosításon, az asszociációs szabályokon, a modellértékelésen, a regresszión és az osztályozáson át a neurális hálózatokig, az anomáliák észleléséig, az idősorok és a szövegek elemzéséig, az ügyfélanalitikáig és az ipari folyamatanalitikáig vezet; a módszereket két, fejezetről fejezetre továbbvitt esettanulmány (egy webáruház és egy vegyipari reaktor) kapcsolja össze. A könyvhöz tizennégy böngészőben futó gyakorló alkalmazás és tizenöt Google Colab-jegyzetfüzet tartozik; a függelékek a Python-, lineáris algebrai és statisztikai alapokat foglalják össze.</p><p>An open-access Hungarian university textbook on data mining and machine learning with Python examples, interactive browser exercises and Google Colab notebooks (2nd, fully revised edition).</p>",
+  "notes": "A második, teljesen átdolgozott kiadás. Az első kiadás: Abonyi János (szerk.): Adatbányászat – a hatékonyság eszköze. ComputerBooks, Budapest, 2006. Az archívum a könyv teljes Quarto-forrását, a lefordított PDF- és EPUB-változatot (kiadas/), a gyakorló alkalmazásokat és a Colab-jegyzetfüzeteket tartalmazza. A programkód MIT licenc alatt áll.",
   "creators": [
-    {"name": "Abonyi, János", "affiliation": "Pannon Egyetem"}
+    {
+      "name": "Abonyi, János",
+      "affiliation": "Pannon Egyetem / University of Pannonia",
+      "orcid": "0000-0001-8593-1493"
+    }
   ],
   "language": "hun",
   "license": "cc-by-nc-4.0",
-  "keywords": ["adatbányászat", "gépi tanulás", "Python", "tankönyv", "data mining", "machine learning", "process analytics"],
+  "access_right": "open",
+  "keywords": [
+    "data mining",
+    "machine learning",
+    "Python",
+    "data warehousing",
+    "clustering",
+    "classification",
+    "anomaly detection",
+    "time series analysis",
+    "text mining",
+    "process analytics",
+    "adatbányászat",
+    "gépi tanulás",
+    "tankönyv"
+  ],
   "related_identifiers": [
-    {"identifier": "https://complexsystemsintelligence.github.io/adatbanyaszat/", "relation": "isSupplementTo", "scheme": "url"}
+    {
+      "identifier": "https://complexsystemsintelligence.github.io/adatbanyaszat/",
+      "relation": "isSupplementTo"
+    },
+    {
+      "identifier": "https://github.com/ComplexSystemsIntelligence/adatbanyaszat",
+      "relation": "isSupplementTo"
+    }
   ]
 }

@@ -125,6 +125,7 @@ data/                     a futó esetek adatai CSV-ben
 scripts/                  ábrafordítás, jegyzetfüzet-generálás és -teszt, adatexport
 _extensions/pannon/       a tankönyvsorozat arculata (SCSS, LaTeX-fejléc, TikZ-stílus, Lua-szűrők)
 _freeze/                  a fejezetek lefuttatott kódjának eredményei (gyorsítótár)
+kiadas/                   a kiadások PDF- és EPUB-változata (a Zenodo-archívum része)
 .github/workflows/        a könyv automatikus fordítása és a jegyzetfüzetek tesztje
 ```
 
@@ -152,7 +153,18 @@ kód csak a megváltozott fejezetekben fut újra.
 - A [`notebooks.yml`](.github/workflows/notebooks.yml) hetente és minden pull requestnél
   lefuttatja a jegyzetfüzeteket.
 - A kiadásokat (GitHub Release) a Zenodo–GitHub integráció archiválja és DOI-val látja el;
-  a metaadatokat a [`.zenodo.json`](.zenodo.json) és a [`CITATION.cff`](CITATION.cff) adja.
+  a metaadatokat a [`.zenodo.json`](.zenodo.json) adja (a [`CITATION.cff`](CITATION.cff) a
+  GitHub „Cite this repository” hivatkozásához tartozik).
+
+**Új kiadás menete**
+
+1. A változatszám és a dátum frissítése a `CITATION.cff`-ben, a `.zenodo.json`-ban és a
+   `_extensions/pannon/pannon-header.tex` `\peverzio` sorában, majd feltöltés a `main` ágra.
+2. Ha a fordítás sikeres, a `scripts/kiadas.sh` a közzétett PDF-et és EPUB-ot a
+   [`kiadas/`](kiadas/) mappába másolja; ezek feltöltése után a kiadás forráscsomagja az
+   olvasható könyvet is tartalmazza.
+3. GitHub → Releases → új címke (`vX.Y.Z`) → Publish. A Zenodo archiválja a forráscsomagot és
+   DOI-t ad, a munkafolyamat pedig a PDF-et és az EPUB-ot a kiadáshoz is csatolja.
 
 ## Licenc
 

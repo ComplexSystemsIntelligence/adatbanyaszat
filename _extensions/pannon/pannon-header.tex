@@ -110,6 +110,9 @@
 % hátsó borító. A borítókat a figures/tikz/00-borito.tex és 00-hatso-borito.tex adja.
 \usepackage{graphicx}
 \usepackage{eso-pic}
+% változatszám és DOI (kiadáskor frissítendő; az üres \pedoi esetén a DOI-sor elmarad)
+\providecommand*{\peverzio}{2.0.0}
+\providecommand*{\pedoi}{}
 \newcommand{\pefullpage}[1]{\AddToShipoutPictureBG*{\put(0,0){%
   \includegraphics[width=\paperwidth,height=\paperheight]{#1}}}}
 
@@ -127,7 +130,8 @@
   Az első kiadás: Abonyi János (szerk.): \emph{Adatbányászat – a hatékonyság eszköze.}
   ComputerBooks, Budapest, 2006.\par
   © Abonyi János, 2026\\
-  Kiadó: Pannon Egyetem, Veszprém\par
+  Kiadó: Pannon Egyetem, Veszprém\\
+  Változat: \peverzio\ifx\pedoi\empty\else\\ DOI: \href{https://doi.org/\pedoi}{\pedoi}\fi\par
   A könyv szövege, ábrái és táblázatai a Creative Commons Nevezd meg! – Ne add el! 4.0
   Nemzetközi (CC BY-NC 4.0) licenc alatt nem kereskedelmi célra szabadon felhasználhatók;
   kereskedelmi célú felhasználásukhoz a szerző előzetes engedélye szükséges. A programkód az
