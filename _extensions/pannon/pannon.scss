@@ -32,7 +32,33 @@ h3, h4 { font-weight: 700; }
 .sidebar, .navbar, .quarto-title-meta, .table, figcaption, .figure-caption,
 .callout-title-container, .nav, .breadcrumb, .quarto-secondary-nav { font-family: $font-family-sans-serif; }
 figcaption, .figure-caption { color: $pe-muted; font-size: .92rem; }
-.quarto-title-banner { background: $pe-blue; }
+// Fejezetcím-sáv: a Pannon Egyetem kékje, ferde alsó éllel és halvány fehér címerrel
+.quarto-title-banner {
+  background: $pe-blue; color: #fff; position: relative; overflow: hidden;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 1.6rem));
+  padding-bottom: 2.2rem !important; margin-bottom: 1.2rem;
+}
+.quarto-title-banner::before {
+  content: ""; position: absolute; right: 4%; top: 50%; transform: translateY(-55%);
+  width: 132px; height: 132px; opacity: .16; pointer-events: none;
+  background: url("assets/logo/pe-cimer-feher.svg") center / contain no-repeat;
+}
+.quarto-title-banner .quarto-title .title, .quarto-title-banner h1 { color: #fff; }
+.quarto-title-banner .quarto-title::after { background: #fff; }
+.quarto-title-banner .quarto-categories, .quarto-title-banner .subtitle { color: #E8EEF4; }
+@media (max-width: 767.98px) { .quarto-title-banner::before { display: none; } }
+
+// Oldalsáv: a Pannon Egyetem névjele
+.sidebar-logo { max-width: 92%; margin: .2rem 0 .4rem 0; }
+.sidebar-title { color: $pe-blue-dark; }
+
+// Lábléc a Pannon Egyetem kékjével
+.nav-footer { font-family: $font-family-sans-serif; font-size: .88rem; }
+.nav-footer a { color: #fff; text-decoration: underline; text-decoration-color: rgba(255,255,255,.45); }
+.nav-footer img { height: 38px; width: auto; vertical-align: middle; }
+
+// Borítókép a nyitóoldalon
+.quarto-cover-image { max-width: 260px; box-shadow: 0 4px 18px rgba(28,63,94,.18); border-radius: 2px; }
 
 // Ferde alsó sáv a fejezetcímek alatt – a sorozat vizuális azonosítója
 .quarto-title-block .quarto-title {

@@ -1,0 +1,43 @@
+% A könyv hátsó borítója (B5, 176 × 250 mm) a Pannon Egyetem arculatával.
+\documentclass[tikz,border=0pt]{standalone}
+\usepackage{pe-tikz}
+\usepackage{graphicx}
+\usepackage{fontspec}
+\newfontfamily\cvbold{Raleway}[Path=../../assets/fonts/, Extension=.otf, UprightFont=*-Bold]
+\newfontfamily\cvserif{IBMPlexSerif}[Path=../../assets/fonts/, Extension=.otf,
+  UprightFont=*-Regular, ItalicFont=*-Italic]
+\newfontfamily\cvsans{IBMPlexSans}[Path=../../assets/fonts/, Extension=.otf,
+  UprightFont=*-Regular, BoldFont=*-SemiBold]
+\definecolor{cvblue}{HTML}{285780}
+\definecolor{cvdark}{HTML}{1C3F5E}
+\begin{document}
+\begin{tikzpicture}[x=1mm, y=1mm]
+  \fill[cvblue] (0,0) rectangle (176,250);
+  \fill[cvdark] (0,0) -- (176,0) -- (176,46) -- (0,28) -- cycle;
+  \node[anchor=north west, inner sep=0, text=white] at (20,226)
+    {\cvbold\fontsize{20}{24}\selectfont Adatbányászat – a hatékonyság eszköze};
+  \fill[white] (20.5,214) -- (56,214) -- (54.6,211.6) -- (19.1,211.6) -- cycle;
+  \node[anchor=north west, inner sep=0, text=white, text width=136mm, align=left]
+    at (20,202) {\hyphenpenalty=10000\exhyphenpenalty=10000\cvserif\fontsize{11}{16}\selectfont
+    Az adatbányászat az adatokban rejlő, korábban ismeretlen, hasznos és érthető
+    összefüggések feltárása – ma a vállalatirányítás, a mérnöki gyakorlat és a tudományos
+    kutatás mindennapi eszköze. A könyv a terület módszereit a matematikai háttér
+    részletes kifejtésével és futtatható Python-kóddal mutatja be: az adattárházaktól és az
+    adatelőkészítéstől a csoportosításon, az asszociációs szabályokon, a regresszión és az
+    osztályozáson át a neurális hálózatokig, az anomáliák észleléséig, az idősorok és a
+    szövegek elemzéséig.\par\medskip
+    A módszereket két, fejezetről fejezetre továbbvitt esettanulmány kapcsolja össze: egy
+    webáruház üzleti adatai és egy vegyipari reaktor mérései. Az elméletet böngészőben futó
+    gyakorló alkalmazások és Google Colab-jegyzetfüzetek egészítik ki, így minden eredmény
+    kipróbálható és továbbfejleszthető.\par\medskip
+    \cvsans\fontsize{9.5}{13}\selectfont A könyv elsősorban mérnök-, informatikus- és
+    gazdálkodási BSc-hallgatóknak készült; a szükséges Python-, lineáris algebrai és
+    statisztikai alapokat függelékek foglalják össze.};
+  \node[anchor=south, inner sep=0] at (88,58)
+    {\includegraphics[width=46mm]{../../assets/logo/pe-cimer-nevjel-allo-feher.pdf}};
+  \node[anchor=base west, inner sep=0, text=white] at (20,13)
+    {\cvsans\bfseries\fontsize{10}{12}\selectfont complexsystemsintelligence.github.io/adatbanyaszat};
+  \node[anchor=base west, inner sep=0, text=white] at (20,6.5)
+    {\cvsans\fontsize{8.5}{10}\selectfont A szöveg és az ábrák CC BY-NC 4.0, a programkód MIT licenc alatt használható fel.};
+\end{tikzpicture}
+\end{document}

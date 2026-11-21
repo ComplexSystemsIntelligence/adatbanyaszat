@@ -30,7 +30,7 @@
 \setkomafont{disposition}{\pefontheading\color{pebluedark}}
 \setkomafont{chapter}{\pefontblack\Huge\color{pebluedark}}
 \setkomafont{chapterprefix}{\pefontheading\large\color{peblue}}
-\setkomafont{part}{\pefontblack\color{peblue}}
+\setkomafont{part}{\pefontblack\fontsize{30}{36}\selectfont\color{peblue}}
 \setkomafont{partnumber}{\pefontheading\color{peblue}}
 \setkomafont{caption}{\pefontsans\small}
 \setkomafont{captionlabel}{\pefontsans\small\bfseries\color{peblue}}
@@ -104,3 +104,61 @@
     \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,commandchars=\\\{\},fontsize=\small}}%
   \RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small}}
 \makeatother
+
+% ---------------------------------------------------------------------------
+% A Pannon Egyetem arculati elemei: címoldal (borító), impresszum, részcímlapok,
+% hátsó borító. A borítókat a figures/tikz/00-borito.tex és 00-hatso-borito.tex adja.
+\usepackage{graphicx}
+\usepackage{eso-pic}
+\newcommand{\pefullpage}[1]{\AddToShipoutPictureBG*{\put(0,0){%
+  \includegraphics[width=\paperwidth,height=\paperheight]{#1}}}}
+
+% címoldal és impresszum
+\AtBeginDocument{%
+\renewcommand{\maketitle}{%
+  \begin{titlepage}
+    \pefullpage{figures/build/00-borito.pdf}\null
+  \end{titlepage}%
+  \thispagestyle{empty}\null\vfill
+  \begingroup\pefontsans\footnotesize\color{peink}\raggedright\setlength{\parskip}{.55em}%
+  {\bfseries Abonyi János\\ Adatbányászat – a hatékonyság eszköze}\\
+  Elmélet és gyakorlat Pythonban\\
+  2., teljesen átdolgozott kiadás\par
+  Az első kiadás: Abonyi János (szerk.): \emph{Adatbányászat – a hatékonyság eszköze.}
+  ComputerBooks, Budapest, 2006.\par
+  © Abonyi János, 2026\\
+  Kiadó: Pannon Egyetem, Veszprém\par
+  A könyv szövege, ábrái és táblázatai a Creative Commons Nevezd meg! – Ne add el! 4.0
+  Nemzetközi (CC BY-NC 4.0) licenc alatt nem kereskedelmi célra szabadon felhasználhatók;
+  kereskedelmi célú felhasználásukhoz a szerző előzetes engedélye szükséges. A programkód az
+  MIT licenc alatt áll. A Pannon Egyetem neve, címere és logója a Pannon Egyetem arculati
+  elemei, ezekre a fenti licencek nem terjednek ki.\par
+  Webkönyv, PDF és EPUB: \url{https://complexsystemsintelligence.github.io/adatbanyaszat/}\\
+  Forráskód, adatok és jegyzetfüzetek: \url{https://github.com/ComplexSystemsIntelligence/adatbanyaszat}\par
+  A második kiadás kutatási hátterét a Nemzeti Kutatási, Fejlesztési és Innovációs Hivatal
+  OTKA 143482 számú projektje támogatta.\par
+  Szedés: Quarto és XeLaTeX; betűkészletek: IBM Plex és Raleway.\par
+  \vspace{7mm}\includegraphics[height=13mm]{assets/logo/pe-cimer-nevjel-fekvo-kek.pdf}\par
+  \endgroup
+  \clearpage}}
+
+% részcímlapok: ferde alsó sáv és halvány betűlogó
+\newcommand{\pepartdecor}{\put(0,0){\begin{tikzpicture}[x=1mm,y=1mm]
+  \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+  \fill[peblue] (0,0) -- (\paperwidth,0) -- (\paperwidth,30mm) -- (0,18mm) -- cycle;
+  \node[anchor=south east, inner sep=0] at ([xshift=-12mm,yshift=40mm]\paperwidth,0)
+    {\includegraphics[width=92mm]{_extensions/pannon/pe-betulogo-halvany.pdf}};
+  \node[anchor=base west, inner sep=0, text=white] at (14mm,8mm)
+    {\pefontsans\footnotesize Adatbányászat – a hatékonyság eszköze\enspace·\enspace Pannon Egyetem};
+\end{tikzpicture}}}
+\makeatletter
+\renewcommand*{\partheadstartvskip}{%
+  \AddToShipoutPictureBG*{\pepartdecor}\null\vskip-\baselineskip\vskip\@tempskipa}
+\makeatother
+% a rész sorszáma a címben szerepel, ezért a tartalomjegyzékben sem ismételjük
+\renewcommand*{\addparttocentry}[2]{\addtocentrydefault{part}{}{#2}}
+\renewcommand*{\partpagestyle}{empty}
+
+% hátsó borító (páros oldalon)
+\AtEndDocument{\cleardoubleevenemptypage\thispagestyle{empty}%
+  \pefullpage{figures/build/00-hatso-borito.pdf}\null}

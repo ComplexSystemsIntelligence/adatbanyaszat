@@ -123,7 +123,9 @@ def notebook(cells, title, nb_name, repo, branch, site):
         return {"cell_type": "code", "execution_count": None, "metadata": meta, "outputs": [], "source": src}
 
     head = [
-        md(f"# {title}\n\n*Abonyi János: Adatbányászat – a hatékonyság eszköze. Elmélet és gyakorlat Pythonban "
+        md(f'<img src="{site.split("chapters/")[0]}assets/logo/pe-cimer-nevjel-fekvo-kek.png" '
+           'alt="Pannon Egyetem – University of Pannonia" height="56">\n\n'
+           f"# {title}\n\n*Abonyi János: Adatbányászat – a hatékonyság eszköze. Elmélet és gyakorlat Pythonban "
            f"(2. kiadás, 2026).* A fejezet webes változata: <{site}>\n\n"
            f"[![Megnyitás Colabban](https://colab.research.google.com/assets/colab-badge.svg)]"
            f"(https://colab.research.google.com/github/{repo}/blob/{branch}/notebooks/{nb_name}.ipynb)\n\n"

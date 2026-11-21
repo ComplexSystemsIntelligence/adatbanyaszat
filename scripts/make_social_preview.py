@@ -33,6 +33,12 @@ def main() -> None:
         p = rng.normal([cx, cy], [42, 34], size=(70, 2))
         ax.scatter(p[:, 0], p[:, 1], s=26, color=c, alpha=0.55, lw=0)
         ax.scatter([cx], [cy], s=150, marker="x", color=BLUE, lw=2.4, alpha=0.9)
+    logo = plt.imread(ROOT / "assets" / "logo" / "pe-cimer-nevjel-fekvo-kek.png")
+    h = 56
+    w = h * logo.shape[1] / logo.shape[0]
+    ax.imshow(logo, extent=(82, 82 + w, 568, 568 + h), interpolation="lanczos", zorder=3)
+    ax.set_xlim(0, 1280)
+    ax.set_ylim(0, 640)
     ax.text(80, 470, "Adatbányászat", fontproperties=fp("Raleway-Black.otf", 64), color=BLUE)
     ax.text(84, 405, "a hatékonyság eszköze", fontproperties=fp("IBMPlexSerif-Regular.otf", 34), color="#1d2733")
     ax.text(84, 335, "Elmélet és gyakorlat Pythonban", fontproperties=fp("IBMPlexSerif-Italic.otf", 24), color="#3a4654")

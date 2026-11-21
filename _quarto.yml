@@ -4,6 +4,8 @@ project:
   resources:
     - apps/
     - assets/webfonts/
+    - assets/logo/
+    - assets/social-preview.png
     - data/*.csv
     - data/*.csv.gz
   render:
@@ -28,6 +30,27 @@ book:
   downloads: [pdf, epub]
   search: true
   page-navigation: true
+  favicon: assets/logo/pe-betulogo-kek.svg
+  cover-image: assets/cover.png
+  cover-image-alt: "Az Adatbányászat – a hatékonyság eszköze című könyv borítója"
+  sidebar:
+    logo: assets/logo/pe-cimer-nevjel-fekvo-kek.svg
+    logo-alt: "Pannon Egyetem – University of Pannonia"
+    logo-href: https://uni-pannon.hu
+  page-footer:
+    background: "#285780"
+    foreground: "#FFFFFF"
+    left: |
+      © 2026 Abonyi János · [Pannon Egyetem](https://uni-pannon.hu) ·
+      [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/deed.hu)
+    right: |
+      [![](/assets/logo/pe-cimer-nevjel-fekvo-feher.svg){height=38px fig-alt="Pannon Egyetem – University of Pannonia"}](https://uni-pannon.hu)
+  open-graph:
+    image: assets/social-preview.png
+    locale: hu_HU
+  twitter-card:
+    image: assets/social-preview.png
+    card-style: summary_large_image
   chapters:
     - index.qmd
     - part: "I. Alapok"
@@ -104,6 +127,8 @@ format:
     toc-depth: 3
     number-sections: true
     number-depth: 3
+    title-block-banner: true
+    title-block-banner-color: "#FFFFFF"
     code-copy: true
     code-overflow: wrap
     code-fold: false
@@ -156,6 +181,7 @@ format:
     code-block-bg: "#F4F6F8"
     code-block-border-left: "#285780"
   epub:
+    cover-image: assets/cover.png
     toc: true
     number-sections: true
     html-math-method: mathml

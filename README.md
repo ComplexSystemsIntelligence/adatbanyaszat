@@ -1,3 +1,8 @@
+<a href="https://uni-pannon.hu"><picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/logo/pe-cimer-nevjel-fekvo-feher.svg">
+  <img src="assets/logo/pe-cimer-nevjel-fekvo-kek.svg" alt="Pannon Egyetem – University of Pannonia" height="64">
+</picture></a>
+
 # Adatbányászat – a hatékonyság eszköze
 
 **Elmélet és gyakorlat Pythonban** · 2., teljesen átdolgozott kiadás<br>
@@ -161,6 +166,8 @@ Copyright © 2026 Abonyi János.
   szerző előzetes engedélye szükséges.
 - A programkód (a `src/`, `scripts/`, `apps/` és `notebooks/` tartalma, valamint a fejezetek
   kódrészletei) az [MIT licenc](LICENSE-CODE) alatt áll.
+- A Pannon Egyetem neve, címere és logója a Pannon Egyetem arculati elemei; ezekre a fenti
+  licencek nem terjednek ki.
 
 ## Hivatkozás
 
