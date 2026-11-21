@@ -1,0 +1,76 @@
+% pe-tikz.sty -- a Pannon tankönyvsorozat egységes ábrastílusa (XeLaTeX, standalone)
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{pe-tikz}[2026/11/20 v1.0 PE textbook figure style]
+\RequirePackage{fontspec}
+\RequirePackage{unicode-math}
+\providecommand{\pefontpath}{../../assets/fonts/}
+\setmainfont{IBMPlexSans}[Path=\pefontpath, Extension=.otf,
+  UprightFont=*-Regular, BoldFont=*-SemiBold, ItalicFont=*-Italic]
+\setmathfont{latinmodern-math.otf}
+\RequirePackage{amsmath}
+\RequirePackage{tikz}
+\RequirePackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric,shapes.misc,backgrounds,
+  fit,decorations.pathreplacing,patterns,matrix,trees,3d,intersections,shapes.multipart}
+\usepgfplotslibrary{groupplots,fillbetween}
+% --- színek: arculati kék a szerkezethez, színtévesztés-biztos (validált) paletta az adatokhoz
+\definecolor{peblue}{HTML}{285780}
+\definecolor{pebluedark}{HTML}{1C3F5E}
+\definecolor{pelight}{HTML}{E8EEF4}
+\definecolor{ink}{HTML}{1F2933}
+\definecolor{muted}{HTML}{6B7785}
+\definecolor{grid}{HTML}{E6EAEE}
+\definecolor{cA}{HTML}{2E6DB4}
+\definecolor{cB}{HTML}{C8711E}
+\definecolor{cC}{HTML}{7A4EAB}
+\definecolor{cD}{HTML}{1F9077}
+\definecolor{cE}{HTML}{B23A48}
+% --- folyamatábra- és szerkezeti elemek
+\tikzset{
+  every picture/.style={line cap=round, line join=round},
+  pe/step/.style={rectangle, rounded corners=3pt, draw=peblue, line width=0.9pt,
+     fill=white, text=ink, align=center, font=\small, minimum height=9mm, text width=31mm},
+  pe/stepfill/.style={pe/step, fill=pelight},
+  pe/hub/.style={circle, draw=peblue, line width=1.1pt, fill=pelight, text=peblue,
+     align=center, font=\small\bfseries, minimum size=22mm},
+  pe/box/.style={rectangle, draw=peblue, line width=0.8pt, fill=white, text=ink,
+     align=center, font=\small, inner sep=4pt},
+  pe/data/.style={cylinder, shape border rotate=90, aspect=0.22, draw=peblue,
+     line width=0.8pt, fill=pelight, text=ink, align=center, font=\small,
+     minimum width=16mm, minimum height=12mm},
+  pe/decision/.style={diamond, aspect=1.8, draw=peblue, line width=0.8pt, fill=white,
+     text=ink, align=center, font=\small, inner sep=1pt},
+  pe/note/.style={font=\scriptsize, text=muted, align=center},
+  pe/label/.style={font=\footnotesize, text=ink, align=center},
+  pe/flow/.style={-{Stealth[length=2.6mm]}, line width=0.9pt, draw=peblue},
+  pe/thin/.style={-{Stealth[length=2mm]}, line width=0.6pt, draw=ink},
+  pe/back/.style={-{Stealth[length=2.2mm]}, line width=0.7pt, draw=muted, dashed},
+  pe/node/.style={circle, draw=peblue, line width=0.8pt, fill=white, minimum size=7mm,
+     inner sep=0pt, font=\small},
+  pe/leaf/.style={rectangle, rounded corners=2pt, draw=cD, line width=0.8pt,
+     fill=cD!10, font=\small, inner sep=3pt, align=center},
+}
+% --- adatábrák
+\pgfplotsset{
+  pe axis/.style={axis lines=left, axis line style={muted, line width=0.5pt},
+     tick style={muted}, tick label style={font=\scriptsize, text=muted},
+     label style={font=\small, text=ink}, title style={font=\small, text=ink},
+     legend style={font=\scriptsize, draw=none, fill=none},
+     grid=major, grid style={line width=0.2pt, draw=grid},
+     /pgf/number format/use comma, /pgf/number format/1000 sep={\,}},
+  pe clusters/.style={scatter, only marks, scatter src=explicit symbolic,
+     scatter/classes={
+       0={mark=*, cA, mark size=1.5pt},
+       1={mark=square*, cB, mark size=1.4pt},
+       2={mark=triangle*, cC, mark size=1.9pt},
+       3={mark=diamond*, cD, mark size=1.9pt},
+       4={mark=pentagon*, cE, mark size=1.8pt}}},
+  pe centroid/.style={only marks, mark=x, mark size=4pt, line width=1.6pt, ink},
+  pe line A/.style={cA, line width=1.2pt, no marks},
+  pe line B/.style={cB, line width=1.2pt, no marks},
+  pe line C/.style={cC, line width=1.2pt, no marks},
+  pe line D/.style={cD, line width=1.2pt, no marks},
+}
+\frenchspacing
+\endinput

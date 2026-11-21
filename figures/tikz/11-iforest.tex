@@ -1,0 +1,20 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\input{../data/11-iso-meta.tex}
+\begin{document}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=10mm},
+  pe axis, width=6.2cm, height=6.2cm, xmin=0, xmax=1, ymin=0, ymax=1, grid=none,
+  xtick=\empty, ytick=\empty, axis lines=box]
+\nextgroupplot[title={(a) kiugró pont: \isoAn{} vágás}]
+  \addplot[only marks, mark=*, mark size=1.0pt, cA!70] table {../data/11-iso-pts.dat};
+  \addplot[cB, line width=0.9pt, quiver={u=\thisrow{x1}-\thisrow{x0}, v=\thisrow{y1}-\thisrow{y0}}, -] table[x=x0, y=y0] {../data/11-iso-anom.dat};
+  \addplot[only marks, mark=*, mark size=2.6pt, cE] coordinates {(\isoAx,\isoAy)};
+\nextgroupplot[title={(b) normál pont: \isoNn{} vágás}]
+  \addplot[only marks, mark=*, mark size=1.0pt, cA!70] table {../data/11-iso-pts.dat};
+  \addplot[only marks, mark=*, mark size=1.0pt, cA!70] coordinates {(\isoAx,\isoAy)};
+  \addplot[cB, line width=0.7pt, quiver={u=\thisrow{x1}-\thisrow{x0}, v=\thisrow{y1}-\thisrow{y0}}, -] table[x=x0, y=y0] {../data/11-iso-norm.dat};
+  \addplot[only marks, mark=square*, mark size=2.4pt, cD] coordinates {(\isoNx,\isoNy)};
+\end{groupplot}
+\end{tikzpicture}
+\end{document}

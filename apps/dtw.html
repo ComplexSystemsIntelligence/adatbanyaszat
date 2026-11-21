@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dinamikus idővetemítés</title><link rel="stylesheet" href="common.css"><script src="common.js"></script></head><body>
+<header><h1>Dinamikus idővetemítés: illesztés, költségmátrix és Sakoe–Chiba-sáv</h1><p>Két jelalak euklideszi és DTW-távolsága az időbeli eltolás, a sebességkülönbség és a sávszélesség függvényében.</p></header>
+<main>
+<div class="controls">
+  <label>Időbeli eltolás <span class="val" id="sh-v"></span></label><input type="range" id="sh" min="-12" max="12" value="5">
+  <label>Sebességarány <span class="val" id="sp-v"></span></label><input type="range" id="sp" min="0.6" max="1.6" step="0.05" value="1">
+  <label>Zaj <span class="val" id="nz-v"></span></label><input type="range" id="nz" min="0" max="0.4" step="0.02" value="0.05">
+  <label>Sakoe–Chiba-sáv szélessége (w) <span class="val" id="w-v"></span></label><input type="range" id="w" min="0" max="40" value="40">
+  <div class="stat" id="st"></div>
+  <div class="note">A w = 0 sáv az euklideszi illesztést, a teljes szélesség a korlátozás nélküli DTW-t adja. A költségmátrix színe a kumulált költség, a vonal a vetemítési út.</div>
+</div>
+<div class="panel"><svg id="a" width="560" height="220" viewBox="0 0 560 220"></svg><svg id="m" width="330" height="330" viewBox="0 0 330 330"></svg></div>
+</main>
+<script>
+const SA = document.getElementById("a"), SM = document.getElementById("m"), L = 40;
+function series() { const r = PE.rng(5), sh = PE.v("sh"), sp = PE.v("sp"), nz = PE.v("nz"), base = t => Math.exp(-(((t - 15) / 4) ** 2)) * 2 - Math.exp(-(((t - 26) / 3) ** 2));
+  const a = Array.from({ length: L }, (_, t) => base(t) + nz * PE.normal(r)), b = Array.from({ length: L }, (_, t) => base((t - sh - 15) / sp + 15) + nz * PE.normal(r)); return [a, b]; }
+function dtw(a, b, w) { const n = a.length, D = Array.from({ length: n + 1 }, () => Array(n + 1).fill(Infinity)); D[0][0] = 0;
+  for (let i = 1; i <= n; i++) for (let j = Math.max(1, i - w); j <= Math.min(n, i + w); j++) D[i][j] = (a[i - 1] - b[j - 1]) ** 2 + Math.min(D[i - 1][j], D[i][j - 1], D[i - 1][j - 1]);
+  let i = n, j = n; const P = [[n, n]]; while (i > 1 || j > 1) { const c = [[i - 1, j - 1], [i - 1, j], [i, j - 1]].filter(([p, q]) => p >= 1 && q >= 1); [i, j] = c.reduce((m, x) => D[x[0]][x[1]] < D[m[0]][m[1]] ? x : m); P.push([i, j]); }
+  return { D, P: P.reverse(), d: Math.sqrt(D[n][n]) }; }
+function draw() { const [a, b] = series(), w = PE.v("w"), R = dtw(a, b, w); PE.clear(SA); PE.clear(SM);
+  const A = PE.axes(SA, [0, L - 1], [-2.5, 5], { xlab: "idő", ny: 3, dx: 0, dy: 0 });
+  R.P.forEach(([i, j]) => PE.el("line", { x1: A.x(i - 1), y1: A.y(a[i - 1] + 2.5), x2: A.x(j - 1), y2: A.y(b[j - 1]), stroke: PE.pal[3], "stroke-width": .8, "stroke-opacity": .7 }, SA));
+  PE.el("path", { d: PE.path(a.map((v, t) => [t, v + 2.5]), A.x, A.y), fill: "none", stroke: PE.pal[0], "stroke-width": 2 }, SA);
+  PE.el("path", { d: PE.path(b.map((v, t) => [t, v]), A.x, A.y), fill: "none", stroke: PE.pal[1], "stroke-width": 2 }, SA);
+  const cs = 300 / L, finite = R.D.flat().filter(Number.isFinite), mx = Math.log1p(Math.max(...finite));
+  for (let i = 1; i <= L; i++) for (let j = 1; j <= L; j++) { const v = R.D[i][j]; PE.el("rect", { x: 25 + (j - 1) * cs, y: 5 + (i - 1) * cs, width: cs + .3, height: cs + .3, fill: Number.isFinite(v) ? PE.heat(Math.log1p(v) / mx) : "#f3f4f6" }, SM); }
+  PE.el("path", { d: R.P.map(([i, j], k) => (k ? "L" : "M") + (25 + (j - .5) * cs) + "," + (5 + (i - .5) * cs)).join(""), fill: "none", stroke: PE.pal[1], "stroke-width": 2.2 }, SM);
+  const t1 = PE.el("text", { x: 175, y: 322, "text-anchor": "middle", style: "font-size:11px" }, SM); t1.textContent = "b (narancs) indexe";
+  const t2 = PE.el("text", { x: 12, y: 155, "text-anchor": "middle", style: "font-size:11px", transform: "rotate(-90 12 155)" }, SM); t2.textContent = "a (kék) indexe";
+  const eu = Math.sqrt(a.reduce((s, v, t) => s + (v - b[t]) ** 2, 0));
+  document.getElementById("st").innerHTML = `Euklideszi távolság: <b>${PE.fmt(eu, 3)}</b><br>DTW-távolság: <b>${PE.fmt(R.d, 3)}</b><br>A vetemítési út hossza: <b>${R.P.length}</b>`; }
+["sh", "sp", "nz", "w"].forEach(id => PE.bind(id, draw, v => id === "w" ? (v >= 40 ? "nincs korlát" : v) : PE.fmt(v, id === "sh" ? 0 : 2))); draw();
+</script></body></html>

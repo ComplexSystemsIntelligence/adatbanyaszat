@@ -1,0 +1,19 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[x=1cm, y=1cm]
+  \fill[cA!18] (0,0) rectangle (4.2,3.0); \draw[peblue, line width=0.8pt] (0,0) rectangle (4.2,3.0);
+  \node[font=\Large] at (2.1,1.5) {$\mathbf{X}$};
+  \node[pe/note] at (2.1,-0.35) {szavak ($n$)};
+  \node[pe/note, rotate=90] at (-0.35,1.5) {dokumentumok ($N$)};
+  \node[font=\Large] at (4.75,1.5) {$\approx$};
+  \fill[cB!22] (5.3,0) rectangle (6.3,3.0); \draw[cB, line width=0.8pt] (5.3,0) rectangle (6.3,3.0);
+  \node[font=\Large] at (5.8,1.5) {$\mathbf{W}$};
+  \node[pe/note] at (5.8,-0.35) {témák ($k$)};
+  \node[pe/note, text width=24mm, align=center] at (5.8,-1.05) {dokumentumok\\témasúlyai};
+  \fill[cD!22] (6.7,2.0) rectangle (10.9,3.0); \draw[cD, line width=0.8pt] (6.7,2.0) rectangle (10.9,3.0);
+  \node[font=\Large] at (8.8,2.5) {$\mathbf{H}$};
+  \node[pe/note] at (8.8,1.65) {témák szóeloszlása ($k\times n$)};
+  \node[font=\small, anchor=west] at (6.7,0.6) {$\min_{\mathbf{W}\ge 0,\,\mathbf{H}\ge 0}\lVert\mathbf{X}-\mathbf{W}\mathbf{H}\rVert_F^2$};
+\end{tikzpicture}
+\end{document}

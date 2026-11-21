@@ -1,0 +1,15 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[pe axis, width=12cm, height=4.8cm, xmin=-1, xmax=8.5, ymin=0, ymax=0.27,
+   xlabel={$x$}, ylabel={sűrűség}, ytick={0,0.1,0.2}, legend pos=north east]
+  \foreach \i in {0,...,5}{\addplot[cA!55, line width=0.8pt, dashed, forget plot] table[x=x, y=k\i] {../data/04-kde.dat};}
+  \addplot[cA!55, line width=0.8pt, dashed] coordinates {(-5,0)};
+  \addlegendentry{egyedi magfüggvények $\frac{1}{Nh}K\!\left(\frac{x-x_k}{h}\right)$}
+  \addplot[cB, line width=1.6pt] table[x=x, y=f] {../data/04-kde.dat};
+  \addlegendentry{magfüggvényes becslés $\hat f_h(x)$}
+  \addplot[only marks, mark=|, mark size=5pt, ink, line width=1.2pt] table[x=x, y=y] {../data/04-kde-pontok.dat};
+\end{axis}
+\end{tikzpicture}
+\end{document}

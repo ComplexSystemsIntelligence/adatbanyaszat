@@ -1,0 +1,25 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,
+  inp/.style={circle, draw=cA, line width=0.8pt, fill=cA!8, minimum size=8mm, inner sep=0pt, font=\small},
+  wl/.style={font=\scriptsize, text=ink, fill=white, inner sep=1pt}]
+  \foreach \i/\y/\t in {1/1.6/{x_1},2/0.55/{x_2},4/-1.6/{x_n}}{
+    \node[inp] (x\i) at (0,\y) {$\t$};}
+  \node[font=\large, text=muted] at (0,-0.45) {$\vdots$};
+  \node[inp, draw=muted, fill=grid] (one) at (0,-2.75) {$1$};
+  \node[pe/hub, minimum size=14mm, font=\Large] (s) at (3.4,0) {$\Sigma$};
+  \foreach \i/\w in {1/{w_1},2/{w_2},4/{w_n}}{
+    \draw[pe/thin] (x\i) -- node[wl, pos=0.45]{$\w$} (s);}
+  \draw[pe/thin, draw=muted] (one) -- node[wl, pos=0.45]{$b$} (s);
+  \node[pe/box, minimum width=15mm, minimum height=11mm, font=\normalsize] (phi) at (6.0,0) {$\varphi(z)$};
+  \draw[pe/flow] (s) -- node[above, font=\small]{$z$} (phi);
+  \node[inp, draw=cB, fill=cB!10] (y) at (8.3,0) {$a$};
+  \draw[pe/flow] (phi) -- (y);
+  \node[pe/note] at (0,2.45) {bemenetek};
+  \node[pe/note] at (3.4,-1.15) {súlyozott összeg};
+  \node[pe/note] at (6.0,-1.0) {aktivációs\\függvény};
+  \node[pe/note] at (8.3,-0.85) {kimenet};
+  \node[font=\small, text=ink] at (4.6,-2.75) {$a=\varphi\Bigl(\sum_{j=1}^{n}w_jx_j+b\Bigr)=\varphi(\mathbf{w}^{\top}\mathbf{x}+b)$};
+\end{tikzpicture}
+\end{document}

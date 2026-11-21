@@ -1,0 +1,22 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[node distance=6mm and 8mm,
+  st/.style={pe/step, text width=24mm, minimum height=10mm},
+  pr/.style={pe/stepfill, text width=24mm, minimum height=10mm}]
+  \node[pe/data, minimum width=20mm] (tr) {Tanító-\\adatok};
+  \node[st, right=of tr] (i1) {Imputáló\\\texttt{fit}};
+  \node[st, right=of i1] (s1) {Skálázó\\\texttt{fit}};
+  \node[st, right=of s1] (m1) {Modell\\\texttt{fit}};
+  \node[pe/data, minimum width=20mm, below=16mm of tr] (te) {Teszt-\\adatok};
+  \node[pr, below=16mm of i1] (i2) {Imputáló\\\texttt{transform}};
+  \node[pr, below=16mm of s1] (s2) {Skálázó\\\texttt{transform}};
+  \node[pr, below=16mm of m1] (m2) {Modell\\\texttt{predict}};
+  \node[pe/hub, minimum size=14mm, right=of m2, font=\small\bfseries] (out) {$\hat{y}$};
+  \foreach \a/\b in {tr/i1, i1/s1, s1/m1, te/i2, i2/s2, s2/m2, m2/out}{\draw[pe/flow] (\a) -- (\b);}
+  \foreach \a/\b/\t in {i1/i2/{medián}, s1/s2/{$\mu$, $\sigma$}, m1/m2/{$\hat{\boldsymbol\theta}$}}{
+    \draw[pe/back, draw=cB, solid] (\a) -- node[pe/note, right, text=cB]{\t} (\b);}
+  \node[draw=peblue, dashed, rounded corners, fit=(i1)(m2), inner sep=4pt,
+        label={[pe/note]above:\texttt{Pipeline}: a paramétereket csak a tanítóadatokból becsüljük}] {};
+\end{tikzpicture}
+\end{document}

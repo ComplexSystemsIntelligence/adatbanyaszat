@@ -1,0 +1,17 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[node distance=7mm]
+  \node[pe/data] (src) {Adat-\\források};
+  \node[pe/step, text width=20mm, right=of src] (sel) {Kiválasztás};
+  \node[pe/step, text width=20mm, right=of sel] (pre) {Előfeldol-\\gozás};
+  \node[pe/step, text width=20mm, right=of pre] (tr) {Transzfor-\\málás};
+  \node[pe/stepfill, text width=20mm, right=of tr] (dm) {\textbf{Adat-}\\\textbf{bányászat}};
+  \node[pe/step, text width=20mm, right=of dm] (ev) {Értelmezés,\\értékelés};
+  \node[pe/hub, minimum size=15mm, right=of ev, font=\small\bfseries] (kn) {Tudás};
+  \foreach \a/\b in {src/sel, sel/pre, pre/tr, tr/dm, dm/ev, ev/kn}{\draw[pe/flow] (\a) -- (\b);}
+  \foreach \n/\t in {sel/{célhoz illő\\adatkör}, pre/{tisztítás,\\hiányzó adatok}, tr/{jellemzők,\\redukció}, dm/{mintázatok,\\modellek}, ev/{validálás,\\vizualizáció}}{
+    \node[pe/note, below=2mm of \n] {\t};}
+  \draw[pe/back] (ev.north) -- ++(0,0.65) -| node[pe/note, pos=0.25, above]{visszalépés bármely korábbi lépésre} (sel.north);
+\end{tikzpicture}
+\end{document}

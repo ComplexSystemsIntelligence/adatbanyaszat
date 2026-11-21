@@ -1,0 +1,19 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[node distance=4mm and 6mm,
+  st/.style={pe/step, text width=27mm, minimum height=15mm, font=\scriptsize},
+  hd/.style={font=\scriptsize\bfseries, text=peblue}]
+  \node[pe/data, font=\scriptsize, minimum width=17mm] (raw) {szöveges\\dokumentumok};
+  \node[st, right=of raw] (tok) {\textbf{tokenizálás}\\mondatok, szavak,\\írásjelek};
+  \node[st, right=of tok] (norm) {\textbf{normalizálás}\\kisbetűsítés, szótövezés\\vagy lemmatizálás};
+  \node[st, right=of norm] (filt) {\textbf{szűrés}\\stopszavak, ritka és\\túl gyakori szavak};
+  \node[st, below=9mm of filt, fill=pelight, text width=31mm] (rep) {\textbf{reprezentáció}\\szózsák, TF-IDF,\\szó- és karakter-$n$-gram,\\beágyazás};
+  \node[st, left=of rep, fill=pelight] (mod) {\textbf{modellezés}\\osztályozás, klaszterezés,\\témamodell, kinyerés};
+  \node[st, left=of mod] (eval) {\textbf{értékelés és}\\\textbf{értelmezés}\\szakértői ellenőrzés};
+  \node[pe/note, above=1.5mm of norm, text width=44mm] {magyarban a gazdag toldalékolás miatt különösen fontos};
+  \draw[pe/flow] (raw) -- (tok); \draw[pe/flow] (tok) -- (norm); \draw[pe/flow] (norm) -- (filt);
+  \draw[pe/flow] (filt) -- (rep); \draw[pe/flow] (rep) -- (mod); \draw[pe/flow] (mod) -- (eval);
+  \draw[pe/back] (eval.west) -| ++(-5mm,0) |- (raw.south) node[pos=0.25, left, pe/note]{iteráció};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,20 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[scale=1.25]
+  % sík (az X oszlopai által kifeszített altér)
+  \fill[pelight] (-0.6,-0.5) -- (4.6,-0.5) -- (5.8,1.6) -- (0.6,1.6) -- cycle;
+  \draw[peblue!50] (-0.6,-0.5) -- (4.6,-0.5) -- (5.8,1.6) -- (0.6,1.6) -- cycle;
+  \node[pe/note, text=peblue, anchor=west] at (4.0,-0.3) {$\mathrm{span}(\mathbf{X})$};
+  \coordinate (O) at (0.3,0.2);
+  \coordinate (Y) at (3.0,3.4);
+  \coordinate (H) at (3.0,0.9);
+  \draw[-{Stealth[length=3mm]}, line width=1.1pt, cA] (O) -- (1.9,0.25) node[below, font=\small]{$\mathbf{x}_1$};
+  \draw[-{Stealth[length=3mm]}, line width=1.1pt, cA] (O) -- (1.3,1.35) node[left, font=\small]{$\mathbf{x}_2$};
+  \draw[-{Stealth[length=3mm]}, line width=1.4pt, ink] (O) -- (Y) node[above, font=\small]{$\mathbf{y}$};
+  \draw[-{Stealth[length=3mm]}, line width=1.4pt, cB] (O) -- (H) node[below right, font=\small, text=cB]{$\hat{\mathbf{y}} = \mathbf{X}\hat{\boldsymbol\theta} = \mathbf{H}\mathbf{y}$};
+  \draw[line width=1.1pt, cE, dashed] (H) -- (Y) node[midway, right, font=\small, text=cE]{$\mathbf{e} = \mathbf{y}-\hat{\mathbf{y}}$};
+  \draw[muted] ($(H)+(0,0.28)$) -- ++(0.25,0.05) -- ++(0,-0.28);
+  \node[pe/note, align=left, anchor=west] at (5.2,2.9) {a maradékvektor merőleges\\az altérre: $\mathbf{X}^\top\mathbf{e} = \mathbf{0}$};
+\end{tikzpicture}
+\end{document}

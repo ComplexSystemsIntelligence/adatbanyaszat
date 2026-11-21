@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A k-átlag algoritmus lépésről lépésre</title><link rel="stylesheet" href="common.css"><script src="common.js"></script></head><body>
+<header><h1>A k-átlag algoritmus lépésről lépésre</h1><p>Hozzárendelés és középpont-frissítés váltakozása; kattintással új pont adható az adatokhoz.</p></header>
+<main>
+<div class="controls">
+  <label>Klaszterek száma (k) <span class="val" id="k-v"></span></label><input type="range" id="k" min="2" max="5" value="3">
+  <label>Valódi csoportok szórása <span class="val" id="sd-v"></span></label><input type="range" id="sd" min="0.3" max="1.6" step="0.1" value="0.6">
+  <label>Kezdőpontok választása</label><select id="init"><option value="pp">k-means++</option><option value="rand">véletlen adatpontok</option></select>
+  <button id="gen">Új adatok</button><button id="ini" class="sec">Új kezdőpontok</button><br>
+  <button id="step">Egy lépés</button><button id="run">Futtatás konvergenciáig</button>
+  <div class="stat" id="st"></div>
+  <div class="note">Egy lépés = minden pont a legközelebbi középponthoz kerül, majd a középpontok a hozzájuk tartozó pontok átlagába lépnek. A belső négyzetösszeg (SSE) minden lépésben csökken vagy változatlan marad, de a végeredmény függ a kezdőpontoktól.</div>
+</div>
+<div class="panel"><svg id="s" width="560" height="420" viewBox="0 0 560 420"></svg></div>
+</main>
+<script>
+const svg = document.getElementById("s"); let X = [], C = [], lab = [], it = 0, seed = 7;
+function gen() { const r = PE.rng(seed++), sd = PE.v("sd"), cen = [[-2, -1.5], [2, -1], [0, 2.2], [-2.5, 2.5], [2.8, 2.6]];
+  X = []; for (let i = 0; i < 180; i++) { const c = cen[i % 4]; X.push([c[0] + sd * PE.normal(r), c[1] + sd * PE.normal(r)]); } init(); }
+function d2(a, b) { return (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2; }
+function init() { const r = PE.rng(seed++), k = PE.v("k"); C = [];
+  if (document.getElementById("init").value === "rand") { while (C.length < k) C.push([...X[Math.floor(r() * X.length)]]); }
+  else { C.push([...X[Math.floor(r() * X.length)]]);
+    while (C.length < k) { const D = X.map(p => Math.min(...C.map(c => d2(p, c)))), s = D.reduce((a, b) => a + b, 0); let u = r() * s, j = 0;
+      while ((u -= D[j]) > 0 && j < X.length - 1) j++; C.push([...X[j]]); } }
+  lab = X.map(() => -1); it = 0; draw(); }
+function assign() { lab = X.map(p => { let b = 0; C.forEach((c, j) => { if (d2(p, c) < d2(p, C[b])) b = j; }); return b; }); }
+function update() { let moved = 0; C = C.map((c, j) => { const P = X.filter((_, i) => lab[i] === j); if (!P.length) return c;
+  const m = [P.reduce((a, p) => a + p[0], 0) / P.length, P.reduce((a, p) => a + p[1], 0) / P.length]; moved += d2(m, c); return m; }); return moved; }
+function step() { assign(); const mv = update(); it++; draw(); return mv; }
+function sse() { return X.reduce((a, p, i) => a + (lab[i] >= 0 ? d2(p, C[lab[i]]) : 0), 0); }
+function draw() { PE.clear(svg); const A = PE.axes(svg, [-5, 5], [-4, 5], { xlab: "x₁", ylab: "x₂" });
+  X.forEach((p, i) => PE.el("circle", { cx: A.x(p[0]), cy: A.y(p[1]), r: 3.5, fill: lab[i] < 0 ? "#9aa5b1" : PE.pal[lab[i]], "fill-opacity": .8 }, svg));
+  C.forEach((c, j) => { const g = PE.el("g", {}, svg); PE.el("path", { d: `M${A.x(c[0]) - 7},${A.y(c[1]) - 7}L${A.x(c[0]) + 7},${A.y(c[1]) + 7}M${A.x(c[0]) - 7},${A.y(c[1]) + 7}L${A.x(c[0]) + 7},${A.y(c[1]) - 7}`, stroke: "#fff", "stroke-width": 6 }, g);
+    PE.el("path", { d: `M${A.x(c[0]) - 7},${A.y(c[1]) - 7}L${A.x(c[0]) + 7},${A.y(c[1]) + 7}M${A.x(c[0]) - 7},${A.y(c[1]) + 7}L${A.x(c[0]) + 7},${A.y(c[1]) - 7}`, stroke: PE.pal[j], "stroke-width": 3 }, g); });
+  document.getElementById("st").innerHTML = `Iteráció: <b>${it}</b><br>SSE: <b>${lab[0] < 0 ? "–" : PE.fmt(sse(), 1)}</b>`;
+  svg.onclick = ev => { const b = svg.getBoundingClientRect(), sx = 560 / b.width; X.push([A.x.inv((ev.clientX - b.left) * sx), A.y.inv((ev.clientY - b.top) * sx)]); lab.push(-1); draw(); }; }
+PE.bind("k", init); PE.bind("sd", gen, v => PE.fmt(v, 1));
+document.getElementById("init").onchange = init; document.getElementById("gen").onclick = gen; document.getElementById("ini").onclick = init;
+document.getElementById("step").onclick = step;
+document.getElementById("run").onclick = () => { let n = 0; const go = () => { const mv = step(); if (mv > 1e-9 && ++n < 50) setTimeout(go, 250); }; go(); };
+gen();
+</script></body></html>

@@ -1,0 +1,19 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[
+  tbl/.style={rectangle split, rectangle split parts=2, draw=peblue, line width=0.8pt,
+     rounded corners=2pt, font=\scriptsize, align=left, text width=30mm,
+     rectangle split part fill={pelight,white}},
+  fact/.style={tbl, draw=cB, line width=1.1pt, rectangle split part fill={cB!15,white}, text width=34mm}]
+  \node[fact] (f) at (0,0) {\textbf{\small tény\_ertekesites}
+     \nodepart{two} datum\_kulcs (FK)\\ termek\_kulcs (FK)\\ vevo\_kulcs (FK)\\ regio\_kulcs (FK)\\ szamla (degenerált dim.)\\[2pt]
+     \textit{mennyiseg}\\ \textit{arbevetel}\\ \textit{tetelszam}};
+  \node[tbl] (d) at (-5,2.3) {\textbf{\small dim\_datum}\nodepart{two} datum\_kulcs (PK)\\ datum\\ nap, hét, hónap\\ negyedév, év\\ hétvége?, akció?};
+  \node[tbl] (t) at (5,2.3) {\textbf{\small dim\_termek}\nodepart{two} termek\_kulcs (PK)\\ cikkszám, megnevezés\\ alkategória\\ kategória\\ listaár};
+  \node[tbl] (v) at (-5,-2.3) {\textbf{\small dim\_vevo}\nodepart{two} vevo\_kulcs (PK)\\ vevőazonosító\\ regisztráció\\ vevőtípus\\ érvényes\_tól/ig (SCD2)};
+  \node[tbl] (r) at (5,-2.3) {\textbf{\small dim\_regio}\nodepart{two} regio\_kulcs (PK)\\ régió\\ ország};
+  \foreach \x in {d,t,v,r}{\draw[pe/thin, draw=peblue] (\x) -- (f);}
+  \node[pe/note, text width=40mm, align=center] at (0,-3.6) {tény: mérhető esemény (számlatétel)\\ dimenzió: a tény leíró környezete};
+\end{tikzpicture}
+\end{document}

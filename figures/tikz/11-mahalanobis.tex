@@ -1,0 +1,18 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[pe axis, width=8.2cm, height=8.2cm, xmin=-4.4, xmax=4.4, ymin=-4.4, ymax=4.4,
+  axis equal image, xlabel={$z_1$ (standardizált)}, ylabel={$z_2$ (standardizált)}, grid=none]
+  \addplot[only marks, mark=*, mark size=1.1pt, cA!60] table {../data/11-maha.dat};
+  \draw[muted, line width=0.9pt, dashed] (axis cs:0,0) circle[radius=3];
+  \draw[peblue, line width=1.1pt, rotate around={45:(axis cs:0,0)}] (axis cs:0,0) ellipse[x radius=4.08, y radius=1.16];
+  \addplot[only marks, mark=*, mark size=2.6pt, cE] coordinates {(1.6,-1.6)};
+  \addplot[only marks, mark=square*, mark size=2.4pt, cD] coordinates {(2.6,2.4)};
+  \node[font=\small, text=cE, anchor=west] at (axis cs:1.75,-1.75) {$A$};
+  \node[font=\small, text=cD, anchor=west] at (axis cs:2.8,2.3) {$B$};
+  \node[pe/note, text=muted, anchor=north east] at (axis cs:-2.3,-2.6) {euklideszi\\távolság $=3$};
+  \node[pe/note, text=peblue, anchor=south east] at (axis cs:-1.0,2.6) {Mahalanobis-\\távolság $=3$};
+\end{axis}
+\end{tikzpicture}
+\end{document}

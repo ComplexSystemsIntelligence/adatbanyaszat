@@ -1,0 +1,15 @@
+{
+  "title": "Adatbányászat – a hatékonyság eszköze. Elmélet és gyakorlat Pythonban (2., teljesen átdolgozott kiadás)",
+  "upload_type": "publication",
+  "publication_type": "book",
+  "description": "Nyílt hozzáférésű egyetemi tankönyv az adatbányászat módszereiről: adattárházak, adatelőkészítés, feltáró elemzés, csoportosítás, asszociációs szabályok, modellértékelés, regresszió, osztályozás, neurális hálózatok, anomália-észlelés, idősorok, szövegbányászat, ügyfélanalitika és ipari folyamatanalitika, Python-példákkal, interaktív alkalmazásokkal és Colab-jegyzetfüzetekkel.",
+  "creators": [
+    {"name": "Abonyi, János", "affiliation": "Pannon Egyetem"}
+  ],
+  "language": "hun",
+  "license": "CC-BY-4.0",
+  "keywords": ["adatbányászat", "gépi tanulás", "Python", "tankönyv", "data mining", "machine learning", "process analytics"],
+  "related_identifiers": [
+    {"identifier": "https://complexsystemsintelligence.github.io/adatbanyaszat/", "relation": "isSupplementTo", "scheme": "url"}
+  ]
+}

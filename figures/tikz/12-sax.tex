@@ -1,0 +1,25 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\input{../data/12-sax-meta.tex}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[pe axis, width=13cm, height=5.4cm, xmin=0, xmax=72, ymin=-2.3, ymax=2.5,
+  xlabel={idő [óra]}, ylabel={$z$-normalizált érték}, grid=none, xtick={0,12,...,72},
+  ytick={-0.6745,0,0.6745}, yticklabels={$-0{,}67$,$0$,$0{,}67$}]
+  \fill[cA!5] (axis cs:0,-2.3) rectangle (axis cs:72,-0.6745);
+  \fill[cB!7] (axis cs:0,0) rectangle (axis cs:72,0.6745);
+  \draw[muted, dashed, line width=0.5pt] (axis cs:0,-0.6745) -- (axis cs:72,-0.6745);
+  \draw[muted, dashed, line width=0.5pt] (axis cs:0,0) -- (axis cs:72,0);
+  \draw[muted, dashed, line width=0.5pt] (axis cs:0,0.6745) -- (axis cs:72,0.6745);
+  \addplot[cA!55, line width=0.8pt] table[x=t, y=x] {../data/12-sax-x.dat};
+  \addplot[cB, line width=1.8pt, quiver={u=\thisrow{t1}-\thisrow{t0}, v=0}, -] table[x=t0, y=paa] {../data/12-sax-paa.dat};
+  \addplot[only marks, mark=none, nodes near coords, point meta=explicit symbolic,
+    nodes near coords style={font=\small\bfseries, text=cE, anchor=south}] table[x expr=\thisrow{t0}+3, y expr=\thisrow{paa}+0.12, meta=s] {../data/12-sax-paa.dat};
+  \node[font=\scriptsize, text=muted, anchor=west] at (axis cs:72.5,-1.5) {a};
+  \node[font=\scriptsize, text=muted, anchor=west] at (axis cs:72.5,-0.33) {b};
+  \node[font=\scriptsize, text=muted, anchor=west] at (axis cs:72.5,0.33) {c};
+  \node[font=\scriptsize, text=muted, anchor=west] at (axis cs:72.5,1.5) {d};
+\end{axis}
+\node[font=\small, text=ink, anchor=north west] at (0.2,-0.9) {SAX-szó: \texttt{\saxword}};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,21 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=3 by 1, horizontal sep=12mm},
+  pe axis, width=5.4cm, height=4.4cm, xmin=-4, xmax=4, domain=-4:4, samples=161,
+  xlabel={$z$}, axis lines=middle, xlabel style={at={(ticklabel* cs:1.0)}, anchor=west},
+  legend style={at={(0.03,0.97)}, anchor=north west}]
+\nextgroupplot[title={szigmoid: $\sigma(z)=1/(1+e^{-z})$}, ymin=-0.1, ymax=1.1]
+  \addplot[pe line A] {1/(1+exp(-x))}; \addlegendentry{$\varphi$}
+  \addplot[cB, line width=1.1pt, dashed] {exp(-x)/(1+exp(-x))^2}; \addlegendentry{$\varphi'$}
+\nextgroupplot[title={$\tanh(z)$}, ymin=-1.15, ymax=1.15]
+  \addplot[pe line A] {tanh(x)};
+  \addplot[cB, line width=1.1pt, dashed] {1-tanh(x)^2};
+\nextgroupplot[title={ReLU: $\max(0,z)$}, ymin=-0.4, ymax=4.1]
+  \addplot[pe line A, domain=-4:4, samples=3] coordinates {(-4,0) (0,0) (4,4)};
+  \addplot[cB, line width=1.1pt, dashed, samples=2, domain=-4:0] {0};
+  \addplot[cB, line width=1.1pt, dashed, samples=2, domain=0:4] {1};
+\end{groupplot}
+\end{tikzpicture}
+\end{document}

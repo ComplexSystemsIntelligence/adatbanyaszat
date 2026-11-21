@@ -1,0 +1,29 @@
+# pe.mplstyle – a Pannon tankönyvsorozat matplotlib-stílusa (a TikZ-ábrákkal összhangban)
+font.family:        sans-serif
+font.sans-serif:    IBM Plex Sans, DejaVu Sans, Arial
+font.size:          10
+axes.titlesize:     11
+axes.labelsize:     10
+axes.edgecolor:     6B7785
+axes.labelcolor:    1F2933
+axes.linewidth:     0.6
+axes.spines.top:    False
+axes.spines.right:  False
+axes.grid:          True
+axes.axisbelow:     True
+axes.prop_cycle:    cycler('color', ['2E6DB4', 'C8711E', '7A4EAB', '1F9077', 'B23A48', '6B7785'])
+grid.color:         E6EAEE
+grid.linewidth:     0.5
+xtick.color:        6B7785
+ytick.color:        6B7785
+xtick.labelsize:    9
+ytick.labelsize:    9
+legend.frameon:     False
+legend.fontsize:    9
+lines.linewidth:    1.6
+lines.markersize:   5
+figure.figsize:     6.4, 3.8
+figure.dpi:         110
+savefig.dpi:        200
+savefig.bbox:       tight
+axes.formatter.use_locale: False

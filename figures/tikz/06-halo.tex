@@ -1,0 +1,32 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[x=1.0cm, y=1.55cm,
+  it/.style={rectangle, rounded corners=2pt, draw=peblue, line width=0.7pt, fill=white, font=\scriptsize, align=center, minimum width=17mm, minimum height=7mm, inner sep=1pt},
+  freq/.style={it, fill=cA!18},
+  infreq/.style={it, draw=cE, fill=cE!8},
+  pruned/.style={it, draw=muted!60, fill=grid, text=muted, dashed}]
+  \node[it] (e) at (0,4) {$\emptyset$};
+  \node[freq] (K) at (-4.5,3) {kávé\\5};
+  \node[freq] (T) at (-1.5,3) {tej\\5};
+  \node[freq] (C) at (1.5,3) {cukor\\4};
+  \node[freq] (S) at (4.5,3) {keksz\\4};
+  \node[freq] (KT) at (-6.25,2) {kávé, tej\\4};
+  \node[freq] (KC) at (-3.75,2) {kávé, cukor\\3};
+  \node[freq] (KS) at (-1.25,2) {kávé, keksz\\3};
+  \node[infreq] (TC) at (1.25,2) {tej, cukor\\2};
+  \node[freq] (TS) at (3.75,2) {tej, keksz\\3};
+  \node[infreq] (CS) at (6.25,2) {cukor, keksz\\2};
+  \node[pruned] (KTC) at (-4.5,1) {kávé, tej, cukor};
+  \node[infreq] (KTS) at (-1.5,1) {kávé, tej, keksz\\2};
+  \node[pruned] (KCS) at (1.5,1) {kávé, cukor, keksz};
+  \node[pruned] (TCS) at (4.5,1) {tej, cukor, keksz};
+  \node[pruned] (all) at (0,0) {kávé, tej, cukor, keksz};
+  \foreach \a/\b in {e/K,e/T,e/C,e/S,K/KT,K/KC,K/KS,T/KT,T/TC,T/TS,C/KC,C/TC,C/CS,S/KS,S/TS,S/CS,
+     KT/KTC,KT/KTS,KC/KTC,KC/KCS,KS/KTS,KS/KCS,TC/KTC,TC/TCS,TS/KTS,TS/TCS,CS/KCS,CS/TCS,KTC/all,KTS/all,KCS/all,TCS/all}{
+     \draw[muted!60, line width=0.4pt] (\a) -- (\b);}
+  \node[freq, minimum width=10mm] (l1) at (-6.6,-0.8) {};\node[pe/note, anchor=west] at (l1.east) {gyakori ($\sigma\ge 3$)};
+  \node[infreq, minimum width=10mm] (l2) at (-3.0,-0.8) {};\node[pe/note, anchor=west] at (l2.east) {jelölt, de ritka};
+  \node[pruned, minimum width=10mm] (l3) at (0.4,-0.8) {};\node[pe/note, anchor=west, align=left] at (l3.east) {nem lesz jelölt: van ritka részhalmaza\\(Apriori-elv, nem kell megszámolni)};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,22 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[
+  ph/.style={pe/stepfill, text width=27mm, minimum height=11mm, font=\small\bfseries},
+  an/.style={pe/box, draw=cB, text width=36mm, font=\scriptsize, align=left, fill=cB!6}]
+  \node[ph] (m) at (0,2.4) {megszerzés};
+  \node[ph] (f) at (4.6,0) {fejlesztés};
+  \node[ph] (t) at (0,-2.4) {megtartás};
+  \node[ph, fill=white] (v) at (-4.6,0) {visszanyerés};
+  \draw[pe/flow] (m) to[bend left=22] (f);
+  \draw[pe/flow] (f) to[bend left=22] (t);
+  \draw[pe/flow] (t) to[bend left=22] node[pe/note, below left=-2pt]{lemorzsolódás} (v);
+  \draw[pe/back] (v) to[bend left=22] (m);
+  \node[pe/hub, minimum size=21mm, font=\scriptsize\bfseries] (clv) at (0,0) {ügyfélérték\\(CLV)};
+  \foreach \n in {m,f,t}{\draw[muted, line width=0.5pt, dashed] (clv) -- (\n);}
+  \node[an, anchor=west] at (2.0,2.6) {célcsoport-kiválasztás, hasonló\\vevők keresése, első vásárlás\\előrejelzése};
+  \node[an, anchor=west] at (6.6,0) {RFM, szegmentálás, kosárelemzés,\\ajánlórendszer (kereszt- és\\felülértékesítés)};
+  \node[an, anchor=west] at (2.0,-2.6) {lemorzsolódás-előrejelzés,\\uplift-modell, kampányhatás\\(A/B teszt)};
+  \node[an, anchor=east] at (-6.6,0) {visszanyerési kampány,\\kilépési okok elemzése\\(szövegbányászat)};
+\end{tikzpicture}
+\end{document}

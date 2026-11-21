@@ -1,0 +1,21 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}
+  % hexagonális rács
+  \foreach \r in {0,...,5}{\foreach \c in {0,...,6}{
+     \pgfmathsetmacro{\xx}{\c*0.9+mod(\r,2)*0.45}\pgfmathsetmacro{\yy}{\r*0.78}
+     \pgfmathsetmacro{\dd}{sqrt((\xx-2.7)^2+(\yy-1.56)^2)}
+     \pgfmathsetmacro{\hh}{100*exp(-\dd*\dd/1.6)}
+     \node[regular polygon, regular polygon sides=6, minimum size=10mm, draw=white, line width=0.8pt,
+           fill=cB!\hh!pelight, inner sep=0] at (\xx,\yy) {};}}
+  \node[circle, fill=cB, inner sep=2.5pt] (bmu) at (2.7,1.56) {};
+  \node[pe/label, text=cB] at (2.7,4.55) {legjobban illeszkedő neuron (BMU)};
+  \draw[pe/thin, draw=cB] (2.7,4.35) -- (bmu);
+  \node[pe/note, text width=45mm] at (2.9,-0.75) {a szomszédsági függvény $h_{cj}(t)$\\(sötétebb: nagyobb frissítés)};
+  % bemeneti vektor
+  \node[pe/box, text width=22mm] (x) at (9.1,1.95) {bemeneti vektor\\$\mathbf{x}_k\in\mathbb{R}^n$};
+  \draw[pe/flow] (x.west) -- (bmu);
+  \node[pe/note, text width=46mm, align=left] at (9.6,0.2) {$\mathbf{w}_j \leftarrow \mathbf{w}_j + \alpha(t)\,h_{cj}(t)\,(\mathbf{x}_k-\mathbf{w}_j)$};
+\end{tikzpicture}
+\end{document}

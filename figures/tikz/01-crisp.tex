@@ -1,0 +1,31 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}
+  \node[pe/hub] (D) at (0,0) {Adatok};
+  \def\R{3.55}
+  \foreach \ang/\nm/\txt/\ch in {
+      90/BU/{Üzleti cél megértése}/{1., 14., 15. fejezet},
+      30/DU/{Adatok\\megismerése}/{2., 4. fejezet},
+     -30/DP/{Adatelőkészítés}/{3. fejezet},
+     -90/MO/{Modellezés}/{5--13. fejezet},
+    -150/EV/{Kiértékelés}/{7. fejezet},
+     150/DE/{Bevezetés}/{14., 15. fejezet}}{
+    \node[pe/step, text width=29mm] (\nm) at (\ang:\R) {\txt\\[-1pt]{\scriptsize\color{muted}\ch}};
+  }
+  \foreach \nm in {BU,DU,DP,MO,EV,DE}{\draw[line width=0.4pt, draw=peblue!30] (D) -- (\nm);}
+  \draw[pe/flow] (BU.east) to[bend left=25] (DU.north);
+  \draw[pe/back] (DU.north west) to[bend right=12] (BU.south east);
+  \draw[pe/flow] (DU.south) to[bend left=22] (DP.north);
+  \draw[pe/flow] (DP.south) to[bend left=25] (MO.east);
+  \draw[pe/back] (MO.north east) to[bend right=12] (DP.south west);
+  \draw[pe/flow] (MO.west) to[bend left=25] (EV.south);
+  \draw[pe/flow] (EV.north) to[bend left=22] (DE.south);
+  \draw[pe/flow] (DE.north) to[bend left=25] (BU.west);
+  \draw[pe/back] (EV.north east) .. controls (-1.75,0.2) and (-1.6,1.6) .. node[pe/note, pos=0.42, left=1pt]{új iteráció} (BU.south west);
+  \node[pe/step, fill=pelight, text width=30mm] (MON) at (-7.0,-0.2)
+     {Monitorozás és karbantartás\\[-1pt]{\scriptsize\color{muted}CRISP-ML(Q)}};
+  \draw[pe/flow] (DE.west) -| ($(MON.north)+(0.8,0)$);
+  \draw[pe/back] ($(MON.north)+(-0.6,0)$) |- node[pe/note, pos=0.75, above]{modellromlás, adatsodródás} (BU.west);
+\end{tikzpicture}
+\end{document}

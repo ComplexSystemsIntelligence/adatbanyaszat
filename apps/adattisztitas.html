@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Adattisztítás: Hampel-szűrő és hiánypótlás</title><link rel="stylesheet" href="common.css"><script src="common.js"></script></head><body>
+<header><h1>Adattisztítás: Hampel-szűrő és hiánypótlás</h1><p>Kiugró értékek jelzése mozgó medián és MAD alapján, majd a hiányzó és kiszűrt értékek pótlása.</p></header>
+<main>
+<div class="controls">
+  <label>Ablak fél-szélessége <span class="val" id="w-v"></span></label><input type="range" id="w" min="1" max="15" value="4">
+  <label>Küszöb (k · MAD) <span class="val" id="k-v"></span></label><input type="range" id="k" min="1" max="8" step="0.5" value="3">
+  <label>Kiugró értékek aránya <span class="val" id="po-v"></span></label><input type="range" id="po" min="0" max="0.1" step="0.005" value="0.03">
+  <label>Hiányzó szakaszok száma <span class="val" id="nm-v"></span></label><input type="range" id="nm" min="0" max="8" value="3">
+  <label>Pótlás módja</label><select id="imp"><option value="lin">lineáris interpoláció</option><option value="ffill">előző érték továbbvitele</option><option value="med">mozgó medián</option></select>
+  <div class="stat" id="st"></div>
+  <div class="note">Kis küszöb sok téves jelzést ad (a valódi ingadozást is kiugrónak látja), nagy küszöb elszalasztja a kisebb kiugrókat. A szürke sávok a hiányzó szakaszok.</div>
+</div>
+<div class="panel"><svg id="s" width="560" height="380" viewBox="0 0 560 380"></svg></div>
+</main>
+<script>
+const svg = document.getElementById("s"), N = 300;
+function sim() { const r = PE.rng(12), po = PE.v("po"), nm = PE.v("nm"); const x = [], truth = [], spike = [];
+  for (let t = 0; t < N; t++) { const v = 86 + 1.5 * Math.sin(t / 25) + 0.6 * Math.sin(t / 7) + 0.25 * PE.normal(r); truth.push(v); const s = r() < po; spike.push(s); x.push(s ? v + (r() < .5 ? -1 : 1) * (3 + 6 * r()) : v); }
+  const miss = Array(N).fill(false); for (let k = 0; k < nm; k++) { const a = Math.floor(r() * (N - 20)), L = 3 + Math.floor(r() * 12); for (let t = a; t < a + L; t++) miss[t] = true; }
+  return { x: x.map((v, t) => miss[t] ? null : v), truth, spike, miss }; }
+const med = a => { const b = a.filter(v => v !== null).sort((p, q) => p - q), n = b.length; return n ? (n % 2 ? b[(n - 1) / 2] : (b[n / 2 - 1] + b[n / 2]) / 2) : null; };
+function draw() { const D = sim(), w = PE.v("w"), k = PE.v("k"), flag = Array(N).fill(false), mm = Array(N).fill(null), sc = Array(N).fill(null);
+  for (let t = 0; t < N; t++) { if (D.x[t] === null) continue; const win = D.x.slice(Math.max(0, t - w), t + w + 1), m = med(win), mad = med(win.filter(v => v !== null).map(v => Math.abs(v - m)));
+    mm[t] = m; sc[t] = Math.max(1.4826 * mad, 0.05); flag[t] = Math.abs(D.x[t] - m) > k * sc[t]; }
+  const clean = D.x.map((v, t) => flag[t] ? null : v), mode = document.getElementById("imp").value, fill = [...clean];
+  for (let t = 0; t < N; t++) if (fill[t] === null) { if (mode === "ffill") { let s = t - 1; while (s >= 0 && clean[s] === null) s--; fill[t] = s >= 0 ? clean[s] : null; }
+    else if (mode === "med") fill[t] = med(clean.slice(Math.max(0, t - 6), t + 7)); else { let a = t - 1, b = t + 1; while (a >= 0 && clean[a] === null) a--; while (b < N && clean[b] === null) b++;
+      fill[t] = a < 0 ? clean[b] : b >= N ? clean[a] : clean[a] + (clean[b] - clean[a]) * (t - a) / (b - a); } }
+  PE.clear(svg); const A = PE.axes(svg, [0, N], [78, 95], { xlab: "minta", ylab: "hőmérséklet [°C]", dx: 0, dy: 0, nx: 6 });
+  D.miss.forEach((m, t) => { if (m) PE.el("rect", { x: A.x(t - .5), y: A.y(95), width: A.x(1) - A.x(0), height: A.y(78) - A.y(95), fill: "#6B7785", "fill-opacity": .15 }, svg); });
+  PE.el("path", { d: PE.path(fill.map((v, t) => [t, v ?? 86]), A.x, A.y), fill: "none", stroke: PE.pal[0], "stroke-width": 1.6 }, svg);
+  D.x.forEach((v, t) => { if (v !== null) PE.el("circle", { cx: A.x(t), cy: A.y(Math.max(78, Math.min(95, v))), r: flag[t] ? 4 : 1.8, fill: flag[t] ? PE.pal[4] : "#7f8b97" }, svg); });
+  const tp = flag.filter((f, t) => f && D.spike[t]).length, fp = flag.filter((f, t) => f && !D.spike[t]).length, ns = D.spike.filter((s, t) => s && D.x[t] !== null).length;
+  const err = Math.sqrt(fill.reduce((s, v, t) => s + (D.x[t] === null || flag[t] ? (v - D.truth[t]) ** 2 : 0), 0) / Math.max(1, fill.filter((_, t) => D.x[t] === null || flag[t]).length));
+  document.getElementById("st").innerHTML = `Jelzett pontok: <b>${tp + fp}</b> (valódi kiugró: ${tp} / ${ns}, téves: ${fp})<br>A pótolt értékek RMSE-je a valódi jelhez képest: <b>${PE.fmt(err, 3)}</b> °C`; }
+["w", "k", "po", "nm"].forEach(id => PE.bind(id, draw, v => id === "po" ? PE.fmt(100 * v, 1) + "%" : PE.fmt(v, id === "k" ? 1 : 0))); document.getElementById("imp").onchange = draw; draw();
+</script></body></html>

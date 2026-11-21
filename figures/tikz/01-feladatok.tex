@@ -1,0 +1,25 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[
+  lvl1/.style={pe/stepfill, text width=38mm, font=\small\bfseries},
+  lvl2/.style={pe/step, text width=23mm, minimum height=8mm, font=\small},
+  ex/.style={pe/note, text width=25mm, align=center}]
+  \node[pe/hub, minimum size=20mm] (root) at (0,0) {Adatbányászati\\feladatok};
+  \node[lvl1] (sup) at (-7.0,-2.3) {Felügyelt tanulás\\{\normalfont\scriptsize ismert célváltozó}};
+  \node[lvl1] (uns) at (0,-2.3) {Felügyelet nélküli\\{\normalfont\scriptsize nincs célváltozó}};
+  \node[lvl1] (spec) at (7.0,-2.3) {Speciális adatok\\{\normalfont\scriptsize szerkezet, sorrend}};
+  \foreach \n in {sup,uns,spec}{\draw[pe/flow] (root) -- (\n);}
+  \foreach \n/\x/\t in {cls/-8.4/Osztályozás, reg/-5.6/Regresszió, clu/-2.8/Csoportosítás,
+                       ass/0/Asszociáció, ano/2.8/{Anomália-\\észlelés}, ts/5.6/Idősorok, txt/8.4/Szövegek}{
+    \node[lvl2] (\n) at (\x,-4.4) {\t};}
+  \foreach \a/\b in {sup/cls, sup/reg, uns/clu, uns/ass, uns/ano, spec/ts, spec/txt}{\draw[pe/thin] (\a.south) -- (\b.north);}
+  \node[ex, below=1.5mm of cls] {Lemorzsolódik-e a vevő? Megfelelő-e a tétel?};
+  \node[ex, below=1.5mm of reg] {Mennyi lesz a termék\-koncentráció?};
+  \node[ex, below=1.5mm of clu] {Milyen vevőcsoportok, üzemállapotok vannak?};
+  \node[ex, below=1.5mm of ass] {Mit vesznek együtt? Mely riasztások járnak együtt?};
+  \node[ex, below=1.5mm of ano] {Csalásgyanús rendelés, folyamathiba};
+  \node[ex, below=1.5mm of ts] {Mennyi lesz a jövő heti forgalom?};
+  \node[ex, below=1.5mm of txt] {Mit írnak a vevők a termékekről?};
+\end{tikzpicture}
+\end{document}

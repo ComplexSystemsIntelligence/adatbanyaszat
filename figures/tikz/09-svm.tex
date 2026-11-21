@@ -1,0 +1,23 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[scale=0.9,
+  ppos/.style={circle, fill=cA, inner sep=1.9pt}, neg/.style={rectangle, fill=cB, inner sep=2.1pt},
+  sv/.style={draw=ink, line width=1.1pt, circle, inner sep=3.4pt}]
+  % w = (1,1)/sqrt2 irány; hipersík x+y=4, margók x+y=3 és x+y=5
+  \fill[pelight] (0,3) -- (3,0) -- (5,0) -- (0,5) -- cycle;
+  \draw[peblue, line width=1.4pt] (-0.3,4.3) -- (4.3,-0.3);
+  \draw[peblue, dashed] (-0.3,3.3) -- (3.3,-0.3);
+  \draw[peblue, dashed] (-0.3,5.3) -- (5.3,-0.3);
+  \foreach \p in {(0.6,0.8),(1.2,0.4),(0.3,1.8),(1.6,1.4),(0.4,2.2),(2.1,0.5),(1.0,2.0)}{\node[neg] at \p {};}
+  \foreach \p in {(3.4,2.6),(4.2,1.8),(2.6,3.4),(3.8,3.6),(4.6,2.9),(2.9,4.4),(2.6,2.4)}{\node[ppos] at \p {};}
+  \node[sv] at (1.0,2.0) {}; \node[sv] at (2.6,2.4) {}; \node[sv] at (1.6,1.4) {};
+  \draw[{Stealth[length=2mm]}-{Stealth[length=2mm]}, ink] (1.5,1.5) -- (2.5,2.5) node[midway, above left, font=\scriptsize]{$2/\lVert\mathbf{w}\rVert$};
+
+  \draw[-{Stealth[length=2.5mm]}, line width=1pt, cE] (3.0,1.0) -- (3.6,1.6) node[right, font=\small, text=cE]{$\mathbf{w}$};
+  \node[font=\small, text=peblue, rotate=-45] at (4.3,0.5) {$\mathbf{w}^\top\mathbf{x}+b=0$};
+  \node[pe/note, rotate=-45] at (4.9,1.0) {$+1$};
+  \node[pe/note, rotate=-45] at (3.5,-0.1) {$-1$};
+  \node[pe/note, align=left, anchor=west] at (5.6,3.6) {bekarikázva: támaszvektorok\\(csak ezek határozzák meg\\a döntési határt)};
+\end{tikzpicture}
+\end{document}

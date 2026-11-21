@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lágy szenzor: bemenetek, modell és laboreredmények</title><link rel="stylesheet" href="common.css"><script src="common.js"></script></head><body>
+<header><h1>Lágy szenzor: bemenetek, modell és laboreredmények</h1><p>A termékkoncentráció becslése a mért hőmérsékletből és betáplálásból – mi történik szenzor-drift esetén?</p></header>
+<main>
+<div class="controls">
+  <label>Modell</label><select id="mod"><option value="gb">szürkedobozos (Arrhenius-kinetika)</option><option value="lin">lineáris regresszió</option></select>
+  <label>Laborminta-vételezés [óra] <span class="val" id="ls-v"></span></label><input type="range" id="ls" min="2" max="12" value="4">
+  <label>A szenzor-drift kezdete [óra] <span class="val" id="d0-v"></span></label><input type="range" id="d0" min="24" max="160" value="96">
+  <label>A drift sebessége [°C/nap] <span class="val" id="dr-v"></span></label><input type="range" id="dr" min="0" max="2" step="0.1" value="0.8">
+  <label>Hőmérséklet-alapjel [°C] <span class="val" id="sp-v"></span></label><input type="range" id="sp" min="80" max="92" step="0.5" value="86">
+  <div class="stat" id="st"></div>
+  <div class="note">A drift után a szabályozó a hibás mérést tartja az alapjelen, így a valódi hőmérséklet, és vele a konverzió csökken. A lágy szenzor a mért hőmérsékletből számol, ezért becslése eltávolodik a laboreredményektől: a maradék a műszerhiba jelzője.</div>
+</div>
+<div class="panel"><svg id="s" width="560" height="300" viewBox="0 0 560 300"></svg><svg id="r" width="560" height="150" viewBox="0 0 560 150"></svg></div>
+</main>
+<script>
+const S = document.getElementById("s"), Rr = document.getElementById("r"), EA = 60000, K0 = 1.7e9, V = 10;
+const conv = (T, F) => { const k = K0 * Math.exp(-EA / (8.314 * (T + 273.15))), tau = V / F; return k * tau / (1 + k * tau); };
+function sim() { const r = PE.rng(4), sp = PE.v("sp"), d0 = PE.v("d0"), dr = PE.v("dr"), out = [];
+  for (let t = 0; t <= 192; t += 1 / 6) { const drift = t > d0 ? dr * (t - d0) / 24 : 0, F = 10 + 1.2 * Math.sin(t / 9) + 0.2 * PE.normal(r), cin = 2.1 + 0.05 * Math.sin(t / 30) + 0.02 * PE.normal(r);
+    const Ttrue = sp - drift + 0.3 * PE.normal(r), Tmeas = Ttrue + drift + 0.15 * PE.normal(r); out.push({ t, F, cin, Tmeas, c: cin * conv(Ttrue, F) + 0.01 * PE.normal(r) }); } return out; }
+function draw() { const D = sim(), ls = PE.v("ls"), mod = document.getElementById("mod").value, lab = D.filter((_, i) => i % (ls * 6) === 0);
+  // a lineáris modell illesztése a drift előtti laborértékekre
+  const tr = lab.filter(p => p.t < PE.v("d0")), Xm = tr.map(p => [1, p.Tmeas, p.F, p.cin]), y = tr.map(p => p.c), XtX = [0, 1, 2, 3].map(i => [0, 1, 2, 3].map(j => Xm.reduce((s, r) => s + r[i] * r[j], 0) + (i === j ? 1e-6 : 0))), Xty = [0, 1, 2, 3].map(i => Xm.reduce((s, r, k) => s + r[i] * y[k], 0));
+  const M = XtX.map((r, i) => [...r, Xty[i]]); for (let i = 0; i < 4; i++) { let p = i; for (let k = i + 1; k < 4; k++) if (Math.abs(M[k][i]) > Math.abs(M[p][i])) p = k; [M[i], M[p]] = [M[p], M[i]]; for (let k = 0; k < 4; k++) if (k !== i) { const c = M[k][i] / M[i][i]; for (let j = i; j < 5; j++) M[k][j] -= c * M[i][j]; } }
+  const w = M.map((r, i) => r[4] / r[i]), est = p => mod === "gb" ? p.cin * conv(p.Tmeas, p.F) : w[0] + w[1] * p.Tmeas + w[2] * p.F + w[3] * p.cin;
+  PE.clear(S); PE.clear(Rr); const ys = D.map(p => p.c), lo = Math.min(...ys) - .05, hi = Math.max(...ys) + .05;
+  const A = PE.axes(S, [0, 192], [lo, hi], { xlab: "idő [óra]", ylab: "termékkoncentráció", dx: 0, dy: 2, nx: 8 });
+  PE.el("rect", { x: A.x(PE.v("d0")), y: A.y(hi), width: A.x(192) - A.x(PE.v("d0")), height: A.y(lo) - A.y(hi), fill: "#6B7785", "fill-opacity": .1 }, S);
+  PE.el("path", { d: PE.path(D.map(p => [p.t, p.c]), A.x, A.y), fill: "none", stroke: "#c9d2db", "stroke-width": 1 }, S);
+  PE.el("path", { d: PE.path(D.map(p => [p.t, est(p)]), A.x, A.y), fill: "none", stroke: PE.pal[0], "stroke-width": 1.6 }, S);
+  lab.forEach(p => PE.el("circle", { cx: A.x(p.t), cy: A.y(p.c), r: 4, fill: PE.pal[1], stroke: "#fff" }, S));
+  const res = lab.map(p => [p.t, p.c - est(p)]), rm = Math.max(0.05, ...res.map(q => Math.abs(q[1])));
+  const B = PE.axes(Rr, [0, 192], [-rm, rm], { xlab: "idő [óra]", ylab: "maradék", dx: 0, dy: 2, nx: 8, ny: 2, margin: { b: 28, t: 6 } });
+  PE.el("line", { x1: B.x(0), x2: B.x(192), y1: B.y(0), y2: B.y(0), stroke: PE.muted }, Rr);
+  res.forEach(q => PE.el("circle", { cx: B.x(q[0]), cy: B.y(q[1]), r: 3.5, fill: PE.pal[1] }, Rr));
+  const mae = (a) => a.length ? a.reduce((s, q) => s + Math.abs(q[1]), 0) / a.length : 0, d0 = PE.v("d0");
+  document.getElementById("st").innerHTML = `Átlagos abszolút hiba a drift előtt: <b>${PE.fmt(mae(res.filter(q => q[0] < d0)), 4)}</b><br>a drift alatt: <b>${PE.fmt(mae(res.filter(q => q[0] >= d0)), 4)}</b><br><span style="color:#6B7785">szürke vonal: valódi érték · kék: lágy szenzor · narancs: labor</span>`; }
+document.getElementById("mod").onchange = draw; ["ls", "d0", "dr", "sp"].forEach(id => PE.bind(id, draw, v => PE.fmt(v, id === "dr" || id === "sp" ? 1 : 0))); draw();
+</script></body></html>

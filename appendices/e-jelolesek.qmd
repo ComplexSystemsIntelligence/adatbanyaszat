@@ -1,0 +1,81 @@
+# Jelölések {#sec-app-jelolesek}
+
+A könyv a gépi tanulási szakirodalom elterjedt jelöléseit követi [@hastie2009; @bishop2006].
+Ahol egy jelölésnek a fejezet szövegkörnyezetében más jelentése van (például $T$ egyszerre
+jelöli a hőmérsékletet, az idősor hosszát és a kezelési változót), azt a fejezet külön
+jelzi.
+
+## Általános jelölések {.unnumbered}
+
+| Jelölés | Jelentés |
+|---|---|
+| $x$, $\mathbf{x}$, $\mathbf{X}$ | skalár, (oszlop)vektor, mátrix |
+| $\mathbf{x}^\top$, $\mathbf{X}^\top$ | transzponált |
+| $\mathbf{I}$ | egységmátrix |
+| $\mathbf{X}\in\mathbb{R}^{N\times n}$ | adatmátrix: $N$ objektum (sor), $n$ jellemző (oszlop) |
+| $\mathbf{x}_k$ | a $k$-adik objektum jellemzővektora (az $\mathbf{X}$ $k$-adik sora, oszlopvektorként) |
+| $x_{kj}$ | a $k$-adik objektum $j$-edik jellemzője |
+| $y_k$, $\mathbf{y}$ | a $k$-adik objektum célváltozója; a célváltozók vektora |
+| $\hat y$, $\hat{\boldsymbol\theta}$ | előrejelzés, illetve becsült paraméter |
+| $C$, $c$ | az osztályok száma, egy osztály |
+| $K$ | a klaszterek (komponensek, témák) száma |
+| $\lVert\mathbf{x}\rVert_p$ | $\ell_p$-norma; index nélkül az euklideszi ($\ell_2$) norma |
+| $d(\mathbf{x}, \mathbf{y})$ | távolság |
+| $\mathbf{x}^\top\mathbf{y}$ | skaláris szorzat |
+| $\odot$ | elemenkénti (Hadamard-) szorzat |
+| $\operatorname{tr}(\mathbf{A})$, $\det(\mathbf{A})$, $\operatorname{rank}(\mathbf{A})$ | nyom, determináns, rang |
+| $\nabla f$, $\partial f/\partial x$ | gradiens, parciális derivált |
+| $\arg\min$, $\arg\max$ | a minimumot, illetve maximumot adó argumentum |
+| $\mathbb{1}[\cdot]$, $\delta_{x>0}$ | indikátorfüggvény (1, ha a feltétel teljesül, egyébként 0) |
+| $\ln$, $\log_2$ | természetes, illetve kettes alapú logaritmus |
+
+## Valószínűség és statisztika {.unnumbered}
+
+| Jelölés | Jelentés |
+|---|---|
+| $P(A)$, $P(A\mid B)$ | valószínűség, feltételes valószínűség |
+| $p(\mathbf{x})$ | sűrűségfüggvény |
+| $E[X]$, $\operatorname{Var}(X)$, $\operatorname{Cov}(X, Y)$ | várható érték, variancia, kovariancia |
+| $\boldsymbol\mu$, $\boldsymbol\Sigma$ | várhatóérték-vektor, kovarianciamátrix |
+| $\bar x$, $s$, $\mathbf{S}$ | mintaátlag, korrigált tapasztalati szórás, tapasztalati kovarianciamátrix |
+| $\mathcal{N}(\mu, \sigma^2)$ | normális eloszlás |
+| $\sigma(z) = 1/(1 + e^{-z})$ | szigmoid (logisztikus) függvény |
+| $\ell(\boldsymbol\theta)$ | log-likelihood |
+| $\chi^2_n$, $F(n_1, n_2)$ | khi-négyzet és $F$-eloszlás |
+
+## Modellek és tanulás {.unnumbered}
+
+| Jelölés | Jelentés |
+|---|---|
+| $\mathbf{w}$, $b$ | súlyvektor, eltolás (lineáris modellek, neuronok) |
+| $J(\boldsymbol\theta)$ | célfüggvény (veszteség és regularizáció) |
+| $L(y, \hat y)$, $\ell$ | veszteségfüggvény |
+| $\lambda$, $\alpha$ | regularizációs paraméter (a `scikit-learn`-ben `alpha`, illetve `C = 1/λ`) |
+| $\eta$ | tanulási ráta |
+| $\mathbf{W}^{(l)}$, $\mathbf{h}^{(l)}$, $\boldsymbol\delta^{(l)}$ | a neurális hálózat $l$-edik rétegének súlymátrixa, kimenete, hibajele |
+| $\varphi$ | aktivációs függvény |
+| $\mathbf{P}$, $\mathbf{t}$, $\lambda_a$ | főkomponens-irányok mátrixa, főkomponens-értékek, sajátértékek |
+| $T^2$, $Q$ | Hotelling-féle statisztika, négyzetes előrejelzési hiba (PCA-alapú felügyelet) |
+| $u_{ik}$, $m$ | fuzzy tagsági érték és fuzzy kitevő (FCM) |
+| $\sigma(X)$, $s(X\Rightarrow Y)$, $c(X\Rightarrow Y)$ | támogatottság (darabszám és arány), bizonyosság (asszociációs szabályok) |
+| $H$, $G$, $IG$ | entrópia, Gini-index, információnyereség |
+| $\tau(\mathbf{x})$ | egyéni (feltételes) kezelési hatás, uplift |
+
+## Idősorok {.unnumbered}
+
+| Jelölés | Jelentés |
+|---|---|
+| $y_t$, $T$ | az idősor $t$-edik értéke, az idősor hossza |
+| $T_t$, $S_t$, $R_t$ | trend-, szezonális és maradékkomponens |
+| $m$ | szezonális periódus |
+| $B$, $\nabla$ | késleltető operátor ($By_t = y_{t-1}$), differenciaoperátor |
+| $r_k$ | $k$ késleltetésű autokorreláció |
+| $\hat y_{T+h\mid T}$ | a $T$ időpontban készített $h$ lépéses előrejelzés |
+| $D(i, j)$ | a DTW kumulált költségmátrixa |
+
+## Mértékegységek és számírás {.unnumbered}
+
+A szövegben a magyar helyesírásnak megfelelően tizedesvesszőt és ezres tagolásra szóközt
+használunk (2 176; 0,95), a programkódban és a kimenetekben – a Python szabályai szerint –
+tizedespontot. A pénzösszegek forintban, a hőmérsékletek Celsius-fokban, az áramok
+m³/h-ban, a koncentrációk mol/L-ben értendők.

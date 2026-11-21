@@ -1,0 +1,30 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[x={(1cm,0cm)}, y={(0.55cm,0.38cm)}, z={(0cm,1cm)}, line join=round]
+  % főkomponens-sík
+  \fill[pelight] (-3.2,-2.2,0) -- (3.2,-2.2,0) -- (3.2,2.2,0) -- (-3.2,2.2,0) -- cycle;
+  \draw[peblue, line width=0.7pt] (-3.2,-2.2,0) -- (3.2,-2.2,0) -- (3.2,2.2,0) -- (-3.2,2.2,0) -- cycle;
+  \draw[-{Stealth[length=2mm]}, peblue, line width=0.9pt] (0,0,0) -- (3.0,0,0) node[right, font=\scriptsize]{$\mathbf{p}_1$};
+  \draw[-{Stealth[length=2mm]}, peblue, line width=0.9pt] (0,0,0) -- (0,2.0,0) node[above right, font=\scriptsize]{$\mathbf{p}_2$};
+  % normál működés határa a síkban (T^2-ellipszis)
+  \draw[cD, line width=1.0pt, domain=0:360, samples=73, smooth, variable=\t] plot ({2.4*cos(\t)},{1.3*sin(\t)},0);
+  % adatfelhő
+  \foreach \x/\y/\z in {-1.8/0.3/0.1,-1.2/-0.4/-0.08,-0.6/0.5/0.06,0.2/-0.6/0.1,0.8/0.2/-0.1,1.4/0.6/0.05,
+     -0.9/-0.9/0.04,0.5/0.9/-0.06,1.9/-0.3/0.08,-1.5/0.9/-0.05,0.0/0.1/0.12,-0.3/-0.2/-0.1,1.1/-0.8/0.07}{
+    \fill[cA] (\x,\y,\z) circle[radius=1.4pt];}
+  % új pont: nagy Q
+  \coordinate (xq) at (-1.3,0.6,1.7); \coordinate (pq) at (-1.3,0.6,0);
+  \draw[cE, line width=1.0pt, dashed] (xq) -- (pq);
+  \fill[cE] (xq) circle[radius=2.4pt]; \fill[cE!50] (pq) circle[radius=1.8pt];
+  \node[font=\scriptsize, text=cE, anchor=east] at (-1.4,0.6,0.95) {$Q=\lVert\mathbf{x}_1-\hat{\mathbf{x}}_1\rVert^2$ nagy};
+  \node[font=\scriptsize, text=cE, anchor=south] at (xq) {$\mathbf{x}_1$};
+  % új pont: nagy T^2
+  \coordinate (xt) at (3.0,-1.5,0.08);
+  \fill[cB] (xt) circle[radius=2.4pt];
+  \draw[cB, line width=0.8pt, dotted] (0,0,0) -- (xt);
+  \node[font=\scriptsize, text=cB, anchor=north west] at (xt) {$\mathbf{x}_2$: $T^2$ nagy};
+  \node[pe/note, anchor=west, align=left] at (3.6,1.8,0) {főkomponens-modell\\(a normál működés altere)};
+  \node[pe/note, text=cD, anchor=north] at (-1.2,-2.4,0) {a $T^2$ ellenőrzési határa};
+\end{tikzpicture}
+\end{document}

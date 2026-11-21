@@ -1,0 +1,26 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[
+  pt/.style={rectangle, rounded corners=3pt, draw=peblue, line width=0.9pt, fill=pelight, text=peblue,
+     font=\scriptsize\bfseries, text width=26mm, align=center, minimum height=8mm},
+  ch/.style={rectangle, rounded corners=2pt, draw=peblue, line width=0.6pt, fill=white, text=ink,
+     font=\scriptsize, text width=26mm, align=left, inner sep=3pt}]
+  \node[pt] (p1) at (0,0) {I. Alapok};
+  \node[pt] (p2) at (3.2,0) {II. Mintázatok\\felügyelet nélkül};
+  \node[pt] (p3) at (6.4,0) {III. Prediktív\\modellezés};
+  \node[pt] (p4) at (9.6,0) {IV. Speciális\\adattípusok};
+  \node[pt] (p5) at (12.8,0) {V. Alkalmazások};
+  \node[ch, anchor=north] at (0,-0.65) {1. Bevezetés, folyamat\\2. Adattárházak\\3. Adatelőkészítés\\4. Feltáró elemzés};
+  \node[ch, anchor=north] at (3.2,-0.65) {5. Csoportosítás\\6. Asszociációs\\\phantom{6. }szabályok};
+  \node[ch, anchor=north] at (6.4,-0.65) {7. Modellértékelés\\8. Regresszió\\9. Osztályozás\\10. Neurális hálózatok\\11. Anomáliák};
+  \node[ch, anchor=north] at (9.6,-0.65) {12. Idősorok\\13. Szövegbányászat};
+  \node[ch, anchor=north] at (12.8,-0.65) {14. Ügyfélanalitika\\15. Folyamatanalitika};
+  \foreach \a/\b in {p1/p2,p2/p3,p3/p4,p4/p5}{\draw[pe/flow] (\a) -- (\b);}
+  \draw[line width=4pt, cB!45, line cap=round] (-1.2,-3.55) -- (13.9,-3.55);
+  \node[font=\scriptsize\bfseries, text=cB, anchor=west] at (-1.3,-3.95) {üzleti szál: PannonShop webáruház (tranzakciók, vevők, vélemények)};
+  \draw[line width=4pt, cD!45, line cap=round] (-1.2,-4.45) -- (13.9,-4.45);
+  \node[font=\scriptsize\bfseries, text=cD, anchor=west] at (-1.3,-4.85) {mérnöki szál: Pannon üzem (folyamatmérések, labor, riasztások, műszaknapló)};
+  \node[pe/note, anchor=west] at (-1.3,-5.45) {függelékek: Python-alapok · lineáris algebra · valószínűség és statisztika · adatsorok · jelölések · szójegyzék};
+\end{tikzpicture}
+\end{document}

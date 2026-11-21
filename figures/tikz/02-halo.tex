@@ -1,0 +1,17 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[cub/.style={pe/step, text width=22mm, minimum height=7mm, font=\scriptsize}, x=1cm, y=1.35cm]
+  \node[cub, fill=pelight] (all) at (0,3) {\textbf{összes} (0-D)};
+  \node[cub] (i) at (-3.2,2) {idő};
+  \node[cub] (t) at (0,2) {termék};
+  \node[cub] (r) at (3.2,2) {régió};
+  \node[cub] (it) at (-3.2,1) {idő, termék};
+  \node[cub] (ir) at (0,1) {idő, régió};
+  \node[cub] (tr) at (3.2,1) {termék, régió};
+  \node[cub, fill=cB!15, draw=cB] (itr) at (0,0) {\textbf{idő, termék, régió}\\(alapkuboid, 3-D)};
+  \foreach \a/\b in {all/i, all/t, all/r, i/it, i/ir, t/it, t/tr, r/ir, r/tr, it/itr, ir/itr, tr/itr}{\draw[pe/thin, draw=muted] (\a) -- (\b);}
+  \draw[pe/flow] (5.4,0) -- node[pe/note, right, align=left]{összesítés\\(roll-up)} (5.4,3);
+  \draw[pe/flow] (-5.4,3) -- node[pe/note, left, align=right]{lefúrás\\(drill-down)} (-5.4,0);
+\end{tikzpicture}
+\end{document}

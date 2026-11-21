@@ -1,0 +1,21 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[v/.style={pe/node, minimum size=9mm, font=\small}, ar/.style={pe/flow}]
+  \foreach \i/\name/\title/\desc in {0/mcar/MCAR/{a hiányzás független\\az adatoktól},
+                                     1/mar/MAR/{a hiányzás a megfigyelt\\$X$-től függ},
+                                     2/mnar/MNAR/{a hiányzás magától\\a hiányzó $Y$-tól függ}}{
+    \begin{scope}[xshift=\i*5.2cm]
+      \node[v] (X\i) at (0,1.4) {$X$};
+      \node[v] (Y\i) at (2.4,1.4) {$Y$};
+      \node[v, fill=pelight] (R\i) at (1.2,0) {$R$};
+      \draw[pe/thin, draw=muted] (X\i) -- (Y\i);
+      \node[font=\small\bfseries, text=peblue] at (1.2,2.4) {\title};
+      \node[pe/note, text width=40mm] at (1.2,-1.1) {\desc};
+    \end{scope}}
+  \draw[ar] (X1) -- (R1);
+  \draw[ar] (Y2) -- (R2);
+  \draw[ar, draw=muted, dashed] (X2) -- (R2);
+  \node[pe/note, text width=150mm, align=center] at (6.4,-2.0) {$X$: mindig megfigyelt változó,\enspace $Y$: hiányos változó,\enspace $R$: a hiányzás jelzője ($R=1$, ha $Y$ hiányzik)};
+\end{tikzpicture}
+\end{document}

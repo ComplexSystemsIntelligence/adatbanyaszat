@@ -1,0 +1,33 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[x={(1cm,0cm)}, y={(0cm,1cm)}, z={(0.55cm,0.45cm)}, scale=0.62]
+  % fő kocka 4x3x3
+  \def\cube#1#2#3#4{% x y z fill
+    \fill[#4!50] (#1,#2,#3) -- ++(1,0,0) -- ++(0,1,0) -- ++(-1,0,0) -- cycle;
+    \fill[#4!28] (#1,#2+1,#3) -- ++(1,0,0) -- ++(0,0,1) -- ++(-1,0,0) -- cycle;
+    \fill[#4!72] (#1+1,#2,#3) -- ++(0,0,1) -- ++(0,1,0) -- ++(0,0,-1) -- cycle;
+    \draw[white, line width=0.6pt] (#1,#2,#3) -- ++(1,0,0) -- ++(0,1,0) -- ++(-1,0,0) -- cycle;
+    \draw[white, line width=0.6pt] (#1,#2+1,#3) -- ++(1,0,0) -- ++(0,0,1) -- ++(-1,0,0) -- cycle;
+    \draw[white, line width=0.6pt] (#1+1,#2,#3) -- ++(0,0,1) -- ++(0,1,0) -- ++(0,0,-1) -- cycle;}
+  \begin{scope}
+  \foreach \z in {2,1,0}{\foreach \y in {0,1,2}{\foreach \x in {0,1,2,3}{
+      \ifnum\y=2 \cube{\x}{\y}{\z}{cB} \else \cube{\x}{\y}{\z}{cA}\fi }}}
+  \node[pe/label, anchor=north] at (2,-0.3,0) {idő (negyedév)};
+  \node[pe/label, anchor=east, align=right] at (-0.2,1.5,0) {termék-\\kategória};
+  \node[pe/label, anchor=west] at (4.3,0.2,2.0) {régió};
+  \node[pe/label, font=\small\bfseries, text=peblue] at (2,4.9,0) {(a) adatkocka és egy szelet (slice)};
+  \end{scope}
+  % roll-up
+  \begin{scope}[xshift=9.2cm]
+  \foreach \z in {0}{\foreach \y in {0,1,2}{\foreach \x in {0,1}{\cube{\x}{\y}{\z}{cA}}}}
+  \node[pe/label, anchor=north] at (1,-0.3,0) {idő (év)};
+  \node[pe/label, font=\small\bfseries, text=peblue, align=center] at (1,4.9,0) {(b) összesítés (roll-up):\\negyedév $\to$ év, régiók összege};
+  \end{scope}
+  % dice
+  \begin{scope}[xshift=15.0cm]
+  \foreach \z in {0,1}{\foreach \y in {1,2}{\foreach \x in {2,3}{\cube{\x}{\y}{\z}{cD}}}}
+  \node[pe/label, font=\small\bfseries, text=peblue, align=center] at (3,4.9,0) {(c) kockázás (dice):\\részkocka kiválasztása};
+  \end{scope}
+\end{tikzpicture}
+\end{document}

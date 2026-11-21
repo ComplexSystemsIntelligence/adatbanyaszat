@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Döntési fa építése: vágások, entrópia, Gini-index</title><link rel="stylesheet" href="common.css"><script src="common.js"></script></head><body>
+<header><h1>Döntési fa építése: vágások, entrópia, Gini-index</h1><p>Válasszon vágást kézzel, vagy hagyja, hogy az algoritmus a legnagyobb nyereségű vágásokat keresse meg.</p></header>
+<main>
+<div class="controls">
+  <label>Az első vágás változója</label><select id="var"><option value="0">x₁ (függőleges vágás)</option><option value="1">x₂ (vízszintes vágás)</option></select>
+  <label>Az első vágás küszöbe <span class="val" id="thr-v"></span></label><input type="range" id="thr" min="0" max="10" step="0.05" value="5">
+  <label>Szennyezettségi mérték</label><select id="imp"><option value="H">entrópia</option><option value="G">Gini-index</option></select>
+  <label>Automatikus fa mélysége <span class="val" id="dep-v"></span></label><input type="range" id="dep" min="0" max="5" value="0">
+  <button id="best">A legjobb első vágás</button><button id="gen" class="sec">Új adatok</button>
+  <div class="stat" id="st"></div>
+  <div class="note">0 mélységnél a kézzel választott első vágás látszik a két gyermek-csomópont osztályarányaival. Nagyobb mélységnél a fa mohó, rekurzív felosztással nő – figyelje meg, mikor kezd a fa a zajra illeszkedni!</div>
+</div>
+<div class="panel"><svg id="s" width="520" height="440" viewBox="0 0 520 440"></svg></div>
+</main>
+<script>
+const svg = document.getElementById("s"); let D = [], seed = 5;
+function gen() { const r = PE.rng(seed++); D = [];
+  for (let i = 0; i < 160; i++) { const x = [10 * r(), 10 * r()]; let y = (x[0] > 4 && x[1] < 6.5) || (x[0] > 7.5) ? 1 : 0; if (r() < 0.1) y = 1 - y; D.push([...x, y]); } draw(); }
+const imp = (n0, n1) => { const n = n0 + n1; if (!n) return 0; const p = [n0 / n, n1 / n];
+  return document.getElementById("imp").value === "H" ? -p.reduce((s, q) => s + (q > 0 ? q * Math.log2(q) : 0), 0) : 1 - p[0] ** 2 - p[1] ** 2; };
+const cnt = S => [S.filter(d => d[2] === 0).length, S.filter(d => d[2] === 1).length];
+function gain(S, v, t) { const L = S.filter(d => d[v] <= t), R = S.filter(d => d[v] > t); if (!L.length || !R.length) return -1;
+  const [a, b] = cnt(S), [la, lb] = cnt(L), [ra, rb] = cnt(R); return imp(a, b) - L.length / S.length * imp(la, lb) - R.length / S.length * imp(ra, rb); }
+function bestSplit(S) { let best = { g: 1e-9 }; for (const v of [0, 1]) { const xs = [...new Set(S.map(d => d[v]))].sort((a, b) => a - b);
+  for (let i = 1; i < xs.length; i++) { const t = (xs[i - 1] + xs[i]) / 2, g = gain(S, v, t); if (g > best.g) best = { v, t, g }; } } return best.v === undefined ? null : best; }
+function grow(S, box, depth, out) { const [a, b] = cnt(S), sp = depth > 0 && a && b ? bestSplit(S) : null;
+  if (!sp) { out.push({ box, cls: a >= b ? 0 : 1, n: S.length }); return; }
+  const [x0, x1, y0, y1] = box; if (sp.v === 0) { grow(S.filter(d => d[0] <= sp.t), [x0, sp.t, y0, y1], depth - 1, out); grow(S.filter(d => d[0] > sp.t), [sp.t, x1, y0, y1], depth - 1, out); }
+  else { grow(S.filter(d => d[1] <= sp.t), [x0, x1, y0, sp.t], depth - 1, out); grow(S.filter(d => d[1] > sp.t), [x0, x1, sp.t, y1], depth - 1, out); } }
+function draw() { PE.clear(svg); const A = PE.axes(svg, [0, 10], [0, 10], { xlab: "x₁", ylab: "x₂", dx: 0, dy: 0 }); const dep = PE.v("dep"); let txt = "";
+  if (dep > 0) { const leaves = []; grow(D, [0, 10, 0, 10], dep, leaves);
+    leaves.forEach(l => PE.el("rect", { x: A.x(l.box[0]), y: A.y(l.box[3]), width: A.x(l.box[1]) - A.x(l.box[0]), height: A.y(l.box[2]) - A.y(l.box[3]), fill: l.cls ? "#F6E3CF" : "#DCE7F3", stroke: "#fff", "stroke-width": 1.5 }, svg));
+    const acc = D.filter(d => leaves.some(l => d[0] >= l.box[0] && d[0] <= l.box[1] && d[1] >= l.box[2] && d[1] <= l.box[3] && l.cls === d[2])).length / D.length;
+    txt = `Levelek száma: <b>${leaves.length}</b><br>Tanítási pontosság: <b>${PE.fmt(100 * acc, 1)}%</b>`; }
+  else { const v = PE.v("var"), t = PE.v("thr"), L = D.filter(d => d[v] <= t), R = D.filter(d => d[v] > t), [a, b] = cnt(D), [la, lb] = cnt(L), [ra, rb] = cnt(R);
+    if (v == 0) PE.el("line", { x1: A.x(t), x2: A.x(t), y1: A.y(0), y2: A.y(10), stroke: PE.ink, "stroke-width": 2 }, svg);
+    else PE.el("line", { x1: A.x(0), x2: A.x(10), y1: A.y(t), y2: A.y(t), stroke: PE.ink, "stroke-width": 2 }, svg);
+    const g = gain(D, v, t); txt = `Szülő: ${a} kék / ${b} narancs, szennyezettség <b>${PE.fmt(imp(a, b), 3)}</b><br>Bal/alsó: ${la} / ${lb}, <b>${PE.fmt(imp(la, lb), 3)}</b><br>Jobb/felső: ${ra} / ${rb}, <b>${PE.fmt(imp(ra, rb), 3)}</b><br>Nyereség: <b>${g < 0 ? "–" : PE.fmt(g, 3)}</b>`; }
+  D.forEach(d => PE.el(d[2] ? "rect" : "circle", d[2] ? { x: A.x(d[0]) - 3.5, y: A.y(d[1]) - 3.5, width: 7, height: 7, fill: PE.pal[1], stroke: "#fff" } : { cx: A.x(d[0]), cy: A.y(d[1]), r: 4, fill: PE.pal[0], stroke: "#fff" }, svg));
+  document.getElementById("st").innerHTML = txt; }
+PE.bind("thr", draw, v => PE.fmt(v)); PE.bind("dep", draw); document.getElementById("var").onchange = draw; document.getElementById("imp").onchange = draw;
+document.getElementById("gen").onclick = gen;
+document.getElementById("best").onclick = () => { const b = bestSplit(D); document.getElementById("var").value = b.v; const e = document.getElementById("thr"); e.value = b.t; document.getElementById("dep").value = 0; document.getElementById("dep-v").textContent = 0; e.dispatchEvent(new Event("input")); };
+gen();
+</script></body></html>

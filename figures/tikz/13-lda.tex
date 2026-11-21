@@ -1,0 +1,25 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[x=1cm, y=1cm,
+  rv/.style={circle, draw=peblue, line width=0.9pt, fill=white, minimum size=10mm, inner sep=0pt, font=\small},
+  obs/.style={rv, fill=pelight},
+  hp/.style={circle, fill=ink, minimum size=2.2mm, inner sep=0pt},
+  plate/.style={draw=muted, line width=0.8pt, rounded corners=4pt}]
+  \node[hp, label={[font=\small]above:$\alpha$}] (a) at (0,0) {};
+  \node[rv] (th) at (1.8,0) {$\boldsymbol\theta_d$};
+  \node[rv] (z) at (3.8,0) {$z_{dn}$};
+  \node[obs] (w) at (5.8,0) {$w_{dn}$};
+  \node[rv] (b) at (5.8,-2.3) {$\boldsymbol\beta_k$};
+  \node[hp, label={[font=\small]left:$\eta$}] (e) at (3.8,-2.3) {};
+  \draw[pe/flow] (a) -- (th); \draw[pe/flow] (th) -- (z); \draw[pe/flow] (z) -- (w);
+  \draw[pe/flow] (b) -- (w); \draw[pe/flow] (e) -- (b);
+  \draw[plate] (3.05,-0.85) rectangle (6.55,0.85); \node[font=\scriptsize, anchor=south east] at (6.5,-0.83) {$N_d$};
+  \draw[plate] (1.05,-1.15) rectangle (6.85,1.15); \node[font=\scriptsize, anchor=south east] at (6.8,-1.13) {$D$};
+  \draw[plate] (4.95,-3.1) rectangle (6.65,-1.55); \node[font=\scriptsize, anchor=south east] at (6.6,-3.08) {$K$};
+  \node[pe/note, anchor=west, align=left] at (7.3,0.6) {$\boldsymbol\theta_d\sim\mathrm{Dirichlet}(\alpha)$: a $d$-edik dokumentum témaaránya};
+  \node[pe/note, anchor=west, align=left] at (7.3,0.0) {$z_{dn}\sim\mathrm{Kat}(\boldsymbol\theta_d)$: az $n$-edik szó témája};
+  \node[pe/note, anchor=west, align=left] at (7.3,-0.6) {$w_{dn}\sim\mathrm{Kat}(\boldsymbol\beta_{z_{dn}})$: a megfigyelt szó};
+  \node[pe/note, anchor=west, align=left] at (7.3,-2.3) {$\boldsymbol\beta_k\sim\mathrm{Dirichlet}(\eta)$: a $k$-adik téma szóeloszlása};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "Ha felhasználja a könyvet vagy a kódot, kérjük, így hivatkozzon rá."
+type: book
+title: "Adatbányászat – a hatékonyság eszköze. Elmélet és gyakorlat Pythonban"
+version: "2.0.0"
+date-released: "2026-11-20"
+authors:
+  - family-names: "Abonyi"
+    given-names: "János"
+    email: "janos@abonyilab.com"
+    affiliation: "Pannon Egyetem"
+publisher:
+  name: "Pannon Egyetem"
+  city: "Veszprém"
+license: CC-BY-4.0
+repository-code: "https://github.com/ComplexSystemsIntelligence/adatbanyaszat"
+url: "https://complexsystemsintelligence.github.io/adatbanyaszat/"
+keywords:
+  - adatbányászat
+  - gépi tanulás
+  - Python
+  - tankönyv
+  - data mining
+  - machine learning
+# A Zenodo-archiválás után ide kerül a kiadás DOI-azonosítója:
+# doi: 10.5281/zenodo.XXXXXXX

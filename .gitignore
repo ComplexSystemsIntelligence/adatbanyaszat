@@ -1,0 +1,13 @@
+/.quarto/
+/_book/
+*_files/
+__pycache__/
+*.egg-info/
+.ipynb_checkpoints/
+.venv/
+figures/build/_tmp/
+.DS_Store
+
+**/*.quarto_ipynb
+.progress.md
+/site_libs/

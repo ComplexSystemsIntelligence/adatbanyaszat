@@ -1,0 +1,7 @@
+body { font-family: "IBM Plex Serif", Georgia, serif; line-height: 1.5; color: #1F2933; }
+h1, h2, h3, h4 { font-family: "Raleway", "IBM Plex Sans", sans-serif; color: #1C3F5E; }
+code, pre { font-family: "IBM Plex Mono", monospace; font-size: 0.88em; }
+figcaption { font-family: "IBM Plex Sans", sans-serif; font-size: 0.9em; color: #5B6775; }
+div.roadmap { background: #E8EEF4; padding: 0.6em 0.9em; }
+div.eset-uzleti { border-left: 4px solid #C8711E; background: #FBF4EC; padding: 0.6em 0.9em; }
+div.eset-mernoki { border-left: 4px solid #1F9077; background: #EEF7F5; padding: 0.6em 0.9em; }

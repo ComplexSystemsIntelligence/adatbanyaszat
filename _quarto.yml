@@ -1,0 +1,162 @@
+project:
+  type: book
+  output-dir: _book
+  resources:
+    - apps/
+    - assets/webfonts/
+    - data/*.csv
+    - data/*.csv.gz
+  render:
+    - index.qmd
+    - "chapters/*.qmd"
+    - "appendices/*.qmd"
+    - references.qmd
+
+book:
+  title: "Adatbányászat"
+  subtitle: "a hatékonyság eszköze – elmélet és gyakorlat Pythonban"
+  author: "Abonyi János"
+  date: "2026-11-20"
+  date-format: "YYYY. MMMM"
+  edition: "2., teljesen átdolgozott kiadás"
+  publisher: "Pannon Egyetem"
+  publisher-place: "Veszprém"
+  site-url: "https://complexsystemsintelligence.github.io/adatbanyaszat/"
+  repo-url: "https://github.com/ComplexSystemsIntelligence/adatbanyaszat"
+  repo-actions: [edit, issue, source]
+  output-file: "adatbanyaszat"
+  downloads: [pdf, epub]
+  search: true
+  page-navigation: true
+  chapters:
+    - index.qmd
+    - part: "I. Alapok"
+      chapters:
+        - chapters/01-bevezetes.qmd
+        - chapters/02-adattarhazak.qmd
+        - chapters/03-adatelokeszites.qmd
+        - chapters/04-feltaro-elemzes.qmd
+    - part: "II. Mintázatok felügyelet nélkül"
+      chapters:
+        - chapters/05-csoportositas.qmd
+        - chapters/06-asszociacios-szabalyok.qmd
+    - part: "III. Prediktív modellezés"
+      chapters:
+        - chapters/07-modellertekeles.qmd
+        - chapters/08-regresszio.qmd
+        - chapters/09-osztalyozas.qmd
+        - chapters/10-melytanulas.qmd
+        - chapters/11-anomaliak.qmd
+    - part: "IV. Speciális adattípusok"
+      chapters:
+        - chapters/12-idosorok.qmd
+        - chapters/13-szovegbanyaszat.qmd
+    - part: "V. Alkalmazások"
+      chapters:
+        - chapters/14-ugyfelanalitika.qmd
+        - chapters/15-folyamatanalitika.qmd
+    - references.qmd
+  appendices:
+    - appendices/a-python.qmd
+    - appendices/b-linearis-algebra.qmd
+    - appendices/c-valoszinuseg.qmd
+    - appendices/d-adatsorok.qmd
+    - appendices/e-jelolesek.qmd
+    - appendices/f-szojegyzek.qmd
+
+# a sorozat-kiterjesztés által használt metaadatok (repó és honlap – egy helyen módosítható)
+book-repo: "ComplexSystemsIntelligence/adatbanyaszat"
+book-branch: "main"
+book-site: "https://complexsystemsintelligence.github.io/adatbanyaszat/"
+
+bibliography: references.bib
+csl: _extensions/pannon/apa.csl
+lang: hu
+language: _language-hu.yml
+filters:
+  - pannon
+
+crossref:
+  fig-title: "ábra"
+  tbl-title: "táblázat"
+  eq-prefix: ""
+  fig-prefix: "ábra"
+  tbl-prefix: "táblázat"
+  sec-prefix: "alfejezet"
+  title-delim: "."
+  chapters: true
+
+execute:
+  freeze: auto
+  echo: true
+  warning: false
+  message: false
+
+jupyter: python3
+
+format:
+  html:
+    theme:
+      light: [cosmo, _extensions/pannon/pannon.scss]
+    css: assets/pannon-fonts.css
+    include-after-body: _extensions/pannon/pannon-hu.html
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    number-depth: 3
+    code-copy: true
+    code-overflow: wrap
+    code-fold: false
+    code-tools: false
+    html-math-method: mathjax
+    fig-cap-location: bottom
+    tbl-cap-location: top
+    reference-location: margin
+    citation-location: document
+    lightbox: true
+  pdf:
+    documentclass: scrbook
+    classoption: [paper=b5, fontsize=10pt, DIV=12, headings=optiontoheadandtoc]
+    pdf-engine: xelatex
+    keep-tex: false
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    number-depth: 3
+    colorlinks: true
+    linkcolor: "peblue"
+    urlcolor: "peblue"
+    citecolor: "peblue"
+    mainfont: IBMPlexSerif
+    mainfontoptions:
+      - Path=assets/fonts/
+      - Extension=.otf
+      - UprightFont=*-Regular
+      - BoldFont=*-Bold
+      - ItalicFont=*-Italic
+      - BoldItalicFont=*-BoldItalic
+    sansfont: IBMPlexSans
+    sansfontoptions:
+      - Path=assets/fonts/
+      - Extension=.otf
+      - UprightFont=*-Regular
+      - BoldFont=*-SemiBold
+      - ItalicFont=*-Italic
+    monofont: IBMPlexMono
+    monofontoptions:
+      - Path=assets/fonts/
+      - Extension=.otf
+      - UprightFont=*-Regular
+      - BoldFont=*-Bold
+      - ItalicFont=*-Italic
+      - Scale=0.86
+    mathfont: latinmodern-math.otf
+    include-in-header: _extensions/pannon/pannon-header.tex
+    fig-pos: "htbp"
+    code-block-bg: "#F4F6F8"
+    code-block-border-left: "#285780"
+  epub:
+    toc: true
+    number-sections: true
+    html-math-method: mathml
+    css: assets/epub.css

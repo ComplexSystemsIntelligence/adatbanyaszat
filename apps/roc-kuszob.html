@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ROC-görbe, PR-görbe és döntési küszöb</title><link rel="stylesheet" href="common.css"><script src="common.js"></script></head><body>
+<header><h1>ROC-görbe, PR-görbe és döntési küszöb</h1><p>Hogyan változik a tévesztési mátrix és a költség a küszöb, az osztályok szétválása és aránya függvényében?</p></header>
+<main>
+<div class="controls">
+  <label>Döntési küszöb <span class="val" id="thr-v"></span></label><input type="range" id="thr" min="0.01" max="0.99" step="0.01" value="0.5">
+  <label>Az osztályok szétválása (d′) <span class="val" id="sep-v"></span></label><input type="range" id="sep" min="0" max="4" step="0.1" value="1.6">
+  <label>A pozitív osztály aránya <span class="val" id="pi-v"></span></label><input type="range" id="pi" min="0.02" max="0.5" step="0.01" value="0.2">
+  <label>Költségarány (téves negatív / téves pozitív) <span class="val" id="cr-v"></span></label><input type="range" id="cr" min="1" max="20" step="1" value="5">
+  <button id="opt">Költségoptimális küszöb</button>
+  <div class="stat" id="st"></div>
+  <div class="note">A pontszám a pozitív osztály becsült valószínűsége (logisztikus kalibráció). A ROC-görbe független az osztályaránytól, a PR-görbe és a pontosság nem – ritka pozitív osztálynál ezért a PR-görbe informatívabb.</div>
+</div>
+<div class="panel"><svg id="s" width="560" height="200" viewBox="0 0 560 200"></svg>
+<div style="display:flex;gap:8px;margin-top:8px"><svg id="r" width="276" height="250" viewBox="0 0 276 250"></svg><svg id="p" width="276" height="250" viewBox="0 0 276 250"></svg></div>
+<div id="cm"></div></div>
+</main>
+<script>
+const S = document.getElementById("s"), R = document.getElementById("r"), Pp = document.getElementById("p");
+function Phi(z) { const t = 1 / (1 + 0.2316419 * Math.abs(z)), d = 0.3989423 * Math.exp(-z * z / 2);
+  const p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))); return z > 0 ? 1 - p : p; }
+function model() { const d = PE.v("sep"), pi = PE.v("pi"); // pontszám: s = P(y=1|x), x ~ N(0,1) (neg), N(d,1) (pos)
+  const toX = s => (Math.log(s / (1 - s)) - Math.log(pi / (1 - pi)) + d * d / 2) / Math.max(d, 1e-6);
+  const rates = s => { const x = toX(s); return { tpr: 1 - Phi(x - d), fpr: 1 - Phi(x) }; }; return { d, pi, toX, rates }; }
+function draw() { const M = model(), thr = PE.v("thr"), cr = PE.v("cr"); PE.clear(S); PE.clear(R); PE.clear(Pp);
+  const A = PE.axes(S, [-4, 7], [0, 0.45], { xlab: "jellemző (pontszám alapja)", ny: 3, dy: 1 }); const dens = (x, m) => Math.exp(-((x - m) ** 2) / 2) / Math.sqrt(2 * Math.PI);
+  for (const [m, c, w] of [[0, PE.pal[0], 1 - M.pi], [M.d, PE.pal[1], M.pi]]) { const pts = []; for (let x = -4; x <= 7; x += 0.05) pts.push([x, dens(x, m) * (w / Math.max(1 - M.pi, M.pi)) * 1]);
+    PE.el("path", { d: PE.path(pts, A.x, A.y) + `L${A.x(7)},${A.y(0)}L${A.x(-4)},${A.y(0)}Z`, fill: c, "fill-opacity": .25, stroke: c, "stroke-width": 1.5 }, S); }
+  const xt = Math.max(-4, Math.min(7, M.toX(thr))); PE.el("line", { x1: A.x(xt), x2: A.x(xt), y1: A.y(0), y2: A.y(0.45), stroke: PE.ink, "stroke-dasharray": "4 3", "stroke-width": 1.5 }, S);
+  const B = PE.axes(R, [0, 1], [0, 1], { xlab: "FPR", ylab: "TPR", nx: 4, ny: 4, margin: { l: 34 } }), roc = [], pr = []; let auc = 0, prev = null;
+  for (let s = 0.999; s >= 0.001; s -= 0.002) { const q = M.rates(s); roc.push([q.fpr, q.tpr]); const prec = M.pi * q.tpr / (M.pi * q.tpr + (1 - M.pi) * q.fpr + 1e-12); pr.push([q.tpr, prec]);
+    if (prev) auc += (q.fpr - prev[0]) * (q.tpr + prev[1]) / 2; prev = [q.fpr, q.tpr]; }
+  PE.el("line", { x1: B.x(0), y1: B.y(0), x2: B.x(1), y2: B.y(1), stroke: "#c9d2db", "stroke-dasharray": "3 3" }, R);
+  PE.el("path", { d: PE.path([[0, 0], ...roc, [1, 1]], B.x, B.y), fill: "none", stroke: PE.pal[0], "stroke-width": 2 }, R);
+  const q = M.rates(thr); PE.el("circle", { cx: B.x(q.fpr), cy: B.y(q.tpr), r: 5, fill: PE.pal[1] }, R);
+  const C = PE.axes(Pp, [0, 1], [0, 1], { xlab: "felidézés", ylab: "pontosság", nx: 4, ny: 4, margin: { l: 34 } });
+  PE.el("line", { x1: C.x(0), y1: C.y(M.pi), x2: C.x(1), y2: C.y(M.pi), stroke: "#c9d2db", "stroke-dasharray": "3 3" }, Pp);
+  PE.el("path", { d: PE.path(pr, C.x, C.y), fill: "none", stroke: PE.pal[0], "stroke-width": 2 }, Pp);
+  const prec = M.pi * q.tpr / (M.pi * q.tpr + (1 - M.pi) * q.fpr + 1e-12); PE.el("circle", { cx: C.x(q.tpr), cy: C.y(prec), r: 5, fill: PE.pal[1] }, Pp);
+  const N = 1000, TP = N * M.pi * q.tpr, FN = N * M.pi - TP, FP = N * (1 - M.pi) * q.fpr, TN = N * (1 - M.pi) - FP, cost = FP + cr * FN;
+  document.getElementById("cm").innerHTML = `<table class="t"><tr><th>1000 esetből</th><th>előrejelzett +</th><th>előrejelzett −</th></tr><tr><th>valódi +</th><td>${PE.fmt(TP, 0)}</td><td>${PE.fmt(FN, 0)}</td></tr><tr><th>valódi −</th><td>${PE.fmt(FP, 0)}</td><td>${PE.fmt(TN, 0)}</td></tr></table>`;
+  document.getElementById("st").innerHTML = `AUC: <b>${PE.fmt(auc, 3)}</b><br>TPR (felidézés): <b>${PE.fmt(q.tpr)}</b>, FPR: <b>${PE.fmt(q.fpr)}</b><br>Pontosság: <b>${PE.fmt(prec)}</b><br>Költség (1000 esetre): <b>${PE.fmt(cost, 0)}</b><br>Elméleti optimális küszöb: <b>${PE.fmt(1 / (1 + cr), 3)}</b>`; }
+["thr", "sep", "pi", "cr"].forEach(id => PE.bind(id, draw, v => id === "cr" ? v + " : 1" : PE.fmt(v)));
+document.getElementById("opt").onclick = () => { const e = document.getElementById("thr"); e.value = (1 / (1 + PE.v("cr"))).toFixed(2); e.dispatchEvent(new Event("input")); };
+draw();
+</script></body></html>

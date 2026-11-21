@@ -1,0 +1,27 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[
+  fp/.style={rectangle, rounded corners=2pt, draw=peblue, line width=0.8pt, fill=white, font=\scriptsize, minimum width=14mm, minimum height=6mm},
+  level distance=12mm, level 1/.style={sibling distance=27mm}, level 2/.style={sibling distance=26mm}, level 3/.style={sibling distance=17mm}, edge from parent/.style={draw=peblue, line width=0.7pt}]
+  \node[fp, fill=pelight] (r) {gyökér}
+    child {node[fp] (k5) {kávé:5}
+      child {node[fp] (t4) {tej:4}
+        child {node[fp] (c2) {cukor:2} child {node[fp] (s1a) {keksz:1}}}
+        child {node[fp] (s1b) {keksz:1}}}
+      child {node[fp] (c1a) {cukor:1} child {node[fp] (s1c) {keksz:1}}}}
+    child[missing]
+    child {node[fp] (c1b) {cukor:1} child {node[fp] (e1a) {tea:1}}}
+    child {node[fp] (e1b) {tea:1}}
+    child {node[fp] (t1) {tej:1} child {node[fp] (s1d) {keksz:1} child {node[fp] (e1c) {tea:1}}}};
+  % fejléc-tábla
+  \matrix[matrix of nodes, nodes={font=\scriptsize, draw=peblue, minimum width=16mm, minimum height=5.5mm, anchor=center},
+     column sep=-0.4pt, row sep=-0.4pt] (hd) at (-11.2,-2.4) {
+     |[fill=pelight, font=\scriptsize\bfseries]| elem : $\sigma$\\ kávé : 5\\ tej : 5\\ cukor : 4\\ keksz : 4\\ tea : 3\\};
+  \node[pe/note, above=1mm of hd] {fejléctábla};
+  \draw[cB, dashed, -{Stealth[length=1.8mm]}] (hd-4-1.east) to[bend left=12] (c2.west);
+  \draw[cB, dashed, -{Stealth[length=1.8mm]}] (c2.south east) to[bend left=20] (c1a.south west);
+  \draw[cB, dashed, -{Stealth[length=1.8mm]}] (c1a.east) to[bend right=15] (c1b.west);
+  \node[pe/note, text=cB, align=left] at (-3.2,-5.3) {a „cukor” csomópontjainak láncolata\\(a feltételes mintabázis gyűjtéséhez)};
+\end{tikzpicture}
+\end{document}

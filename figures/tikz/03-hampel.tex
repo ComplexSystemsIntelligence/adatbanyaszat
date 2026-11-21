@@ -1,0 +1,22 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[pe axis, width=13cm, height=5.4cm, xmin=0, xmax=16, ymin=80.8, ymax=84.6,
+   xlabel={idő [óra]}, ylabel={$T_\mathrm{reaktor}$ [$^\circ$C]}, legend pos=north west, legend columns=2,
+   restrict y to domain=70:90, unbounded coords=jump]
+  \addplot[name path=hi, draw=none, forget plot] table[x=t, y=hi] {../data/03-hampel.dat};
+  \addplot[name path=lo, draw=none, forget plot] table[x=t, y=lo] {../data/03-hampel.dat};
+  \addplot[cA!18] fill between[of=hi and lo];
+  \addlegendentry{medián $\pm 3\,\mathrm{MAD}$}
+  \addplot[cA, line width=1pt, no marks] table[x=t, y=med] {../data/03-hampel.dat};
+  \addlegendentry{mozgó medián}
+  \addplot[ink, line width=0.6pt, mark=*, mark size=1pt] table[x=t, y=x] {../data/03-hampel.dat};
+  \addlegendentry{mért érték}
+  \addplot[only marks, mark=o, mark size=3.5pt, cE, line width=1.2pt]
+     table[x=t, y=x, restrict expr to domain={\thisrow{flag}}{1:1}] {../data/03-hampel.dat};
+  \addlegendentry{kiugrónak jelölt}
+  \draw[pe/thin, draw=cE] (axis cs:8,84.0) -- (axis cs:8,84.55) node[pe/note, text=cE, anchor=south west, xshift=-2pt]{131,6 $^\circ$C (tüske)};
+\end{axis}
+\end{tikzpicture}
+\end{document}

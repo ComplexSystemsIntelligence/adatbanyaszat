@@ -1,0 +1,106 @@
+% pannon-header.tex – a Pannon tankönyvsorozat PDF-arculata (XeLaTeX)
+
+% A keretes megjegyzések (callout) ikon nélkül jelennek meg – a sorozat visszafogott,
+% piktogrammentes arculata szerint. A fontawesome5 csomagot betöltöttnek jelöljük, az
+% ikonparancsok üresek (így a fordítás a csomag telepítése nélkül is működik).
+\makeatletter
+\@namedef{ver@fontawesome5.sty}{2026/01/01}
+\makeatother
+\providecommand{\faInfo}{}\providecommand{\faExclamation}{}\providecommand{\faLightbulb}{}
+\providecommand{\faExclamationTriangle}{}\providecommand{\faFire}{}
+\newcommand{\pecalloutgap}{}
+\usepackage{xcolor}
+\definecolor{peblue}{HTML}{285780}
+\definecolor{pebluedark}{HTML}{1C3F5E}
+\definecolor{pelight}{HTML}{E8EEF4}
+\definecolor{peorange}{HTML}{C8711E}
+\definecolor{pegreen}{HTML}{1F9077}
+\definecolor{peink}{HTML}{1F2933}
+\definecolor{pemuted}{HTML}{5B6775}
+
+\usepackage{fontspec}
+\newfontfamily\pefontheading{Raleway}[Path=assets/fonts/, Extension=.otf, Ligatures=TeX,
+  UprightFont=*-Bold, BoldFont=*-Black]
+\newfontfamily\pefontblack{Raleway}[Path=assets/fonts/, Extension=.otf, Ligatures=TeX,
+  UprightFont=*-Black, BoldFont=*-Black]
+\newfontfamily\pefontsans{IBMPlexSans}[Path=assets/fonts/, Extension=.otf, Ligatures=TeX,
+  UprightFont=*-Regular, BoldFont=*-SemiBold, ItalicFont=*-Italic]
+
+% KOMA-Script címsorok
+\setkomafont{disposition}{\pefontheading\color{pebluedark}}
+\setkomafont{chapter}{\pefontblack\Huge\color{pebluedark}}
+\setkomafont{chapterprefix}{\pefontheading\large\color{peblue}}
+\setkomafont{part}{\pefontblack\color{peblue}}
+\setkomafont{partnumber}{\pefontheading\color{peblue}}
+\setkomafont{caption}{\pefontsans\small}
+\setkomafont{captionlabel}{\pefontsans\small\bfseries\color{peblue}}
+\setkomafont{pageheadfoot}{\pefontsans\footnotesize\color{pemuted}}
+
+\usepackage{tikz}
+% ferde sáv a fejezetcím alatt – a sorozat azonosító eleme
+\makeatletter
+\renewcommand*{\chapterlinesformat}[3]{%
+  \@hangfrom{#2}{#3}\par\nobreak\vspace{.6ex}%
+  \tikz\fill[peblue] (0,0) -- (3.4,0) -- (3.2,-.22) -- (-.2,-.22) -- cycle;}
+\makeatother
+
+% ábra- és táblázatfeliratok magyar sorrendben: "1.1. ábra."
+\usepackage{caption}
+\DeclareCaptionLabelFormat{hu}{#2.~#1}
+\captionsetup{labelformat=hu, labelsep=period, font=small, justification=raggedright,
+  singlelinecheck=false}
+
+% didaktikai dobozok
+\usepackage[most]{tcolorbox}
+\newtcolorbox{peroadmap}{enhanced, breakable, colback=pelight, colframe=pelight,
+  boxrule=0pt, arc=2pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  fontupper=\pefontsans\small,
+  title={Miről szól a fejezet?}, coltitle=peblue, fonttitle=\pefontsans\bfseries\small,
+  attach title to upper={\par\smallskip}}
+\newtcolorbox{peesetuzleti}{enhanced, breakable, colback=peorange!7, colframe=peorange,
+  boxrule=0pt, leftrule=3pt, arc=0pt, left=8pt,
+  title={FUTÓ ESET · PANNONSHOP}, coltitle=peorange, fonttitle=\pefontsans\bfseries\footnotesize,
+  attach title to upper={\par\smallskip}}
+\newtcolorbox{peesetmernoki}{enhanced, breakable, colback=pegreen!7, colframe=pegreen,
+  boxrule=0pt, leftrule=3pt, arc=0pt, left=8pt,
+  title={FUTÓ ESET · PANNON ÜZEM}, coltitle=pegreen, fonttitle=\pefontsans\bfseries\footnotesize,
+  attach title to upper={\par\smallskip}}
+
+% unicode-math mellett a \boldsymbol a félkövér dőlt matematikai betűket használja (a bm csomag ütközne)
+\AtBeginDocument{\renewcommand{\boldsymbol}[1]{\symbfit{#1}}\providecommand{\bm}[1]{\symbfit{#1}}}
+\usepackage{mathtools}
+\frenchspacing
+
+% részcímek: a rész sorszáma a címben szerepel (pl. "I. Alapok"), ezért a KOMA-számozást elhagyjuk
+\renewcommand*{\partformat}{}
+\AtBeginDocument{%
+  \renewcommand*{\figurename}{ábra}%
+  \renewcommand*{\tablename}{táblázat}%
+  \renewcommand*{\contentsname}{Tartalomjegyzék}%
+  \renewcommand*{\listfigurename}{Ábrák jegyzéke}%
+  \renewcommand*{\listtablename}{Táblázatok jegyzéke}%
+  \renewcommand*{\appendixname}{Függelék}%
+  \renewcommand*{\chaptername}{fejezet}}
+
+% Az IBM Plex betűkészletekből hiányzó néhány jel matematikai megfelelője (szövegben és kódkimenetben is)
+\usepackage{newunicodechar}
+\newunicodechar{⇒}{\ensuremath{\Rightarrow}}
+\newunicodechar{∈}{\ensuremath{\in}}
+\newunicodechar{σ}{\ensuremath{\sigma}}
+\newunicodechar{α}{\ensuremath{\alpha}}
+\newunicodechar{λ}{\ensuremath{\lambda}}
+\newunicodechar{μ}{\ensuremath{\mu}}
+\newunicodechar{₂}{\ensuremath{_2}}
+\newunicodechar{₄}{\ensuremath{_4}}
+% a számított (pandas) táblázatok kisebb betűvel és szűkebb oszlopközzel, hogy elférjenek a B5-ös oldalon
+\usepackage{etoolbox}
+\AtBeginEnvironment{longtable}{\scriptsize\setlength{\tabcolsep}{3pt}}
+
+% A hosszú kódsorok és kódkimenetek tördelése a szedéstükrön belül
+\usepackage{fvextra}
+\makeatletter
+\AtBeginDocument{%
+  \@ifundefined{Highlighting}{}{%
+    \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,commandchars=\\\{\},fontsize=\small}}%
+  \RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small}}
+\makeatother

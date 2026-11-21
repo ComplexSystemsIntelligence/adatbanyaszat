@@ -1,0 +1,9 @@
+title: Pannon tankönyvsorozat
+author: Abonyi János
+version: 1.0.0
+quarto-required: ">=1.6.0"
+contributes:
+  shortcodes:
+    - pannon-shortcodes.lua
+  filters:
+    - pannon-filter.lua

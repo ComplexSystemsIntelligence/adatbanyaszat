@@ -1,0 +1,22 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[x=1cm, y=1cm]
+  % A = [[2, 1.2], [0.3, 1.0]] ; szinguláris értékek 2,47 és 0,66
+  \begin{scope}
+    \draw[->, muted] (-1.6,0) -- (1.6,0); \draw[->, muted] (0,-1.6) -- (0,1.6);
+    \draw[cA, line width=1.1pt] (0,0) circle[radius=1];
+    \draw[-{Stealth[length=2.2mm]}, cB, line width=1.1pt] (0,0) -- (36.5:1) node[above right, font=\small]{$\mathbf{v}_1$};
+    \draw[-{Stealth[length=2.2mm]}, cD, line width=1.1pt] (0,0) -- (126.5:1) node[above left, font=\small]{$\mathbf{v}_2$};
+    \node[font=\small, text=ink] at (0,-2.0) {egységkör: $\lVert\mathbf{x}\rVert = 1$};
+  \end{scope}
+  \draw[-{Stealth[length=3mm]}, line width=1.2pt, peblue] (2.1,0) -- node[above, font=\small]{$\mathbf{A}=\begin{bmatrix}2 & 1{,}2\\ 0{,}3 & 1\end{bmatrix}$} (4.3,0);
+  \begin{scope}[xshift=7.4cm]
+    \draw[->, muted] (-3.3,0) -- (3.3,0); \draw[->, muted] (0,-2.3) -- (0,2.3);
+    \draw[cA, line width=1.1pt, rotate=19.8] (0,0) ellipse[x radius=2.47, y radius=0.66];
+    \draw[-{Stealth[length=2.2mm]}, cB, line width=1.1pt] (0,0) -- (19.8:2.47) node[right, font=\small]{$\sigma_1\mathbf{u}_1$};
+    \draw[-{Stealth[length=2.2mm]}, cD, line width=1.1pt] (0,0) -- (109.8:0.66) node[above left, font=\small]{$\sigma_2\mathbf{u}_2$};
+    \node[font=\small, text=ink] at (0,-2.0) {kép: $\{\mathbf{A}\mathbf{x} : \lVert\mathbf{x}\rVert = 1\}$, ellipszis};
+  \end{scope}
+\end{tikzpicture}
+\end{document}

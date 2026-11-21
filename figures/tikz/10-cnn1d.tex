@@ -1,0 +1,34 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,
+  c/.style={rectangle, draw=peblue, line width=0.6pt, minimum width=8mm, minimum height=7mm, font=\scriptsize, inner sep=0pt},
+  k/.style={rectangle, draw=cB, line width=0.9pt, fill=cB!12, minimum width=8mm, minimum height=7mm, font=\scriptsize, inner sep=0pt}]
+  % bemeneti idősor
+  \node[pe/label, anchor=east] at (-0.6,2.4) {bemenet $x_t$};
+  \foreach \v [count=\i from 0] in {1,3,2,5,4,1,0,2,3,1}{
+    \node[c, fill=white] (x\i) at (0.8*\i,2.4) {$\v$};}
+  \foreach \i in {0,1,2}{\fill[cB!14] ([shift={(0.3pt,0.3pt)}]x\i.south west) rectangle ([shift={(-0.3pt,-0.3pt)}]x\i.north east);}
+  \foreach \v [count=\i from 0] in {1,3,2}{\node[font=\scriptsize] at (x\i) {$\v$};}
+  % kernel
+  \node[pe/label, anchor=east] at (-0.6,0.9) {szűrő $\mathbf{w}$};
+  \foreach \v [count=\i from 0] in {1,0,-1}{\node[k] (w\i) at (0.8*\i,0.9) {$\v$};}
+  \node[pe/note, anchor=west] at (2.3,0.9) {a súlyok minden pozícióban azonosak (súlymegosztás)};
+  % kimeneti jellemzőtérkép
+  \node[pe/label, anchor=east] at (-0.6,-0.7) {jellemzőtérkép $y_t$};
+  \foreach \v [count=\i from 0] in {-1,-2,-2,4,4,-1,-3,1}{
+    \node[c, fill=pelight] (y\i) at (0.8+0.8*\i,-0.7) {$\v$};}
+  \fill[cB!14] ([shift={(0.3pt,0.3pt)}]y0.south west) rectangle ([shift={(-0.3pt,-0.3pt)}]y0.north east); \node[font=\scriptsize] at (y0) {$-1$};
+  \draw[pe/thin, draw=cB] (x0.south) -- (y0.north west);
+  \draw[pe/thin, draw=cB] (x2.south) -- (y0.north east);
+  \node[pe/note, anchor=west, text=cB] at (7.4,1.55) {$y_1=1\cdot 1+0\cdot 3+(-1)\cdot 2=-1$};
+  % ReLU + max-pooling
+  \node[pe/label, anchor=east] at (-0.6,-2.2) {ReLU + max-pooling (2)};
+  \foreach \v [count=\i from 0] in {0,4,4,1}{
+    \node[c, minimum width=16mm, fill=cD!12, draw=cD] (p\i) at (1.2+1.6*\i,-2.2) {$\v$};}
+  \foreach \i/\a/\b in {0/0/1,1/2/3,2/4/5,3/6/7}{
+    \draw[line width=0.5pt, draw=cD] (y\a.south) -- (p\i.north); \draw[line width=0.5pt, draw=cD] (y\b.south) -- (p\i.north);}
+  \node[font=\small, text=ink, anchor=west] at (7.4,-0.7) {$y_t=\displaystyle\sum_{k=0}^{K-1}w_k\,x_{t+k}+b$};
+  \node[pe/note, anchor=west] at (7.4,-2.2) {rövidebb, a helyi mintázat\\jelenlétét jelző sorozat};
+\end{tikzpicture}
+\end{document}

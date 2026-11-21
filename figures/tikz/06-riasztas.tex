@@ -1,0 +1,15 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[x=1.1cm,
+  ev/.style={circle, inner sep=2.2pt, fill=#1}]
+  \draw[muted, -{Stealth[length=2mm]}] (0,0) -- (12.3,0) node[right, pe/label]{idő};
+  \foreach \x/\c/\l in {0.6/cD/HUTOVIZ\_MELEG, 1.6/cB/HUTES\_TELITETT, 2.4/cE/T\_MAGAS, 3.6/cC/MINOSEG\_ELTERES,
+                        6.5/cD/HUTOVIZ\_MELEG, 7.2/cB/HUTES\_TELITETT, 7.9/cE/T\_MAGAS, 9.4/cA/OSZCILLACIO, 10.3/cC/MINOSEG\_ELTERES}{
+    \node[ev=\c] at (\x,0) {};
+    \node[font=\tiny, rotate=40, anchor=south west, text=ink] at (\x-0.05,0.12) {\l};}
+  \draw[decorate, decoration={brace, mirror, amplitude=5pt}, peblue] (0.4,-0.25) -- (3.0,-0.25) node[midway, below=6pt, pe/note]{időablak $w$};
+  \draw[decorate, decoration={brace, mirror, amplitude=5pt}, peblue] (6.3,-0.25) -- (8.9,-0.25) node[midway, below=6pt, pe/note]{időablak $w$};
+  \node[pe/stepfill, text width=78mm, font=\scriptsize, align=center] at (6.2,-1.75) {gyakori sorozat: \textsf{HUTOVIZ\_MELEG} $\rightarrow$ \textsf{HUTES\_TELITETT} $\rightarrow$ \textsf{T\_MAGAS}\\(mindkét ablakban ugyanabban a sorrendben fordul elő)};
+\end{tikzpicture}
+\end{document}

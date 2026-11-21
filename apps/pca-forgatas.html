@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Főkomponens-elemzés: a vetítési irány forgatása</title><link rel="stylesheet" href="common.css"><script src="common.js"></script></head><body>
+<header><h1>Főkomponens-elemzés: a vetítési irány forgatása</h1><p>Melyik irányban a legnagyobb a vetületek szórása? Az első főkomponens erre a kérdésre ad választ.</p></header>
+<main>
+<div class="controls">
+  <label>A vetítési irány szöge <span class="val" id="ang-v"></span></label><input type="range" id="ang" min="0" max="180" value="10">
+  <label>Korreláció <span class="val" id="rho-v"></span></label><input type="range" id="rho" min="-0.95" max="0.95" step="0.05" value="0.8">
+  <label>Szórásarány (σ₂/σ₁) <span class="val" id="sr-v"></span></label><input type="range" id="sr" min="0.3" max="1.5" step="0.05" value="1">
+  <button id="opt">Ugrás az első főkomponensre</button>
+  <div class="stat" id="st"></div>
+  <div class="note">A vetületek varianciája az irány függvényében: wᵀSw. Maximuma a kovarianciamátrix legnagyobb sajátértéke, és az első főkomponens irányában van; a maradék (merőleges) variancia a második főkomponensé.</div>
+</div>
+<div class="panel"><svg id="s" width="560" height="420" viewBox="0 0 560 420"></svg><svg id="s2" width="560" height="150" viewBox="0 0 560 150"></svg></div>
+</main>
+<script>
+const svg = document.getElementById("s"), svg2 = document.getElementById("s2"); let Z = [];
+function gen() { const r = PE.rng(11), rho = PE.v("rho"), sr = PE.v("sr"); Z = [];
+  for (let i = 0; i < 200; i++) { const a = PE.normal(r), b = PE.normal(r); Z.push([a, sr * (rho * a + Math.sqrt(1 - rho * rho) * b)]); }
+  const mx = Z.reduce((s, p) => s + p[0], 0) / Z.length, my = Z.reduce((s, p) => s + p[1], 0) / Z.length; Z = Z.map(p => [p[0] - mx, p[1] - my]); draw(); }
+function cov() { const n = Z.length; let a = 0, b = 0, c = 0; Z.forEach(p => { a += p[0] * p[0]; b += p[0] * p[1]; c += p[1] * p[1]; }); return [a / (n - 1), b / (n - 1), c / (n - 1)]; }
+function eig() { const [a, b, c] = cov(), tr = a + c, det = a * c - b * b, l1 = tr / 2 + Math.sqrt(tr * tr / 4 - det), l2 = tr - l1;
+  const ang = Math.atan2(l1 - a, b) * 180 / Math.PI; return { l1, l2, ang: ((Math.abs(b) < 1e-12 ? (a >= c ? 0 : 90) : ang) + 180) % 180 }; }
+function draw() { PE.clear(svg); PE.clear(svg2); const A = PE.axes(svg, [-4.5, 4.5], [-3.5, 3.5], { xlab: "z₁", ylab: "z₂", dx: 0 });
+  const th = PE.v("ang") * Math.PI / 180, w = [Math.cos(th), Math.sin(th)], [a, b, c] = cov(), E = eig();
+  PE.el("line", { x1: A.x(-4.5 * w[0]), y1: A.y(-4.5 * w[1]), x2: A.x(4.5 * w[0]), y2: A.y(4.5 * w[1]), stroke: PE.pal[1], "stroke-width": 2 }, svg);
+  const pr = Z.map(p => p[0] * w[0] + p[1] * w[1]);
+  Z.forEach((p, i) => { const q = [pr[i] * w[0], pr[i] * w[1]]; PE.el("line", { x1: A.x(p[0]), y1: A.y(p[1]), x2: A.x(q[0]), y2: A.y(q[1]), stroke: "#c9d2db", "stroke-width": .7 }, svg); });
+  Z.forEach(p => PE.el("circle", { cx: A.x(p[0]), cy: A.y(p[1]), r: 2.8, fill: PE.pal[0], "fill-opacity": .75 }, svg));
+  pr.forEach(t => PE.el("circle", { cx: A.x(t * w[0]), cy: A.y(t * w[1]), r: 2, fill: PE.pal[1] }, svg));
+  const varw = a * w[0] ** 2 + 2 * b * w[0] * w[1] + c * w[1] ** 2;
+  const B = PE.axes(svg2, [0, 180], [0, Math.max(E.l1 * 1.1, 0.5)], { xlab: "szög [fok]", ylab: "variancia", nx: 6, dx: 0, margin: { b: 28, t: 8 } });
+  const pts = []; for (let d = 0; d <= 180; d += 2) { const u = [Math.cos(d * Math.PI / 180), Math.sin(d * Math.PI / 180)]; pts.push([d, a * u[0] ** 2 + 2 * b * u[0] * u[1] + c * u[1] ** 2]); }
+  PE.el("path", { d: PE.path(pts, B.x, B.y), fill: "none", stroke: PE.pal[0], "stroke-width": 2 }, svg2);
+  PE.el("circle", { cx: B.x(PE.v("ang")), cy: B.y(varw), r: 5, fill: PE.pal[1] }, svg2);
+  document.getElementById("st").innerHTML = `A vetületek varianciája: <b>${PE.fmt(varw)}</b><br>λ₁ = <b>${PE.fmt(E.l1)}</b> (az első főkomponens iránya: ${PE.fmt(E.ang, 0)}°)<br>λ₂ = <b>${PE.fmt(E.l2)}</b><br>Az irány által magyarázott hányad: <b>${PE.fmt(100 * varw / (E.l1 + E.l2), 1)}%</b> (max. ${PE.fmt(100 * E.l1 / (E.l1 + E.l2), 1)}%)`; }
+PE.bind("ang", draw, v => v + "°"); PE.bind("rho", gen, v => PE.fmt(v)); PE.bind("sr", gen, v => PE.fmt(v));
+document.getElementById("opt").onclick = () => { const e = document.getElementById("ang"); e.value = Math.round(eig().ang); e.dispatchEvent(new Event("input")); };
+gen();
+</script></body></html>

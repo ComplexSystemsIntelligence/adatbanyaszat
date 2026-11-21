@@ -1,0 +1,24 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[
+  dn/.style={pe/box, rounded corners=3pt, fill=pelight, font=\small, inner sep=4pt, align=center},
+  lj/.style={pe/leaf, font=\small},
+  ls/.style={pe/leaf, draw=cE, fill=cE!10, font=\small},
+  el/.style={font=\scriptsize, text=ink, fill=white, inner sep=1pt, midway},
+  level distance=20mm, level 1/.style={sibling distance=50mm}, level 2/.style={sibling distance=26mm},
+  edge from parent/.style={draw=peblue, line width=0.8pt}]
+  \node[dn] {Hőmérséklet?\\{\scriptsize 9 jó / 5 selejt, $H = 0{,}940$}}
+    child {node[dn] {Karbantartva?\\{\scriptsize 3 jó / 2 selejt}}
+       child {node[ls] {selejt\\{\scriptsize 0 / 2}} edge from parent node[el] {igen}}
+       child {node[lj] {jó\\{\scriptsize 3 / 0}} edge from parent node[el] {nem}}
+       edge from parent node[el] {alacsony}}
+    child {node[lj] {jó\\{\scriptsize 4 / 0}} edge from parent node[el] {normál}}
+    child {node[dn] {Műszak?\\{\scriptsize 2 jó / 3 selejt}}
+       child {node[ls] {selejt\\{\scriptsize 0 / 3}} edge from parent node[el] {nappali}}
+       child {node[lj] {jó\\{\scriptsize 2 / 0}} edge from parent node[el] {éjszakai}}
+       edge from parent node[el] {magas}};
+  \node[pe/note, align=left, anchor=west] at (5.2,0.0) {a gyökérhez az információnyereség:\\
+     $IG(\text{Hőmérséklet}) = 0{,}247$\\ $IG(\text{Műszak}) = 0{,}090$\\ $IG(\text{Karbantartva}) = 0{,}048$\\ $IG(\text{Alapanyag}) = 0{,}016$};
+\end{tikzpicture}
+\end{document}

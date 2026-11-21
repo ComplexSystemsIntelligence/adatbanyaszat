@@ -1,0 +1,20 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\input{../data/05-km-param.tex}
+\begin{document}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=3 by 1, horizontal sep=9mm, y descriptions at=edge left},
+   pe axis, width=5.6cm, height=5.2cm, xmin=-1.2, xmax=6, ymin=-1, ymax=5.6, xlabel={$x_1$}, ylabel={$x_2$}]
+\nextgroupplot[title={(a) kezdés: $J=\Ja$}]
+  \addplot[pe clusters] table[x=x,y=y,meta=c] {../data/05-km-iter0.dat};
+  \addplot[pe centroid] coordinates {\Va};
+\nextgroupplot[title={(b) 1.\ iteráció: $J=\Jb$}]
+  \addplot[pe clusters] table[x=x,y=y,meta=c] {../data/05-km-iter1.dat};
+  \addplot[pe centroid] coordinates {\Vb};
+\nextgroupplot[title={(c) konvergencia: $J=\Jc$}]
+  \addplot[pe clusters] table[x=x,y=y,meta=c] {../data/05-km-final.dat};
+  \foreach \i in {0,1,2}{\addplot[ink, line width=0.8pt, mark=o, mark size=1.3pt, mark options={solid, fill=white}] table[x=x,y=y] {../data/05-km-traj\i.dat};}
+  \addplot[pe centroid] coordinates {\Vc};
+\end{groupplot}
+\end{tikzpicture}
+\end{document}

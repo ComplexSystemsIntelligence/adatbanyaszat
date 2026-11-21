@@ -1,0 +1,44 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}
+  % (a) illesztés
+  \begin{scope}[x=0.62cm, y=0.36cm]
+  \node[font=\small\bfseries, text=peblue, anchor=west] at (-0.5,13.4) {(a) euklideszi és DTW-illesztés};
+  \def\A{0,1,3,4,3,1,0,0}\def\B{0,0,1,3,4,3,1,0}
+  % euklideszi
+  \foreach \v [count=\i from 0] in \A {\coordinate (ea\i) at (\i,6.5+\v);}
+  \foreach \v [count=\i from 0] in \B {\coordinate (eb\i) at (\i,0.6+\v);}
+  \foreach \i in {0,...,7}{\draw[muted, line width=0.4pt] (ea\i) -- (eb\i);}
+  \draw[cA, line width=1.1pt] (ea0) \foreach \i in {1,...,7}{-- (ea\i)};
+  \draw[cB, line width=1.1pt] (eb0) \foreach \i in {1,...,7}{-- (eb\i)};
+  \foreach \i in {0,...,7}{\fill[cA] (ea\i) circle[radius=1.6pt]; \fill[cB] (eb\i) circle[radius=1.6pt];}
+  \node[pe/note, anchor=west] at (7.4,8.5) {euklideszi:\\$i\leftrightarrow i$};
+  \node[font=\scriptsize, text=cA, anchor=east] at (-0.3,6.5) {$\mathbf{a}$};
+  \node[font=\scriptsize, text=cB, anchor=east] at (-0.3,0.6) {$\mathbf{b}$};
+  \end{scope}
+  \begin{scope}[x=0.62cm, y=0.36cm, yshift=-4.6cm]
+  \def\A{0,1,3,4,3,1,0,0}\def\B{0,0,1,3,4,3,1,0}
+  \foreach \v [count=\i from 0] in \A {\coordinate (da\i) at (\i,6.5+\v);}
+  \foreach \v [count=\i from 0] in \B {\coordinate (db\i) at (\i,0.6+\v);}
+  \foreach \i/\j in {0/0,0/1,1/2,2/3,3/4,4/5,5/6,6/7,7/7}{\draw[cD, line width=0.6pt] (da\i) -- (db\j);}
+  \draw[cA, line width=1.1pt] (da0) \foreach \i in {1,...,7}{-- (da\i)};
+  \draw[cB, line width=1.1pt] (db0) \foreach \i in {1,...,7}{-- (db\i)};
+  \foreach \i in {0,...,7}{\fill[cA] (da\i) circle[radius=1.6pt]; \fill[cB] (db\i) circle[radius=1.6pt];}
+  \node[pe/note, anchor=west, text=cD] at (7.4,8.5) {DTW:\\vetemített\\illesztés};
+  \end{scope}
+  % (b) kumulált költségmátrix
+  \begin{scope}[xshift=8.2cm, yshift=-4.2cm, x=0.62cm, y=0.62cm,
+     cell/.style={minimum size=6.2mm, inner sep=0pt, draw=grid, fill=white, font=\scriptsize, text=muted},
+     pathcell/.style={minimum size=6.2mm, inner sep=0pt, draw=grid, fill=cD!25, font=\scriptsize\bfseries, text=ink},
+     lab/.style={font=\scriptsize, text=ink},
+     pathline/.style={cD, line width=1.0pt, opacity=0.8}]
+  \node[font=\small\bfseries, text=peblue, anchor=west] at (-1.4,9.3) {(b) kumulált költségmátrix $D(i,j)$};
+  \input{../data/12-dtw-matrix.tex}
+  \node[font=\scriptsize, text=cB] at (3.5,8.25) {$\mathbf{b}$};
+  \node[font=\scriptsize, text=cA] at (-1.45,3.5) {$\mathbf{a}$};
+  \draw[dashed, muted] (-0.5,7.5) -- (7.5,-0.5);
+  \node[pe/note, anchor=north] at (3.5,-0.6) {$D(i,j)=(a_i-b_j)^2+\min\{D(i{-}1,j),\,D(i,j{-}1),\,D(i{-}1,j{-}1)\}$};
+  \end{scope}
+\end{tikzpicture}
+\end{document}

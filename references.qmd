@@ -1,0 +1,4 @@
+# Irodalomjegyzék {.unnumbered}
+
+::: {#refs}
+:::

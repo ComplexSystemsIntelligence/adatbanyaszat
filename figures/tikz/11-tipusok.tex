@@ -1,0 +1,22 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=3 by 1, horizontal sep=8mm},
+  pe axis, width=5.6cm, height=4.0cm, xmin=0, xmax=200, ymin=-1.7, ymax=4.3,
+  xtick=\empty, ytick=\empty, xlabel={idő}, grid=none]
+\nextgroupplot[title={(a) pontszerű anomália}]
+  \addplot[cA, line width=0.8pt] table[x=t, y=pont] {../data/11-tipusok.dat};
+  \draw[cE, line width=1.1pt] (axis cs:60,2.75) circle[radius=2.6mm];
+\nextgroupplot[title={(b) kontextuális anomália}]
+  \addplot[cA, line width=0.8pt] table[x=t, y=kont] {../data/11-tipusok.dat};
+  \draw[cE, line width=1.1pt] (axis cs:87.5,0.9) circle[radius=2.6mm];
+  \draw[muted, dashed] (axis cs:0,0.95) -- (axis cs:200,0.95);
+  \node[pe/note, anchor=south] at (axis cs:100,2.2) {az érték máskor normális,\\itt (völgyben) szokatlan};
+\nextgroupplot[title={(c) kollektív anomália}]
+  \addplot[cA, line width=0.8pt] table[x=t, y=koll] {../data/11-tipusok.dat};
+  \draw[cE, line width=1.1pt, rounded corners=2pt] (axis cs:127,-0.55) rectangle (axis cs:165,0.15);
+  \node[pe/note, anchor=south] at (axis cs:100,2.2) {egyenként normális értékek,\\együtt szokatlan szakasz};
+\end{groupplot}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,19 @@
+# A Colab-jegyzetfüzetek végrehajthatóságának ellenőrzése (hetente és minden pull requestnél).
+name: Jegyzetfüzetek tesztje
+on:
+  pull_request:
+  schedule:
+    - cron: "17 3 * * 1"
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python scripts/make_notebooks.py --repo "${{ github.repository }}"
+      - run: python scripts/test_notebooks.py

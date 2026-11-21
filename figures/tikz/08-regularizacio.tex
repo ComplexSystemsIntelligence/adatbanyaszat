@@ -1,0 +1,21 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\input{../data/08-reg-param.tex}
+\begin{document}
+\begin{tikzpicture}
+  \foreach \k/\t in {0/ridge ($L_2$-büntetés), 1/lasszó ($L_1$-büntetés)}{
+  \begin{scope}[xshift=\k*6.6cm]
+    \draw[muted, -{Stealth[length=2mm]}] (-2.0,0) -- (3.0,0) node[right, font=\small, text=ink]{$\theta_1$};
+    \draw[muted, -{Stealth[length=2mm]}] (0,-1.7) -- (0,4.2) node[above, font=\small, text=ink]{$\theta_2$};
+    \ifnum\k=0 \fill[cB!22] (0,0) circle (1.0); \draw[cB, line width=1.1pt] (0,0) circle (1.0);
+    \else \fill[cB!22] (1.2,0) -- (0,1.2) -- (-1.2,0) -- (0,-1.2) -- cycle; \draw[cB, line width=1.1pt] (1.2,0) -- (0,1.2) -- (-1.2,0) -- (0,-1.2) -- cycle; \fi
+    \foreach \s in {0.5,1.0,1.5}{\draw[cA!55, line width=0.6pt, rotate around={-35:(\cx,\cy)}] (\cx,\cy) ellipse ({1.35*\s} and {0.62*\s});}
+    \ifnum\k=0 \def\ss{\rs}\else\def\ss{\ls}\fi
+    \draw[cA, line width=1.1pt, rotate around={-35:(\cx,\cy)}] (\cx,\cy) ellipse ({1.35*\ss} and {0.62*\ss});
+    \fill[cA] (\cx,\cy) circle (1.6pt) node[above right, font=\scriptsize, text=cA]{$\hat{\boldsymbol\theta}_{\mathrm{OLS}}$};
+    \ifnum\k=0 \fill[ink] (\rx,\ry) circle (1.9pt); \node[font=\scriptsize, anchor=north west, text=ink] at (\rx+0.1,\ry-0.05) {mindkét együttható $\neq 0$};
+    \else \fill[ink] (\lx,\ly) circle (1.9pt); \node[font=\scriptsize, anchor=east, text=ink] at (-0.12,\ly) {$\theta_1 = 0$}; \fi
+    \node[font=\small\bfseries, text=peblue] at (0.5,-2.1) {\t};
+  \end{scope}}
+\end{tikzpicture}
+\end{document}

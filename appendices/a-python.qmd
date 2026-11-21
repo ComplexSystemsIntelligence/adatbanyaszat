@@ -1,0 +1,269 @@
+# Python-alapok {#sec-app-python}
+
+```{python}
+#| include: false
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import adatbanyaszat as ab
+ab.set_style()
+pd.set_option("display.max_columns", 10)
+pd.set_option("display.width", 100)
+```
+
+::: {.roadmap}
+Ez a függelék a könyv példáinak megértéséhez és továbbfejlesztéséhez szükséges Python-
+ismereteket foglalja össze, programozási előismeretek nélkül is követhető módon. A nyelv
+alapelemei után a tudományos számítások négy alapkönyvtárát – a NumPy-t, a pandast, a
+Matplotlibet és a `scikit-learn`-t – mutatjuk be, majd a könyv saját segédcsomagját és a
+reprodukálható munka gyakorlatát. A részletesebb elsajátításhoz @vanderplas2016 és
+@mckinney2022 könyve ajánlott.
+:::
+
+## A munkakörnyezet {#sec-app-kornyezet}
+
+A könyv minden példája három módon futtatható:
+
+- **Google Colab** – a böngészőben futó, telepítést nem igénylő Jupyter-környezet. A
+  fejezetek végén található „Colab” gombok a fejezet kódját tartalmazó jegyzetfüzetet
+  nyitják meg; az első cella telepíti a könyv segédcsomagját.
+- **Saját gépen, Jupyterrel** – a Python 3.11 vagy újabb változatának telepítése után egy
+  virtuális környezetben:
+
+  ```bash
+  python -m venv .venv
+  source .venv/bin/activate            # Windows: .venv\Scripts\activate
+  pip install -r requirements.txt      # a könyv tárolójából
+  pip install -e .                     # a segédcsomag fejlesztői telepítése
+  jupyter lab
+  ```
+
+- **A könyv forrásából** – a tároló klónozása után a `quarto render` parancs a teljes
+  könyvet újrafordítja, és közben minden kódot lefuttat.
+
+A Jupyter-jegyzetfüzet **cellákból** áll: a kódcellák eredménye (szöveg, táblázat, ábra)
+közvetlenül alattuk jelenik meg. A cellák tetszőleges sorrendben futtathatók, ami
+kísérletezéshez kényelmes, de hibaforrás is: a jegyzetfüzetet a végén mindig érdemes
+„újraindítás és minden futtatása” paranccsal ellenőrizni.
+
+## A nyelv alapelemei {#sec-app-nyelv}
+
+### Változók és alapvető típusok
+
+A Python dinamikusan típusos nyelv: a változó típusát az értéke határozza meg.
+
+```{python}
+homerseklet = 86.5            # lebegőpontos szám (float)
+termekkod = "B"               # karakterlánc (str)
+tetelszam = 14                # egész szám (int)
+megfelelo = True              # logikai érték (bool)
+print(type(homerseklet), type(termekkod), type(tetelszam), type(megfelelo))
+print(f"A(z) {termekkod} termék hőmérséklete {homerseklet:.1f} °C, tételszám: {tetelszam}.")
+```
+
+Az utolsó sor egy **f-string**: a kapcsos zárójelek közötti kifejezés értéke behelyettesítődik,
+a kettőspont utáni rész (`.1f`) a formázást adja meg. A Python a tizedesjelölésre pontot
+használ; a könyv szövegében – a magyar helyesírásnak megfelelően – tizedesvesszőt írunk,
+a kódban és a kimenetekben viszont pont szerepel.
+
+### Gyűjtemények
+
+A négy beépített gyűjteménytípus a lista (rendezett, módosítható), a rendezett n-es (tuple,
+nem módosítható), a szótár (kulcs–érték párok) és a halmaz (egyedi elemek).
+
+```{python}
+meresek = [82.1, 85.3, 86.0, 84.7]                     # lista
+koordinata = (47.09, 17.91)                            # rendezett n-es
+alapjel = {"A": 82, "B": 86, "C": 90}                  # szótár
+kosar = {"kávébab", "vízkőoldó", "kávébab"}            # halmaz: a duplikátum eltűnik
+meresek.append(87.2)
+print(meresek[0], meresek[-1], meresek[1:3])           # indexelés 0-tól, szeletelés
+print(alapjel["B"], sorted(kosar), len(kosar))
+```
+
+### Vezérlési szerkezetek és függvények
+
+```{python}
+def minosit(T, termek, tures=1.5):
+    """Megfelel-e a hőmérséklet a termék alapjelének a tűréshatáron belül?"""
+    elteres = T - alapjel[termek]
+    if abs(elteres) <= tures:
+        return "megfelelő"
+    elif elteres > 0:
+        return "túl meleg"
+    else:
+        return "túl hideg"
+
+for T in meresek:
+    print(T, minosit(T, "B"))
+```
+
+A Pythonban a kódblokkokat a **behúzás** jelöli. A függvény elején álló karakterlánc a
+dokumentációs szöveg (docstring), amelyet a `help(minosit)` jelenít meg. A
+**listaértelmezés** (list comprehension) tömör és gyors módja egy lista előállításának:
+
+```{python}
+elteresek = [round(T - alapjel["B"], 1) for T in meresek if T > 84]
+print(elteresek)
+```
+
+## NumPy: tömbök és vektorizált számítás {#sec-app-numpy}
+
+A NumPy [@harris2020] alapobjektuma az azonos típusú elemekből álló, többdimenziós tömb
+(`ndarray`). A műveletek elemenként, gyorsan, C nyelven megírt ciklusokkal hajtódnak
+végre (**vektorizálás**), ezért a nagy adattömbökön végzett számításoknál a Python-
+ciklusok helyett tömbműveleteket használunk.
+
+```{python}
+x = np.array([82.1, 85.3, 86.0, 84.7, 87.2])
+A = np.arange(12).reshape(3, 4)                         # 3×4-es mátrix
+print(x.mean(), x.std(ddof=1), x.max())                  # ddof=1: korrigált tapasztalati szórás
+print(A.shape, A[1, :], A[:, 2], A[A > 6])               # sor, oszlop, logikai indexelés
+print(A.sum(axis=0), A.sum(axis=1))                      # oszlop- és sorösszegek
+```
+
+A **broadcasting** szabályai szerint eltérő alakú tömbök is kombinálhatók, ha a
+dimenzióik összeillenek; így például egy mátrix minden oszlopa egy lépésben
+standardizálható:
+
+```{python}
+rng = np.random.default_rng(2026)                        # reprodukálható véletlenszám-generátor
+X = rng.normal(loc=[80, 2.0, 10], scale=[3, 0.1, 1], size=(500, 3))
+Z = (X - X.mean(axis=0)) / X.std(axis=0)                 # (500,3) - (3,) → soronkénti kivonás
+print(Z.mean(axis=0).round(3), Z.std(axis=0).round(3))
+```
+
+A vektorizálás sebességelőnye jelentős:
+
+```{python}
+import time
+v = rng.normal(size=1_000_000)
+t0 = time.perf_counter(); s1 = sum(e * e for e in v); t1 = time.perf_counter()
+s2 = v @ v; t2 = time.perf_counter()
+print(f"Python-ciklus: {t1 - t0:.3f} s, NumPy: {t2 - t1:.4f} s, eltérés: {abs(s1 - s2):.2e}")
+```
+
+A mátrixszorzás operátora a `@`; a lineáris algebra további eszközei (inverz,
+sajátérték-felbontás, SVD) a `np.linalg` modulban vannak (B. függelék).
+
+## pandas: táblázatos adatok {#sec-app-pandas}
+
+A pandas [@mckinney2010] két alapobjektuma a címkézett egydimenziós `Series` és a
+kétdimenziós, oszloponként eltérő típusú `DataFrame`. Az adatbányászati munka nagy része
+– beolvasás, tisztítás, szűrés, csoportosítás, összekapcsolás – pandasban történik.
+
+```{python}
+tetelek = ab.load_shop().transactions
+print(tetelek.shape)
+tetelek.head()
+```
+
+```{python}
+# szűrés, új oszlop, csoportosítás és aggregálás
+t = tetelek[(tetelek.Quantity > 0) & (tetelek.Price > 0)].copy()
+t["Ertek"] = t.Quantity * t.Price
+(t.groupby("Regio")
+  .agg(szamlak=("Invoice", "nunique"), forgalom=("Ertek", "sum"))
+  .sort_values("forgalom", ascending=False)
+  .head(5))
+```
+
+```{python}
+# kimutatás (pivot) és időbeli újramintavételezés
+havi = t.set_index("InvoiceDate").Ertek.resample("MS").sum() / 1e6
+print(havi.head(4).round(2))
+uzem = ab.load_plant().hourly.set_index("ido")
+print(uzem.T_reaktor.rolling("24h").mean().describe().round(2))
+```
+
+A legfontosabb műveletek: `read_csv`/`read_parquet` (beolvasás), `loc`/`iloc` (címke, illetve
+pozíció szerinti kiválasztás), `query` (feltételes szűrés), `assign` (új oszlopok),
+`groupby` + `agg` (csoportos összesítés), `merge` (összekapcsolás, mint az SQL `JOIN`),
+`pivot_table` (kimutatás), `resample` és `rolling` (idősorok), `isna`/`fillna`/`dropna`
+(hiányzó értékek). A láncolt írásmód – mint a fenti példában – olvashatóvá teszi az
+adatfeldolgozási lépések sorozatát.
+
+## Matplotlib: ábrák {#sec-app-matplotlib}
+
+A Matplotlib [@hunter2007] objektumorientált felülete egy ábrából (`Figure`) és egy vagy
+több koordináta-rendszerből (`Axes`) áll; a könyv ábrái a segédcsomag `set_style()`
+függvényével beállított egységes stílust használják. A statisztikai ábrákhoz a seaborn
+[@waskom2021] magasabb szintű függvényeket ad.
+
+```{python}
+#| label: fig-app-matplotlib
+#| fig-cap: "Egyszerű Matplotlib-ábra két koordináta-rendszerrel: a reaktorhőmérséklet egy napja és a heti forgalom eloszlása."
+#| fig-width: 7
+#| fig-height: 2.6
+fig, ax = plt.subplots(1, 2)
+nap = uzem.loc["2025-03-10", "T_reaktor"]
+ax[0].plot(nap.index, nap.values, color=ab.PALETTE[0])
+ax[0].set_ylabel("hőmérséklet [°C]"); ax[0].tick_params(axis="x", rotation=45)
+heti = t.set_index("InvoiceDate").Ertek.resample("W").sum() / 1e6
+ax[1].hist(heti, bins=20, color=ab.PALETTE[1], edgecolor="white")
+ax[1].set_xlabel("heti forgalom [millió Ft]"); ax[1].set_ylabel("hetek száma")
+fig.tight_layout()
+```
+
+## scikit-learn: a gépi tanulás egységes felülete {#sec-app-sklearn}
+
+A `scikit-learn` [@pedregosa2011] minden modellje ugyanazt a felületet követi: a
+konstruktor a hiperparamétereket kapja, a `fit(X, y)` tanít, a `predict(X)` (osztályozóknál a
+`predict_proba(X)` is) előrejelez, az előfeldolgozó lépések pedig `fit` és `transform`
+metódusokkal rendelkeznek. A `Pipeline` a lépéseket egyetlen modellé fűzi, így az
+előfeldolgozás paraméterei is csak a tanítóadatokból becsülődnek – ez akadályozza meg az
+információszivárgást ([-@sec-elokeszites]. fejezet).
+
+```{python}
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import cross_val_score
+
+churn = ab.churn_table()
+X = churn[["R_nap", "F_szamla", "M_ertek"]].astype(float)
+y = churn.lemorzsolodik
+modell = make_pipeline(StandardScaler(), LogisticRegression())
+print(cross_val_score(modell, np.log1p(X), y, cv=5, scoring="roc_auc").round(3))
+```
+
+## A könyv segédcsomagja {#sec-app-segedcsomag}
+
+A könyv kódja az `adatbanyaszat` nevű segédcsomagra épül, amelyet a példák elején
+`import adatbanyaszat as ab` formában töltünk be. A csomag a szimulált futó esetek
+generátorait (D. függelék), a fejezeteken átívelő előfeldolgozási lépéseket és az ábrák
+stílusát tartalmazza; így minden fejezet ugyanazokra, a korábbi fejezetekben már
+megtisztított adatokra építhet.
+
+| Függvény | Tartalom | Bevezetve |
+|---|---|---|
+| `ab.load_shop()` | a PannonShop nyers adatai: tételek, termékek, vevők, vélemények, háttérigazság | [-@sec-bevezetes]. fejezet |
+| `ab.load_plant()` | a Pannon üzem adatai: 10 perces és órás mérések, riasztások, labor, háttérigazság | [-@sec-bevezetes]. fejezet |
+| `ab.load_shift_log()` | a Pannon üzem műszaknaplója | [-@sec-szoveg]. fejezet |
+| `ab.shop_clean()` | a megtisztított számlatételek (sztornók nélkül) | [-@sec-elokeszites]. fejezet |
+| `ab.plant_clean()` | a megtisztított 10 perces mérések, leállásjelzővel | [-@sec-elokeszites]. fejezet |
+| `ab.customer_table(ref_date)` | vevőszintű RFM- és vásárlásiszerkezet-jellemzők | [-@sec-elokeszites]. fejezet |
+| `ab.churn_table(cutoff, horizon_days)` | lemorzsolódási tábla jellemzőkkel és célváltozóval | [-@sec-ertekeles]. fejezet |
+| `ab.quality_table()` | a laborminták és a hozzájuk tartozó folyamatjellemzők | [-@sec-ertekeles]. fejezet |
+| `ab.mini.*` | a kézi számolási példák kis adatsorai | több fejezet |
+| `ab.set_style()`, `ab.PALETTE` | a könyv ábrastílusa és színtévesztés-biztos színpalettája | [-@sec-app-matplotlib] |
+
+: A segédcsomag legfontosabb függvényei. {#tbl-app-segedcsomag}
+
+A generátorok determinisztikusak: ugyanazzal a véletlenmaggal (alapértelmezés: 2026)
+mindig ugyanazokat az adatokat állítják elő, ezért a könyv minden eredménye pontosan
+reprodukálható.
+
+## Jó gyakorlatok {#sec-app-jo-gyakorlatok}
+
+- **Reprodukálhatóság**: rögzítsük a véletlenmagot (`np.random.default_rng(mag)`,
+  `random_state=mag`), a csomagok verzióit (`requirements.txt`), és a jegyzetfüzetet
+  futtassuk végig az elejétől.
+- **Verziókezelés**: a kódot és a dokumentációt `git`-tárolóban tartsuk; a nagy
+  adatfájlokat ne, azokat a generáló kód vagy egy adattár hivatkozása írja le.
+- **Olvasható kód**: beszédes változónevek, rövid függvények docstringgel, a „varázsszámok”
+  helyett nevesített paraméterek.
+- **Tesztelés**: a kézi példák eredményeit (például egy gradiens numerikus ellenőrzését) írjuk
+  meg automatikus tesztként is.
+- **Jegyzetfüzet és modul**: a felfedező elemzés jegyzetfüzetben, a többször használt kód
+  modulban (`.py` fájlban) a helyén.

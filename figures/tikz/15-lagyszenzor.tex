@@ -1,0 +1,20 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[x=0.55cm, y=1cm]
+  \draw[-{Stealth[length=2.2mm]}, ink, line width=0.8pt] (0,0) -- (25,0) node[right, font=\small]{idő [óra]};
+  \foreach \t in {0,4,...,24}{\draw[muted] (\t,0.08) -- (\t,-0.08) node[below, font=\scriptsize]{\t};}
+  \node[font=\scriptsize\bfseries, anchor=east, text=cA] at (-0.3,1.0) {online mérések};
+  \foreach \t in {0,0.1667,...,24}{\fill[cA!70] (\t,1.0) circle[radius=0.9pt];}
+  \node[pe/note, anchor=west] at (0,1.3) {10 percenként: hőmérséklet, áramok, nyomás, energia};
+  \node[font=\scriptsize\bfseries, anchor=east, text=cB] at (-0.3,2.0) {laboreredmény};
+  \foreach \t/\d in {2/3.5,8/9.5,14/15.8,20/21.5}{
+    \fill[cB] (\t,2.0) circle[radius=2.4pt];
+    \draw[-{Stealth[length=1.6mm]}, cB, line width=0.6pt] (\t,2.0) to[bend left=30] (\d,2.0);
+    \draw[cB, line width=0.8pt] (\d,1.88) -- (\d,2.12);}
+  \node[pe/note, anchor=west, text=cB] at (0,2.35) {mintavétel (pont) és az eredmény ismertté válása (vonás): ritka és késleltetett};
+  \node[font=\scriptsize\bfseries, anchor=east, text=cD] at (-0.3,3.1) {lágy szenzor};
+  \draw[cD, line width=1.2pt, domain=0:24, samples=200, smooth] plot (\x, {3.1+0.18*sin(\x*40)+0.08*sin(\x*170)});
+  \node[pe/note, anchor=west, text=cD] at (0,3.55) {folyamatos becslés az online mérésekből; a laboreredmények a modell ellenőrzésére és frissítésére szolgálnak};
+\end{tikzpicture}
+\end{document}

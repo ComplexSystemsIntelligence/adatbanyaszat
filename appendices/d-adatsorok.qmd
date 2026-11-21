@@ -1,0 +1,131 @@
+# Az adatsorok leírása {#sec-app-adatsorok}
+
+::: {.roadmap}
+A könyv két futó esete – a PannonShop webáruház és a Pannon üzem – szimulált adatokra
+épül. Ez a függelék leírja az adatsorok szerkezetét, a generálásuk elvét és a beléjük
+épített, ellenőrzésre szolgáló „háttérigazságot”, végül olyan nyilvános valós adatsorokat
+ajánl, amelyeken a módszerek tovább gyakorolhatók.
+:::
+
+## Miért szimulált adatok? {#sec-app-miert-szimulalt}
+
+A tananyag céljaihoz a szimulált adatoknak három előnye van. Először, a **háttérigazság
+ismert**: tudjuk, melyik vevő melyik típusba tartozik, melyik rendelés csalás, mikor milyen
+hiba lépett fel az üzemben, ezért minden módszer eredménye pontosan ellenőrizhető – ez a
+valós adatokon ritkán lehetséges. Másodszor, az adatok **szabadon felhasználhatók és
+reprodukálhatók**: a generátorok egy véletlenmagból mindig ugyanazokat az adatokat állítják
+elő, nincs adatvédelmi vagy licencakadály. Harmadszor, az adatokba **tudatosan építettük
+be** azokat a jelenségeket – adatminőségi hibákat, rejtett szegmenseket, asszociációs
+szabályokat, szezonalitást, lassú romlást, ritka hibákat –, amelyeken a módszerek
+tanulságai bemutathatók. Az ára az egyszerűsítés: a valós adatok változatosabbak,
+zajosabbak és meglepőbbek. Ezért a fejezetek a tanulságokat óvatosan fogalmazzák meg, és
+a függelék végén valós adatsorokat is ajánlunk.
+
+A generátorok a segédcsomag `shop.py` és `plant.py` moduljában találhatók; az adatok CSV
+formátumban a könyv tárolójának `data/` mappájában is elérhetők (a `scripts/gen_data.py`
+állítja elő őket).
+
+## PannonShop: online kiskereskedelem {#sec-app-pannonshop}
+
+A PannonShop egy kávéval, teával, konyhai eszközökkel, háztartási gépekkel, dekorációs
+termékekkel, ajándékokkal és írószerekkel kereskedő magyar webáruház. Az adatok
+szerkezete a nyilvános *Online Retail II* adatsort [@chen2012] követi, így a módszerek
+közvetlenül átvihetők arra is.
+
+| Tábla | Sorok | Fontosabb oszlopok |
+|---|---|---|
+| `transactions` (számlatételek) | 68 990 | `Invoice`, `StockCode`, `Description`, `Quantity`, `InvoiceDate`, `Price`, `CustomerID`, `Regio` |
+| `products` (termékek) | 48 | `StockCode`, `Description`, `Kategoria`, `Alkategoria`, `ListaAr` |
+| `customers` (vevők) | 3 000 | `CustomerID`, `Regio`, `Regisztracio` |
+| `reviews` (vélemények) | 3 000 | `CustomerID`, `StockCode`, `Datum`, `Csillag`, `Szoveg`, `Hangulat` |
+
+: A PannonShop adattáblái (2024. január 1. – 2025. december 31.). {#tbl-app-pannonshop}
+
+A generálás elve a következő. A vevők öt rejtett típusba tartoznak (törzsvásárló, alkalmi
+vevő, akcióvadász, viszonteladó, lemorzsolódó), amelyek a vásárlási gyakoriságban, a
+kosárméretben, a kategóriapreferenciákban, az akciókra való érzékenységben és a
+lemorzsolódás időzítésében különböznek. A vevők egy része már az időszak elején aktív, a
+többiek fokozatosan regisztrálnak. A kosarak tartalmát a kategóriapreferenciák mellett
+beültetett asszociációs szabályok alakítják (például *kávéfőző gép* ⇒ *kávébab*,
+*teáskanna* ⇒ *zöld tea*). Az év végén szezonális csúcs, a 2., 3., 47. és 48. héten akciós
+időszak van.
+
+Az adatokba a [-@sec-elokeszites]. fejezet gyakorlatához szándékosan adatminőségi hibák
+kerültek: sztornózott számlák (C-előtagú számlaszám, negatív mennyiség), postaköltség-
+sorok, ismétlődő tételek, eltérő írásmódú termékmegnevezések, nulla árú és százszorosan
+elírt árú tételek, valamint vevőazonosító nélküli vendégvásárlások. Huszonöt csalásgyanús
+rendelés is található bennük ([-@sec-anomalia]. fejezet). A vélemények szempontonként
+(termékminőség, szállítás, ár, ügyfélszolgálat) összeállított mondatokból állnak, és a
+csillagszám a szempontok hangulatából adódik.
+
+A háttérigazság (`truth`) tartalmazza a vevők valódi típusát, a lemorzsolódás időpontját, a
+beültetett szabályokat, a csalásgyanús és a sztornózott számlák listáját, valamint az
+akciós heteket. Ezeket a könyv kizárólag a módszerek *értékeléséhez* használja.
+
+## Pannon üzem: folyamatos vegyipari reaktor {#sec-app-pannonuzem}
+
+A Pannon üzem egy folyamatos üzemű, kevert tankreaktor (CSTR), amelyben három
+termékminőséget (A, B, C) gyártanak kampányokban. A szimulátor egyszerűsített, de
+fizikailag konzisztens modellen alapul [@fogler2016]. Az elsőrendű, exoterm reakció
+sebességi állandója az Arrhenius-egyenletet követi, a stacionárius konverzió
+
+$$
+k(T) = k_0\,e^{-E_a/(RT)},\qquad
+X = \frac{k\tau}{1 + k\tau},\qquad \tau = \frac{V}{F} ,
+$$ {#eq-app-cstr}
+
+ahol $V$ a reaktortérfogat, $F$ a betáplálási áram. A reakcióhőt a hűtőköpeny vezeti el,
+amelynek hőátadási tényezője a lerakódás miatt két tisztítás között fokozatosan romlik;
+a szükséges hűtővízáramot a hőmérleg határozza meg, és ha az meghaladja a szelep
+kapacitását, a hűtés telítődik, és a reaktor túlmelegszik. A környezeti és a hűtővíz-
+hőmérséklet éves és napi ciklust követ.
+
+| Változó | Jelentés | Mértékegység |
+|---|---|---|
+| `T_kornyezet` | környezeti hőmérséklet | °C |
+| `F_betap`, `c_betap`, `T_betap` | betáplálási áram, koncentráció, hőmérséklet | m³/h, mol/L, °C |
+| `T_reaktor`, `T_alapjel` | mért reaktorhőmérséklet és alapjele | °C |
+| `F_hutoviz`, `T_hutoviz` | hűtővízáram és a hűtővíz hőmérséklete | m³/h, °C |
+| `P_reaktor`, `P_kevero` | reaktornyomás, keverőteljesítmény | bar, kW |
+| `E_fogyasztas` | villamosenergia-fogyasztás | kW |
+| `c_termek_labor` | a termékkoncentráció laborértéke (csak a mintavételkor) | mol/L |
+| `termek` | a gyártott termék (A, B, C) | – |
+
+: A Pannon üzem mért változói (10 perces mintavétel, 2025. január 1. – december 31.). {#tbl-app-pannonuzem}
+
+Az adatsor elemei: 52 560 darab 10 perces mérés (`measurements`) és ezek órás átlagai
+(`hourly`); 2176 laborminta a termékkoncentrációval, a szennyezettséggel és a minősítéssel
+(`lab`); a riasztási napló (`alarms`), amelyet határérték- és változásalapú szabályok
+állítanak elő; és a műszaknapló (`load_shift_log()`), a kezelők szabad szöveges
+bejegyzéseivel. A mérésekben zaj, kiesett mérések és kiugró értékek is vannak.
+
+A beültetett események: hét tisztítási leállás; három szenzor-drift (a hőmérséklet-mérés
+öt nap alatt 4 °C-ig fokozatosan elmászik, a szabályozó pedig a hibás mérést tartja az
+alapjelen), két betáplálási zavar (a betáplált koncentráció 15%-kal csökken két napra),
+két szelepakadás (a hűtővízáram háromnapos oszcillációja) és nyolc ötórás hűtővíz-kiesés
+(a hűtővíz hőmérséklete 12 °C-kal megemelkedik). A háttérigazság a hibák pontos idejét, a
+lerakódás mértékét, a valódi reaktorhőmérsékletet és termékminőséget is tartalmazza.
+
+## Kis adatsorok a kézi számolásokhoz {#sec-app-mini}
+
+A `ab.mini` modul a kézi számolási példák kis adatsorait tartalmazza: a döntési fa és a
+naiv Bayes-osztályozó tizennégy gyártási tételét ([-@sec-osztalyozas]. fejezet), a
+gyakori elemhalmazok nyolc kosarát ([-@sec-asszociacio]. fejezet), a hierarchikus
+klaszterezés hét pontját ([-@sec-csoportositas]. fejezet), a regresszió hat pontját
+([-@sec-regresszio]. fejezet), a DTW két jelalakját ([-@sec-idosor]. fejezet) és a TF-IDF
+öt dokumentumát ([-@sec-szoveg]. fejezet).
+
+## Nyilvános valós adatsorok a további gyakorláshoz {#sec-app-valos-adatok}
+
+| Adatsor | Tartalom | Kapcsolódó fejezetek | Forrás, licenc |
+|---|---|---|---|
+| Online Retail II | egy brit webáruház két évnyi számlatétele | 2–6., 14. | UCI Machine Learning Repository [@chen2012], CC BY 4.0 |
+| Tennessee Eastman-folyamat | vegyipari referenciafolyamat 21 hibatípussal | 11., 15. | @downs1993; számos nyilvános szimulált adatkészlet |
+| Palmer-pingvinek | három pingvinfaj testméretei | 4., 5., 9. | @horst2020, CC0 |
+| UCR-idősorarchívum | több mint 120 idősor-osztályozási feladat | 12. | @dau2019 |
+
+: Nyilvános adatsorok a könyv módszereinek gyakorlásához. {#tbl-app-valos-adatok}
+
+A Palmer-pingvinek adatsora a segédcsomagból is elérhető (`ab.load_penguins()`). A
+valós adatsorok használatakor mindig ellenőrizzük a licencfeltételeket, és – személyes
+adatok esetén – az adatkezelés jogalapját ([-@sec-bevezetes]. fejezet).

@@ -1,0 +1,15 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[x=1.55cm, y=0.72cm,
+  cell/.style={minimum width=15mm, minimum height=6.6mm, draw=white, line width=0.8pt, font=\scriptsize, inner sep=0pt},
+  term/.style={font=\scriptsize\bfseries, text=ink},
+  idf/.style={font=\scriptsize, text=cB},
+  doc/.style={font=\small, text=ink}]
+  \input{../data/13-dtm.tex}
+  \node[font=\scriptsize, text=cB, anchor=east] at (-0.6,-5.0) {$\mathrm{idf}_t=\ln\frac{N}{\mathrm{df}_t}$};
+  \draw[muted, line width=0.4pt] (-0.5,-4.5) -- (6.5,-4.5);
+  \node[pe/note, anchor=west, align=left] at (7.0,-0.6) {$d_1$: a kávé friss és a kávé illatos\\$d_2$: a tea friss\\$d_3$: a szállítás lassú volt\\$d_4$: a kávé szállítás gyors volt\\$d_5$: illatos tea és friss kávé};
+  \node[pe/note, anchor=west, align=left] at (7.0,-3.4) {stopszavak: a, és, volt\\cellák: $w_{t,d}=\mathrm{tf}_{t,d}\cdot\mathrm{idf}_t$};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,47 @@
+# A könyv fordítása (HTML, PDF, EPUB) és közzététele a GitHub Pages-en a main ágra történő
+# feltöltéskor. A kiadásokat (GitHub Release) a Zenodo–GitHub integráció archiválja és DOI-val látja el.
+name: Könyv fordítása és közzététele
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "README.md"
+      - "apps/README.md"
+      - "notebooks/README.md"
+  workflow_dispatch:
+concurrency:
+  group: pages
+  cancel-in-progress: true
+permissions:
+  contents: write
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Python-csomagok
+        run: pip install -r requirements.txt
+      - name: TeX Live (XeLaTeX, TikZ, pgfplots) és poppler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-xetex texlive-latex-base \
+            texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-pictures \
+            texlive-science texlive-lang-european texlive-lang-greek fonts-lmodern poppler-utils
+      - name: TikZ-ábrák fordítása
+        run: python scripts/build_figures.py
+      - name: Colab-jegyzetfüzetek előállítása
+        run: python scripts/make_notebooks.py --repo "${{ github.repository }}"
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.11.9
+          tinytex: false
+      - name: Fordítás és közzététel a gh-pages ágon
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

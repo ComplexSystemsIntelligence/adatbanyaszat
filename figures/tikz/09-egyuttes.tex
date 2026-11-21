@@ -1,0 +1,30 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[node distance=5mm and 7mm,
+  st/.style={pe/step, text width=19mm, minimum height=8mm, font=\scriptsize},
+  md/.style={pe/stepfill, text width=15mm, minimum height=8mm, font=\scriptsize}]
+  \node[font=\small\bfseries, text=peblue] at (2.6,1.2) {(a) bagging / véletlen erdő: párhuzamos};
+  \node[pe/data, minimum width=14mm, font=\scriptsize] (d) at (0,-1.1) {adatok};
+  \foreach \i/\y in {1/0.4,2/-0.7,3/-1.8}{
+    \node[st] (b\i) at (2.4,\y) {bootstrap-minta \i};
+    \node[md] (m\i) at (4.6,\y) {fa \i};
+    \draw[pe/thin] (d) -- (b\i); \draw[pe/thin] (b\i) -- (m\i);}
+  \node[pe/hub, minimum size=13mm, font=\scriptsize\bfseries] (agg) at (6.6,-0.7) {átlag /\\szavazás};
+  \foreach \i in {1,2,3}{\draw[pe/flow] (m\i) -- (agg);}
+  \node[pe/note] at (4.6,-2.6) {csökkenti a varianciát};
+  \begin{scope}[xshift=8.8cm]
+  \node[font=\small\bfseries, text=peblue] at (3.2,1.2) {(b) boosting: soros};
+  \node[md] (f1) at (0.6,-0.7) {modell 1};
+  \node[md] (f2) at (2.9,-0.7) {modell 2};
+  \node[md] (f3) at (5.2,-0.7) {modell 3};
+  \draw[pe/flow] (f1) -- node[pe/note, above, align=center]{hibák\\súlyozása} (f2);
+  \draw[pe/flow] (f2) -- node[pe/note, above, align=center]{maradék\\illesztése} (f3);
+  \node[pe/hub, minimum size=13mm, font=\scriptsize\bfseries] (sum) at (7.0,-0.7) {súlyozott\\összeg};
+  \draw[pe/flow] (f3) -- (sum);
+  \draw[pe/thin, draw=muted] (f1.south) to[bend right=25] (sum.south west);
+  \draw[pe/thin, draw=muted] (f2.south) to[bend right=20] (sum.south);
+  \node[pe/note] at (3.4,-2.6) {elsősorban a torzítást csökkenti};
+  \end{scope}
+\end{tikzpicture}
+\end{document}

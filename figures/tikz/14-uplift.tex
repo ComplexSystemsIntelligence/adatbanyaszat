@@ -1,0 +1,17 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[x=1cm, y=1cm,
+  q/.style={rectangle, minimum width=44mm, minimum height=22mm, align=center, font=\small, draw=white, line width=1.5pt}]
+  \node[q, fill=cD!25] at (2.25,1.15) {\textbf{meggyőzhetők}\\[2pt]{\scriptsize csak a kampány hatására maradnak}\\[1pt]{\scriptsize\color{cD} őket kell megcélozni}};
+  \node[q, fill=grid] at (6.75,1.15) {\textbf{biztosak}\\[2pt]{\scriptsize kampány nélkül is maradnak}\\[1pt]{\scriptsize\color{muted} a kampány költsége elvész}};
+  \node[q, fill=grid] at (2.25,-1.15) {\textbf{elveszettek}\\[2pt]{\scriptsize kampánnyal sem maradnak}\\[1pt]{\scriptsize\color{muted} a kampány költsége elvész}};
+  \node[q, fill=cE!20] at (6.75,-1.15) {\textbf{alvó kutyák}\\[2pt]{\scriptsize a kampány hatására távoznak}\\[1pt]{\scriptsize\color{cE} kerülni kell őket}};
+  \node[font=\small\bfseries, text=ink] at (4.5,2.75) {marad-e kampány nélkül?};
+  \node[font=\small, text=ink] at (2.25,2.35) {nem};
+  \node[font=\small, text=ink] at (6.75,2.35) {igen};
+  \node[font=\small\bfseries, text=ink, rotate=90] at (-0.85,0) {marad-e kampánnyal?};
+  \node[font=\small, text=ink, rotate=90] at (-0.35,1.15) {igen};
+  \node[font=\small, text=ink, rotate=90] at (-0.35,-1.15) {nem};
+\end{tikzpicture}
+\end{document}

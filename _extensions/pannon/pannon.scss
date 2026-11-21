@@ -1,0 +1,79 @@
+/*-- scss:defaults --*/
+// Pannon Egyetem tankönyvsorozat – közös webes arculat
+$pe-blue:        #285780;
+$pe-blue-dark:   #1C3F5E;
+$pe-blue-light:  #E8EEF4;
+$pe-orange:      #C8711E;
+$pe-ink:         #1F2933;
+$pe-muted:       #5B6775;
+
+$primary:        $pe-blue;
+$body-color:     $pe-ink;
+$link-color:     $pe-blue;
+$font-family-sans-serif: "IBM Plex Sans", system-ui, sans-serif;
+$font-family-serif: "IBM Plex Serif", Georgia, serif;
+$font-family-monospace: "IBM Plex Mono", ui-monospace, monospace;
+$font-family-base: $font-family-serif;
+$headings-font-family: "Raleway", "IBM Plex Sans", sans-serif;
+$headings-font-weight: 700;
+$headings-color: $pe-blue-dark;
+$font-size-root: 17px;
+$line-height-base: 1.6;
+$code-color: $pe-blue-dark;
+$code-bg: #F4F6F8;
+$sidebar-bg: #F7F9FB;
+$callout-border-width: 4px;
+
+/*-- scss:rules --*/
+
+h1.title, .quarto-title h1, h1 { font-weight: 900; letter-spacing: -0.01em; }
+h2 { border-bottom: 2px solid $pe-blue-light; padding-bottom: .25rem; margin-top: 2.2rem; }
+h3, h4 { font-weight: 700; }
+.sidebar, .navbar, .quarto-title-meta, .table, figcaption, .figure-caption,
+.callout-title-container, .nav, .breadcrumb, .quarto-secondary-nav { font-family: $font-family-sans-serif; }
+figcaption, .figure-caption { color: $pe-muted; font-size: .92rem; }
+.quarto-title-banner { background: $pe-blue; }
+
+// Ferde alsó sáv a fejezetcímek alatt – a sorozat vizuális azonosítója
+.quarto-title-block .quarto-title {
+  position: relative; padding-bottom: 1.1rem; margin-bottom: 1.4rem;
+}
+.quarto-title-block .quarto-title::after {
+  content: ""; position: absolute; left: 0; bottom: 0; width: 9rem; height: .55rem;
+  background: $pe-blue; transform: skewX(-24deg); transform-origin: left bottom;
+}
+
+// Didaktikai dobozok
+.callout { border-radius: 4px; }
+.callout.callout-style-default .callout-title { font-weight: 600; }
+div.eset-uzleti, div.eset-mernoki {
+  border-left: 4px solid $pe-orange; background: #FBF4EC; padding: .8rem 1rem; margin: 1.2rem 0;
+  border-radius: 3px;
+}
+div.eset-mernoki { border-left-color: #1F9077; background: #EEF7F5; }
+div.eset-uzleti::before, div.eset-mernoki::before {
+  display: block; font-family: $font-family-sans-serif; font-weight: 600; font-size: .85rem;
+  letter-spacing: .04em; text-transform: uppercase; margin-bottom: .3rem;
+}
+div.eset-uzleti::before  { content: "Futó eset · PannonShop"; color: $pe-orange; }
+div.eset-mernoki::before { content: "Futó eset · Pannon üzem"; color: #1F9077; }
+
+div.roadmap {
+  font-family: $font-family-sans-serif; background: $pe-blue-light; border-radius: 4px;
+  padding: .8rem 1.1rem; margin: 0 0 1.6rem 0; font-size: .95rem;
+}
+div.roadmap::before { content: "Miről szól a fejezet?"; display:block; font-weight:600; color:$pe-blue; margin-bottom:.3rem; }
+
+// Interaktív alkalmazás beágyazása
+.pe-app { border: 1px solid #D5DDE5; border-radius: 6px; overflow: hidden; margin: 1.2rem 0; }
+.pe-app iframe { width: 100%; border: 0; display: block; background: white; }
+.pe-app .pe-app-bar {
+  font-family: $font-family-sans-serif; font-size: .85rem; background: #F4F6F8;
+  padding: .35rem .8rem; display: flex; justify-content: space-between;
+}
+.pe-badges { margin: .6rem 0 1rem 0; display: flex; gap: .6rem; flex-wrap: wrap; }
+.pe-badges a { font-family: $font-family-sans-serif; font-size: .85rem; text-decoration: none;
+  border: 1px solid $pe-blue; border-radius: 3px; padding: .15rem .55rem; }
+
+.math.display { overflow-x: auto; }
+table { font-variant-numeric: tabular-nums; }

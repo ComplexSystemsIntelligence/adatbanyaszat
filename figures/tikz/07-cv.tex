@@ -1,0 +1,24 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[x=1.2cm, y=0.62cm, tr/.style={fill=cA!35, draw=white, line width=1pt}, te/.style={fill=cB, draw=white, line width=1pt}]
+  \node[font=\small\bfseries, text=peblue, anchor=west] at (0,6.2) {(a) 5-szörös keresztvalidáció};
+  \foreach \r in {1,...,5}{
+    \foreach \c in {1,...,5}{
+      \ifnum\c=\r \fill[te] (\c-1,6-\r-0.4) rectangle (\c,6-\r+0.4); \else \fill[tr] (\c-1,6-\r-0.4) rectangle (\c,6-\r+0.4); \fi}
+    \node[pe/note, anchor=east] at (-0.1,6-\r) {\r. kör};
+    \node[pe/note, anchor=west] at (5.1,6-\r) {$E_\r$};}
+  \node[pe/label, anchor=west] at (5.6,3) {$\hat{E}_{\mathrm{CV}} = \frac{1}{5}\sum_{j=1}^{5}E_j$};
+  \begin{scope}[xshift=10.4cm]
+  \node[font=\small\bfseries, text=peblue, anchor=west] at (0,6.2) {(b) idősoros (gördülő kezdetű) validáció};
+  \foreach \r/\n in {1/2, 2/3, 3/4, 4/5}{
+    \foreach \c in {1,...,\n}{\fill[tr] (\c-1,6-\r-0.4) rectangle (\c,6-\r+0.4);}
+    \pgfmathtruncatemacro{\t}{\n+1}
+    \fill[te] (\n,6-\r-0.4) rectangle (\t,6-\r+0.4);
+    \node[pe/note, anchor=east] at (-0.1,6-\r) {\r. kör};}
+  \draw[pe/thin, draw=muted] (0,0.6) -- (6.3,0.6) node[right, pe/note]{idő};
+  \end{scope}
+  \fill[tr] (0,-0.6) rectangle (0.6,-0.2); \node[pe/note, anchor=west] at (0.7,-0.4) {tanítás};
+  \fill[te] (2.4,-0.6) rectangle (3.0,-0.2); \node[pe/note, anchor=west] at (3.1,-0.4) {validálás};
+\end{tikzpicture}
+\end{document}

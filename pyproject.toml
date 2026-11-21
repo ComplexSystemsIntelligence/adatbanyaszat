@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adatbanyaszat"
+version = "2.0.0"
+description = "Segédcsomag az „Adatbányászat – a hatékonyság eszköze” című nyílt tankönyvhöz: futó esettanulmányok adatai, mini-adatsorok, ábrastílus."
+readme = "README.md"
+authors = [{ name = "Abonyi János", email = "janos@abonyilab.com" }]
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.26", "pandas>=2.1", "scipy>=1.11", "matplotlib>=3.8", "scikit-learn>=1.4",
+  "statsmodels>=0.14", "mlxtend>=0.23", "PyWavelets>=1.5", "seaborn>=0.13",
+  "pyarrow>=14", "networkx>=3.2",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+adatbanyaszat = ["pe.mplstyle", "fonts/*.otf"]

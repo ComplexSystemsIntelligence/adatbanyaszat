@@ -1,0 +1,25 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[x=1.1cm, y=1cm]
+  \draw[muted, line width=0.4pt, -{Stealth[length=2mm]}] (-0.5,-0.75) -- (10.6,-0.75) node[right, font=\small, text=ink]{$x$};
+  % doboz
+  \fill[pelight] (3,0.6) rectangle (6,1.6);
+  \draw[peblue, line width=1pt] (3,0.6) rectangle (6,1.6);
+  \draw[cB, line width=1.8pt] (4.2,0.6) -- (4.2,1.6);
+  % bajusz
+  \draw[peblue, line width=1pt] (1.2,1.1) -- (3,1.1); \draw[peblue, line width=1pt] (6,1.1) -- (8.3,1.1);
+  \draw[peblue, line width=1pt] (1.2,0.85) -- (1.2,1.35); \draw[peblue, line width=1pt] (8.3,0.85) -- (8.3,1.35);
+  % kiugrók
+  \foreach \x in {9.4,10.1}{\draw[cE, line width=1pt] (\x,1.1) circle (2.5pt);}
+  % feliratok
+  \draw[pe/thin, draw=muted] (3,2.3) -- (3,1.65); \node[pe/label, above] at (3,2.3) {$Q_1$};
+  \draw[pe/thin, draw=muted] (6,2.3) -- (6,1.65); \node[pe/label, above] at (6,2.3) {$Q_3$};
+  \draw[pe/thin, draw=muted] (4.2,2.3) -- (4.2,1.65); \node[pe/label, above] at (4.2,2.3) {medián};
+  \draw[decorate, decoration={brace, amplitude=5pt, mirror}, muted] (3,0.45) -- (6,0.45) node[midway, below=5pt, pe/label]{$\mathrm{IQR}=Q_3-Q_1$};
+  \node[pe/note, align=center] at (1.2,0.0) {legkisebb érték\\$\ge Q_1-1{,}5\,\mathrm{IQR}$};
+  \node[pe/note, align=center] at (7.4,0.0) {legnagyobb érték\\$\le Q_3+1{,}5\,\mathrm{IQR}$};
+  \node[pe/note, text=cE, align=center] at (9.75,1.75) {kiugró\\értékek};
+  \draw[cE!60, dashed] (8.95,0.5) -- (8.95,1.7); \node[pe/note, text=cE, anchor=north] at (8.95,0.45) {felső kerítés};
+\end{tikzpicture}
+\end{document}

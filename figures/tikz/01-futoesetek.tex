@@ -1,0 +1,30 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[
+  tbl/.style={pe/box, text width=30mm, align=left, font=\scriptsize, inner sep=3pt},
+  hd/.style={font=\small\bfseries, text=ink}]
+  % PannonShop
+  \node[hd, text=cB] at (-4.2,2.6) {PannonShop (üzleti eset)};
+  \node[tbl, draw=cB] (t1) at (-5.9,1.1) {\textbf{Számlatételek}\\Invoice, StockCode,\\Quantity, InvoiceDate,\\Price, CustomerID};
+  \node[tbl, draw=cB] (t2) at (-2.5,1.1) {\textbf{Termékek}\\kategória, alkategória,\\listaár};
+  \node[tbl, draw=cB] (t3) at (-5.9,-0.8) {\textbf{Vevők}\\régió, regisztráció};
+  \node[tbl, draw=cB] (t4) at (-2.5,-0.8) {\textbf{Értékelések}\\csillag, szöveg};
+  \draw[pe/thin, cB] (t1) -- (t2); \draw[pe/thin, cB] (t1) -- (t3); \draw[pe/thin, cB] (t4) -- (t2);
+  % Üzem
+  \node[hd, text=cD] at (4.2,2.6) {Pannon üzem (mérnöki eset)};
+  \node[tbl, draw=cD] (u1) at (2.5,1.1) {\textbf{Folyamatmérések}\\10 perces: hőmérséklet,\\áramok, nyomás, energia};
+  \node[tbl, draw=cD] (u2) at (5.9,1.1) {\textbf{Laborminták}\\4 óránként: koncentráció,\\szennyezés, megfelelőség};
+  \node[tbl, draw=cD] (u3) at (2.5,-0.8) {\textbf{Riasztásnapló}\\esemény, időbélyeg};
+  \node[tbl, draw=cD] (u4) at (5.9,-0.8) {\textbf{Karbantartás}\\tisztítások, termékváltás};
+  \draw[pe/thin, cD] (u1) -- (u2); \draw[pe/thin, cD] (u1) -- (u3); \draw[pe/thin, cD] (u1) -- (u4);
+  % közös kérdések
+  \node[pe/stepfill, text width=125mm, align=left, font=\scriptsize] (q) at (0,-3.0) {
+    \textbf{Végigvonuló kérdések:}\enspace
+    adattárház és OLAP (2.) \textbullet\ tisztítás (3.) \textbullet\ feltárás (4.) \textbullet\ szegmentálás, üzemállapotok (5.) \textbullet\
+    kosárelemzés, riasztássorozatok (6.) \textbullet\ lemorzsolódás, minőség (7., 9.) \textbullet\ lágy szenzor (8., 10.) \textbullet\
+    csalás és folyamathiba (11.) \textbullet\ előrejelzés (12.) \textbullet\ vélemények (13.) \textbullet\ összegző esettanulmányok (14., 15.)};
+  \draw[pe/flow] (-4.2,-1.55) -- (-4.2,-2.45);
+  \draw[pe/flow] (4.2,-1.55) -- (4.2,-2.45);
+\end{tikzpicture}
+\end{document}

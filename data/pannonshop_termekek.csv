@@ -1,0 +1,49 @@
+StockCode,Description,Kategoria,Alkategoria,ListaAr
+10001,Kávébab 1 kg,Kávé és tea,Kávé,7990.0
+10002,Őrölt kávé 250 g,Kávé és tea,Kávé,2490.0
+10003,Kávékapszula 30 db,Kávé és tea,Kávé,3290.0
+10004,Koffeinmentes kávé 250 g,Kávé és tea,Kávé,2790.0
+10005,Zöld tea 50 filter,Kávé és tea,Tea,1490.0
+10006,Fekete tea 50 filter,Kávé és tea,Tea,1290.0
+10007,Gyümölcstea 40 g,Kávé és tea,Tea,1190.0
+10008,Matcha por 30 g,Kávé és tea,Tea,3990.0
+10009,Vízkőoldó 500 ml,Kávé és tea,Kiegészítő,1990.0
+10010,Tejhabosító kancsó,Kávé és tea,Kiegészítő,4490.0
+10011,Kávéfilter papír 100 db,Kávé és tea,Kiegészítő,890.0
+10012,Kávéfőző gép,Háztartási gépek,Kávégép,89990.0
+10013,Kotyogós kávéfőző,Háztartási gépek,Kávégép,8990.0
+10014,Kávédaráló,Háztartási gépek,Kávégép,19990.0
+10015,Vízforraló,Háztartási gépek,Konyhai gép,12990.0
+10016,Turmixgép,Háztartási gépek,Konyhai gép,24990.0
+10017,Kenyérpirító,Háztartási gépek,Konyhai gép,14990.0
+10018,Teáskanna,Konyhai eszközök,Edény,6990.0
+10019,Öntöttvas serpenyő,Konyhai eszközök,Edény,15990.0
+10020,Fazékkészlet,Konyhai eszközök,Edény,29990.0
+10021,Szilikon spatula,Konyhai eszközök,Eszköz,1490.0
+10022,Konyhai mérleg,Konyhai eszközök,Eszköz,6490.0
+10023,Késkészlet,Konyhai eszközök,Eszköz,18990.0
+10024,Vágódeszka,Konyhai eszközök,Eszköz,4990.0
+10025,Porcelán bögre,Konyhai eszközök,Bögre,2490.0
+10026,Termosz bögre,Konyhai eszközök,Bögre,5990.0
+10027,Eszpresszó csészekészlet,Konyhai eszközök,Bögre,7990.0
+10028,Illatgyertya,Dekoráció,Gyertya,3490.0
+10029,Teamécses 50 db,Dekoráció,Gyertya,1990.0
+10030,Gyertyatartó,Dekoráció,Gyertya,4990.0
+10031,Díszpárna,Dekoráció,Lakástextil,5990.0
+10032,Pléd,Dekoráció,Lakástextil,9990.0
+10033,Asztali futó,Dekoráció,Lakástextil,4490.0
+10034,Adventi koszorú,Dekoráció,Ünnepi,7990.0
+10035,Karácsonyi égősor,Dekoráció,Ünnepi,6990.0
+10036,Karácsonyfadísz készlet,Dekoráció,Ünnepi,5490.0
+10037,Ajándékcsomagolás,Ajándék,Csomagolás,990.0
+10038,Díszdoboz,Ajándék,Csomagolás,1990.0
+10039,Ajándékkísérő kártya,Ajándék,Csomagolás,490.0
+10040,Ajándékutalvány 10 000 Ft,Ajándék,Ajándéktárgy,10000.0
+10041,Kerámia hűtőmágnes,Ajándék,Ajándéktárgy,1290.0
+10042,Fotóalbum,Ajándék,Ajándéktárgy,6990.0
+10043,Pontozott füzet A5,Írószer,Papír,1990.0
+10044,Határidőnapló,Írószer,Papír,4990.0
+10045,Jegyzettömb,Írószer,Papír,990.0
+10046,Tollkészlet,Írószer,Íróeszköz,2990.0
+10047,Töltőtoll,Írószer,Íróeszköz,12990.0
+10048,Kiemelő 4 db,Írószer,Íróeszköz,1490.0

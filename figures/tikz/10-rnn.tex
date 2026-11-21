@@ -1,0 +1,49 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,
+  h/.style={rectangle, rounded corners=3pt, draw=peblue, line width=0.9pt, fill=pelight, minimum width=11mm, minimum height=9mm, font=\small},
+  io/.style={circle, draw=#1, line width=0.8pt, fill=#1!10, minimum size=8mm, inner sep=0pt, font=\scriptsize},
+  g/.style={circle, draw=cE, line width=0.8pt, fill=white, minimum size=6.5mm, inner sep=0pt, font=\scriptsize},
+  op/.style={circle, draw=ink, line width=0.6pt, fill=white, minimum size=5mm, inner sep=0pt, font=\scriptsize}]
+  % (a) kigöngyölített RNN
+  \node[font=\small\bfseries, text=peblue, anchor=west] at (-1.0,2.7) {(a) rekurrens háló időben kigöngyölítve};
+  \node[h] (hc) at (0,0.6) {RNN};
+  \node[io=cA] (xc) at (0,-0.9) {$x_t$};
+  \node[io=cB] (yc) at (0,2.0) {$\hat y_t$};
+  \draw[pe/flow] (xc) -- (hc); \draw[pe/flow] (hc) -- (yc);
+  \draw[pe/flow] (hc.east) to[out=0,in=0,looseness=4] (hc.north east); \node[font=\scriptsize] at (1.0,1.35) {$\mathbf{h}_{t-1}$};
+  \node[font=\Large, text=muted] at (1.75,0.6) {$=$};
+  \foreach \t/\lab [count=\i from 0] in {1/{t-1},2/{t},3/{t+1}}{
+    \node[h] (h\i) at (2.8+2.0*\i,0.6) {$\mathbf{h}_{\lab}$};
+    \node[io=cA] (x\i) at (2.8+2.0*\i,-0.9) {$x_{\lab}$};
+    \node[io=cB] (y\i) at (2.8+2.0*\i,2.0) {$\hat y_{\lab}$};
+    \draw[pe/flow] (x\i) -- (h\i); \draw[pe/flow] (h\i) -- (y\i);}
+  \draw[pe/flow] (h0) -- node[above, font=\scriptsize]{$\mathbf{W}_{hh}$} (h1);
+  \draw[pe/flow] (h1) -- node[above, font=\scriptsize]{$\mathbf{W}_{hh}$} (h2);
+  \draw[pe/flow, draw=muted] (2.05,0.6) -- (h0);
+  \draw[pe/flow, draw=muted] (h2) -- (8.9,0.6);
+  \node[font=\small, anchor=west] at (-1.0,-1.9) {$\mathbf{h}_t=\tanh\bigl(\mathbf{W}_{hh}\mathbf{h}_{t-1}+\mathbf{W}_{xh}\mathbf{x}_t+\mathbf{b}_h\bigr),\qquad \hat{\mathbf{y}}_t=\mathbf{W}_{hy}\mathbf{h}_t+\mathbf{b}_y$};
+  % (b) LSTM-cella
+  \begin{scope}[xshift=11.2cm]
+  \node[font=\small\bfseries, text=peblue, anchor=west] at (-0.6,2.7) {(b) LSTM-cella};
+  \draw[line width=0.9pt, draw=peblue, rounded corners=6pt, fill=pelight!50] (-0.3,-1.3) rectangle (5.6,2.1);
+  \draw[-{Stealth[length=2.2mm]}, line width=1.4pt, draw=cD] (-1.0,1.6) -- node[pos=0.06, above, font=\scriptsize, text=cD]{$\mathbf{c}_{t-1}$} (6.3,1.6) node[above left, font=\scriptsize, text=cD]{$\mathbf{c}_t$};
+  \node[op] (m1) at (0.9,1.6) {$\times$};
+  \node[op] (p1) at (2.6,1.6) {$+$};
+  \node[g] (f) at (0.9,0.2) {$\mathbf{f}$};
+  \node[g] (i) at (2.0,0.2) {$\mathbf{i}$};
+  \node[g, draw=cC] (cc) at (3.1,0.2) {$\tilde{\mathbf{c}}$};
+  \node[op] (m2) at (2.6,0.9) {$\times$};
+  \node[g] (o) at (4.3,0.2) {$\mathbf{o}$};
+  \node[op] (m3) at (4.9,0.9) {$\times$};
+  \node[op, font=\tiny] (th) at (4.9,1.6) {$\tanh$};
+  \draw[line width=0.6pt] (f) -- (m1); \draw[line width=0.6pt] (i) -- (m2); \draw[line width=0.6pt] (cc) -- (m2);
+  \draw[line width=0.6pt] (m2) -- (p1); \draw[line width=0.6pt] (o) -- (m3); \draw[line width=0.6pt] (th) -- (m3);
+  \draw[-{Stealth[length=2mm]}, line width=0.8pt, draw=peblue] (-1.0,-0.8) node[left, font=\scriptsize, text=ink]{$\mathbf{h}_{t-1},\mathbf{x}_t$} -- (4.3,-0.8);
+  \foreach \n in {f,i,cc,o}{\draw[line width=0.6pt, draw=peblue] (\n|- 0,-0.8) -- (\n);}
+  \draw[-{Stealth[length=2mm]}, line width=0.8pt, draw=peblue] (m3) -- (6.3,0.9) node[right, font=\scriptsize, text=ink]{$\mathbf{h}_t$};
+  \node[pe/note, align=left, anchor=north west] at (-0.6,-1.55) {$\mathbf{f}$: felejtő kapu, $\mathbf{i}$: bemeneti kapu, $\mathbf{o}$: kimeneti kapu (szigmoid)\\a cellaállapot ($\mathbf{c}_t$) additív frissítése miatt a gradiens nem enyészik el};
+  \end{scope}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,27 @@
+<!DOCTYPE html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ügyfélérték-kalkulátor</title><link rel="stylesheet" href="common.css"><script src="common.js"></script></head><body>
+<header><h1>Ügyfélérték-kalkulátor</h1><p>Az ügyfélérték (CLV) a megtartási ráta, a fedezet, a diszkontráta és a horizont függvényében.</p></header>
+<main>
+<div class="controls">
+  <label>Fedezet időszakonként [Ft] <span class="val" id="m-v"></span></label><input type="range" id="m" min="500" max="20000" step="500" value="5000">
+  <label>Megtartási ráta (r) <span class="val" id="r-v"></span></label><input type="range" id="r" min="0.5" max="0.99" step="0.01" value="0.85">
+  <label>Diszkontráta időszakonként (d) <span class="val" id="d-v"></span></label><input type="range" id="d" min="0" max="0.2" step="0.005" value="0.02">
+  <label>Horizont (időszak) <span class="val" id="h-v"></span></label><input type="range" id="h" min="1" max="60" value="24">
+  <label>Megszerzési költség [Ft] <span class="val" id="ac-v"></span></label><input type="range" id="ac" min="0" max="50000" step="1000" value="10000">
+  <div class="stat" id="st"></div>
+  <div class="note">CLV = Σ m·rᵗ/(1+d)ᵗ (t = 1…H); végtelen horizonton m·r/(1+d−r). A megtartási ráta kis javulása is jelentősen növelheti az ügyfélértéket – ezért éri meg a megtartásba fektetni.</div>
+</div>
+<div class="panel"><svg id="s" width="560" height="360" viewBox="0 0 560 360"></svg></div>
+</main>
+<script>
+const svg = document.getElementById("s");
+function draw() { const m = PE.v("m"), r = PE.v("r"), d = PE.v("d"), H = PE.v("h"), ac = PE.v("ac"); let cum = 0; const pts = [], surv = [];
+  for (let t = 1; t <= 60; t++) { const v = m * r ** t / (1 + d) ** t; if (t <= H) cum += v; pts.push([t, v]); surv.push([t, r ** t]); }
+  const inf = d + 1 - r > 0 ? m * r / (1 + d - r) : Infinity; PE.clear(svg);
+  const A = PE.axes(svg, [0, 60], [0, m], { xlab: "időszak", ylab: "várható diszkontált fedezet [Ft]", dx: 0, dy: 0, nx: 6, margin: { l: 58 } });
+  pts.forEach(([t, v]) => PE.el("rect", { x: A.x(t - .4), y: A.y(v), width: A.x(.8) - A.x(0), height: A.y(0) - A.y(v), fill: t <= H ? PE.pal[0] : "#c9d2db" }, svg));
+  PE.el("path", { d: PE.path(surv.map(([t, s]) => [t, s * m]), A.x, A.y), fill: "none", stroke: PE.pal[1], "stroke-width": 2 }, svg);
+  const tx = PE.el("text", { x: A.x(22), y: A.y(m * .6), style: "font-size:11px;fill:#C8711E" }, svg); tx.textContent = "túlélési valószínűség (rᵗ, skálázva)";
+  document.getElementById("st").innerHTML = `CLV (${H} időszak): <b>${PE.fmt(cum, 0)} Ft</b><br>CLV (végtelen horizont): <b>${Number.isFinite(inf) ? PE.fmt(inf, 0) + " Ft" : "∞"}</b><br>Várható élettartam: <b>${PE.fmt(1 / (1 - r), 1)}</b> időszak<br>Nettó érték a megszerzési költség után: <b>${PE.fmt(cum - ac, 0)} Ft</b>`; }
+["m", "r", "d", "h", "ac"].forEach(id => PE.bind(id, draw, v => ["r", "d"].includes(id) ? PE.fmt(v, id === "d" ? 3 : 2) : PE.fmt(v, 0))); draw();
+</script></body></html>

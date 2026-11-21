@@ -1,0 +1,26 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[pt/.style={circle, fill=#1, inner sep=1.6pt}]
+  \def\clA{(0,0), (0.6,0.7), (-0.4,0.9), (0.3,1.4), (-0.6,0.2)}
+  \def\clB{(3.2,0.3), (3.9,0.9), (3.5,1.5), (4.3,0.2), (2.9,1.1)}
+  \foreach \k/\t/\x in {0/{egyszerű\\(single)}/0, 1/{teljes\\(complete)}/6.3, 2/{átlagos\\(average)}/12.6, 3/{centroid}/18.9}{
+    \begin{scope}[xshift=\x cm, scale=0.95]
+      \foreach \p in {(0,0), (0.6,0.7), (-0.4,0.9), (0.3,1.4), (-0.6,0.2)}{\node[pt=cA] at \p {};}
+      \foreach \p in {(3.2,0.3), (3.9,0.9), (3.5,1.5), (4.3,0.2), (2.9,1.1)}{\node[pt=cB] at \p {};}
+      \draw[cA!50, dashed] (-0.05,0.65) ellipse (0.95 and 1.05);
+      \draw[cB!50, dashed] (3.6,0.8) ellipse (1.05 and 0.95);
+      \node[font=\small\bfseries, text=peblue, align=center] at (1.8,2.55) {\t};
+      \ifnum\k=0 \draw[ink, line width=1.2pt] (0.6,0.7) -- (2.9,1.1); \fi
+      \ifnum\k=1 \draw[ink, line width=1.2pt] (-0.6,0.2) -- (4.3,0.2); \fi
+      \ifnum\k=2
+        \foreach \a in {(0,0), (0.6,0.7), (-0.4,0.9), (0.3,1.4), (-0.6,0.2)}{
+          \foreach \b in {(3.2,0.3), (3.9,0.9), (3.5,1.5), (4.3,0.2), (2.9,1.1)}{\draw[ink!35, line width=0.3pt] \a -- \b;}} \fi
+      \ifnum\k=3
+        \node[cross out, draw=cA, line width=1.4pt, minimum size=6pt] (ca) at (-0.02,0.64) {};
+        \node[cross out, draw=cB, line width=1.4pt, minimum size=6pt] (cb) at (3.56,0.8) {};
+        \draw[ink, line width=1.2pt] (ca) -- (cb); \fi
+    \end{scope}}
+  \node[pe/note, text width=180mm, align=center] at (11.2,-1.1) {egyszerű: a legközelebbi pontpár \quad teljes: a legtávolabbi pontpár \quad átlagos: az összes pontpár átlaga \quad centroid: a középpontok távolsága};
+\end{tikzpicture}
+\end{document}

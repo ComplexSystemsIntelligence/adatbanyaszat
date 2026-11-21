@@ -1,0 +1,20 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[declare function={tr(\x)=2+0.03*\x+0.6*sin(\x*1.2); sz(\x)=1.1*sin(\x*360/12); zaj(\x)=0.35*sin(\x*517)*cos(\x*331);}]
+\begin{groupplot}[group style={group size=1 by 4, vertical sep=3mm, xticklabels at=edge bottom},
+  pe axis, width=12cm, height=2.9cm, xmin=0, xmax=72, domain=0:72, samples=289, grid=none,
+  ytick=\empty, xtick={0,12,...,72}, xticklabels={}, ylabel style={rotate=-90, anchor=east, font=\small}]
+\nextgroupplot[ylabel={$y_t$}, title={additív felbontás: $y_t=T_t+S_t+R_t$}]
+  \addplot[pe line A] {tr(x)+sz(x)+zaj(x)};
+\nextgroupplot[ylabel={trend $T_t$}]
+  \addplot[pe line B] {tr(x)};
+\nextgroupplot[ylabel={szezonalitás $S_t$}, ymin=-1.3, ymax=1.9]
+  \addplot[pe line C] {sz(x)};
+  \draw[{Stealth[length=2mm]}-{Stealth[length=2mm]}, ink] (axis cs:3,1.5) -- node[fill=white, font=\scriptsize, inner sep=1pt]{periódus $m$} (axis cs:15,1.5);
+\nextgroupplot[ylabel={maradék $R_t$}, xlabel={idő}]
+  \addplot[pe line D, line width=0.8pt] {zaj(x)};
+\end{groupplot}
+
+\end{tikzpicture}
+\end{document}

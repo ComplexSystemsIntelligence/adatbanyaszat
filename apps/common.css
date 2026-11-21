@@ -1,0 +1,29 @@
+/* A Pannon tankönyvsorozat interaktív alkalmazásainak közös stílusa */
+@import url("../assets/pannon-fonts.css");
+:root{--pe:#285780;--pe-d:#1C3F5E;--pe-l:#E8EEF4;--ink:#1F2933;--muted:#6B7785;--grid:#E6EAEE;
+  --cA:#2E6DB4;--cB:#C8711E;--cC:#7A4EAB;--cD:#1F9077;--cE:#B23A48;}
+*{box-sizing:border-box}
+body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:#fff;font-size:14px}
+header{background:var(--pe);color:#fff;padding:8px 14px;position:relative;overflow:hidden}
+header::after{content:"";position:absolute;right:-30px;top:0;bottom:0;width:120px;background:var(--pe-d);transform:skewX(-20deg)}
+header h1{font-family:Raleway,"IBM Plex Sans",sans-serif;font-weight:800;font-size:16px;margin:0;position:relative;z-index:1}
+header p{margin:2px 0 0;font-size:12px;opacity:.9;position:relative;z-index:1}
+main{display:flex;flex-wrap:wrap;gap:12px;padding:12px}
+.panel{flex:1 1 320px;min-width:280px}
+.controls{flex:0 1 280px;background:var(--pe-l);border-radius:6px;padding:10px 12px}
+.controls label{display:block;font-size:12px;margin:8px 0 2px;color:var(--ink);font-weight:600}
+.controls input[type=range]{width:100%}
+.controls select,.controls textarea,.controls input[type=number]{width:100%;font:inherit;font-size:12px;padding:3px;border:1px solid #b9c6d3;border-radius:4px}
+.val{float:right;font-weight:400;color:var(--pe)}
+button{font:inherit;font-size:12px;background:var(--pe);color:#fff;border:0;border-radius:4px;padding:5px 10px;margin:6px 4px 0 0;cursor:pointer}
+button.sec{background:#fff;color:var(--pe);border:1px solid var(--pe)}
+button:hover{filter:brightness(1.1)}
+.stat{font-size:13px;margin:6px 0;line-height:1.5}
+.stat b{color:var(--pe)}
+svg{background:#fff;border:1px solid var(--grid);border-radius:4px;max-width:100%;height:auto;display:block}
+table.t{border-collapse:collapse;font-size:12px;margin:6px 0}
+table.t th,table.t td{border:1px solid var(--grid);padding:3px 6px;text-align:right}
+table.t th{background:var(--pe-l);color:var(--pe-d)}
+.note{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.4}
+.axis text{font-size:10px;fill:var(--muted)}
+.axis line,.axis path{stroke:#b5bfc9}

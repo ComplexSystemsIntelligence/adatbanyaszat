@@ -1,0 +1,27 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[
+  lv/.style={pe/step, text width=48mm, minimum height=10mm, font=\scriptsize, align=left},
+  an/.style={pe/stepfill, text width=40mm, minimum height=10mm, font=\scriptsize, align=left},
+  lab/.style={font=\scriptsize\bfseries, text=peblue, anchor=east}]
+  \node[lv] (l4) at (0,4.4) {\textbf{vállalatirányítás (ERP)}: tervezés, beszerzés, értékesítés};
+  \node[lv] (l3) at (0,3.0) {\textbf{gyártásirányítás (MES, LIMS)}: gyártási rendelések, labor, minőség, karbantartás};
+  \node[lv] (l2) at (0,1.6) {\textbf{folyamatirányítás (DCS, PLC, SCADA)}: szabályozás, riasztások, kezelői felület};
+  \node[lv] (l1) at (0,0.2) {\textbf{érzékelők és beavatkozók}: hőmérséklet, nyomás, áram, szelepek};
+  \foreach \i/\n in {4/4,3/3,2/2,1/{0–1}}{\node[lab] at (-2.65,{0.2+1.4*(\i-1)}) {\n.};}
+  \node[font=\scriptsize, text=muted, rotate=90] at (-3.35,2.3) {ISA-95 (IEC 62264) szintek};
+  \draw[pe/thin] (l1) -- (l2); \draw[pe/thin] (l2) -- (l3); \draw[pe/thin] (l3) -- (l4);
+  \node[pe/data, font=\scriptsize, minimum width=20mm, minimum height=14mm] (hist) at (4.3,1.6) {folyamat-\\historian};
+  \node[pe/data, font=\scriptsize, minimum width=20mm, minimum height=14mm] (dw) at (4.3,3.7) {adattárház,\\adattó};
+  \draw[pe/flow] (l2.east) -- (hist.west);
+  \draw[pe/flow] (l3.east) -- ++(0.5,0) |- (dw.west);
+  \draw[pe/flow] (hist) -- (dw);
+  \node[an, anchor=west] (a1) at (6.2,4.7) {\textbf{lágy szenzorok}: a laborértékek folyamatos becslése};
+  \node[an, anchor=west] (a2) at (6.2,3.5) {\textbf{folyamatfelügyelet}: $T^2$, $Q$, anomália-észlelés};
+  \node[an, anchor=west] (a3) at (6.2,2.3) {\textbf{hibadiagnózis és riasztáskezelés}: okok, prioritások};
+  \node[an, anchor=west] (a4) at (6.2,1.1) {\textbf{prediktív karbantartás}: állapotindikátor, hátralévő idő};
+  \foreach \a in {a1,a2,a3,a4}{\draw[pe/thin, draw=peblue] (dw.east) -- (\a.west);}
+  \node[pe/note, anchor=north west, align=left] at (6.2,0.4) {$\Rightarrow$ döntéstámogatás a kezelőnek (2. szint)\\\phantom{$\Rightarrow$} és a karbantartásnak (3. szint)};
+\end{tikzpicture}
+\end{document}

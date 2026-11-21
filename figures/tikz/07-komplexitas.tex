@@ -1,0 +1,30 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=4 by 1, horizontal sep=7mm}, every axis title/.style={font=\small}, pe axis,
+   width=4.4cm, height=4.2cm, xmin=0, xmax=4, ymin=-1.6, ymax=2.9, xtick=\empty, ytick=\empty, grid=none]
+\nextgroupplot[title={(a) alultanulás: fok = 1}]
+  \addplot[muted, dashed, line width=0.8pt] table[x=x, y=f] {../data/07-illesztes.dat};
+  \addplot[only marks, mark=*, mark size=1.3pt, cA] table[x=x, y=y] {../data/07-pontok.dat};
+  \addplot[cB, line width=1.3pt] table[x=x, y=p1] {../data/07-illesztes.dat};
+\nextgroupplot[title={(b) jó illeszkedés: fok = 4}]
+  \addplot[muted, dashed, line width=0.8pt] table[x=x, y=f] {../data/07-illesztes.dat};
+  \addplot[only marks, mark=*, mark size=1.3pt, cA] table[x=x, y=y] {../data/07-pontok.dat};
+  \addplot[cB, line width=1.3pt] table[x=x, y=p4] {../data/07-illesztes.dat};
+\nextgroupplot[title={(c) túltanulás: fok = 12}]
+  \addplot[muted, dashed, line width=0.8pt] table[x=x, y=f] {../data/07-illesztes.dat};
+  \addplot[only marks, mark=*, mark size=1.3pt, cA] table[x=x, y=y] {../data/07-pontok.dat};
+  \addplot[cB, line width=1.3pt] table[x=x, y=p12] {../data/07-illesztes.dat};
+\nextgroupplot[title={(d) hiba a fokszám függvényében}, width=5.6cm, xshift=9mm, xmin=0, xmax=12, ymin=0, ymax=0.42, xtick={0,2,...,12},
+   ytick={0,0.1,0.2,0.3,0.4}, grid=major, xlabel={polinom fokszáma}, ylabel={MSE},
+   yticklabel pos=right, ylabel near ticks, legend style={at={(0.03,0.97)}, anchor=north west}]
+  \addplot[cA, line width=1.3pt, mark=*, mark size=1.2pt] table[x=fok, y=tanito] {../data/07-komplexitas.dat};
+  \addlegendentry{tanítóhiba}
+  \addplot[cB, line width=1.3pt, mark=square*, mark size=1.2pt] table[x=fok, y=teszt] {../data/07-komplexitas.dat};
+  \addlegendentry{teszthiba}
+  \addplot[muted, dashed] coordinates {(0,0.09) (12,0.09)};
+  \node[pe/note, anchor=south east] at (axis cs:12,0.09) {zaj szórásnégyzete};
+\end{groupplot}
+\end{tikzpicture}
+\end{document}

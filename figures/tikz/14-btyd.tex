@@ -1,0 +1,21 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[x=1cm, y=1cm]
+  \fill[cA!6] (0,-0.9) rectangle (8.2,0.9); \fill[cB!8] (8.2,-0.9) rectangle (12.4,0.9);
+  \node[pe/note, anchor=north] at (4.1,-0.95) {kalibrációs időszak};
+  \node[pe/note, anchor=north] at (10.3,-0.95) {előrejelzési (visszatartott) időszak};
+  \draw[-{Stealth[length=2.4mm]}, line width=0.9pt, ink] (-0.3,0) -- (12.8,0) node[right, font=\small]{idő};
+  \draw[line width=3pt, cD, opacity=0.55] (0.6,0) -- (5.5,0);
+  \draw[line width=1.2pt, muted, dashed] (5.5,0) -- (8.2,0);
+  \foreach \t in {0.6,2.1,2.9,4.6,5.5}{\fill[cA] (\t,0) circle[radius=3pt];}
+  \node[font=\scriptsize, text=cA, anchor=south] at (0.6,0.15) {első};
+  \draw[cE, line width=1.2pt] (5.62,-0.25) -- (5.62,0.25);
+  \node[font=\scriptsize, text=cE, anchor=south west, align=left] at (5.65,0.25) {az utolsó vásárlás után\\inaktívvá válik (nem megfigyelt)};
+  \draw[ink, line width=0.8pt] (8.2,-0.9) -- (8.2,0.9) node[above, font=\scriptsize]{$T$};
+  \draw[{Stealth[length=2mm]}-{Stealth[length=2mm]}, muted] (0.6,-1.6) -- node[below, font=\scriptsize]{$t_x$: az utolsó vásárlás ideje} (5.5,-1.6);
+  \draw[{Stealth[length=2mm]}-{Stealth[length=2mm]}, muted] (0.6,-2.35) -- node[below, font=\scriptsize]{$T$: a megfigyelés hossza} (8.2,-2.35);
+  \node[font=\scriptsize, anchor=west, align=left] at (0.3,1.55) {$x=4$ ismételt vásárlás; aktív állapotban a vásárlások Poisson-folyamatot követnek ($\lambda$), minden vásárlás után $p$ valószínűséggel inaktívvá válik};
+  \node[font=\scriptsize, anchor=west, align=left, text=muted] at (0.3,2.15) {$\lambda\sim\mathrm{Gamma}(r,\alpha)$,\quad $p\sim\mathrm{Béta}(a,b)$ a vevők között};
+\end{tikzpicture}
+\end{document}

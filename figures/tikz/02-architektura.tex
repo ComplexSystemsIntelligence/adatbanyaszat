@@ -1,0 +1,28 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}[node distance=5mm and 9mm]
+  \node[pe/data, minimum width=20mm] (s1) {Webáruház\\(OLTP)};
+  \node[pe/data, minimum width=20mm, below=of s1] (s2) {ERP,\\számlázás};
+  \node[pe/data, minimum width=20mm, below=of s2] (s3) {Folyamat-\\irányítás};
+  \node[pe/data, minimum width=20mm, below=of s3] (s4) {Külső adat,\\fájlok};
+  \node[pe/stepfill, text width=22mm, minimum height=40mm, right=12mm of s2.south east, anchor=north west, yshift=12mm] (etl)
+     {\textbf{ETL / ELT}\\[4pt]{\scriptsize kinyerés\\[1pt] tisztítás\\[1pt] egységesítés\\[1pt] betöltés}};
+  \node[pe/data, minimum width=26mm, minimum height=24mm, right=10mm of etl] (dw) {\textbf{Adattárház}\\ \scriptsize integrált,\\ \scriptsize időfüggő,\\ \scriptsize nem illékony};
+  \node[pe/step, text width=22mm, right=12mm of dw, yshift=14mm] (dm1) {Adatpiac:\\értékesítés};
+  \node[pe/step, text width=22mm, right=12mm of dw, yshift=-0mm] (dm2) {Adatpiac:\\termelés};
+  \node[pe/step, text width=22mm, right=12mm of dw, yshift=-14mm] (dm3) {Adatpiac:\\pénzügy};
+  \node[pe/stepfill, text width=26mm, right=11mm of dm1] (u1) {Jelentések, OLAP};
+  \node[pe/stepfill, text width=26mm, right=11mm of dm2] (u2) {Adatbányászat,\\gépi tanulás};
+  \node[pe/stepfill, text width=26mm, right=11mm of dm3] (u3) {Irányítópultok};
+  \foreach \s in {s1,s2,s3,s4}{\draw[pe/flow] (\s.east) -- (\s.east -| etl.west);}
+  \draw[pe/flow] (etl) -- (dw);
+  \foreach \d in {dm1,dm2,dm3}{\draw[pe/flow] (dw.east) -- (\d.west);}
+  \draw[pe/flow] (dm1) -- (u1); \draw[pe/flow] (dm2) -- (u2); \draw[pe/flow] (dm3) -- (u3);
+  \draw[pe/back] (dw.north) -- ++(0,0.9) -| node[pe/note, pos=0.25, above]{metaadatok: definíciók, eredet, frissítés} (u1.north);
+  \node[pe/note, below=3mm of s4] {forrásrendszerek};
+  \node[pe/note] at (etl |- s4) {adatintegráció};
+  \node[pe/note] at (dw |- s4) {tárolás};
+  \node[pe/note] at (u3 |- s4) {felhasználás};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,18 @@
+# A könyv fordításához és a példák futtatásához szükséges csomagok
+numpy>=1.26
+pandas>=2.1
+scipy>=1.11
+matplotlib>=3.8
+seaborn>=0.13
+scikit-learn>=1.4
+statsmodels>=0.14
+mlxtend>=0.23
+PyWavelets>=1.5
+pyarrow>=14
+networkx>=3.2
+jupyter
+nbclient
+nbformat
+# a 10. fejezet PyTorch-példái (nem kötelező; Colabban előre telepítve)
+# torch>=2.2
+-e .

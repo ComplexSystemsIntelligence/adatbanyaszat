@@ -1,0 +1,12 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{pe-tikz}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[pe axis, width=8.5cm, height=5.2cm, xmin=0, xmax=1, ymin=0, ymax=1.05, samples=200, domain=0.0005:0.9995,
+   xlabel={a pozitív osztály aránya, $p$}, ylabel={szennyezettség}, legend pos=outer north east]
+  \addplot[cA, line width=1.5pt] {-x*log2(x)-(1-x)*log2(1-x)}; \addlegendentry{entrópia}
+  \addplot[cB, line width=1.5pt] {2*x*(1-x)}; \addlegendentry{Gini-index}
+  \addplot[cC, line width=1.5pt, dashed] {min(x,1-x)}; \addlegendentry{téves besorolási arány}
+\end{axis}
+\end{tikzpicture}
+\end{document}

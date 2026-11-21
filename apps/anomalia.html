@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Anomália-észlelők összehasonlítása</title><link rel="stylesheet" href="common.css"><script src="common.js"></script></head><body>
+<header><h1>Anomália-észlelők összehasonlítása</h1><p>Mahalanobis-távolság, k-legközelebbi szomszéd távolság, LOF és izolációs erdő ugyanazon az adathalmazon.</p></header>
+<main>
+<div class="controls">
+  <label>Módszer</label><select id="m"><option value="maha">Mahalanobis-távolság</option><option value="knn">k-NN távolság</option><option value="lof">lokális kiugrási tényező (LOF)</option><option value="iso">izolációs erdő</option></select>
+  <label>Jelzett hányad (contamination) <span class="val" id="c-v"></span></label><input type="range" id="c" min="0.01" max="0.2" step="0.01" value="0.05">
+  <label>k (szomszédok száma) <span class="val" id="k-v"></span></label><input type="range" id="k" min="3" max="40" value="15">
+  <label>Adatsor</label><select id="ds"><option value="corr">korrelált felhő</option><option value="two">sűrű és ritka csoport</option></select>
+  <div class="stat" id="st"></div>
+  <div class="note">A piros gyűrűvel jelölt pontok a beültetett anomáliák, a kitöltött narancs pontok a módszer által jelzettek. A korrelált felhőben a Mahalanobis-távolság, a különböző sűrűségű csoportoknál a LOF teljesít jól; az izolációs erdő tengelyekkel párhuzamos vágásai a korrelációt kevésbé érzékelik.</div>
+</div>
+<div class="panel"><svg id="s" width="520" height="440" viewBox="0 0 520 440"></svg></div>
+</main>
+<script>
+const svg = document.getElementById("s"); let X = [], truth = [];
+function data() { const r = PE.rng(9), ds = document.getElementById("ds").value; X = []; truth = [];
+  if (ds === "corr") { for (let i = 0; i < 300; i++) { const a = PE.normal(r), b = PE.normal(r); X.push([a, 0.9 * a + 0.3 * b]); truth.push(0); }
+    [[1.4, -1.2], [-1.5, 1.3], [0.8, -0.9], [3.2, 3.9], [-2.0, 0.3], [0.2, -1.1]].forEach(p => { X.push(p); truth.push(1); }); }
+  else { for (let i = 0; i < 150; i++) { X.push([-1.6 + 0.18 * PE.normal(r), -1.2 + 0.18 * PE.normal(r)]); truth.push(0); }
+    for (let i = 0; i < 150; i++) { X.push([1.3 + 0.8 * PE.normal(r), 1.2 + 0.8 * PE.normal(r)]); truth.push(0); }
+    [[-1.6, -0.3], [-0.6, -1.3], [3.6, -2.3], [-3.0, 2.6], [-2.4, -2.1]].forEach(p => { X.push(p); truth.push(1); }); } draw(); }
+const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
+function scores() { const m = document.getElementById("m").value, k = PE.v("k"), n = X.length;
+  if (m === "maha") { const mu = [0, 1].map(j => X.reduce((s, p) => s + p[j], 0) / n); let a = 0, b = 0, c = 0;
+    X.forEach(p => { const u = p[0] - mu[0], v = p[1] - mu[1]; a += u * u; b += u * v; c += v * v; }); a /= n - 1; b /= n - 1; c /= n - 1; const det = a * c - b * b;
+    return X.map(p => { const u = p[0] - mu[0], v = p[1] - mu[1]; return (c * u * u - 2 * b * u * v + a * v * v) / det; }); }
+  const D = X.map(p => X.map(q => dist(p, q))), nn = D.map(row => row.map((d, j) => [d, j]).sort((x, y) => x[0] - y[0]).slice(1, k + 1));
+  if (m === "knn") return nn.map(l => l[k - 1][0]);
+  if (m === "lof") { const kd = nn.map(l => l[k - 1][0]), lrd = nn.map((l, i) => 1 / (l.reduce((s, [d, j]) => s + Math.max(kd[j], d), 0) / k));
+    return nn.map((l, i) => l.reduce((s, [, j]) => s + lrd[j], 0) / k / lrd[i]); }
+  // izolációs erdő: 100 fa, 128 elemű részminta
+  const r = PE.rng(3), psi = Math.min(128, n), c = s => s > 2 ? 2 * (Math.log(s - 1) + 0.5772) - 2 * (s - 1) / s : (s === 2 ? 1 : 0);
+  function build(S, d) { if (S.length <= 1 || d > 12) return { s: S.length }; const j = r() < .5 ? 0 : 1, lo = Math.min(...S.map(p => p[j])), hi = Math.max(...S.map(p => p[j]));
+    if (hi - lo < 1e-9) return { s: S.length }; const t = lo + r() * (hi - lo); return { j, t, L: build(S.filter(p => p[j] < t), d + 1), R: build(S.filter(p => p[j] >= t), d + 1) }; }
+  const trees = Array.from({ length: 100 }, () => { const S = []; for (let i = 0; i < psi; i++) S.push(X[Math.floor(r() * n)]); return build(S, 0); });
+  const h = (x, nd, d) => nd.s !== undefined ? d + c(nd.s) : h(x, x[nd.j] < nd.t ? nd.L : nd.R, d + 1);
+  return X.map(x => 2 ** (-trees.reduce((s, t) => s + h(x, t, 0), 0) / trees.length / c(psi))); }
+function draw() { const s = scores(), n = X.length, q = Math.max(1, Math.round(PE.v("c") * n)), thr = [...s].sort((a, b) => b - a)[q - 1];
+  PE.clear(svg); const A = PE.axes(svg, [-4, 4.5], [-3.5, 4.5], { xlab: "x₁", ylab: "x₂", dx: 0, dy: 0 }); let tp = 0;
+  X.forEach((p, i) => { const flag = s[i] >= thr; if (flag && truth[i]) tp++;
+    PE.el("circle", { cx: A.x(p[0]), cy: A.y(p[1]), r: flag ? 5 : 3, fill: flag ? PE.pal[1] : PE.pal[0], "fill-opacity": flag ? .95 : .55 }, svg);
+    if (truth[i]) PE.el("circle", { cx: A.x(p[0]), cy: A.y(p[1]), r: 9, fill: "none", stroke: PE.pal[4], "stroke-width": 2 }, svg); });
+  const nt = truth.filter(Boolean).length; document.getElementById("st").innerHTML = `Jelzett pontok: <b>${q}</b><br>Ebből beültetett anomália: <b>${tp}</b> / ${nt}<br>Pontosság: <b>${PE.fmt(tp / q)}</b>, felidézés: <b>${PE.fmt(tp / nt)}</b>`; }
+document.getElementById("m").onchange = draw; document.getElementById("ds").onchange = data; PE.bind("c", draw, v => PE.fmt(v)); PE.bind("k", draw); data();
+</script></body></html>

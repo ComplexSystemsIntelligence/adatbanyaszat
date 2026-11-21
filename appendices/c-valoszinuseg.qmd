@@ -1,0 +1,224 @@
+# Valószínűségszámítási és statisztikai alapok {#sec-app-valszam}
+
+```{python}
+#| include: false
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy import stats
+import adatbanyaszat as ab
+ab.set_style()
+np.set_printoptions(precision=4, suppress=True)
+```
+
+::: {.roadmap}
+Az adatbányászat módszerei bizonytalan, zajos adatokból következtetnek, ezért nyelvük a
+valószínűségszámítás és a statisztika. Ez a függelék a könyvben használt fogalmakat
+foglalja össze: a valószínűségi változókat és eloszlásaikat, a feltételes valószínűséget és
+a Bayes-tételt, a többdimenziós normális eloszlást, a paraméterbecslést (különösen a
+maximum-likelihood módszert), valamint a konfidenciaintervallumokat, a hipotézisvizsgálatot
+és a bootstrapet. Részletesebb, a gépi tanulás szemszögéből írt tárgyalás @wasserman2004
+és @deisenroth2020 könyvében található.
+:::
+
+## Valószínűségi változók és eloszlások {#sec-app-eloszlasok}
+
+A **valószínűségi változó** egy véletlen kísérlet kimeneteléhez rendelt szám. Diszkrét
+változónál a $P(X = k)$ valószínűségek, folytonosnál a $p(x)$ sűrűségfüggvény írja le az
+eloszlást (utóbbinál $P(a\le X\le b) = \int_a^b p(x)\,dx$). A **várható érték** és a
+**variancia**
+
+$$
+E[X] = \sum_k k\,P(X = k)\;\;\text{vagy}\;\;\int x\,p(x)\,dx,\qquad
+\operatorname{Var}(X) = E\bigl[(X - E[X])^2\bigr] = E[X^2] - E[X]^2 .
+$$ {#eq-app-varhato}
+
+A várható érték lineáris: $E[aX + bY] = aE[X] + bE[Y]$; a variancia független változókra
+additív: $\operatorname{Var}(X + Y) = \operatorname{Var}(X) + \operatorname{Var}(Y)$. Két
+változó **kovarianciája** $\operatorname{Cov}(X, Y) = E[(X - E[X])(Y - E[Y])]$, a
+**korrelációs együttható** ennek a szórások szorzatával normált változata, $-1$ és $1$
+közötti érték, amely a *lineáris* kapcsolat erősségét méri ([-@sec-feltaro]. fejezet).
+
+A könyvben előforduló legfontosabb eloszlások:
+
+| Eloszlás | Leírás | $E[X]$ | $\operatorname{Var}(X)$ | Előfordulás a könyvben |
+|---|---|---|---|---|
+| Bernoulli($p$) | egyetlen igen/nem kimenet | $p$ | $p(1-p)$ | bináris osztályozás, lemorzsolódás |
+| binomiális($n, p$) | sikerek száma $n$ kísérletben | $np$ | $np(1-p)$ | arányok, A/B teszt |
+| Poisson($\lambda$) | események száma egységnyi idő alatt | $\lambda$ | $\lambda$ | vásárlások (BG/NBD), riasztások |
+| normális($\mu, \sigma^2$) | sok kis hatás összege | $\mu$ | $\sigma^2$ | mérési zaj, regresszió hibatagja |
+| exponenciális($\lambda$) | várakozási idő két esemény között | $1/\lambda$ | $1/\lambda^2$ | eseményközi idők |
+| gamma($r, \alpha$) | pozitív, ferde eloszlás | $r/\alpha$ | $r/\alpha^2$ | vevők közötti heterogenitás |
+| béta($a, b$) | valószínűségek eloszlása $[0, 1]$-en | $a/(a+b)$ | $\frac{ab}{(a+b)^2(a+b+1)}$ | lemorzsolódási valószínűség (BG/NBD) |
+| Dirichlet($\boldsymbol\alpha$) | valószínűségvektorok eloszlása | $\alpha_k/\sum_j\alpha_j$ | – | témamodellek (LDA) |
+
+: A könyvben használt fontosabb eloszlások. {#tbl-app-eloszlasok}
+
+```{python}
+#| label: fig-app-eloszlasok
+#| fig-cap: "Néhány eloszlás: Poisson-eloszlás három intenzitással (balra), normális eloszlás sűrűségfüggvénye (középen) és béta-eloszlások (jobbra)."
+#| fig-width: 7.2
+#| fig-height: 2.4
+fig, ax = plt.subplots(1, 3)
+k = np.arange(0, 15)
+for lam, c in zip([1, 4, 8], ab.PALETTE):
+    ax[0].plot(k, stats.poisson.pmf(k, lam), "o-", ms=3, color=c, label=f"λ = {lam}")
+ax[0].legend(fontsize=7); ax[0].set_xlabel("k")
+x = np.linspace(-4, 4, 300)
+ax[1].plot(x, stats.norm.pdf(x), color=ab.PALETTE[0])
+ax[1].fill_between(x, stats.norm.pdf(x), where=np.abs(x) <= 1.96, color=ab.PALETTE[0], alpha=0.2)
+ax[1].set_xlabel("z"); ax[1].set_title("95% a ±1,96 között", fontsize=8)
+p = np.linspace(0.001, 0.999, 300)
+for (a, b), c in zip([(1, 1), (2, 5), (4.4, 68)], ab.PALETTE):
+    ax[2].plot(p, stats.beta.pdf(p, a, b), color=c, label=f"Béta({a}, {b})")
+ax[2].set_ylim(0, 8); ax[2].legend(fontsize=7); ax[2].set_xlabel("p")
+fig.tight_layout()
+```
+
+## Feltételes valószínűség és a Bayes-tétel {#sec-app-bayes}
+
+Az $A$ esemény $B$ feltétel melletti **feltételes valószínűsége**
+$P(A\mid B) = P(A\cap B)/P(B)$. Két esemény **független**, ha $P(A\cap B) = P(A)P(B)$,
+vagyis ha $B$ bekövetkezése nem változtat $A$ valószínűségén. A **teljes valószínűség
+tétele** és a **Bayes-tétel**:
+
+$$
+P(B) = \sum_iP(B\mid A_i)\,P(A_i),\qquad
+P(A_i\mid B) = \frac{P(B\mid A_i)\,P(A_i)}{\sum_jP(B\mid A_j)\,P(A_j)} .
+$$ {#eq-app-bayes}
+
+A Bayes-tétel a „fordított” következtetés eszköze: a megfigyelt adatokból ($B$) a rejtett
+okokra ($A_i$) következtet, az a priori valószínűségeket a megfigyelés fényében a
+posteriori valószínűségekké frissítve. A naiv Bayes-osztályozó
+([-@sec-osztalyozas]. fejezet) és a BG/NBD modell aktív-valószínűsége ([-@sec-ugyfel].
+fejezet) is ezen alapul.
+
+Egy klasszikus példa megmutatja, miért fontos az alapgyakoriság. Egy anomália-észlelő a
+csalások 95%-át jelzi, a normál rendeléseknek pedig 2%-ánál ad téves riasztást. Ha a
+rendelések 0,2%-a csalás, mekkora valószínűséggel csalás egy jelzett rendelés?
+
+```{python}
+p_csalas, erzekenyseg, teves_arany = 0.002, 0.95, 0.02
+p_jelzes = erzekenyseg * p_csalas + teves_arany * (1 - p_csalas)
+print(f"P(csalás | jelzés) = {erzekenyseg * p_csalas / p_jelzes:.3f}")
+```
+
+A jelzett rendeléseknek mindössze mintegy 9%-a csalás: ritka eseményeknél még egy pontos
+detektor riasztásainak többsége is téves – ezért a [-@sec-anomalia]. fejezetben az AUC
+helyett a pontosságot és a lista elején mért találati arányt figyeltük.
+
+## A többdimenziós normális eloszlás {#sec-app-tobbdim-normalis}
+
+Az $n$-dimenziós normális eloszlás sűrűségfüggvénye
+
+$$
+p(\mathbf{x}) = \frac{1}{(2\pi)^{n/2}\,|\boldsymbol\Sigma|^{1/2}}\exp\Bigl(-\tfrac12(\mathbf{x} - \boldsymbol\mu)^\top\boldsymbol\Sigma^{-1}(\mathbf{x} - \boldsymbol\mu)\Bigr) ,
+$$ {#eq-app-tobbdim-normalis}
+
+ahol $\boldsymbol\mu$ a várhatóérték-vektor, $\boldsymbol\Sigma$ a kovarianciamátrix. A
+kitevőben a Mahalanobis-távolság négyzete áll ([-@sec-anomalia]. fejezet); a sűrűség
+szintvonalai ellipszoidok, amelyek tengelyeit $\boldsymbol\Sigma$ sajátvektorai adják (B.
+függelék). Ha $\mathbf{x}$ $n$-dimenziós normális eloszlású, $d_M^2$ $\chi^2_n$ eloszlású – ez
+adja a Mahalanobis-távolságon alapuló küszöböket. A normális eloszlás lineáris
+transzformációja is normális, peremeloszlásai és feltételes eloszlásai is normálisak; a
+Gauss-keverék modellek ([-@sec-csoportositas]. fejezet) ilyen eloszlások súlyozott összegei.
+
+A **nagy számok törvénye** szerint a mintaátlag a várható értékhez tart, a **centrális
+határeloszlás-tétel** szerint pedig sok független, azonos eloszlású változó átlaga –
+eloszlásuktól függetlenül – közelítőleg normális eloszlású, $\sigma/\sqrt{N}$ szórással. Ez
+magyarázza a normális eloszlás kitüntetett szerepét a mérési hibák leírásában és a
+statisztikai próbákban.
+
+## Paraméterbecslés {#sec-app-becsles}
+
+### Becslők tulajdonságai
+
+Egy $\hat\theta$ becslő **torzítatlan**, ha $E[\hat\theta] = \theta$, és **konzisztens**, ha a
+mintaméret növelésével a valódi értékhez tart. A becslő átlagos négyzetes hibája a torzítás
+négyzetének és a varianciának az összege – ez a [-@sec-ertekeles]. fejezet
+torzítás–variancia felbontásának statisztikai megfelelője. A variancia
+$\hat\sigma^2 = \frac{1}{N}\sum_i(x_i - \bar x)^2$ becslője torzított, mert a mintaátlag a
+mintához „igazodik”; a torzítatlan változat $N - 1$-gyel oszt (**Bessel-korrekció**):
+
+$$
+s^2 = \frac{1}{N - 1}\sum_{i=1}^{N}(x_i - \bar x)^2 .
+$$ {#eq-app-bessel}
+
+```{python}
+rng = np.random.default_rng(1)
+minta = rng.normal(0, 1, size=(100_000, 5))              # 100 000 darab 5 elemű minta, σ² = 1
+print("1/N-es becslő átlaga:", minta.var(axis=1, ddof=0).mean().round(3),
+      "| 1/(N−1)-es becslő átlaga:", minta.var(axis=1, ddof=1).mean().round(3))
+```
+
+A NumPy `var` és `std` függvényei alapértelmezésben $N$-nel osztanak (`ddof=0`), a pandas
+megfelelő metódusai $N - 1$-gyel (`ddof=1`); a különbség kis mintákon számít.
+
+### Maximum-likelihood becslés
+
+A **maximum-likelihood** (ML) becslés azt a paraméterértéket választja, amely mellett a
+megfigyelt adatok a legvalószínűbbek. Független megfigyeléseknél a **likelihood** a
+valószínűségek (sűrűségek) szorzata, és a számításokhoz annak logaritmusát használjuk:
+
+$$
+\hat{\boldsymbol\theta}_{\mathrm{ML}} = \arg\max_{\boldsymbol\theta}\;\ell(\boldsymbol\theta),\qquad
+\ell(\boldsymbol\theta) = \sum_{i=1}^{N}\ln p(x_i\mid\boldsymbol\theta) .
+$$ {#eq-app-ml}
+
+Bernoulli-eloszlásnál ($k$ siker $N$ kísérletből) a $\ell(p) = k\ln p + (N - k)\ln(1 - p)$
+függvény deriváltját nullával egyenlővé téve $\hat p = k/N$; normális eloszlásnál
+$\hat\mu = \bar x$ és $\hat\sigma^2 = \frac1N\sum_i(x_i - \bar x)^2$ – az utóbbi a fenti torzított
+becslő. A könyv számos módszere ML-becslés: a legkisebb négyzetek módszere normális
+hibatag esetén, a logisztikus regresszió (kereszt-entrópia), a Gauss-keverék modell
+EM-algoritmusa, a BG/NBD és a gamma–gamma modell. Ha nincs zárt alakú megoldás, a
+log-likelihoodot numerikusan maximalizáljuk:
+
+```{python}
+from scipy.optimize import minimize_scalar
+x = ab.load_plant().alarms.groupby(ab.load_plant().alarms.ido.dt.date).size()
+napi = x.reindex(pd.date_range("2025-01-01", "2025-12-31").date, fill_value=0).to_numpy()
+negloglik = lambda lam: -stats.poisson.logpmf(napi, lam).sum()
+ml = minimize_scalar(negloglik, bounds=(0.01, 20), method="bounded")
+print(f"a napi riasztásszám Poisson-intenzitásának ML-becslése: {ml.x:.3f} (a mintaátlag: {napi.mean():.3f})")
+print(f"átlag {napi.mean():.2f}, variancia {napi.var(ddof=1):.2f} – a Poisson-modellben a kettő egyenlő volna")
+```
+
+A numerikus becslés megegyezik a zárt alakú megoldással (a mintaátlaggal). A variancia
+azonban jóval nagyobb az átlagnál: a riasztások csoportosan, hibaeseményekhez kötötten
+jelentkeznek, ezért a napi riasztásszám „túlszórt” – a Poisson-modell itt nem megfelelő, a
+negatív binomiális (gamma–Poisson keverék) eloszlás jobb leírást adna. A modell
+feltevéseinek ellenőrzése a becslés elválaszthatatlan része.
+
+## Konfidenciaintervallum, hipotézisvizsgálat, bootstrap {#sec-app-kovetkeztetes}
+
+A **konfidenciaintervallum** a becslés bizonytalanságát fejezi ki: a 95%-os intervallum
+olyan eljárással készül, amely ismételt mintavételnél az esetek 95%-ában tartalmazza a
+valódi paramétert. Nagy mintán az átlag 95%-os intervalluma
+$\bar x\pm 1{,}96\,s/\sqrt N$; két arány különbségére a [-@sec-ugyfel]. fejezet ([-@eq-ate])
+képletét használtuk.
+
+A **hipotézisvizsgálat** egy nullhipotézist (például „a kampánynak nincs hatása”) vet össze az
+adatokkal. A **p-érték** annak valószínűsége, hogy a nullhipotézis fennállása esetén a
+megfigyeltnél legalább ennyire szélsőséges eredményt kapnánk; ha kisebb az előre rögzített
+szignifikanciaszintnél (rendszerint 0,05), a nullhipotézist elvetjük. A p-érték nem a
+nullhipotézis valószínűsége, és nem a hatás nagysága: nagy mintán egy gyakorlatilag
+jelentéktelen különbség is szignifikáns lehet, ezért mindig a hatás nagyságát és a
+konfidenciaintervallumot is meg kell adni. Sok próba egyidejű elvégzésekor a véletlen
+„felfedezések” száma nő (**többszörös összehasonlítás**); ilyenkor a szignifikanciaszintet
+korrigálni kell (például Bonferroni-korrekcióval) – ez az asszociációs szabályok és a
+modellválasztás értékelésénél is fontos.
+
+A **bootstrap** a becslő eloszlását az adatokból, visszatevéses újramintavételezéssel
+közelíti: sok bootstrap-mintán kiszámítjuk a statisztikát, és az így kapott értékek
+eloszlásából (például a 2,5%-os és a 97,5%-os kvantilisből) adunk intervallumot. Előnye,
+hogy bonyolult statisztikákra (medián, AUC, egy modell hibája) is alkalmazható, zárt alakú
+képlet nélkül. A [-@sec-osztalyozas]. fejezet zsákolása (bagging) ugyanezt az
+újramintavételezést használja.
+
+```{python}
+vevok = ab.customer_table(ref_date="2025-07-01")
+m = vevok.M_ertek.to_numpy()
+boot = np.array([np.median(rng.choice(m, size=len(m), replace=True)) for _ in range(2000)])
+print(f"a vevőnkénti költés mediánja: {np.median(m):,.0f} Ft; "
+      f"95%-os bootstrap-intervallum: {np.quantile(boot, 0.025):,.0f} – {np.quantile(boot, 0.975):,.0f} Ft")
+```

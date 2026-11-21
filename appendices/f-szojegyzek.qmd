@@ -1,0 +1,105 @@
+# Magyar–angol szójegyzék {#sec-app-szojegyzek}
+
+A szójegyzék a könyvben használt szakkifejezések angol megfelelőit adja meg, a
+nemzetközi szakirodalom és a szoftverdokumentációk olvasásának megkönnyítésére. A magyar
+terminológia a hazai szakirodalom bevett szóhasználatát követi; ahol több változat is
+elterjedt, zárójelben a másikat is feltüntetjük.
+
+| Magyar | Angol |
+|---|---|
+| adatbányászat | data mining |
+| adatelőkészítés | data preparation, preprocessing |
+| adatszivárgás (információszivárgás) | data leakage |
+| adattárház | data warehouse |
+| adattó | data lake |
+| aktivációs függvény | activation function |
+| alapjel | setpoint |
+| állapotindikátor | health indicator |
+| anomália, kiugró érték | anomaly, outlier |
+| asszociációs szabály | association rule |
+| átlagos pontosság | average precision |
+| autokorrelációs függvény | autocorrelation function (ACF) |
+| autoenkóder | autoencoder |
+| bizonyosság (megbízhatóság) | confidence |
+| csoportosítás (klaszterezés) | clustering |
+| dimenziócsökkentés | dimensionality reduction |
+| dinamikus idővetemítés | dynamic time warping (DTW) |
+| döntési fa | decision tree |
+| egyosztályos SVM | one-class SVM |
+| együttes modell | ensemble model |
+| előrejelzés | forecasting, prediction |
+| ellenőrzőkártya | control chart |
+| elenyésző gradiens | vanishing gradient |
+| esélyhányados | odds ratio |
+| exponenciális simítás | exponential smoothing |
+| fedezet | (profit) margin |
+| feltáró adatelemzés | exploratory data analysis (EDA) |
+| felügyelt / felügyelet nélküli tanulás | supervised / unsupervised learning |
+| főkomponens-elemzés | principal component analysis (PCA) |
+| fuzzy c-közép | fuzzy c-means (FCM) |
+| gördülő kezdőpontú értékelés | rolling-origin evaluation |
+| gradiens-boosting | gradient boosting |
+| gyakori elemhalmaz | frequent itemset |
+| hátralévő hasznos élettartam | remaining useful life (RUL) |
+| hibadiagnózis | fault diagnosis |
+| hibavisszaterjesztés | backpropagation |
+| hiperparaméter | hyperparameter |
+| hozzájárulási ábra | contribution plot |
+| információnyereség | information gain |
+| izolációs erdő | isolation forest |
+| jellemző | feature |
+| jellemzőkinyerés, jellemzőtervezés | feature extraction, feature engineering |
+| keresztvalidáció | cross-validation |
+| kereszt-entrópia | cross-entropy (log loss) |
+| kiegyensúlyozatlan osztályok | imbalanced classes |
+| kiejtés (dropout) | dropout |
+| konvolúciós hálózat | convolutional neural network (CNN) |
+| korai leállítás | early stopping |
+| költség–komplexitás metszés | cost-complexity pruning |
+| lágy szenzor | soft sensor |
+| látens szemantikus elemzés | latent semantic analysis (LSA) |
+| lemorzsolódás | churn |
+| lift (javulás) | lift |
+| lokális kiugrási tényező | local outlier factor (LOF) |
+| maradék | residual |
+| margó | margin |
+| maximum-likelihood becslés | maximum likelihood estimation |
+| megtartás | retention |
+| metszés | pruning |
+| mintavételezés | sampling |
+| modellértékelés | model evaluation |
+| naiv Bayes-osztályozó | naive Bayes classifier |
+| nemnegatív mátrixfaktorizáció | non-negative matrix factorization (NMF) |
+| normalizálás, standardizálás | normalization, standardization |
+| nyereségarány | gain ratio |
+| osztályozás | classification |
+| önszerveződő térkép | self-organizing map (SOM) |
+| parciális függés | partial dependence |
+| permutációs fontosság | permutation importance |
+| pontosság (precízió), felidézés | precision, recall |
+| prediktív karbantartás | predictive maintenance |
+| regresszió | regression |
+| regularizáció | regularization |
+| rekurrens hálózat | recurrent neural network (RNN) |
+| riasztásáradat | alarm flood |
+| sajátérték, sajátvektor | eigenvalue, eigenvector |
+| szegmentálás | segmentation |
+| szennyezettség | impurity |
+| szinguláris érték szerinti felbontás | singular value decomposition (SVD) |
+| szóbeágyazás | word embedding |
+| szótövezés, lemmatizálás | stemming, lemmatization |
+| szózsák | bag of words |
+| szürkedobozos modell | grey-box model |
+| támaszvektor-gép | support vector machine (SVM) |
+| támogatottság | support |
+| témamodell | topic model |
+| tévesztési mátrix | confusion matrix |
+| torzítás–variancia felbontás | bias–variance decomposition |
+| túltanulás | overfitting |
+| ügyfélérték | customer lifetime value (CLV) |
+| ügyfélkapcsolat-menedzsment | customer relationship management (CRM) |
+| uplift-modell | uplift model |
+| véletlen erdő | random forest |
+| zsákolás | bagging (bootstrap aggregating) |
+
+: Magyar–angol szakkifejezések. {#tbl-app-szojegyzek}
