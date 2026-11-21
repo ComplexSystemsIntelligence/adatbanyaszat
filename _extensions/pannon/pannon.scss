@@ -46,6 +46,9 @@ figcaption, .figure-caption { color: $pe-muted; font-size: .92rem; }
 .quarto-title-banner .quarto-title .title, .quarto-title-banner h1 { color: #fff; }
 .quarto-title-banner .quarto-title::after { background: #fff; }
 .quarto-title-banner .quarto-categories, .quarto-title-banner .subtitle { color: #E8EEF4; }
+.quarto-title-banner .breadcrumb, .quarto-title-banner .breadcrumb a,
+.quarto-title-banner .breadcrumb-item.active,
+.quarto-title-banner .breadcrumb-item + .breadcrumb-item::before { color: rgba(255,255,255,.82); }
 @media (max-width: 767.98px) { .quarto-title-banner::before { display: none; } }
 
 // Oldalsáv: a Pannon Egyetem névjele
