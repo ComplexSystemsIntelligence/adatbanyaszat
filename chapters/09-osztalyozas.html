@@ -93,6 +93,7 @@ div.csl-indent {
 <meta name="quarto:offset" content="../">
 <link href="../chapters/10-melytanulas.html" rel="next">
 <link href="../chapters/08-regresszio.html" rel="prev">
+<link href="../assets/logo/pe-betulogo-kek.svg" rel="icon" type="image/svg+xml">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
@@ -103,7 +104,7 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-18038207a4bfd50187eff2b2f0526436.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-2e0d8344b0dc5094b12d2d69717cf885.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-ccde3fbf63aae08b05d4ad62d01093f9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -134,6 +135,22 @@ div.csl-indent {
     "search-label": "Keresés"
   }
 }</script>
+<style>
+
+      .quarto-title-block .quarto-title-banner h1,
+      .quarto-title-block .quarto-title-banner h2,
+      .quarto-title-block .quarto-title-banner h3,
+      .quarto-title-block .quarto-title-banner h4,
+      .quarto-title-block .quarto-title-banner h5,
+      .quarto-title-block .quarto-title-banner h6
+      {
+        color: #FFFFFF;
+      }
+
+      .quarto-title-block .quarto-title-banner {
+        color: #FFFFFF;
+      }
+</style>
 <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
@@ -169,12 +186,23 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="../assets/pannon-fonts.css">
+<meta property="og:title" content="9&nbsp; Osztályozás – Adatbányászat">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://complexsystemsintelligence.github.io/adatbanyaszat/assets/social-preview.png">
+<meta property="og:site_name" content="Adatbányászat">
+<meta property="og:locale" content="hu_HU">
+<meta property="og:image:height" content="640">
+<meta property="og:image:width" content="1280">
+<meta name="twitter:title" content="9&nbsp; Osztályozás – Adatbányászat">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://complexsystemsintelligence.github.io/adatbanyaszat/assets/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
   <nav class="quarto-secondary-nav" aria-label="Toolbar">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Oldalsáv ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -190,10 +218,30 @@ window.Quarto = {
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/07-modellertekeles.html">III. Prediktív modellezés</a></li><li class="breadcrumb-item"><a href="../chapters/09-osztalyozas.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Osztályozás</span></a></li></ol></nav>
+      <h1 class="title"><span id="sec-osztalyozas" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Osztályozás</span></span></h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://uni-pannon.hu" class="sidebar-logo-link">
+      <img src="../assets/logo/pe-cimer-nevjel-fekvo-kek.svg" alt="Pannon Egyetem – University of Pannonia" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../assets/logo/pe-cimer-nevjel-fekvo-kek.svg" alt="Pannon Egyetem – University of Pannonia" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Adatbányászat</a> 
         <div class="sidebar-tools-main">
@@ -462,25 +510,10 @@ window.Quarto = {
 <div class="toc-actions"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/chapters/09-osztalyozas.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/chapters/09-osztalyozas.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content" tabindex="-1">
-
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/07-modellertekeles.html">III. Prediktív modellezés</a></li><li class="breadcrumb-item"><a href="../chapters/09-osztalyozas.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Osztályozás</span></a></li></ol></nav>
-<div class="quarto-title">
-<h1 class="title"><span id="sec-osztalyozas" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Osztályozás</span></span></h1>
-</div>
+<main class="content quarto-banner-title-block" id="quarto-document-content" tabindex="-1">
 
 
 
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
 
 
 <div class="roadmap">
@@ -1958,7 +1991,20 @@ document.addEventListener("DOMContentLoaded", function () {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/chapters/09-osztalyozas.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/chapters/09-osztalyozas.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></div></div></footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Abonyi János · <a href="https://uni-pannon.hu">Pannon Egyetem</a> · <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.hu">CC BY-NC 4.0</a></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/edit/main/chapters/09-osztalyozas.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/issues/new" class="toc-action"><i class="bi empty"></i>Hiba jelzése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/adatbanyaszat/blob/main/chapters/09-osztalyozas.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p><a href="https://uni-pannon.hu"><img src="../assets/logo/pe-cimer-nevjel-fekvo-feher.svg" alt="Pannon Egyetem – University of Pannonia" height="38"></a></p>
+</div>
+  </div>
+</footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

@@ -4,8 +4,10 @@
   --cA:#2E6DB4;--cB:#C8711E;--cC:#7A4EAB;--cD:#1F9077;--cE:#B23A48;}
 *{box-sizing:border-box}
 body{margin:0;font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:#fff;font-size:14px}
-header{background:var(--pe);color:#fff;padding:8px 14px;position:relative;overflow:hidden}
-header::after{content:"";position:absolute;right:-30px;top:0;bottom:0;width:120px;background:var(--pe-d);transform:skewX(-20deg)}
+header{background:var(--pe);color:#fff;padding:8px 150px 8px 14px;position:relative;overflow:hidden;min-height:46px}
+/* a Pannon Egyetem fehér névjele a fejléc sötét, ferde sávjában */
+header::before{content:"";position:absolute;right:14px;top:50%;transform:translateY(-50%);width:118px;height:32px;z-index:2;background:url("../assets/logo/pe-cimer-nevjel-fekvo-feher.svg") right center/contain no-repeat}
+header::after{content:"";position:absolute;right:-30px;top:0;bottom:0;width:190px;background:var(--pe-d);transform:skewX(-20deg)}
 header h1{font-family:Raleway,"IBM Plex Sans",sans-serif;font-weight:800;font-size:16px;margin:0;position:relative;z-index:1}
 header p{margin:2px 0 0;font-size:12px;opacity:.9;position:relative;z-index:1}
 main{display:flex;flex-wrap:wrap;gap:12px;padding:12px}
