@@ -33,10 +33,17 @@ book:
   favicon: assets/logo/pe-betulogo-kek.svg
   cover-image: assets/cover.png
   cover-image-alt: "Az Adatbányászat – a hatékonyság eszköze című könyv borítója"
+  # Közös sorozatsáv: cím → a könyv nyitóoldala, jobbra a sorozat főoldala
+  navbar:
+    title: "Adatbányászat"
+    logo-href: https://complexsystemsintelligence.github.io/adatbanyaszat/
+    right:
+      - text: "Összes tankönyv"
+        href: https://complexsystemsintelligence.github.io/#textbooks
   sidebar:
     logo: assets/logo/pe-cimer-nevjel-fekvo-kek.svg
     logo-alt: "Pannon Egyetem – University of Pannonia"
-    logo-href: https://uni-pannon.hu
+    logo-href: https://complexsystemsintelligence.github.io/adatbanyaszat/
   page-footer:
     background: "#285780"
     foreground: "#FFFFFF"
@@ -120,7 +127,7 @@ jupyter: python3
 format:
   html:
     theme:
-      light: [cosmo, _extensions/pannon/pannon.scss]
+      light: [cosmo, _extensions/pannon/pannon.scss, assets/sorozat.scss]
     css: assets/pannon-fonts.css
     include-after-body: _extensions/pannon/pannon-hu.html
     toc: true
